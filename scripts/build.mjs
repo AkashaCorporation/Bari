@@ -143,7 +143,14 @@ console.log(
 writeFileSync(
   path.join(outdir, "package.json"),
   JSON.stringify(
-    { name: "@bari/code", version, type: "module", private: true },
+    {
+      name: "@bari/code",
+      version,
+      type: "module",
+      private: true,
+      bin: { bari: "cli.js" },
+      engines: { node: ">=22.19 <23 || >=24.2 <27" },
+    },
     null,
     2,
   ) + "\n",
