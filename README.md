@@ -7,7 +7,7 @@
 </p>
 
 <h1 align="center">Bari</h1>
-<p align="center">A terminal coding agent with MiniMax, your own models, and tools beyond code.</p>
+<p align="center">A fast terminal coding agent. Bring your own model, or use a managed account or subscription.</p>
 <p align="center">
   <a href="#quick-start">Get started</a> ·
   <a href="docs/README.md">Documentation</a> ·
@@ -21,7 +21,7 @@
   <a href="LICENSE-STATUS.md"><img src="docs/assets/license.svg" alt="First-party default license: MIT"></a>
 </p>
 
-Understand a project, make changes, and run tests from your terminal. Use your MiniMax account or bring your own model, with search, plugins, and multimodal tools in the same workflow.
+Understand a project, make changes, and run tests from your terminal. Use a MiniMax account, an OpenCode Go subscription, or your own API key, with search, plugins, and multimodal tools in the same workflow.
 
 [![Bari TUI preview: a coding task with failing tests fixed and passing](docs/assets/tui-demo.png)](docs/demo.md)
 
@@ -42,7 +42,7 @@ pnpm bari --version
 pnpm bari --help
 ```
 
-The first build requires an internet connection. Dependencies and the integrity-checked `mcode-tools` bundle come from public npm. See the [installation guide](docs/installation.md) for pnpm setup, system dependencies, and updates.
+The first build requires an internet connection. Dependencies and the integrity-checked embedded tools bundle come from public npm. See the [installation guide](docs/installation.md) for pnpm setup, system dependencies, and updates.
 
 ### 2. Sign in or bring your own API key
 
@@ -60,7 +60,7 @@ bari login --region global
 
 Complete sign-in in your browser, then open `bari` and use `/status` to check your account and `/provider` to choose a model. Run `bari logout` to sign out.
 
-Token Plan requires an account with available credits. User data is stored in `~/.bari` by default; an existing `~/.minimax-code` profile keeps being used until `~/.bari` exists. Set `BARI_DATA_DIR` to override. MiniMax account, model, and Token Plan documentation lives at [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start).
+Token Plan requires an account with available credits. User data is stored in `~/.bari` by default; an existing `~/.minimax-code` profile keeps being used until `~/.bari` exists. Set `BARI_DATA_DIR` to override. MiniMax account documentation (one supported provider) lives at [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start).
 
 <details>
 <summary>Use your own API key (BYOK)</summary>
@@ -74,7 +74,7 @@ bari provider add --name my-provider --base-url https://example.com/v1 \
 bari
 ```
 
-Supported API formats: `openai-completions`, `openai-responses`, and `anthropic-messages`. See the [model examples](docs/examples.md#2-choose-your-own-model) for environment variable setup, connection checks, and model overrides for a single run.
+Supported API formats: `openai-completions`, `openai-responses`, and `anthropic-messages`. See the [model examples](docs/examples.md#2-choose-your-own-model) for environment variable setup, connection checks, and model overrides for a single run. OpenCode Go subscribers can use the pinned preset described in the [OpenCode Go example](docs/examples.md#opencode-go).
 
 </details>
 
@@ -128,8 +128,8 @@ Inside the TUI, use `/sessions` to find previous sessions and `/help` to see all
 | Task | Capabilities |
 | --- | --- |
 | **Edit and verify code** | Read files, inspect diffs, run shell commands and tests, and control tool execution with permissions and sandboxing. |
-| **Choose your model** | Use a MiniMax account / Token Plan, or custom providers with OpenAI- or Anthropic-compatible API formats. |
-| **Search and work with media** | Use built-in search, `mcode-tools` media tools, MCP, and managed connectors, subject to account access and service credits. |
+| **Choose your model** | Use a MiniMax account or Token Plan, an OpenCode Go subscription, or custom providers with OpenAI- or Anthropic-compatible API formats. |
+| **Search and work with media** | Use built-in search, embedded media tools, MCP, and managed connectors, subject to account access and service credits. |
 | **Keep work moving** | Resume sessions, plan tasks, use subagents, and extend the agent with official, local, or GitHub plugins and built-in skills. |
 | **Connect your workflow** | Run scripted tasks with the headless CLI, or connect compatible editors and clients through ACP. |
 
@@ -155,7 +155,7 @@ pnpm build
 pnpm bari
 ```
 
-The first build requires an internet connection. Dependencies and the integrity-checked `mcode-tools` bundle come from public npm. See the [source installation guide](docs/installation.md) for pnpm setup, system dependencies, and updates.
+The first build requires an internet connection. Dependencies and the integrity-checked embedded tools bundle come from public npm. See the [source installation guide](docs/installation.md) for pnpm setup, system dependencies, and updates.
 
 From the source directory, use `pnpm bari` in place of `bari` in the examples above. To work on your own project, open its directory and launch the built CLI:
 

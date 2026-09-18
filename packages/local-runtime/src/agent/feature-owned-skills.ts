@@ -66,6 +66,8 @@ function isStandaloneSkillUsable(
       return hasTools(capabilities, ['read', 'write', 'bash', 'website_deploy']);
     case 'edit-deployed-website':
       return hasTools(capabilities, ['read', 'edit', 'bash', 'website_deploy']);
+    case 'hexcore-jobs':
+      return hasTools(capabilities, ['read', 'write', 'bash']);
     case 'docx':
     case 'pdf':
     case 'pptx':

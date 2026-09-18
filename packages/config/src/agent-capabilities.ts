@@ -53,6 +53,7 @@ export const AGENT_BUILTIN_SKILL_IDS = [
   'deploy-website',
   'docx',
   'edit-deployed-website',
+  'hexcore-jobs',
   'init',
   'lark-tools',
   'llm-call',

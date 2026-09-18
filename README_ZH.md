@@ -7,7 +7,7 @@
 </p>
 
 <h1 align="center">Bari</h1>
-<p align="center">A terminal coding agent with MiniMax, your own models, and tools beyond code.</p>
+<p align="center">轻快的终端编码代理。自带模型，或使用托管账号与订阅。</p>
 <p align="center">
   <a href="#快速开始">Get started</a> ·
   <a href="docs/README.md">Documentation</a> ·
@@ -21,7 +21,7 @@
   <a href="LICENSE-STATUS.md"><img src="docs/assets/license.svg" alt="First-party default license: MIT"></a>
 </p>
 
-在终端里读懂项目、修改代码并运行测试。使用 MiniMax 账号或自己的模型，把搜索、插件和多模态工具接入同一个工作流。
+在终端里读懂项目、修改代码并运行测试。使用 MiniMax 账号、OpenCode Go 订阅或自己的 API Key，把搜索、插件和多模态工具接入同一个工作流。
 
 [![Bari TUI 预览：修复失败测试并跑通](docs/assets/tui-demo.png)](docs/demo.md)
 
@@ -42,7 +42,7 @@ pnpm bari --version
 pnpm bari --help
 ```
 
-首次构建需要联网；依赖和经过校验的 `mcode-tools` 均来自公共 npm。pnpm 安装、系统依赖和更新方法见[安装指南](docs/installation.md)。
+首次构建需要联网；依赖和经过校验的内置工具包均来自公共 npm。pnpm 安装、系统依赖和更新方法见[安装指南](docs/installation.md)。
 
 ### 2. 登录账号或配置 API Key
 
@@ -60,9 +60,7 @@ bari login --region global
 
 在浏览器中完成登录，再启动 `bari`，通过 `/status` 检查账号、通过 `/provider` 选择模型。退出登录使用 `bari logout`。
 
-Token Plan 需要账号和可用额度。用户数据默认存储在 `~/.bari`；已有 `~/.minimax-code` 配置时继续沿用旧目录，直到 `~/.bari` 出现。可用 `BARI_DATA_DIR` 覆盖。MiniMax 账号、模型与 Token Plan 文档见 [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start)。
-
-Token Plan 需要账号与可用额度。默认用户数据保存在 `~/.minimax-code`。
+Token Plan 需要账号和可用额度。用户数据默认存储在 `~/.bari`；已有 `~/.minimax-code` 配置时继续沿用旧目录，直到 `~/.bari` 出现。可用 `BARI_DATA_DIR` 覆盖。MiniMax 账号文档（支持的服务商之一）见 [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start)。
 
 <details>
 <summary>使用自己的 API Key（BYOK）</summary>
@@ -76,7 +74,7 @@ bari provider add --name my-provider --base-url https://example.com/v1 \
 bari
 ```
 
-支持 `openai-completions`、`openai-responses` 和 `anthropic-messages`。连接测试、单次模型切换及环境变量设置见 [模型示例](docs/examples.md#2-choose-your-own-model)。
+支持 `openai-completions`、`openai-responses` 和 `anthropic-messages`。连接测试、单次模型切换及环境变量设置见 [模型示例](docs/examples.md#2-choose-your-own-model)。OpenCode Go 订阅用户可直接使用内置预设，见 [OpenCode Go 示例](docs/examples.md#opencode-go)。
 
 </details>
 
@@ -130,8 +128,8 @@ bari --session
 | 场景 | 使用方式 |
 | --- | --- |
 | **修改与验证代码** | 读取文件、编辑 diff、执行 Shell 和测试；通过权限与沙箱控制工具执行。 |
-| **选择模型** | MiniMax 账号 / Token Plan，或兼容 OpenAI、Anthropic 格式的自定义提供方。 |
-| **搜索与多模态** | 内置搜索、`mcode-tools` 媒体工具、MCP 和托管连接器；按账号权限和服务额度使用。 |
+| **选择模型** | MiniMax 账号或 Token Plan、OpenCode Go 订阅，或兼容 OpenAI、Anthropic 格式的自定义提供方。 |
+| **搜索与多模态** | 内置搜索、内置媒体工具、MCP 和托管连接器；按账号权限和服务额度使用。 |
 | **延续工作** | 会话恢复、任务规划、子 Agent、官方 / 本地 / GitHub 插件与内置 Skills。 |
 | **接入工作流** | Headless CLI 用于脚本任务，ACP 用于兼容的编辑器和客户端。 |
 
@@ -157,7 +155,7 @@ pnpm build
 pnpm bari
 ```
 
-首次构建需要联网；依赖和经过校验的 `mcode-tools` 均来自公共 npm。pnpm 安装、系统依赖和更新方法见[源码安装指南](docs/installation.md)。
+首次构建需要联网；依赖和经过校验的内置工具包均来自公共 npm。pnpm 安装、系统依赖和更新方法见[源码安装指南](docs/installation.md)。
 
 从源码目录运行时，将上方示例中的 `bari` 替换为 `pnpm bari`。要在自己的项目中工作，先切换到项目目录，再运行构建产物：
 
