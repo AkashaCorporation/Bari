@@ -23,9 +23,9 @@
 
 Understand a project, make changes, and run tests from your terminal. Use your MiniMax account or bring your own model, with search, plugins, and multimodal tools in the same workflow.
 
-[![Real Bari TUI output: fixing clamp, inspecting the diff, and running tests](docs/assets/tui-demo.png)](docs/demo.md)
+[![Bari TUI preview: a coding task with failing tests fixed and passing](docs/assets/tui-demo.png)](docs/demo.md)
 
-<p align="center"><a href="docs/demo.md">Watch the 20-second demo →</a> · Real terminal output, with pauses shortened</p>
+<p align="center"><a href="docs/demo.md">See the preview and try the example →</a> · Illustrated terminal view</p>
 
 ## Quick start
 

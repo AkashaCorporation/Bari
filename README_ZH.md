@@ -23,9 +23,9 @@
 
 在终端里读懂项目、修改代码并运行测试。使用 MiniMax 账号或自己的模型，把搜索、插件和多模态工具接入同一个工作流。
 
-[![Bari 真实 TUI：修复 clamp、查看代码 diff 并运行测试](docs/assets/tui-demo.png)](docs/demo.md)
+[![Bari TUI 预览：修复失败测试并跑通](docs/assets/tui-demo.png)](docs/demo.md)
 
-<p align="center"><a href="docs/demo.md">观看 20 秒真实演示 →</a> · 真实终端输出回放，已压缩等待时间</p>
+<p align="center"><a href="docs/demo.md">查看预览并体验示例 →</a> · 终端界面示意图</p>
 
 ## 快速开始
 
