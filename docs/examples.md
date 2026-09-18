@@ -54,6 +54,21 @@ Replace the example URL, model name, and IDs with your configuration and the IDs
 
 [Live acceptance](verification.md) separately verified MiniMax Token Plan and one configured BYOK provider. This is not a guarantee for every compatible service.
 
+### OpenCode Go
+
+[OpenCode Go](https://opencode.ai/docs/go/) is an optional subscription that serves open coding models, including `deepseek-v4.1-flash`. Subscribe there, copy the key from `https://opencode.ai/auth`, then register it as a provider:
+
+```bash
+read -s OPENCODE_API_KEY
+export OPENCODE_API_KEY
+pnpm bari provider add --name "OpenCode Go" --base-url https://opencode.ai/zen/go/v1 \
+  --api-format openai-completions --model deepseek-v4.1-flash \
+  --api-key-env OPENCODE_API_KEY --use
+pnpm bari
+```
+
+In PowerShell, capture the key with the `Read-Host` pattern above and use `$env:OPENCODE_API_KEY`. Requests to `https://opencode.ai/zen/go` automatically carry a per-conversation session header and a `Bari` user agent, so the provider only needs the key. The `/provider` wizard lists OpenCode Go with the pinned model catalog, including `deepseek-v4.1-flash`.
+
 ## 3. Search and image input
 
 After signing in to MiniMax, try a task that explicitly requires search:

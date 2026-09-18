@@ -199,6 +199,30 @@ describe('models.dev Provider Presets', () => {
     expect(presets.map((preset) => preset.providerId)).toEqual(['compatible']);
   });
 
+  it('adds the pinned DeepSeek V4.1 Flash model to the OpenCode Go preset', async () => {
+    const presets = await parsePresetsForTest({
+      'opencode-go': {
+        name: 'OpenCode Go',
+        npm: '@ai-sdk/openai-compatible',
+        api: 'https://opencode.ai/zen/go/v1',
+        models: {
+          'deepseek-v4-flash': { name: 'DeepSeek V4 Flash', tool_call: true },
+        },
+      },
+    });
+
+    const preset = presets.find((entry) => entry.providerId === 'opencode-go');
+    expect(preset?.baseUrl).toBe('https://opencode.ai/zen/go/v1');
+    expect(preset?.models.find((model) => model.modelId === 'deepseek-v4.1-flash')).toMatchObject({
+      displayName: 'DeepSeek V4.1 Flash',
+      attachment: true,
+      reasoning: true,
+      toolCall: true,
+      limit: { context: 1_000_000, output: 384_000 },
+      effortOptions: ['low', 'high', 'max'],
+    });
+  });
+
   it('maps the three supported transports and normalizes their request bases', async () => {
     const messagesProviderId = 'anthropic';
     const presets = await parsePresetsForTest({

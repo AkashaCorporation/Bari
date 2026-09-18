@@ -780,7 +780,7 @@ describe('OpenCode Go connection identity', () => {
     const headers = fetchImpl.mock.calls.map((call) => new Headers(call[1]?.headers));
     for (const header of headers) {
       expect(header.get('x-opencode-session')).toMatch(/^[0-9a-f-]{36}$/u);
-      expect(header.get('user-agent')).toBe('MiniMaxCode');
+      expect(header.get('user-agent')).toBe('Bari');
     }
     expect(headers[0]?.get('x-opencode-session')).not.toBe(headers[1]?.get('x-opencode-session'));
   });

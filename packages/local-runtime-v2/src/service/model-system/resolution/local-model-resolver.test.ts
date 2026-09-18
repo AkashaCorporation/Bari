@@ -1286,7 +1286,7 @@ describe('OpenCode Go conversation identity', () => {
         });
         const headers = new Headers(resolved.headers);
         expect(headers.get('x-opencode-session')).toBe(sessionId);
-        expect(headers.get('user-agent')).toBe('MiniMaxCode');
+        expect(headers.get('user-agent')).toBe('Bari');
         expect(resolved.model.provider).toBe('custom_provider:renamed');
       }
     },

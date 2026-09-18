@@ -27,7 +27,43 @@ const REGION_PINNED_PROVIDER_IDS = {
   cn: ['zhipuai', 'deepseek', 'moonshotai-cn', 'openai', 'anthropic'],
   en: ['zai', 'deepseek', 'moonshotai', 'openai', 'anthropic'],
 } as const;
+const OPENCODE_GO_PROVIDER_ID = 'opencode-go';
 const refreshInFlight = new Map<string, Promise<void>>();
+
+function opencodeGoPinnedModels(): UserModelInputView[] {
+  return [
+    {
+      modelId: 'deepseek-v4.1-flash',
+      displayName: 'DeepSeek V4.1 Flash',
+      attachment: true,
+      reasoning: true,
+      toolCall: true,
+      temperature: true,
+      modalities: { input: ['text', 'image'], output: ['text'] },
+      limit: { context: 1_000_000, output: 384_000 },
+      effortOptions: ['low', 'high', 'max'],
+    },
+  ];
+}
+
+function applyFirstPartyPresetOverrides(
+  presets: ByokProviderPresetView[],
+): ByokProviderPresetView[] {
+  const index = presets.findIndex((preset) => preset.providerId === OPENCODE_GO_PROVIDER_ID);
+  if (index === -1) return presets;
+  const existing = presets[index];
+  const knownModelIds = new Set(existing.models.map((model) => model.modelId));
+  const additions = opencodeGoPinnedModels().filter(
+    (model) => !knownModelIds.has(model.modelId),
+  );
+  if (additions.length === 0) return presets;
+  const models = [...existing.models, ...additions].sort((left, right) =>
+    (left.displayName ?? left.modelId).localeCompare(right.displayName ?? right.modelId),
+  );
+  const merged = [...presets];
+  merged[index] = { ...existing, models };
+  return merged;
+}
 
 export interface ProviderPresetCatalogOptions extends ProviderPresetRepositoryOptions {
   readonly modelsDevFetch?: typeof fetch;
@@ -100,7 +136,9 @@ function parseModelsDevProviderPresets(
     const preset = parseProvider(providerId, rawProvider, iconBaseUrl);
     if (preset) presets.push(preset);
   }
-  return presets.sort((left, right) => left.name.localeCompare(right.name));
+  return applyFirstPartyPresetOverrides(
+    presets.sort((left, right) => left.name.localeCompare(right.name)),
+  );
 }
 
 function parseProvider(
