@@ -1,5 +1,5 @@
 ---
-name: minimax-code-product
+name: bari-product
 description: >-
   Use this skill to route questions about the Bari or Mavis product itself:
   product identity and ownership; Desktop/Electron, Web/H5, CLI/TUI surfaces;
@@ -7,7 +7,7 @@ description: >-
   support; product workflows; Agents, Sessions, Memory, Teams, Skills, Plugins,
   and MCP; accounts, Token Plan, subscriptions, credits, API keys, BYOK, models,
   pricing, quotas; and Bari image, audio, music, or video capabilities.
-  Treat references such as "Bari", "Mavis", "bari", "mcode", "mcode tui", or
+  Treat references such as "Bari", "Mavis", "bari", or
   product features and settings as product-routing signals even when the user
   asks for a concrete local operation. Use this skill before a general coding,
   shell, or web skill when the requested operation concerns the product's own

@@ -4,7 +4,7 @@ Use this reference for Coding/Work modes, workspace, tasks/history, conversation
 
 ## Stable model
 
-Treat a workflow as the combination of product surface, workspace/project context, Agent capabilities, permissions, account/provider state, and task/session state. Desktop, Web, and `mcode` can expose different controls; absence in one surface is not proof that the capability does not exist.
+Treat a workflow as the combination of product surface, workspace/project context, Agent capabilities, permissions, account/provider state, and task/session state. The terminal TUI, the headless CLI (`bari exec`), and ACP can expose different controls; absence in one surface is not proof that the capability does not exist.
 
 ## Official source discovery
 
@@ -19,7 +19,7 @@ Do not hard-code labels, button locations, shortcuts, limits, or availability. N
 
 ## Diagnostic workflow
 
-1. Identify Desktop, Web/H5, or `mcode`, plus OS and version.
+1. Identify the surface (TUI, `bari exec`, or ACP), plus OS and version.
 2. Establish whether the user means a project/workspace, task/session, or automation.
 3. Check login, selected Agent/model/provider, permissions, and account entitlement.
 4. Compare the current-region official surface documentation with the observed UI.
