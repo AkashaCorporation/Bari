@@ -3,7 +3,7 @@ import {
   type AgentMentionSurface,
   type AgentReferenceErrorCode,
   type AgentReferenceResolution,
-} from '@mavis/shared/agent-mention';
+} from '@bari/shared/agent-mention';
 
 const TASK_CHILD_PURPOSE_PREFIXES = [
   'local-task:',

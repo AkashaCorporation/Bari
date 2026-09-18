@@ -49,7 +49,7 @@
  * exhaustive trigger table.
  */
 
-import type { PermissionMode } from '@mavis/permission';
+import type { PermissionMode } from '@bari/permission';
 
 import type { LocalPermissionCheckResult } from './facade.js';
 

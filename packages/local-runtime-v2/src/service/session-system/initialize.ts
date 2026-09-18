@@ -1,5 +1,5 @@
 import { PeekContextService, StaleCompactionMessageRepair } from './messages/index.js';
-import type { PromptSnapshotSource } from '@mavis/agent-runtime';
+import type { PromptSnapshotSource } from '@bari/agent-runtime';
 import { initializeSessionDiffCapability, type SessionDiffService } from './diffs/index.js';
 import {
   RootArchiveTitleService,

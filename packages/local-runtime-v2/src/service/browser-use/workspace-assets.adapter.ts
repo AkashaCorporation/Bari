@@ -7,7 +7,7 @@ import {
   type LocalBrowserAsset,
   type LocalBrowserToolAction,
   type LocalRuntimeToolContext,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 const MAX_BROWSER_UPLOAD_FILES = 20;
 const MAX_BROWSER_UPLOAD_TOTAL_BYTES = 512 * 1024 * 1024;

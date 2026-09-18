@@ -1,4 +1,4 @@
-import { getRuntimePresetKey, listRouteModelIds, resolveProviderAuthMode } from '@mavis/config';
+import { getRuntimePresetKey, listRouteModelIds, resolveProviderAuthMode } from '@bari/config';
 
 import type {
   LocalCustomProviderConfig,

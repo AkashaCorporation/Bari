@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { LEGACY_DATA_DIR_BASENAME, NEW_DATA_DIR_BASENAME } from '@mavis/config/data-dir';
+import { LEGACY_DATA_DIR_BASENAME, NEW_DATA_DIR_BASENAME } from '@bari/config/data-dir';
 
 import type { SessionRunLocation } from '../sessions/repo/contract.js';
 import { normalizeAbsolutePath, pathFlavor } from './path-normalization.js';

@@ -1,5 +1,5 @@
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
-import type { RuntimeTool, ToolExecutionContext } from '@mavis/agent-core/tools';
+import type { RuntimeTool, ToolExecutionContext } from '@bari/agent-core/tools';
 import type {
   GoalTurnBinding,
   ThreadGoalBudgetCheckResult,
@@ -10,7 +10,7 @@ import type {
   VerificationAttempt,
   VerificationTraceRef,
   VerifierPort,
-} from '@mavis/goal';
+} from '@bari/goal';
 import type { TSchema } from '@sinclair/typebox';
 
 import type { LocalActiveTurnTiming } from '../turns/active-turn-timing.js';

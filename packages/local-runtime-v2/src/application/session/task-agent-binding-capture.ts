@@ -1,10 +1,10 @@
-import { getRuntimePresetKey, resolveModelAvailability } from '@mavis/config';
+import { getRuntimePresetKey, resolveModelAvailability } from '@bari/config';
 import {
   hasConversationTaskModelSelection,
   type ConversationModelThinkingSelection,
   type ConversationModelSelection,
   type ConversationTaskModelSelection,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 import type { AgentExecutionProfile, LocalAgentService } from '../../service/agent/index.js';
 import {
   resolveEffectiveAgentModelSelection,

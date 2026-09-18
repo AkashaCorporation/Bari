@@ -26,7 +26,7 @@ import { describe, expect, it, vi } from "vitest";
 import type {
   InternalTurnPromptReadRegistry,
   PromptSnapshotSource,
-} from "@mavis/agent-core";
+} from "@bari/agent-core";
 
 import {
   digestThreadGoalObjective,
@@ -38,7 +38,7 @@ import {
   type ThreadGoalPatchInput,
   type ThreadGoalState,
   type ThreadGoalStore,
-} from "@mavis/goal";
+} from "@bari/goal";
 
 import { LocalThreadGoalIntegration } from "../../../src/thread-goal/host-integration.js";
 import type { LocalQueuedMessage } from "../../../src/messages/queue.js";

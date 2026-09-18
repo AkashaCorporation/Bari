@@ -30,7 +30,7 @@ function fixture(): { dataDir: string; resourceDir: string } {
       auth: {
         mode: 'shared-broker',
         protocol: {
-          name: '@mavis/oauth-lease-protocol',
+          name: '@bari/oauth-lease-protocol',
           version: '0.1.0-beta.0',
           wireVersion: 1,
         },

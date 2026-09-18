@@ -1,4 +1,4 @@
-import type { PluginHookDiagnostic } from '@mavis/plugin-hooks';
+import type { PluginHookDiagnostic } from '@bari/plugin-hooks';
 
 import type { PluginReaderDiagnostic } from '../types.js';
 

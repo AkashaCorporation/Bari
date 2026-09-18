@@ -56,8 +56,8 @@ import {
   isRmCommand,
   splitCommand,
   parseWindowsNativeDelete,
-} from '@mavis/permission';
-import type { AgentMessageProtocol } from '@mavis/agent-core/protocol/agent-message';
+} from '@bari/permission';
+import type { AgentMessageProtocol } from '@bari/agent-core/protocol/agent-message';
 
 import type { LocalPermissionMessageSource } from './service.js';
 import { LocalPermissionStoreUnhealthyError, type LocalPermissionRuleStore } from './rules.js';

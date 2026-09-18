@@ -2,7 +2,7 @@ import type {
   LocalWebsiteDeployAdapterFailure,
   LocalWebsiteDeployFailureReason,
   LocalWebsiteDeployStage,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 const RETRYABLE_NODE_ERRNOS = new Set([
   'EAI_AGAIN',

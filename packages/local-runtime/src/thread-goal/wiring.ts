@@ -16,12 +16,12 @@ import {
   type ThreadGoalSignalCollector,
   type ThreadGoalStore,
   type ThreadGoalTokenBudgetMutationPort,
-} from "@mavis/goal";
+} from "@bari/goal";
 import {
   toRuntimeTool,
   type RuntimeTool,
   type ToolExecutionContext,
-} from "@mavis/agent-core/tools";
+} from "@bari/agent-core/tools";
 import type { TSchema } from "@sinclair/typebox";
 
 import type { ThreadGoalChangedEvent } from "./events.js";

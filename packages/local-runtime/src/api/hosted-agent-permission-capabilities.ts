@@ -2,7 +2,7 @@ import {
   snapshotPermissionInput,
   validatePermissionExecutionPlan,
   type PermissionRuleMatcher,
-} from '@mavis/permission';
+} from '@bari/permission';
 import type { ChannelPermissionOrigin } from '../channels/permission-bridge.js';
 import type { PluginHookPermissionUpdate } from '../permissions/plugin-hook-permission-contracts.js';
 import {
@@ -86,7 +86,7 @@ export function createHostedAgentPermissionCapabilities(
         readonly toolInput: Readonly<Record<string, unknown>>;
         readonly reason: string;
         readonly ruleContents: readonly string[];
-        readonly ruleMatchers?: readonly import('@mavis/permission').PermissionRuleMatcher[];
+        readonly ruleMatchers?: readonly import('@bari/permission').PermissionRuleMatcher[];
         readonly signal?: AbortSignal;
         readonly channelContext?: HostedPermissionChannelContext;
       }) => {

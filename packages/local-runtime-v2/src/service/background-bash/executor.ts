@@ -4,8 +4,8 @@ import { createBashTool, type BashOperations } from '@earendil-works/pi-coding-a
 import {
   createBashEnvSpawnHook,
   type BashEnvPolicy,
-} from '@mavis/agent-core/bash-subprocess-env';
-import type { LocalSandboxBashOperationsFactory } from '@mavis/agent-tools/desktop';
+} from '@bari/agent-core/bash-subprocess-env';
+import type { LocalSandboxBashOperationsFactory } from '@bari/agent-tools/desktop';
 
 import type { LocalBackgroundBashExecutor } from './contracts.js';
 

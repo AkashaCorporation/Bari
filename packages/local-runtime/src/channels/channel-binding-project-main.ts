@@ -1,4 +1,4 @@
-import type { ChannelRoutingMode } from '@mavis/shared';
+import type { ChannelRoutingMode } from '@bari/shared';
 
 import { buildLocalChannelBindingKey } from './channel-inbound-utils.js';
 import type {

@@ -1,8 +1,8 @@
 import type {
   QuestionnaireOwnedActionHandler,
   QuestionnaireRequestRecord,
-} from '@mavis/local-runtime';
-import { createInternalTurnId } from '@mavis/shared/turn-identity';
+} from '@bari/local-runtime';
+import { createInternalTurnId } from '@bari/shared/turn-identity';
 
 import type { PlanApplication } from '../contracts.js';
 

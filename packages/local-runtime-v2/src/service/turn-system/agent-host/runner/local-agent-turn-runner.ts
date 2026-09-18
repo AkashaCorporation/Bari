@@ -7,14 +7,14 @@ import {
   type PiTurnRunnerOptions,
   type PiTurnRunnerLogger,
   type RunTurnInput,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 import {
   buildCompletedTerminalStatusEvent,
   buildAbortedTerminalStatusEvent,
-} from '@mavis/agent-core/event-bridge';
-import { getRuntimeBuildEnv } from '@mavis/config';
-import { RuntimeEventStatus, RuntimeEventType } from '@mavis/protocol';
-import type { MetricsClient } from '@mavis/shared/metrics-proxy';
+} from '@bari/agent-core/event-bridge';
+import { getRuntimeBuildEnv } from '@bari/config';
+import { RuntimeEventStatus, RuntimeEventType } from '@bari/protocol';
+import type { MetricsClient } from '@bari/shared/metrics-proxy';
 
 import {
   isInputSafetyDecisionFor,

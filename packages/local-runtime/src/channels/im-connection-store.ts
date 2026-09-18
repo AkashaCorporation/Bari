@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
 
 import type { LocalChannelContext, LocalChannelResolvedRoute } from './infra.js';
 import type { ChannelPlatform } from './route-api.js';

@@ -1,9 +1,9 @@
-import type { PromptSnapshotSource } from '@mavis/agent-runtime';
+import type { PromptSnapshotSource } from '@bari/agent-runtime';
 import {
   normalizeConversationSessionTitle,
   SESSION_TITLE_MAX_UNICODE_LENGTH,
-} from '@mavis/conversation-contract';
-import { parseAgentReferences } from '@mavis/shared/agent-mention';
+} from '@bari/conversation-contract';
+import { parseAgentReferences } from '@bari/shared/agent-mention';
 
 import { readPromptWithBuiltinFallback } from '../../../agent/index.js';
 import type { SessionRecord, SessionRepository } from '../repo/contract.js';

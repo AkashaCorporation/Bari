@@ -4,7 +4,7 @@ import { isAbsolute, join, relative, sep } from 'node:path';
 
 import JSZip from 'jszip';
 
-import type { LocalWebsiteDeployStage } from '@mavis/agent-tools/desktop';
+import type { LocalWebsiteDeployStage } from '@bari/agent-tools/desktop';
 
 import { deployFailure, ensureNotAborted, runDeployStage } from './deploy-failure.js';
 

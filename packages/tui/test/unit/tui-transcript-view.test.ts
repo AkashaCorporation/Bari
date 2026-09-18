@@ -1283,7 +1283,7 @@ describe('TranscriptView', () => {
         status: 'succeeded',
         title: 'bash',
         content: JSON.stringify({
-          command: 'pnpm --filter @mavis/ui exec vitest run packages/ui/test/unit/example.test.tsx',
+          command: 'pnpm --filter @bari/ui exec vitest run packages/ui/test/unit/example.test.tsx',
         }),
         detail: 'ok',
         createdAtMs: 1,

@@ -3,7 +3,7 @@ import type {
   InstalledPluginSummary,
   InstalledPluginSource,
   PluginMarketplaceSummary,
-} from '@mavis/local-runtime-v2/cli-service';
+} from '@bari/local-runtime-v2/cli-service';
 
 import type {
   McodePluginMarketplace,

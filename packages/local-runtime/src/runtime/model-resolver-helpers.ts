@@ -1,6 +1,6 @@
-import type { IAgentConfig } from '@mavis/protocol';
+import type { IAgentConfig } from '@bari/protocol';
 import type { Api, Model } from '@earendil-works/pi-ai';
-import { allowsManagedMinimaxProviderOverride, type ProviderAuthMode } from '@mavis/config';
+import { allowsManagedMinimaxProviderOverride, type ProviderAuthMode } from '@bari/config';
 
 import { MANAGED_PROVIDER_USER_AGENT } from './model-resolver.js';
 import {

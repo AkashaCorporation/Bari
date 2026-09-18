@@ -1,4 +1,4 @@
-import type { TurnEventReporter } from '@mavis/agent-core/pi-turn-runner';
+import type { TurnEventReporter } from '@bari/agent-core/pi-turn-runner';
 
 export function createLocalTurnEventReporting(input: {
   readonly turnId: string;

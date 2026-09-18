@@ -1,4 +1,4 @@
-import type { ConversationModelThinkingSelection } from '@mavis/conversation-contract';
+import type { ConversationModelThinkingSelection } from '@bari/conversation-contract';
 import type { AgentPromptSnapshot } from '../../../agent/index.js';
 
 /** Capability and prompt material that can be rendered without reopening an Agent file. */

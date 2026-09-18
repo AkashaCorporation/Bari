@@ -1,4 +1,4 @@
-import type { PromptSnapshotSource } from '@mavis/agent-runtime';
+import type { PromptSnapshotSource } from '@bari/agent-runtime';
 
 /**
  * Resolves one complete model prompt from a single captured snapshot. A remote

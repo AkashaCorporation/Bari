@@ -2,7 +2,7 @@ import {
   SigninDayStatus,
   getCurrentSigninStreak,
   type SigninPanel,
-} from '@mavis/shared/daily-signin';
+} from '@bari/shared/daily-signin';
 import type { TuiDailyCheckinOutcome } from './application.js';
 
 export function formatTuiDailyCheckinOutcome(outcome: TuiDailyCheckinOutcome): string {

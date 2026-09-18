@@ -7,7 +7,7 @@ import {
   composeStreamFn,
   recordPiLLMCallMetrics,
   withLLMRetry,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 import type { AgentEventContext } from '../events/contracts.js';
 import type {
   CanonicalHistoryChange,

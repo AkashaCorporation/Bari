@@ -2,7 +2,7 @@ import type {
   AskQuestionnaireReplyAnswer,
   AskQuestionnaireReplyPayload,
   AskQuestionnaireRequest,
-} from '@mavis/shared/questionnaire';
+} from '@bari/shared/questionnaire';
 
 import type { LocalChannelContext } from '../../infra.js';
 import type { QuestionnaireReplyOutcome } from '../../../questionnaire/reply-outcome.js';

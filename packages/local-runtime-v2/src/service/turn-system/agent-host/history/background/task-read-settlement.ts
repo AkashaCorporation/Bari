@@ -1,4 +1,4 @@
-import type { PiAgentMessage } from '@mavis/agent-core/pi-turn-runner';
+import type { PiAgentMessage } from '@bari/agent-core/pi-turn-runner';
 import {
   BACKGROUND_TASK_READ_SETTLEMENT_CUSTOM_TYPE,
   isBackgroundTaskReadSettlement,

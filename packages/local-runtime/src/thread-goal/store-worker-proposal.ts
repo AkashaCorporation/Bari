@@ -1,4 +1,4 @@
-import type { LastWorkerProposalV1, ThreadGoalWorkerProposalInput } from '@mavis/goal';
+import type { LastWorkerProposalV1, ThreadGoalWorkerProposalInput } from '@bari/goal';
 
 export const THREAD_GOAL_WORKER_PROPOSAL_SUMMARY_MAX_CHARS = 2_000;
 

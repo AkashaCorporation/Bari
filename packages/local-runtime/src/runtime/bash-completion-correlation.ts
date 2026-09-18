@@ -1,4 +1,4 @@
-import type { PiLLMRequestObserver } from '@mavis/agent-core/pi-turn-runner';
+import type { PiLLMRequestObserver } from '@bari/agent-core/pi-turn-runner';
 
 import type { MetricsClient } from '../common/metrics.js';
 

@@ -2,7 +2,7 @@ import {
   DesktopMatrixClient,
   toLocalGatewayPath,
   type DesktopMatrixClientOptions,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 import type { LocalRuntimeAuthContext } from '../runtime/model-resolver.js';
 import {

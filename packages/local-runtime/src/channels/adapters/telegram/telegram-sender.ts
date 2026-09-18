@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { basename } from 'node:path';
 
-import type { OutboundMediaRef } from '@mavis/shared';
+import type { OutboundMediaRef } from '@bari/shared';
 
 import { type RetryOptions, withRetry } from '../../attachment-retry.js';
 import type { TelegramInlineKeyboardMarkup } from './telegram-keyboard.js';

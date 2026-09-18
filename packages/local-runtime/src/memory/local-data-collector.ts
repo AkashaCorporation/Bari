@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-import type { ResolvedAgentCapabilities } from "@mavis/config";
-import { getRuntimeRegion } from "@mavis/config";
+import type { ResolvedAgentCapabilities } from "@bari/config";
+import { getRuntimeRegion } from "@bari/config";
 import {
   AgentFrameworkType,
   AgentRole,
@@ -11,11 +11,11 @@ import {
   type MessageRequest,
   type SessionInfo,
   type SystemReminderInput,
-} from "@mavis/system-reminder";
+} from "@bari/system-reminder";
 import type {
   GetAgentInput as GetAgentInput,
   GetAgentResult as GetAgentResult,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 import type { LocalSessionRecord } from "../sessions/controller.js";
 import { isLocalDirectTaskPurpose } from "../sessions/session-policy.js";

@@ -1,4 +1,4 @@
-import type { SessionStreamFrameView } from '@mavis/local-runtime-v2/cli-service';
+import type { SessionStreamFrameView } from '@bari/local-runtime-v2/cli-service';
 import type { TuiStructuredPreview } from '../types/runtime-models.js';
 import { buildTuiToolPreview } from './tool-preview.js';
 

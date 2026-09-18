@@ -1,4 +1,4 @@
-import { LLM_ERROR_CODES } from '@mavis/shared/llm-error-classifier';
+import { LLM_ERROR_CODES } from '@bari/shared/llm-error-classifier';
 
 const RETRYABLE_RUNTIME_ERROR_CODES = new Set<number>([
   LLM_ERROR_CODES.LLM_RATE_LIMITED,

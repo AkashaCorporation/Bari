@@ -1,5 +1,5 @@
 import { Command, InvalidArgumentError } from 'commander';
-import type { MavisRegion } from '@mavis/config';
+import type { MavisRegion } from '@bari/config';
 import { TuiContributionRegistry } from '../contributions/index.js';
 import type { RawTuiExecOptions } from '../headless/invocation.js';
 import {

@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
 import type { AgentMessage } from '@earendil-works/pi-agent-core';
-import type { PiTurnRunnerLogger } from '@mavis/agent-core/pi-turn-runner';
+import type { PiTurnRunnerLogger } from '@bari/agent-core/pi-turn-runner';
 
 import type { ToolResultCompactionConfig } from '../contracts.js';
 import { parseToolRounds, type ToolCallIdentity, type ToolRound } from './history-reduction.js';

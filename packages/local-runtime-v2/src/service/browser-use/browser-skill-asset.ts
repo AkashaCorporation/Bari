@@ -3,7 +3,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import yaml from 'yaml';
-import { CONTROL_IN_APP_BROWSER_SKILL_NAME } from '@mavis/agent-tools/desktop';
+import { CONTROL_IN_APP_BROWSER_SKILL_NAME } from '@bari/agent-tools/desktop';
 
 import type { BrowserUseBuiltinSkillDescriptor } from './contracts.js';
 

@@ -4,12 +4,12 @@ import type {
   ConversationSource,
   ConversationTurnResult,
   RuntimeConversation,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 import {
   parseModelVerdict,
   type LocalTaskRunResult,
   type VerificationReport,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 export async function runInjectedConversationTaskTurn(input: {
   conversation: Pick<RuntimeConversation, 'ingress'>;

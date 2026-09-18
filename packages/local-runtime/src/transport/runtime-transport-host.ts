@@ -38,7 +38,7 @@ import {
   isRuntimeTransportClientFrame,
   type RuntimeTransportHeaders,
   type RuntimeTransportServerFrame,
-} from '@mavis/shared/runtime-transport';
+} from '@bari/shared/runtime-transport';
 
 import {
   isGlobalEventStreamUrl,

@@ -1,5 +1,5 @@
-import { toNavigationPlainText } from '@mavis/shared/navigation-text';
-import { isOrdinaryQuestionnaireResponseOrigin } from '@mavis/shared/questionnaire';
+import { toNavigationPlainText } from '@bari/shared/navigation-text';
+import { isOrdinaryQuestionnaireResponseOrigin } from '@bari/shared/questionnaire';
 
 import type { DisplayMessageRecord } from '../repo/contract.js';
 

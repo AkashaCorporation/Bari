@@ -88,7 +88,7 @@ import { createSessionUsageRepository } from './usage/repo/drizzle.js';
 import { recordCommittedPiUsage } from './usage/pi-usage.js';
 import { SessionUsageService } from './usage/service.js';
 import { createSessionUsageCommitSignal } from './usage/commit-signal.js';
-import { SessionLlmCallReportStore, SessionReportService } from '@mavis/session-report';
+import { SessionLlmCallReportStore, SessionReportService } from '@bari/session-report';
 import { createSessionStorageRetention } from './storage-retention.js';
 import {
   repairRootProjectHistory,

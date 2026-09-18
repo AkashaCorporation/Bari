@@ -1,4 +1,4 @@
-import type { IAgentConfig } from '@mavis/protocol';
+import type { IAgentConfig } from '@bari/protocol';
 
 import type { SessionRecord } from '../../../session-system/index.js';
 import type {

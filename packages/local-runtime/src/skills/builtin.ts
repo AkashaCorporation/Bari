@@ -1,7 +1,7 @@
 import { access, readdir, readFile, stat } from 'node:fs/promises';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getRuntimeRegion } from '@mavis/config';
+import { getRuntimeRegion } from '@bari/config';
 import yaml from 'js-yaml';
 import { renderLocalSkillsCatalog } from './catalog.js';
 
@@ -389,7 +389,7 @@ export function getBuiltinSkillsDirCandidates(): string[] {
     resolve(here, '../../assets/skills'),
     resolve(here, 'assets/skills'),
     resolve(process.cwd(), 'packages/local-runtime/assets/skills'),
-    resolve(process.cwd(), 'node_modules/@mavis/local-runtime/assets/skills'),
+    resolve(process.cwd(), 'node_modules/@bari/local-runtime/assets/skills'),
   ]);
 }
 

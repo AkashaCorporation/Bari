@@ -47,7 +47,7 @@ import {
   resolveMCodeOAuthEndpointConfig,
   type AccessTokenLease,
   type MCodeOAuthCore,
-} from '@mavis/oauth-core';
+} from '@bari/oauth-core';
 import {
   resolveTuiManagedBackendLane,
   resolveTuiStartupEnvironmentOption,
@@ -55,7 +55,7 @@ import {
 import { resolveMcodeStartupUpdateNotice } from '../update/startup-notice.js';
 import type { McodeUpdateApplication } from '../update/application.js';
 import { tuiErrorDiagnostic } from '../user-facing-failure.js';
-import { getConfig, resetConfig, writeTuiStatusLineSetting, type MavisRegion } from '@mavis/config';
+import { getConfig, resetConfig, writeTuiStatusLineSetting, type MavisRegion } from '@bari/config';
 import { markLoginRestartHandoff } from './login-restart-handoff.js';
 import { readTuiModeSetting, writeTuiModeSetting } from '../host/tui-settings.js';
 import { schedulePendingMcodePrefixUpdate } from '../update/prefix-update.js';

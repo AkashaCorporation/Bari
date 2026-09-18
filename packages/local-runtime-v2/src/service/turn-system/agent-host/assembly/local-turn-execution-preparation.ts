@@ -1,5 +1,5 @@
-import type { PiBeforeToolCallHook } from '@mavis/agent-core/pi-turn-runner';
-import { isRuntimeToolInputValid } from '@mavis/agent-core/tools';
+import type { PiBeforeToolCallHook } from '@bari/agent-core/pi-turn-runner';
+import { isRuntimeToolInputValid } from '@bari/agent-core/tools';
 
 import type { AgentExecutionSnapshot } from '../preparation/contracts.js';
 import type { AgentHostSteeringMessage, LocalTurnExecutionInput } from '../runner/contracts.js';
@@ -229,7 +229,7 @@ function pluginToolProvenance(
   hostTargets: LocalTurnExecutionInput['pluginHostApprovalTargets'],
   toolUseId: string,
   toolName: string,
-): Pick<import('@mavis/plugin-hooks').PluginHookEventInput, 'toolProvenance'> | object {
+): Pick<import('@bari/plugin-hooks').PluginHookEventInput, 'toolProvenance'> | object {
   const hostTarget = hostTargets?.get(toolUseId);
   if (hostTarget) {
     return {

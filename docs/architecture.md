@@ -9,9 +9,9 @@
 - `packages/local-runtime` supplies reused host facilities such as databases, file tools, permissions, and storage. Historical readers only read old session files; they do not proxy to a daemon or fall back to a legacy executor.
 - `third_party/pi-mono` supplies agent, model-protocol, and terminal infrastructure. `third_party/sandbox-runtime` retains the actual sandbox fork, native helpers, and corresponding source.
 
-`@mavis/*` names identify private workspace packages in this repository. The build resolves their source directly rather than downloading them from an internal registry. These packages are not independently published npm APIs.
+`@bari/*` names identify private workspace packages in this repository. The build resolves their source directly rather than downloading them from an internal registry. These packages are not independently published npm APIs.
 
-The unused `@mavis/team` cycle engine is excluded from this projection. TUI delegation uses the current runtime task services. Legacy queue, lock-owner and run-location files retain only the types consumed by shared adapters; V2 owns their execution and persistence.
+The unused `@bari/team` cycle engine is excluded from this projection. TUI delegation uses the current runtime task services. Legacy queue, lock-owner and run-location files retain only the types consumed by shared adapters; V2 owns their execution and persistence.
 
 `release/public-source.json` explicitly lists delivered files. `check:source` checks that inventory, canonical root license text, internal addresses, retired modules, obvious credentials, and workspace exports. `check:standalone` separately checks the actual build dependency graph. New files require explicit inventory updates; absence from the bundle alone does not make source suitable for publication.
 

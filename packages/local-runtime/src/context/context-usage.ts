@@ -1,6 +1,6 @@
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
 import type { Context } from '@earendil-works/pi-ai';
-import { createDefaultTokenEstimator } from '@mavis/context-manager';
+import { createDefaultTokenEstimator } from '@bari/context-manager';
 import {
   CONTEXT_USAGE_COMPONENT_KINDS,
   type ContextUsageComponent,

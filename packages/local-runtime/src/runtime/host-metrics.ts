@@ -1,5 +1,5 @@
-import { getRuntimeBuildEnv, getRuntimeRegion, isManagedRuntime } from '@mavis/config';
-import { createPiTurnHistogramBucketsByName } from '@mavis/agent-core/pi-turn-runner';
+import { getRuntimeBuildEnv, getRuntimeRegion, isManagedRuntime } from '@bari/config';
+import { createPiTurnHistogramBucketsByName } from '@bari/agent-core/pi-turn-runner';
 
 import { logger } from '../common/logger.js';
 import { POST_BASH_GAP_HISTOGRAM_BUCKETS } from './bash-completion-correlation.js';

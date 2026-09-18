@@ -1,4 +1,4 @@
-import type { LLMModelConfig, PiTurnRunnerLogger } from '@mavis/agent-core/pi-turn-runner';
+import type { LLMModelConfig, PiTurnRunnerLogger } from '@bari/agent-core/pi-turn-runner';
 
 import { logger } from '../common/logger.js';
 

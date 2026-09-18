@@ -1,17 +1,17 @@
-import type { RunawayGuardOverride } from '@mavis/config';
+import type { RunawayGuardOverride } from '@bari/config';
 import type {
   CreateLocalRuntimeHostOptions as V1CreateLocalRuntimeHostOptions,
   CreatedLocalRuntimeHost as V1CreatedLocalRuntimeHost,
   LocalRuntimeProductHostOptions as V1LocalRuntimeProductHostOptions,
-} from '@mavis/local-runtime';
-import type { LocalBrowserAdapter, LocalBrowserToolExposure } from '@mavis/agent-tools/desktop';
+} from '@bari/local-runtime';
+import type { LocalBrowserAdapter, LocalBrowserToolExposure } from '@bari/agent-tools/desktop';
 import type {
   MiniAppPresenter,
   LocalRuntimeApplication,
   LocalRuntimePendingPermission,
 } from '../application/session/process-local-application-contract.js';
 
-export type { LocalRuntimeAuthContext, LocalRuntimeConfig } from '@mavis/local-runtime';
+export type { LocalRuntimeAuthContext, LocalRuntimeConfig } from '@bari/local-runtime';
 
 /** Process-local DTO; runtime.ts checks compatibility with the DB-owned observation. */
 type DatabaseMigrationObservation = {

@@ -1,5 +1,5 @@
-import type { McpToolEntry } from '@mavis/agent-tools';
-import type { LocalMavisMcpAdapter } from '@mavis/agent-tools/desktop';
+import type { McpToolEntry } from '@bari/agent-tools';
+import type { LocalMavisMcpAdapter } from '@bari/agent-tools/desktop';
 import type { LocalRuntimeAuthContext } from './model-resolver.js';
 import type { LocalRuntimeRoutingContext } from './routing-headers.js';
 

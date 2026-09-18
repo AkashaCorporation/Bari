@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { PiAfterLlmCallHookInput } from '@mavis/agent-core/pi-turn-runner';
+import type { PiAfterLlmCallHookInput } from '@bari/agent-core/pi-turn-runner';
 
 import type { LocalRuntimeLogger } from '../common/logger.js';
 import type { ReviewTurnState } from './turn-state.js';

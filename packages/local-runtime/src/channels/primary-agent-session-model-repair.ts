@@ -1,4 +1,4 @@
-import { getRuntimePresetKey, resolveModelAvailability } from '@mavis/config';
+import { getRuntimePresetKey, resolveModelAvailability } from '@bari/config';
 
 import { imLogger as logger } from '../common/im-logger.js';
 import type { LocalRuntimeConfig } from '../config/types.js';

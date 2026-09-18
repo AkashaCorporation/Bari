@@ -1,4 +1,4 @@
-import type { CliService } from '@mavis/local-runtime-v2/cli-service';
+import type { CliService } from '@bari/local-runtime-v2/cli-service';
 import {
   noopTuiObservability,
   type TuiObservability,

@@ -1,7 +1,7 @@
 import type {
   ConversationTaskModelSelection,
   RuntimeConversation,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 import type { MetricsClient } from '../common/metrics.js';
 import type { LocalBashCompletion } from '../runtime/bash-completion-correlation.js';
 import type { AgentReferenceResolver } from '../agent/port.js';

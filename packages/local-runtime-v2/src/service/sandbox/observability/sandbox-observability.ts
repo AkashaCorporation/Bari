@@ -3,8 +3,8 @@ import type {
   SandboxFilesystemPolicy,
   SandboxLocalAccess,
   SandboxNetworkPolicy,
-} from '@mavis/config';
-import type { LocalSandboxInvocationIdentity } from '@mavis/agent-tools/desktop';
+} from '@bari/config';
+import type { LocalSandboxInvocationIdentity } from '@bari/agent-tools/desktop';
 
 import type { SandboxApplyResult } from '../config-commit.js';
 import type {

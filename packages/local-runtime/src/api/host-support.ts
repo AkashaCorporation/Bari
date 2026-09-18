@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import yaml from "js-yaml";
-import { classifyLLMErrorToCode } from "@mavis/agent-core/event-bridge";
+import { classifyLLMErrorToCode } from "@bari/agent-core/event-bridge";
 import {
   allowsManagedMinimaxProviderOverride,
   getRuntimePresetKey,
@@ -10,7 +10,7 @@ import {
   resolveModelAvailability,
   resolveProviderAuthMode,
   type ProviderAuthModeSource,
-} from "@mavis/config";
+} from "@bari/config";
 import { parseSourceQualifiedModelKey } from "../config/model-key.js";
 import { LegacyOpencodeMigrationError } from "../legacy-opencode/legacy-opencode-migrator.js";
 import type { LegacyMigrationRecord } from "../persistence/migration/legacy-migration-store.js";

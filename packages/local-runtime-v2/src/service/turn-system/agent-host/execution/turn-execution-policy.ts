@@ -1,5 +1,5 @@
-import type { RunTurnInput } from '@mavis/agent-core/pi-turn-runner';
-import type { ToolExecutionContext } from '@mavis/agent-core/tools';
+import type { RunTurnInput } from '@bari/agent-core/pi-turn-runner';
+import type { ToolExecutionContext } from '@bari/agent-core/tools';
 
 import type { AgentExecutionSnapshot } from '../preparation/contracts.js';
 import type {

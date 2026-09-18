@@ -1,5 +1,5 @@
 import { StringDecoder } from 'node:string_decoder';
-import { stripRuntimeBoundaryKeysFrom } from '@mavis/shared/runtime-boundary-env';
+import { stripRuntimeBoundaryKeysFrom } from '@bari/shared/runtime-boundary-env';
 
 export interface TuiBashResult {
   readonly exitCode: number | undefined;

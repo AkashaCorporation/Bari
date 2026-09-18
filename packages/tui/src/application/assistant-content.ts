@@ -3,7 +3,7 @@ import {
   splitMarkdownProtectedSegments,
   type DeliverAssetItem,
   type DeliverAssetsSegment,
-} from '@mavis/shared/asset-markup';
+} from '@bari/shared/asset-markup';
 
 const RICH_CONTENT_RE =
   /<(?:deliver[-_]assets|media|publish[_-]artifact|preview_card|genui-|mavis-widget|mavis-thinking|mavis-progress|think|final|permission-(?:ask|response)|questionnaire-(?:ask|response))\b|^\s*preview_cards?:\s*$/imu;

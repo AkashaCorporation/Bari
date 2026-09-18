@@ -1,7 +1,7 @@
 import {
   isInlineBinaryContentBlock,
   sanitizeWireToolCallResultData,
-} from '@mavis/agent-core/event-bridge';
+} from '@bari/agent-core/event-bridge';
 
 import type { DisplayMessageRecord } from './repo/contract.js';
 

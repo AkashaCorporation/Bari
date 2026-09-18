@@ -1,4 +1,4 @@
-import { isLegacyManagedMinimaxProvider } from "@mavis/config";
+import { isLegacyManagedMinimaxProvider } from "@bari/config";
 import {
   normalizeTuiPermissionMode,
   type TuiPermissionMode,

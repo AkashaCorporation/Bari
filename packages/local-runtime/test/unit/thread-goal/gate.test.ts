@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { digestThreadGoalObjective, type ThreadGoalState } from "@mavis/goal";
+import { digestThreadGoalObjective, type ThreadGoalState } from "@bari/goal";
 
 import {
   finalRecheck,

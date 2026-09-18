@@ -1,4 +1,4 @@
-import type { ToolResult } from '@mavis/agent-core/tools';
+import type { ToolResult } from '@bari/agent-core/tools';
 import { parsePatch } from 'diff';
 
 /**

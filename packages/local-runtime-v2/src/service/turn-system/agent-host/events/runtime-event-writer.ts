@@ -1,5 +1,5 @@
-import type { RuntimeEvent } from '@mavis/agent-core/protocol';
-import type { PiEventWriter } from '@mavis/agent-core/pi-turn-runner';
+import type { RuntimeEvent } from '@bari/agent-core/protocol';
+import type { PiEventWriter } from '@bari/agent-core/pi-turn-runner';
 
 import type { AgentExecutionSnapshot } from '../preparation/contracts.js';
 import type { LocalTurnExecutionInput } from '../runner/contracts.js';

@@ -4,11 +4,11 @@ import type {
   LocalAgentService,
 } from '../../service/agent/index.js';
 import { describeAgentPromptSnapshot } from '../../service/agent/index.js';
-import { isLocalSourceProvenanceEnabled } from '@mavis/config';
+import { isLocalSourceProvenanceEnabled } from '@bari/config';
 import {
   omitManagedSourceCitationInstructions,
   restoreLegacyFileReferenceInstructions,
-} from '@mavis/shared/source-provenance';
+} from '@bari/shared/source-provenance';
 import type { LocalConversationRuntimeConfig } from '../../service/model-system/index.js';
 import type {
   LocalAgentExecutionProfile,

@@ -15,8 +15,8 @@
  * every stage; never expose them to callers or affect LLM requests, retries, or turn results.
  */
 
-import { getRuntimeBuildEnv, getRuntimeRegion } from '@mavis/config';
-import { LLM_ERROR_REASONS } from '@mavis/shared/llm-error-classifier';
+import { getRuntimeBuildEnv, getRuntimeRegion } from '@bari/config';
+import { LLM_ERROR_REASONS } from '@bari/shared/llm-error-classifier';
 
 import { logger } from '../common/logger.js';
 

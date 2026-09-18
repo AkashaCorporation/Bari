@@ -28,7 +28,7 @@ import {
   type ThreadGoalStatusReason,
   type ThreadGoalStore,
   type ThreadGoalWaitReason,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import {
   type DataDirInput,

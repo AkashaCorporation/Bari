@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { basename } from 'node:path';
 
-import { normalizeAbortSource } from '@mavis/agent-core/pi-turn-runner';
+import { normalizeAbortSource } from '@bari/agent-core/pi-turn-runner';
 
 import { createUserMessageId, isQueueMessageSource } from '../../../session-system/index.js';
 import type {

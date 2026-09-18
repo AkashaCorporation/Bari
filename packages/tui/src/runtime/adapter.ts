@@ -5,7 +5,7 @@ import type {
   CliService,
   ConversationSteerInput,
   ConversationSteerResult,
-} from "@mavis/local-runtime-v2/cli-service";
+} from "@bari/local-runtime-v2/cli-service";
 import { MINIMAX_CODE_DEFAULT_AGENT_NAME } from "../product-context.js";
 import { TuiEventAccess } from "./adapters/event-access.js";
 import { TuiRuntimeAccessContext } from "./adapters/access-context.js";

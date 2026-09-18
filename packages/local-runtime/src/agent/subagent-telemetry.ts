@@ -1,5 +1,5 @@
-import { resolveCanonicalSubagentRole } from '@mavis/agent-tools/desktop/subagent-roles';
-import type { LocalTaskRunResult, VerificationReport } from '@mavis/agent-tools/desktop';
+import { resolveCanonicalSubagentRole } from '@bari/agent-tools/desktop/subagent-roles';
+import type { LocalTaskRunResult, VerificationReport } from '@bari/agent-tools/desktop';
 
 import type { ModuleMetricsReporter } from '../common/metrics.js';
 

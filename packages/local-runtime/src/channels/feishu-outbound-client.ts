@@ -16,7 +16,7 @@ import {
   type FeishuPendingReactionStore,
   type FeishuPendingThinkingStore,
 } from './adapters/feishu/feishu-ws.js';
-import type { AskQuestionnaireRequest } from '@mavis/shared/questionnaire';
+import type { AskQuestionnaireRequest } from '@bari/shared/questionnaire';
 import { imLogger as logger } from '../common/im-logger.js';
 
 /** Called after a Card 2.0 questionnaire was successfully posted. */

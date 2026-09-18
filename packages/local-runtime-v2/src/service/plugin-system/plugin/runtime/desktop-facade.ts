@@ -21,7 +21,7 @@ import {
   type PreviewGithubPluginResult,
   type SkillInfo,
   type SkillHubItem,
-} from '@mavis/protocol/local';
+} from '@bari/protocol/local';
 
 import type {
   LocalPluginMutationResult,

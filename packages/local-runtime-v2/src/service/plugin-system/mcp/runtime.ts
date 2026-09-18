@@ -11,7 +11,7 @@ import {
   type McpRuntimeLogger,
   type McpToolCallResult,
   type McpToolInfo,
-} from '@mavis/mcp';
+} from '@bari/mcp';
 
 import type {
   PluginSnapshotDiagnostic,

@@ -1,5 +1,5 @@
 import { and, eq, inArray, isNull, ne, notInArray, or, sql, type SQL } from 'drizzle-orm';
-import { TRUSTED_LEGACY_IM_ROOT_PURPOSE_MARKER } from '@mavis/conversation-contract';
+import { TRUSTED_LEGACY_IM_ROOT_PURPOSE_MARKER } from '@bari/conversation-contract';
 
 import { sessions } from '../../../../infra/db/schema/sessions.js';
 import type { SessionTreeFilter } from './contract.js';

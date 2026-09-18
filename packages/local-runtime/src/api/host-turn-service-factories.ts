@@ -10,7 +10,7 @@ import type { LocalDynamicMaxTokensState } from '../runtime/dynamic-max-tokens.j
 import type { LocalRuntimeRoutingContext } from '../runtime/routing-headers.js';
 import type { LocalSessionRecord } from '../sessions/controller.js';
 import { LocalGreetingSystemReminderSender } from './host-greeting-sender.js';
-import type { RuntimeConversation } from '@mavis/conversation-contract';
+import type { RuntimeConversation } from '@bari/conversation-contract';
 
 /**
  * Factories for host-owned runtime services. Extracted from `host.ts`, which

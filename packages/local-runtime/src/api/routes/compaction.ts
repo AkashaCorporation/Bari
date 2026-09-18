@@ -1,4 +1,4 @@
-import type { RuntimeConversation } from '@mavis/conversation-contract';
+import type { RuntimeConversation } from '@bari/conversation-contract';
 
 import { json } from '../host-helpers.js';
 import type { LocalSessionRecord } from '../../sessions/controller.js';

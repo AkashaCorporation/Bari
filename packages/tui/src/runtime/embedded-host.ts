@@ -1,11 +1,11 @@
-import { createLocalRuntimeHostV2, getDefaultLocalRuntimeConfig } from '@mavis/local-runtime-v2';
+import { createLocalRuntimeHostV2, getDefaultLocalRuntimeConfig } from '@bari/local-runtime-v2';
 import type {
   CreateLocalRuntimeHostOptions,
   CreatedLocalRuntimeHost,
-} from '@mavis/local-runtime-v2/process-local';
-import type { CliService } from '@mavis/local-runtime-v2/cli-service';
+} from '@bari/local-runtime-v2/process-local';
+import type { CliService } from '@bari/local-runtime-v2/cli-service';
 import { resolveTuiReviewPromptDir } from './review-assets.js';
-import type { ProductBuildIdentity } from '@mavis/shared/product-build-identity';
+import type { ProductBuildIdentity } from '@bari/shared/product-build-identity';
 import { resolveMcodeBuildIdentity } from '../auth/environment.js';
 
 export type EmbeddedRuntimeHostOptions = Omit<

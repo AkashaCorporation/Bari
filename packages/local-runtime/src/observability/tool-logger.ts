@@ -1,4 +1,4 @@
-import type { ToolExecutionContext } from "@mavis/agent-core/tools";
+import type { ToolExecutionContext } from "@bari/agent-core/tools";
 
 /** Local diagnostic port for tool execution, independent of tool vendors or upload protocols. */
 export interface ToolDiagnosticLogger {

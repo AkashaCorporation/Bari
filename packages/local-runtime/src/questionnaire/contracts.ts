@@ -1,5 +1,5 @@
-import type { RuntimeConversation } from '@mavis/conversation-contract';
-import type { ThreadGoalStatus } from '@mavis/goal';
+import type { RuntimeConversation } from '@bari/conversation-contract';
+import type { ThreadGoalStatus } from '@bari/goal';
 import type {
   AskQuestionnaireMode,
   AskQuestionnaireModePayload,
@@ -7,7 +7,7 @@ import type {
   AskQuestionnaireRequest,
   AskUserToolInput,
   AskUserToolMode,
-} from '@mavis/shared/questionnaire';
+} from '@bari/shared/questionnaire';
 
 import type { LocalRuntimeConfig } from '../config/types.js';
 import type { GlobalEventPublisher } from '../events/global-events.js';

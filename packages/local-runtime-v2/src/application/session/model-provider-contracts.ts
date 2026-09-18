@@ -1,5 +1,5 @@
 import type { GlobalEventPublisher } from '../events.js';
-import type { ConversationModelThinkingSelection } from '@mavis/conversation-contract';
+import type { ConversationModelThinkingSelection } from '@bari/conversation-contract';
 import type { FrozenAgentExecutionDefinition } from '../../service/session-system/index.js';
 import type {
   LocalModelProviderService,

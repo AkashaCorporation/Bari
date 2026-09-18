@@ -1,7 +1,7 @@
 /**
  * Resolve the `{{DATA_DIR}}` placeholder in prompt / skill file content,
  * mirroring the substitution applied to SKILL.md at registry load time
- * (see @mavis/skills registry.ts). Both the skill file reader and the
+ * (see @bari/skills registry.ts). Both the skill file reader and the
  * built-in agent template reader must use the same logic so that any
  * agent-level markdown that references `{{DATA_DIR}}` resolves to the
  * active local-runtime data directory instead of leaking the literal

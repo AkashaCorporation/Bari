@@ -1,13 +1,13 @@
-import { buildStreamRespEvent } from '@mavis/agent-core/event-bridge';
+import { buildStreamRespEvent } from '@bari/agent-core/event-bridge';
 import {
   MsgType,
   RespDataType,
   Role,
   type AgentMessage,
   type MessageKind,
-} from '@mavis/agent-core/protocol/agent-message';
+} from '@bari/agent-core/protocol/agent-message';
 
-import type { PiEventWriter } from '@mavis/agent-core/pi-turn-runner';
+import type { PiEventWriter } from '@bari/agent-core/pi-turn-runner';
 import { makeId } from '../api/host-helpers.js';
 
 export type ReviewActivityKind = Extract<

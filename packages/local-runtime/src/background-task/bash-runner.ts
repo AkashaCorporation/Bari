@@ -4,7 +4,7 @@ import type {
   LocalBashManagedForegroundResult,
   LocalBashToolInput,
   LocalRuntimeToolContext,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 import type { LocalSessionRecord } from '../sessions/controller.js';
 import type { LocalTaskRunnerHostWithSessionLookup } from '../api/local-task-host.js';

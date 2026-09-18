@@ -11,10 +11,10 @@ import {
   resolveProviderAuthMode,
   type ProviderAuthMode,
   type ProviderAuthModeSource,
-} from '@mavis/config';
-import { ThinkingLevel, type IAgentConfig, type IModelRef } from '@mavis/protocol';
-import type { ManagedBackendRoutingContext } from '@mavis/agent-tools/desktop';
-import { withOpenCodeGoHeaders, withOpenRouterAttributionHeaders } from '@mavis/shared';
+} from '@bari/config';
+import { ThinkingLevel, type IAgentConfig, type IModelRef } from '@bari/protocol';
+import type { ManagedBackendRoutingContext } from '@bari/agent-tools/desktop';
+import { withOpenCodeGoHeaders, withOpenRouterAttributionHeaders } from '@bari/shared';
 
 import type {
   LocalModelCompatOverrides,

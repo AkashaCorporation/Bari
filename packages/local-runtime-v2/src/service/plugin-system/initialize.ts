@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { getRuntimeBuildEnv, getRuntimeRegion } from "@mavis/config";
+import { getRuntimeBuildEnv, getRuntimeRegion } from "@bari/config";
 import type { AgentHostTurnCapabilityLifecycle } from "../turn-system/index.js";
 
 import type { MiniAppPluginPublicationCapability } from "../miniapp/index.js";

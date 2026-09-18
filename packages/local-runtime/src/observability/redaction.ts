@@ -1,1 +1,1 @@
-export * from '@mavis/shared/local-runtime-diagnostics/redaction';
+export * from '@bari/shared/local-runtime-diagnostics/redaction';

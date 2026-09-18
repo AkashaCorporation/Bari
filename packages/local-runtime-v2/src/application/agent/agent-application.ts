@@ -1,12 +1,12 @@
 import { randomUUID } from 'node:crypto';
-import { isDefaultAgentAvatarMarker } from '@mavis/shared/agent-avatar';
+import { isDefaultAgentAvatarMarker } from '@bari/shared/agent-avatar';
 import {
   BoundedInternalTurnPromptReadRegistry,
   isPromptSnapshotInvalidError,
   type InternalTurnPromptReadRegistry,
   type PromptReadScope,
   type PromptSnapshotSource,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 import type {
   NativeSessionAgentDirectory,
   RootAgentPort,

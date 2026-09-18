@@ -2,7 +2,7 @@ import type {
   LocalWebFetchAdapter,
   LocalWebFetchRetrievalOutcome,
   LocalWebFetchToolInput,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 const WEB_FETCH_USER_AGENT = 'MiniMaxAgent';
 const DEFAULT_TIMEOUT_MS = 30_000;

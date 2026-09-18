@@ -1,4 +1,4 @@
-import type { GlobalEvent } from '@mavis/shared/global-events';
+import type { GlobalEvent } from '@bari/shared/global-events';
 
 import type { AppDb } from './infra/db/client.js';
 import { EventBus, type EventBusClient } from './infra/event-bus/index.js';

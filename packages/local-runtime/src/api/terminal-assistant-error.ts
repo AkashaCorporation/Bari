@@ -1,5 +1,5 @@
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
-import { Role, type AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import { Role, type AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 export function isTerminalAssistantDisplayError(message: AgentMessage): boolean {
   return message.role === Role.Assistant && readFinishReason(message) === 'error';

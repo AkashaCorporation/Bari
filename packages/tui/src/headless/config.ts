@@ -3,7 +3,7 @@ import {
   loadConfigFromFile,
   type Config,
   type LoadConfigFromFileOptions,
-} from '@mavis/config';
+} from '@bari/config';
 
 import { TuiExecError } from './exit-policy.js';
 

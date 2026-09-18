@@ -1,4 +1,4 @@
-import type { ThreadGoalState } from '@mavis/goal';
+import type { ThreadGoalState } from '@bari/goal';
 
 import type { ThreadGoalRuntimeEventSink } from './events.js';
 import type { GoalPromptKind } from './prompt.js';

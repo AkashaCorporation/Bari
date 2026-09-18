@@ -3,26 +3,26 @@ import {
   RuntimeEventStatus,
   RuntimeEventType,
   type RuntimeEvent,
-} from "@mavis/agent-core/protocol";
+} from "@bari/agent-core/protocol";
 import type {
   LLMModelConfig,
   PiBeforeLlmCallHookInput,
-} from "@mavis/agent-core/pi-turn-runner";
+} from "@bari/agent-core/pi-turn-runner";
 import {
   composeStreamFn,
   PiTurnRunner,
-} from "@mavis/agent-core/pi-turn-runner";
+} from "@bari/agent-core/pi-turn-runner";
 import { createAssistantMessageEventStream } from "@earendil-works/pi-ai";
 import {
   toRuntimeTool,
   type RuntimeTool,
   type ToolExecutionContext,
   type ToolResult,
-} from "@mavis/agent-core/tools";
+} from "@bari/agent-core/tools";
 import {
   LocalBashTool,
   type LocalSandboxBashOperationsFactory,
-} from "@mavis/agent-tools/desktop";
+} from "@bari/agent-tools/desktop";
 import {
   buildLocalTurnToolCatalog,
   type LocalTurnAgentProfileFacts,
@@ -31,14 +31,14 @@ import {
   BuiltinAgentCatalog,
   resolveCanonicalCapabilities,
 } from "../../../agent/builtin/catalog.js";
-import type { AssemblyResult } from "@mavis/agent-runtime";
-import { createAgentRuntime } from "@mavis/agent-runtime";
-import { sessionReportExtension } from "@mavis/agent-extension";
+import type { AssemblyResult } from "@bari/agent-runtime";
+import { createAgentRuntime } from "@bari/agent-runtime";
+import { sessionReportExtension } from "@bari/agent-extension";
 import {
   pluginHookCodexTranscriptPath,
   pluginHookTranscriptPath,
-} from "@mavis/agent-tools";
-import { serializeAgentReference } from "@mavis/shared/agent-mention";
+} from "@bari/agent-tools";
+import { serializeAgentReference } from "@bari/shared/agent-mention";
 import { Type } from "@sinclair/typebox";
 import { mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";

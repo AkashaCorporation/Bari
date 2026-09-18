@@ -1,4 +1,4 @@
-import type { PiTurnRunnerLogger } from '@mavis/agent-core/pi-turn-runner';
+import type { PiTurnRunnerLogger } from '@bari/agent-core/pi-turn-runner';
 
 import type {
   LocalToolResultHistoryFinalizer,

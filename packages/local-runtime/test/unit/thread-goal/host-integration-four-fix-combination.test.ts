@@ -3,7 +3,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
-import { digestThreadGoalObjective, type ThreadGoalState } from "@mavis/goal";
+import { digestThreadGoalObjective, type ThreadGoalState } from "@bari/goal";
 
 import { closeLocalRuntimeDb } from "../../../src/persistence/db.js";
 import { LocalThreadGoalIntegration } from "../../../src/thread-goal/host-integration.js";

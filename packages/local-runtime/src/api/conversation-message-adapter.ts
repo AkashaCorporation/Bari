@@ -1,5 +1,5 @@
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
-import type { ConversationCommittedMessage } from '@mavis/conversation-contract';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
+import type { ConversationCommittedMessage } from '@bari/conversation-contract';
 
 export function toAgentMessages(messages: readonly ConversationCommittedMessage[]): AgentMessage[] {
   return messages.flatMap((message) => {

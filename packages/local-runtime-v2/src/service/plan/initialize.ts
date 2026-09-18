@@ -1,9 +1,9 @@
-import { planModeExtension } from '@mavis/agent-extension';
+import { planModeExtension } from '@bari/agent-extension';
 import type {
   LocalQuestionnaireService,
   QuestionnaireOwnedActionHandler,
-} from '@mavis/local-runtime';
-import { QUESTIONNAIRE_TTL_MS } from '@mavis/shared/questionnaire';
+} from '@bari/local-runtime';
+import { QUESTIONNAIRE_TTL_MS } from '@bari/shared/questionnaire';
 
 import type { PlanImplementationReceipt, PlanService } from './contracts.js';
 import type { AppDb } from '../../infra/db/client.js';

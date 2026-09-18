@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { LocalBrowserScreenshotPreprocessor } from '@mavis/agent-tools/desktop';
+import type { LocalBrowserScreenshotPreprocessor } from '@bari/agent-tools/desktop';
 
 import type { BrowserUseServiceOptions } from './contracts.js';
 

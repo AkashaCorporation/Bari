@@ -12,7 +12,7 @@ import type {
   LLMCallSettledEvent,
   LlmCaptureAgentEventSource,
   LlmCaptureRecorder,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 
 import type { CapturedPayload, ExpectedToolIdentity, SettledCallRecord } from './contracts.js';
 import {

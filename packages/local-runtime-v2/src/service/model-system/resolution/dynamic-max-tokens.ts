@@ -1,7 +1,7 @@
 import { streamSimple, type Api, type Context, type Model } from '@earendil-works/pi-ai';
 import type { AgentMessage, StreamFn } from '@earendil-works/pi-agent-core';
-import { LLM_RETRY_CALL_IDENTITY } from '@mavis/agent-core/pi-turn-runner';
-import { createDefaultTokenEstimator, resolveDynamicMaxTokens } from '@mavis/context-manager';
+import { LLM_RETRY_CALL_IDENTITY } from '@bari/agent-core/pi-turn-runner';
+import { createDefaultTokenEstimator, resolveDynamicMaxTokens } from '@bari/context-manager';
 
 const MIN_OUTPUT_TOKENS = 1_024;
 const EMERGENCY_OUTPUT_TOKENS = 1;

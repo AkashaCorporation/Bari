@@ -1,6 +1,6 @@
-import { createAgentRuntime, type AgentExtension, type AgentRuntime } from '@mavis/agent-runtime';
-import { getLocalBashEnvironment } from '@mavis/agent-tools';
-import type { ResolvedAgentCapabilities } from '@mavis/config';
+import { createAgentRuntime, type AgentExtension, type AgentRuntime } from '@bari/agent-runtime';
+import { getLocalBashEnvironment } from '@bari/agent-tools';
+import type { ResolvedAgentCapabilities } from '@bari/config';
 
 import type {
   LocalModelResolverLike,
@@ -102,7 +102,7 @@ export interface NativeAgentHostProductionDependenciesOptions<
   >;
   /**
    * Explicitly configured normal-turn extensions. The seven built-in
-   * `@mavis/agent-extension` adapters are not enabled by this factory.
+   * `@bari/agent-extension` adapters are not enabled by this factory.
    */
   readonly normalExtensions?: readonly AgentExtension[];
 }

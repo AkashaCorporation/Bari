@@ -3,11 +3,11 @@ import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
-import { resolveAgentCapabilities } from "@mavis/config";
+import { resolveAgentCapabilities } from "@bari/config";
 import type {
   PromptReadSnapshot,
   PromptSnapshotSource,
-} from "@mavis/agent-runtime";
+} from "@bari/agent-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {

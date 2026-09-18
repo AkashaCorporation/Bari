@@ -4,8 +4,8 @@ import type {
   AgentBuiltinToolId,
   AgentCapabilityConfig,
   ResolvedAgentCapabilities,
-} from '@mavis/config';
-import type { PromptReadScope } from '@mavis/agent-runtime';
+} from '@bari/config';
+import type { PromptReadScope } from '@bari/agent-runtime';
 
 import type {
   AgentConfigError,

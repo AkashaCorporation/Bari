@@ -2,7 +2,7 @@ import {
   DAILY_RECENT_CAP_CHARS,
   MEMORY_SUMMARY_INJECTION_CAP_CHARS,
   MEMORY_TAIL_INJECTION_CAP_CHARS,
-} from '@mavis/shared';
+} from '@bari/shared';
 
 import {
   buildAvailableMemoryTopicsBlock,

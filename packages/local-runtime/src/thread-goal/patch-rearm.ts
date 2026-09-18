@@ -1,4 +1,4 @@
-import { isContinuationStatus, type ThreadGoalState } from '@mavis/goal';
+import { isContinuationStatus, type ThreadGoalState } from '@bari/goal';
 
 import type { LocalActiveTurnTimingReader } from '../turns/active-turn-timing.js';
 import type { GoalDependencyGates } from './dependency-gates.js';

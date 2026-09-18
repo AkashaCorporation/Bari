@@ -2,23 +2,23 @@
 // 2000-line block threshold enforced by `scripts/hooks/pre-commit`
 // (see boy-scout warning trail on commits f2b4b14a / d7e454fe). Pure
 // utilities + small interfaces + the SSE writer wrapper — no `this` dependencies.
-import type { PromptSnapshotSource } from "@mavis/agent-core";
+import type { PromptSnapshotSource } from "@bari/agent-core";
 import type {
   PiLLMRequestFailureHook,
   PiLLMRequestObserver,
-} from "@mavis/agent-core/pi-turn-runner";
+} from "@bari/agent-core/pi-turn-runner";
 import {
   RespDataType,
   Role,
   type AgentMessage,
   type RespData,
-} from "@mavis/agent-core/protocol/agent-message";
+} from "@bari/agent-core/protocol/agent-message";
 import type { ToolDiagnosticLogger as MatrixToolLogger } from "../observability/tool-logger.js";
-import type { LocalMavisCronAdapter } from "@mavis/agent-tools/desktop";
-import type { RuntimeConversation } from "@mavis/conversation-contract";
-import type { CronStorePort } from "@mavis/cron";
-import type { PermissionRuleMatcher } from "@mavis/permission";
-import type { GlobalEventPayloadMap } from "@mavis/shared/global-events";
+import type { LocalMavisCronAdapter } from "@bari/agent-tools/desktop";
+import type { RuntimeConversation } from "@bari/conversation-contract";
+import type { CronStorePort } from "@bari/cron";
+import type { PermissionRuleMatcher } from "@bari/permission";
+import type { GlobalEventPayloadMap } from "@bari/shared/global-events";
 import type { AgentReferenceResolver } from "../agent/port.js";
 import type { LocalAgentRuntimePort } from "../agent/runtime-port.js";
 import type { LocalBrowserBroker } from "../browser/api.js";
@@ -176,7 +176,7 @@ export interface LocalRuntimeApiHostOptions {
   hookService?: LocalHookService;
   browserBroker?: LocalBrowserBroker;
   skillHubStore?: LocalSkillHubStore;
-  skillRegistryRoots?: import("@mavis/skills").SkillSourceRoot[];
+  skillRegistryRoots?: import("@bari/skills").SkillSourceRoot[];
   skillEnabledState?: LocalSkillEnabledStatePort;
   /** V2-owned bounded CLI-sunset state evaluator; V1 only supplies Memory files. */
   cliSunsetNotice?: CliSunsetNoticeEvaluator;
@@ -204,7 +204,7 @@ export interface LocalRuntimeApiHostOptions {
   /**
    * Production WeChat SDK injection point. When provided (typically by the
    * Electron main process after dynamically importing the bundled iLink SDK
-   * from `@mavis/local-runtime` so the SDK does not enter the Electron main
+   * from `@bari/local-runtime` so the SDK does not enter the Electron main
    * static-import graph), the registered `LocalWeChatChannelAdapter` talks to
    * iLink for outbound + attachment downloads. When omitted, the channel
    * subsystem falls back to `stubWeChatRuntimeSdk` so unit tests and offline

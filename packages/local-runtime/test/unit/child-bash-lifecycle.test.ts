@@ -2,7 +2,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { LocalBashTool } from '@mavis/agent-tools/desktop';
+import { LocalBashTool } from '@bari/agent-tools/desktop';
 import { createLocalBashOperations, getShellConfig } from '@earendil-works/pi-coding-agent';
 import { createChildBashLifecycle } from '../../src/background-task/child-bash-lifecycle.js';
 import { LocalBackgroundTaskService } from '../../src/background-task/service.js';

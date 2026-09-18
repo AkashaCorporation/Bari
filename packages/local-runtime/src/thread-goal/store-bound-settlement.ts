@@ -8,7 +8,7 @@ import {
   type ThreadGoalSettleBoundTurnInput,
   type ThreadGoalStatus,
   type ThreadGoalStatusReason,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import { runInImmediateTransaction, type DatabaseLike } from '../persistence/db.js';
 import { classifyThreadGoalAccountingStale, threadGoalStaleDecision } from './binding-stale.js';

@@ -3,7 +3,7 @@ import {
   getRuntimeRegion,
   type MavisBuildEnv,
   type MavisRegion,
-} from "@mavis/config";
+} from "@bari/config";
 
 import { callTurnSafetyApi } from "./turn-api.js";
 import { resolveSafetyApiBase } from "./api-base.js";

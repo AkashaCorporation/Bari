@@ -1,12 +1,12 @@
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { retryWindowsFileSystemOperation } from '@mavis/shared';
+import { retryWindowsFileSystemOperation } from '@bari/shared';
 
 import {
   normalizeLocalRuntimeAuthContext,
   type LocalRuntimeAuthContextSnapshot,
-} from '@mavis/config';
+} from '@bari/config';
 
 import type { CliAuthScope } from './types.js';
 

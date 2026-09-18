@@ -1,10 +1,10 @@
-import type { IAgentConfig } from '@mavis/protocol';
+import type { IAgentConfig } from '@bari/protocol';
 import {
   managedBackendRoutingHeaders,
   type ManagedBackendRoutingContext,
-} from '@mavis/agent-tools/desktop';
-import type { MavisBuildEnv } from '@mavis/config';
-import type { LLMModelConfig } from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-tools/desktop';
+import type { MavisBuildEnv } from '@bari/config';
+import type { LLMModelConfig } from '@bari/agent-core/pi-turn-runner';
 
 import type { LocalRuntimeAuthContext } from '../contracts.js';
 

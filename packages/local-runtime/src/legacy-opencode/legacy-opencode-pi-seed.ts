@@ -1,5 +1,5 @@
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
-import { MsgType, Role, type AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import { MsgType, Role, type AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 import { registerLocalAsset } from '../assets/store.js';
 import type {

@@ -235,7 +235,7 @@ export interface FeishuPlatformAdapterOptions {
   /** Fired after `sendMessage` delivered a Card 2.0 form questionnaire. */
   onQuestionnaireRendered?: (input: {
     chatId: string;
-    request: import('@mavis/shared/questionnaire').AskQuestionnaireRequest;
+    request: import('@bari/shared/questionnaire').AskQuestionnaireRequest;
     messageId: string;
   }) => void;
   /**

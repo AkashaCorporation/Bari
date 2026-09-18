@@ -3,19 +3,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
   LLMRetryEvent,
   RunTurnInput,
-} from "@mavis/agent-core/pi-turn-runner";
-import { createAgentRuntime, type AgentExtension } from "@mavis/agent-runtime";
+} from "@bari/agent-core/pi-turn-runner";
+import { createAgentRuntime, type AgentExtension } from "@bari/agent-runtime";
 import { baseCtx } from "../../agent-runtime/src/testing/fixtures.js";
-import type { RuntimeTool } from "@mavis/agent-core/tools";
-import { LocalSkillToolDef } from "@mavis/agent-tools/desktop";
+import type { RuntimeTool } from "@bari/agent-core/tools";
+import { LocalSkillToolDef } from "@bari/agent-tools/desktop";
 import type {
   DatabaseLike,
   QuestionnaireOwnedActionHandler,
-} from "@mavis/local-runtime";
+} from "@bari/local-runtime";
 import type {
   GlobalEvent,
   GlobalEventInput,
-} from "@mavis/shared/global-events";
+} from "@bari/shared/global-events";
 
 import { createRuntimeSourceReferenceExtension } from "./application/agent/source-reference-extension.js";
 import type { V1ServiceCompatibility } from "./compat/v1/runtime.js";
@@ -644,8 +644,8 @@ vi.mock("./service/session-system/index.js", async (importOriginal) => {
   };
 });
 
-vi.mock("@mavis/config", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@mavis/config")>()),
+vi.mock("@bari/config", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@bari/config")>()),
   allowsManagedMinimaxProviderOverride: () => false,
   getRuntimeRegion: () => mocked.runtimeRegion,
 }));

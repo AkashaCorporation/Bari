@@ -5,12 +5,12 @@ import {
   type ChannelPlatform,
   type ChannelRoutingMode,
   type SessionStrategy,
-} from '@mavis/shared';
+} from '@bari/shared';
 
 import { json, notFound, readJsonBody } from '../api/http-helpers.js';
 import { mutateDurableYaml, readYamlDocument } from './durable-yaml.js';
 
-export type { ChannelPlatform, ChannelRoutingMode, SessionStrategy } from '@mavis/shared';
+export type { ChannelPlatform, ChannelRoutingMode, SessionStrategy } from '@bari/shared';
 
 export interface ChannelRouteMatch {
   chatType: string;

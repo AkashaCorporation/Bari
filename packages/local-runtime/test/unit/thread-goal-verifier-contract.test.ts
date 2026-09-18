@@ -16,7 +16,7 @@ import {
   type VerificationUsage,
   type VerificationVerdict,
   type VerifierPort,
-} from "@mavis/goal";
+} from "@bari/goal";
 
 import { closeLocalRuntimeDb } from "../../src/persistence/db.js";
 import type { ThreadGoalGateConfig } from "../../src/thread-goal/gate.js";

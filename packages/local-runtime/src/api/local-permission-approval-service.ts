@@ -1,6 +1,6 @@
 import { logger } from '../common/logger.js';
 import type { LocalPermissionRuleStore } from '../permissions/rules.js';
-import type { GlobalEventInput } from '@mavis/shared/global-events';
+import type { GlobalEventInput } from '@bari/shared/global-events';
 import type {
   LocalPermissionDecision,
   LocalPermissionRequest,

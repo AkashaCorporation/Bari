@@ -1,4 +1,4 @@
-import { isTrustedBuiltinCreationSource } from '@mavis/agent-tools/desktop/subagent-roles';
+import { isTrustedBuiltinCreationSource } from '@bari/agent-tools/desktop/subagent-roles';
 
 import { canonicalBuiltinName } from '../../builtin/catalog.js';
 import type { AgentListOptions, AgentStoreMeta, BuiltinAgentDefinition } from '../../contracts.js';

@@ -75,7 +75,7 @@ import type {
 } from "./host-channel-pending.js";
 import { imLogger, imLogger as logger } from "../common/im-logger.js";
 import type { ModuleMetricsReporter } from "../common/metrics.js";
-import type { RuntimeConversationChannelView } from "@mavis/conversation-contract";
+import type { RuntimeConversationChannelView } from "@bari/conversation-contract";
 import { LocalAgentContractError } from "../agent/contract.js";
 import { migrateRootlessChannelState } from "../channels/rootless-startup-migration.js";
 import type { LocalSessionRecord } from "../sessions/controller.js";
@@ -375,7 +375,7 @@ export function wireChannelSubsystem(input: {
   submitQuestionnaireReply?: (input: {
     agentName: string;
     requestId: string;
-    reply: import("@mavis/shared/questionnaire").AskQuestionnaireReplyPayload;
+    reply: import("@bari/shared/questionnaire").AskQuestionnaireReplyPayload;
   }) => Promise<QuestionnaireReplyOutcome | void>;
   /**
    * Optional permission reply applier. Wired by the host to

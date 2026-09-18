@@ -2,7 +2,7 @@ import type {
   PromptReadSnapshot,
   PromptSnapshotSource,
   PromptTemplateRead,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 
 import {
   isPromptSnapshotInvalidError,

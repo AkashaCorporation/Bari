@@ -1,5 +1,5 @@
-import type { RuntimeConversation } from '@mavis/conversation-contract';
-import { TRUSTED_LEGACY_IM_ROOT_PURPOSE_MARKER } from '@mavis/conversation-contract';
+import type { RuntimeConversation } from '@bari/conversation-contract';
+import { TRUSTED_LEGACY_IM_ROOT_PURPOSE_MARKER } from '@bari/conversation-contract';
 import type { AgentReferenceResolver } from '../agent/port.js';
 import type { LocalAgentRuntimePort } from '../agent/runtime-port.js';
 import type { LocalRuntimeConfig } from '../config/types.js';

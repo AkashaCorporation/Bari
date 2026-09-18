@@ -3,13 +3,13 @@ import { join } from "node:path";
 import type {
   AgentDetail,
   CreateAgentInput as CreateAgentInput,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 import type {
   ConversationSessionKind,
   ConversationTaskModelSelection,
   RuntimeConversation,
-} from "@mavis/conversation-contract";
-import type { GlobalEventInput } from "@mavis/shared/global-events";
+} from "@bari/conversation-contract";
+import type { GlobalEventInput } from "@bari/shared/global-events";
 import { type ResolvedLocalRunLocation } from "../../runtime/run-location.js";
 import type { LocalRuntimeConfig } from "../../config/types.js";
 import type { LocalAgentRecord } from "../../persistence/ports.js";

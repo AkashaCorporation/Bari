@@ -1,4 +1,4 @@
-import { normalizeAbortSource } from '@mavis/agent-core/pi-turn-runner';
+import { normalizeAbortSource } from '@bari/agent-core/pi-turn-runner';
 
 import type {
   AgentHost,

@@ -1,4 +1,4 @@
-import type { DatabaseLike } from '@mavis/local-runtime';
+import type { DatabaseLike } from '@bari/local-runtime';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 
 import type { AppDb } from '../../src/infra/db/client.js';

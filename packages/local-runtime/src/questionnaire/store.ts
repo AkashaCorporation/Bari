@@ -2,7 +2,7 @@ import type {
   AskQuestionnaireReplyPayload,
   AskQuestionnaireRequest,
   AskQuestionnaireStatus,
-} from '@mavis/shared/questionnaire';
+} from '@bari/shared/questionnaire';
 import type { LocalMessageChannelContext } from '../messages/input.js';
 
 export interface QuestionnaireRequestRecord {

@@ -1,4 +1,4 @@
-import type { ToolDefinition } from '@mavis/agent-core/tools';
+import type { ToolDefinition } from '@bari/agent-core/tools';
 import { tokenize } from './tokenize.js';
 import type { McpToolEntry, McpToolIndex, McpSearchHit } from './types.js';
 

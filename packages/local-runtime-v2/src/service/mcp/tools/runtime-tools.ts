@@ -1,12 +1,12 @@
-import type { RuntimeTool } from '@mavis/agent-core/tools';
-import type { McpToolEntry } from '@mavis/agent-tools';
+import type { RuntimeTool } from '@bari/agent-core/tools';
+import type { McpToolEntry } from '@bari/agent-tools';
 import type {
   LocalMcpNativeToolInfo,
   LocalMcpRuntimeContext,
   LocalMcpAuthContext as LocalRuntimeAuthContext,
 } from '../contracts.js';
 
-import type { ManagedBackendRoutingContext as LocalRuntimeRoutingContext } from '@mavis/agent-tools/desktop';
+import type { ManagedBackendRoutingContext as LocalRuntimeRoutingContext } from '@bari/agent-tools/desktop';
 
 /**
  * Lists turn-scoped MCP runtime tools paired with each server's provenance

@@ -1,4 +1,4 @@
-import { DEFAULT_MODEL_PRESETS, getRuntimePresetKey } from '@mavis/config';
+import { DEFAULT_MODEL_PRESETS, getRuntimePresetKey } from '@bari/config';
 
 import { parseProviderId, parseSourceQualifiedModelKey } from '../resolution/model-key.js';
 import type {

@@ -1,7 +1,7 @@
 import type {
   PiAfterLlmCallHook,
   PiAfterLlmCallHookDecision,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 
 import {
   applyReviewCandidateCorrections,

@@ -7,8 +7,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LocalRuntimeHost, type LocalTurnRunner } from '../../src/runtime/host.js';
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
-import { RuntimeEventType, type IRuntimeEvent } from '@mavis/protocol';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
+import { RuntimeEventType, type IRuntimeEvent } from '@bari/protocol';
 
 function finalMessage(content: string): IRuntimeEvent {
   return {

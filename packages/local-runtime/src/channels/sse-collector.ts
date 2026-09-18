@@ -5,9 +5,9 @@ import {
   ToolCallStatus,
   type RespData,
   type ToolCall,
-} from '@mavis/agent-core/protocol/agent-message';
-import { parseMediaTags } from '@mavis/shared';
-import type { ConversationCommittedMessage } from '@mavis/conversation-contract';
+} from '@bari/agent-core/protocol/agent-message';
+import { parseMediaTags } from '@bari/shared';
+import type { ConversationCommittedMessage } from '@bari/conversation-contract';
 
 import { parseRespData } from '../api/http-helpers.js';
 import type { LocalChannelMessageFilter } from './infra.js';

@@ -1,4 +1,4 @@
-import type { LocalAgentRuntimeManagementPort } from "@mavis/local-runtime";
+import type { LocalAgentRuntimeManagementPort } from "@bari/local-runtime";
 import type {
   CreateAgentInput as CreateAgentReq,
   CreateAgentResult as CreateAgentResp,
@@ -10,7 +10,7 @@ import type {
   ListAgentsResult as ListAgentsResp,
   UpdateAgentInput as UpdateAgentReq,
   UpdateAgentResult as UpdateAgentResp,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 import type { AgentApplication } from "../application/agent/agent-application.js";
 import { createAgentManagementApplication } from "../application/agent/management-application.js";

@@ -1,5 +1,5 @@
-import type { PiAfterLlmCallHook } from '@mavis/agent-core/pi-turn-runner';
-import { mapMarkdownOutsideProtected } from '@mavis/shared/asset-markup';
+import type { PiAfterLlmCallHook } from '@bari/agent-core/pi-turn-runner';
+import { mapMarkdownOutsideProtected } from '@bari/shared/asset-markup';
 
 import { logger } from '../common/logger.js';
 import { WebsiteDeployTurnState } from './turn-state.js';

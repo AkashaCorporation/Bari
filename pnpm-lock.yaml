@@ -56,6 +56,12 @@ importers:
 
   packages/agent-core:
     dependencies:
+      '@bari/protocol':
+        specifier: workspace:^
+        version: link:../protocol
+      '@bari/shared':
+        specifier: workspace:^
+        version: link:../shared
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/agent
@@ -65,12 +71,6 @@ importers:
       '@earendil-works/pi-coding-agent':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/coding-agent
-      '@mavis/protocol':
-        specifier: workspace:^
-        version: link:../protocol
-      '@mavis/shared':
-        specifier: workspace:^
-        version: link:../shared
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.52
@@ -78,7 +78,7 @@ importers:
         specifier: ^3
         version: 3.25.76
     devDependencies:
-      '@mavis/config':
+      '@bari/config':
         specifier: workspace:^
         version: link:../config
       '@types/node':
@@ -96,40 +96,40 @@ importers:
 
   packages/agent-extension:
     dependencies:
-      '@mavis/agent-runtime':
+      '@bari/agent-runtime':
         specifier: workspace:^
         version: link:../agent-runtime
-      '@mavis/context-manager':
+      '@bari/context-manager':
         specifier: workspace:^
         version: link:../agent-modules/context-manager
-      '@mavis/permission':
+      '@bari/permission':
         specifier: workspace:^
         version: link:../agent-modules/permission
-      '@mavis/runaway-guard':
+      '@bari/runaway-guard':
         specifier: workspace:^
         version: link:../agent-modules/runaway-guard
-      '@mavis/session-report':
+      '@bari/session-report':
         specifier: workspace:^
         version: link:../agent-modules/session-report
-      '@mavis/skills':
+      '@bari/skills':
         specifier: workspace:^
         version: link:../agent-modules/skills
-      '@mavis/system-reminder':
+      '@bari/system-reminder':
         specifier: workspace:^
         version: link:../agent-modules/system-reminder
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.52
     devDependencies:
+      '@bari/protocol':
+        specifier: workspace:^
+        version: link:../protocol
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/agent
       '@earendil-works/pi-ai':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/ai
-      '@mavis/protocol':
-        specifier: workspace:^
-        version: link:../protocol
       '@types/node':
         specifier: ^20
         version: 20.19.43
@@ -154,6 +154,9 @@ importers:
 
   packages/agent-modules/context-manager:
     dependencies:
+      '@bari/agent-core':
+        specifier: workspace:^
+        version: link:../../agent-core
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../../third_party/pi-mono/packages/agent
@@ -163,9 +166,6 @@ importers:
       '@earendil-works/pi-coding-agent':
         specifier: workspace:*
         version: link:../../../third_party/pi-mono/packages/coding-agent
-      '@mavis/agent-core':
-        specifier: workspace:^
-        version: link:../../agent-core
       gpt-tokenizer:
         specifier: ^3.4.0
         version: 3.4.0
@@ -194,10 +194,10 @@ importers:
 
   packages/agent-modules/cron:
     dependencies:
-      '@mavis/agent-core':
+      '@bari/agent-core':
         specifier: workspace:^
         version: link:../../agent-core
-      '@mavis/shared':
+      '@bari/shared':
         specifier: workspace:^
         version: link:../../shared
     devDependencies:
@@ -213,12 +213,12 @@ importers:
 
   packages/agent-modules/goal:
     dependencies:
+      '@bari/agent-core':
+        specifier: workspace:^
+        version: link:../../agent-core
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../../third_party/pi-mono/packages/agent
-      '@mavis/agent-core':
-        specifier: workspace:^
-        version: link:../../agent-core
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.52
@@ -260,7 +260,7 @@ importers:
 
   packages/agent-modules/permission:
     dependencies:
-      '@mavis/agent-core':
+      '@bari/agent-core':
         specifier: workspace:^
         version: link:../../agent-core
     devDependencies:
@@ -288,7 +288,7 @@ importers:
 
   packages/agent-modules/runaway-guard:
     dependencies:
-      '@mavis/agent-core':
+      '@bari/agent-core':
         specifier: workspace:^
         version: link:../../agent-core
     devDependencies:
@@ -335,7 +335,7 @@ importers:
 
   packages/agent-modules/system-reminder:
     devDependencies:
-      '@mavis/config':
+      '@bari/config':
         specifier: workspace:^
         version: link:../../config
       '@types/node':
@@ -350,12 +350,12 @@ importers:
 
   packages/agent-runtime:
     dependencies:
+      '@bari/agent-core':
+        specifier: workspace:^
+        version: link:../agent-core
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/agent
-      '@mavis/agent-core':
-        specifier: workspace:^
-        version: link:../agent-core
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.52
@@ -375,33 +375,33 @@ importers:
 
   packages/agent-tools:
     dependencies:
+      '@bari/agent-core':
+        specifier: workspace:^
+        version: link:../agent-core
+      '@bari/background-task':
+        specifier: workspace:^
+        version: link:../agent-modules/background-task
+      '@bari/context-manager':
+        specifier: workspace:^
+        version: link:../agent-modules/context-manager
+      '@bari/plugin-hooks':
+        specifier: workspace:^
+        version: link:../agent-modules/plugin-hooks
+      '@bari/protocol':
+        specifier: workspace:^
+        version: link:../protocol
+      '@bari/shared':
+        specifier: workspace:^
+        version: link:../shared
+      '@bari/system-reminder':
+        specifier: workspace:^
+        version: link:../agent-modules/system-reminder
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/agent
       '@earendil-works/pi-coding-agent':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/coding-agent
-      '@mavis/agent-core':
-        specifier: workspace:^
-        version: link:../agent-core
-      '@mavis/background-task':
-        specifier: workspace:^
-        version: link:../agent-modules/background-task
-      '@mavis/context-manager':
-        specifier: workspace:^
-        version: link:../agent-modules/context-manager
-      '@mavis/plugin-hooks':
-        specifier: workspace:^
-        version: link:../agent-modules/plugin-hooks
-      '@mavis/protocol':
-        specifier: workspace:^
-        version: link:../protocol
-      '@mavis/shared':
-        specifier: workspace:^
-        version: link:../shared
-      '@mavis/system-reminder':
-        specifier: workspace:^
-        version: link:../agent-modules/system-reminder
       '@modelcontextprotocol/sdk':
         specifier: ^1.30.0
         version: 1.30.0(zod@3.25.76)
@@ -469,7 +469,7 @@ importers:
 
   packages/config:
     dependencies:
-      '@mavis/shared':
+      '@bari/shared':
         specifier: workspace:^
         version: link:../shared
       js-yaml:
@@ -494,6 +494,45 @@ importers:
 
   packages/local-runtime:
     dependencies:
+      '@bari/agent-core':
+        specifier: workspace:^
+        version: link:../agent-core
+      '@bari/agent-tools':
+        specifier: workspace:^
+        version: link:../agent-tools
+      '@bari/config':
+        specifier: workspace:^
+        version: link:../config
+      '@bari/context-manager':
+        specifier: workspace:^
+        version: link:../agent-modules/context-manager
+      '@bari/conversation-contract':
+        specifier: workspace:^
+        version: link:../agent-modules/conversation-contract
+      '@bari/cron':
+        specifier: workspace:^
+        version: link:../agent-modules/cron
+      '@bari/goal':
+        specifier: workspace:^
+        version: link:../agent-modules/goal
+      '@bari/mcp':
+        specifier: workspace:^
+        version: link:../agent-modules/mcp
+      '@bari/permission':
+        specifier: workspace:^
+        version: link:../agent-modules/permission
+      '@bari/protocol':
+        specifier: workspace:*
+        version: link:../protocol
+      '@bari/shared':
+        specifier: workspace:^
+        version: link:../shared
+      '@bari/skills':
+        specifier: workspace:^
+        version: link:../agent-modules/skills
+      '@bari/system-reminder':
+        specifier: workspace:^
+        version: link:../agent-modules/system-reminder
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/agent
@@ -503,45 +542,6 @@ importers:
       '@earendil-works/pi-coding-agent':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/coding-agent
-      '@mavis/agent-core':
-        specifier: workspace:^
-        version: link:../agent-core
-      '@mavis/agent-tools':
-        specifier: workspace:^
-        version: link:../agent-tools
-      '@mavis/config':
-        specifier: workspace:^
-        version: link:../config
-      '@mavis/context-manager':
-        specifier: workspace:^
-        version: link:../agent-modules/context-manager
-      '@mavis/conversation-contract':
-        specifier: workspace:^
-        version: link:../agent-modules/conversation-contract
-      '@mavis/cron':
-        specifier: workspace:^
-        version: link:../agent-modules/cron
-      '@mavis/goal':
-        specifier: workspace:^
-        version: link:../agent-modules/goal
-      '@mavis/mcp':
-        specifier: workspace:^
-        version: link:../agent-modules/mcp
-      '@mavis/permission':
-        specifier: workspace:^
-        version: link:../agent-modules/permission
-      '@mavis/protocol':
-        specifier: workspace:*
-        version: link:../protocol
-      '@mavis/shared':
-        specifier: workspace:^
-        version: link:../shared
-      '@mavis/skills':
-        specifier: workspace:^
-        version: link:../agent-modules/skills
-      '@mavis/system-reminder':
-        specifier: workspace:^
-        version: link:../agent-modules/system-reminder
       '@modelcontextprotocol/sdk':
         specifier: ^1.30.0
         version: 1.30.0(zod@3.25.76)
@@ -616,6 +616,57 @@ importers:
 
   packages/local-runtime-v2:
     dependencies:
+      '@bari/agent-core':
+        specifier: workspace:*
+        version: link:../agent-core
+      '@bari/agent-extension':
+        specifier: workspace:^
+        version: link:../agent-extension
+      '@bari/agent-runtime':
+        specifier: workspace:*
+        version: link:../agent-runtime
+      '@bari/agent-tools':
+        specifier: workspace:*
+        version: link:../agent-tools
+      '@bari/config':
+        specifier: workspace:*
+        version: link:../config
+      '@bari/context-manager':
+        specifier: workspace:^
+        version: link:../agent-modules/context-manager
+      '@bari/conversation-contract':
+        specifier: workspace:*
+        version: link:../agent-modules/conversation-contract
+      '@bari/goal':
+        specifier: workspace:^
+        version: link:../agent-modules/goal
+      '@bari/local-runtime':
+        specifier: workspace:*
+        version: link:../local-runtime
+      '@bari/mcode-sandbox-runtime':
+        specifier: workspace:*
+        version: link:../../third_party/sandbox-runtime
+      '@bari/mcp':
+        specifier: workspace:^
+        version: link:../agent-modules/mcp
+      '@bari/permission':
+        specifier: workspace:^
+        version: link:../agent-modules/permission
+      '@bari/plugin-hooks':
+        specifier: workspace:^
+        version: link:../agent-modules/plugin-hooks
+      '@bari/protocol':
+        specifier: workspace:*
+        version: link:../protocol
+      '@bari/session-report':
+        specifier: workspace:^
+        version: link:../agent-modules/session-report
+      '@bari/shared':
+        specifier: workspace:^
+        version: link:../shared
+      '@bari/system-reminder':
+        specifier: workspace:^
+        version: link:../agent-modules/system-reminder
       '@earendil-works/pi-agent-core':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/agent
@@ -625,57 +676,6 @@ importers:
       '@earendil-works/pi-coding-agent':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/coding-agent
-      '@mavis/agent-core':
-        specifier: workspace:*
-        version: link:../agent-core
-      '@mavis/agent-extension':
-        specifier: workspace:^
-        version: link:../agent-extension
-      '@mavis/agent-runtime':
-        specifier: workspace:*
-        version: link:../agent-runtime
-      '@mavis/agent-tools':
-        specifier: workspace:*
-        version: link:../agent-tools
-      '@mavis/config':
-        specifier: workspace:*
-        version: link:../config
-      '@mavis/context-manager':
-        specifier: workspace:^
-        version: link:../agent-modules/context-manager
-      '@mavis/conversation-contract':
-        specifier: workspace:*
-        version: link:../agent-modules/conversation-contract
-      '@mavis/goal':
-        specifier: workspace:^
-        version: link:../agent-modules/goal
-      '@mavis/local-runtime':
-        specifier: workspace:*
-        version: link:../local-runtime
-      '@mavis/mcp':
-        specifier: workspace:^
-        version: link:../agent-modules/mcp
-      '@mavis/permission':
-        specifier: workspace:^
-        version: link:../agent-modules/permission
-      '@mavis/plugin-hooks':
-        specifier: workspace:^
-        version: link:../agent-modules/plugin-hooks
-      '@mavis/protocol':
-        specifier: workspace:*
-        version: link:../protocol
-      '@mavis/session-report':
-        specifier: workspace:^
-        version: link:../agent-modules/session-report
-      '@mavis/shared':
-        specifier: workspace:^
-        version: link:../shared
-      '@mavis/system-reminder':
-        specifier: workspace:^
-        version: link:../agent-modules/system-reminder
-      '@minimax/mcode-sandbox-runtime':
-        specifier: workspace:*
-        version: link:../../third_party/sandbox-runtime
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.52
@@ -737,7 +737,7 @@ importers:
 
   packages/mcode-tools-host:
     dependencies:
-      '@mavis/oauth-lease-protocol':
+      '@bari/oauth-lease-protocol':
         specifier: workspace:*
         version: link:../oauth-lease-protocol
 
@@ -778,33 +778,33 @@ importers:
       '@agentclientprotocol/sdk':
         specifier: 1.3.0
         version: 1.3.0(zod@4.6.2)
+      '@bari/agent-tools':
+        specifier: workspace:^
+        version: link:../agent-tools
+      '@bari/browser-core':
+        specifier: workspace:^
+        version: link:../browser-core
+      '@bari/config':
+        specifier: workspace:^
+        version: link:../config
+      '@bari/local-runtime-v2':
+        specifier: workspace:*
+        version: link:../local-runtime-v2
+      '@bari/mcode-tools-host':
+        specifier: workspace:*
+        version: link:../mcode-tools-host
+      '@bari/oauth-core':
+        specifier: workspace:*
+        version: link:../oauth-core
+      '@bari/oauth-lease-protocol':
+        specifier: workspace:*
+        version: link:../oauth-lease-protocol
+      '@bari/shared':
+        specifier: workspace:^
+        version: link:../shared
       '@earendil-works/pi-coding-agent':
         specifier: workspace:*
         version: link:../../third_party/pi-mono/packages/coding-agent
-      '@mavis/agent-tools':
-        specifier: workspace:^
-        version: link:../agent-tools
-      '@mavis/browser-core':
-        specifier: workspace:^
-        version: link:../browser-core
-      '@mavis/config':
-        specifier: workspace:^
-        version: link:../config
-      '@mavis/local-runtime-v2':
-        specifier: workspace:*
-        version: link:../local-runtime-v2
-      '@mavis/mcode-tools-host':
-        specifier: workspace:*
-        version: link:../mcode-tools-host
-      '@mavis/oauth-core':
-        specifier: workspace:*
-        version: link:../oauth-core
-      '@mavis/oauth-lease-protocol':
-        specifier: workspace:*
-        version: link:../oauth-lease-protocol
-      '@mavis/shared':
-        specifier: workspace:^
-        version: link:../shared
       ajv:
         specifier: 8.18.0
         version: 8.18.0

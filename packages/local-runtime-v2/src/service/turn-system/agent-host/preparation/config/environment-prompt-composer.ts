@@ -1,4 +1,4 @@
-import { getRuntimeRegion } from '@mavis/config';
+import { getRuntimeRegion } from '@bari/config';
 import type { LocalConversationRuntimeConfig } from '../../../../model-system/index.js';
 import { ENVIRONMENT_RULES } from '../prompt-blocks.js';
 import { resolveRuntimeLocale } from '../static-prompt-reader.js';

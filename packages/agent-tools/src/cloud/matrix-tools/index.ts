@@ -14,8 +14,8 @@
  * are applied during Map assembly, not here.
  */
 
-import type { IModelCapabilities } from '@mavis/protocol';
-import { toRuntimeTool, type RuntimeTool } from '@mavis/agent-core/tools';
+import type { IModelCapabilities } from '@bari/protocol';
+import { toRuntimeTool, type RuntimeTool } from '@bari/agent-core/tools';
 import type { TSchema } from '@sinclair/typebox';
 
 import type {

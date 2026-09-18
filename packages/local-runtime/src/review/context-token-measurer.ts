@@ -1,4 +1,4 @@
-import type { PiBeforeLlmCallHookInput } from '@mavis/agent-core/pi-turn-runner';
+import type { PiBeforeLlmCallHookInput } from '@bari/agent-core/pi-turn-runner';
 
 import { messagesContainImageData } from '../context/image-detection.js';
 import type { RemoteTokenCounter } from '../context/remote-token-counter.js';

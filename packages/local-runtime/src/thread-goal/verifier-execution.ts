@@ -8,9 +8,9 @@ import {
   type VerificationDispatchFailureCode,
   type VerificationTraceRef,
   type VerificationUsage,
-} from '@mavis/goal';
+} from '@bari/goal';
 
-import { stripModelVerdictCandidates, type LocalTaskRunResult } from '@mavis/agent-tools/desktop';
+import { stripModelVerdictCandidates, type LocalTaskRunResult } from '@bari/agent-tools/desktop';
 
 import type { LocalTaskRunnerHostWithSessionLookup } from '../api/local-task-host.js';
 import { runForegroundLocalTask } from '../api/local-task-runner.js';

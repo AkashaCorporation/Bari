@@ -1,5 +1,5 @@
 import type { Api, Model } from '@earendil-works/pi-ai';
-import { isFirstPartyMinimaxMessagesRoute } from '@mavis/config';
+import { isFirstPartyMinimaxMessagesRoute } from '@bari/config';
 
 export function resolveLocalModelCompatibility(input: {
   api: Api;

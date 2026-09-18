@@ -1,4 +1,4 @@
-import type { ConversationSteerResult } from '@mavis/conversation-contract';
+import type { ConversationSteerResult } from '@bari/conversation-contract';
 
 import type { LocalRuntimeApiHostOptions } from './host-helpers.js';
 

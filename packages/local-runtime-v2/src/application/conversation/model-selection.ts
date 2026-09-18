@@ -1,4 +1,4 @@
-import type { ModelSelectionInput } from '@mavis/protocol/local';
+import type { ModelSelectionInput } from '@bari/protocol/local';
 import {
   normalizeModelSelection,
   type UserModelSelection,

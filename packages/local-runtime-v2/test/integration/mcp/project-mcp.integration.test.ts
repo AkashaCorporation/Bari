@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createServer } from "node:http";
 import { afterEach, expect, it, vi } from "vitest";
-import { McpConnectionPool } from "@mavis/mcp/runtime/connection-pool";
+import { McpConnectionPool } from "@bari/mcp/runtime/connection-pool";
 import { LocalMcpService } from "../../../src/service/mcp/index.js";
 import { LocalMcpPublicFacade } from "../../../src/service/mcp/tools/public-facade.js";
 

@@ -9,7 +9,7 @@ import type {
   GetSessionRewindPreviewResult as GetSessionRewindPreviewResp,
   RewindSessionInput as RewindSessionReq,
   RewindSessionResult as RewindSessionResp,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 import type { SessionRecord } from "../../service/session-system/index.js";
 import type { ApplicationContext } from "../context.js";
 import { ApplicationError } from "../conversation/errors.js";

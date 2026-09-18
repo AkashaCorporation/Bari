@@ -1,5 +1,5 @@
-import { RespDataType, ToolCallStatus } from '@mavis/agent-core/protocol/agent-message';
-import { RuntimeEventStatus, RuntimeEventType, type IRuntimeEvent } from '@mavis/protocol';
+import { RespDataType, ToolCallStatus } from '@bari/agent-core/protocol/agent-message';
+import { RuntimeEventStatus, RuntimeEventType, type IRuntimeEvent } from '@bari/protocol';
 
 import type { LocalRuntimeTurnRuntimeOutcome } from '../execution/executor.js';
 

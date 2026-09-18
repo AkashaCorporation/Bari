@@ -1,4 +1,4 @@
-import { KeyedOperationLane, type ChannelRoutingMode } from '@mavis/shared';
+import { KeyedOperationLane, type ChannelRoutingMode } from '@bari/shared';
 
 import type {
   LocalChannelBinding,

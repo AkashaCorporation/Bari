@@ -1,4 +1,4 @@
-import { type ThreadGoalState, type ThreadGoalWaitReason } from '@mavis/goal';
+import { type ThreadGoalState, type ThreadGoalWaitReason } from '@bari/goal';
 
 import { runInImmediateTransaction, type DatabaseLike } from '../persistence/db.js';
 import { rowToThreadGoalState, type ThreadGoalDbRow } from './store-row.js';

@@ -1,4 +1,4 @@
-import type { RuntimeTool } from '@mavis/agent-core/tools';
+import type { RuntimeTool } from '@bari/agent-core/tools';
 import {
   buildOrReuseIndex,
   createMcpInvokeTool,
@@ -6,7 +6,7 @@ import {
   type McpDisclosureOptions,
   type McpDisclosurePlan,
   type McpModelIdentity,
-} from '@mavis/agent-tools';
+} from '@bari/agent-tools';
 
 import type { DesktopTurnCapabilityView } from '../runtime/desktop-turn-capabilities.js';
 

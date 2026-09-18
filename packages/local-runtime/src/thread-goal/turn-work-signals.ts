@@ -1,4 +1,4 @@
-import type { ThreadGoalToolActivity } from '@mavis/goal';
+import type { ThreadGoalToolActivity } from '@bari/goal';
 
 import type { BoundGoalTurnKind } from './turn-context.js';
 import type { ThreadGoalSettlementInput } from './verification-context.js';

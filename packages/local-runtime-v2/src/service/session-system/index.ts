@@ -9,7 +9,7 @@ export * from './diffs/index.js';
 export * from './projects/index.js';
 export * from './messages/index.js';
 export * from './files/index.js';
-export * from '@mavis/session-report';
+export * from '@bari/session-report';
 export * from './queue/index.js';
 export * from './stream/index.js';
 export {

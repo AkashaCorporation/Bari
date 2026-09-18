@@ -4,7 +4,7 @@ import {
   type ThreadGoalDecisionResult,
   type ThreadGoalDecisionStaleReason,
   type ThreadGoalState,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 /**
  * The staleness predicate for everything bound to a `GoalTurnBinding`.

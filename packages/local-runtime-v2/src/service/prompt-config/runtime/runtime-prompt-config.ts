@@ -1,9 +1,9 @@
-import { getRuntimeBuildEnv, getRuntimeRegion } from '@mavis/config';
+import { getRuntimeBuildEnv, getRuntimeRegion } from '@bari/config';
 import {
   BoundedInternalTurnPromptReadRegistry,
   type InternalTurnPromptReadRegistry,
   type PromptSnapshotSource,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 
 import type { PromptFileReader } from '../contracts.js';
 import { initializeManagedDesktopPromptConfig } from '../initialize.js';

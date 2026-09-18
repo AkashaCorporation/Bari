@@ -3,8 +3,8 @@ import {
   isAgentBuiltinToolEnabled,
   type AgentBuiltinSkillId,
   type ResolvedAgentCapabilities,
-} from '@mavis/config';
-import { isCanonicalSubagentRole } from '@mavis/agent-tools/desktop/subagent-roles';
+} from '@bari/config';
+import { isCanonicalSubagentRole } from '@bari/agent-tools/desktop/subagent-roles';
 
 import { CU_DESKTOP_SKILL_NAME } from '../cu/gate.js';
 

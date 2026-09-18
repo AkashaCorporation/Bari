@@ -1,7 +1,7 @@
 import type {
   ConversationChannelContext,
   ConversationCommittedMessage,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 
 import type { LocalChannelRunner } from '../channels/runner.js';
 import { channelContextFromMessageContext } from './channel-context.js';

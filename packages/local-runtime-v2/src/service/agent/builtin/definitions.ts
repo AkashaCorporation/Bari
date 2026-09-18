@@ -2,7 +2,7 @@ import {
   resolveAgentCapabilities,
   type AgentCapabilityConfig,
   type ResolvedAgentCapabilities,
-} from '@mavis/config';
+} from '@bari/config';
 
 import type {
   AgentAppMode,
@@ -11,7 +11,7 @@ import type {
   AgentPromptMode,
   AgentPromptSurface,
 } from '../contracts.js';
-import type { PromptReadScope } from '@mavis/agent-runtime';
+import type { PromptReadScope } from '@bari/agent-runtime';
 import type { PromptReadContext } from '../../prompt-config/index.js';
 
 export type BuiltinPromptReadScope = PromptReadContext | PromptReadScope;

@@ -2,7 +2,7 @@ import {
   ConversationTurnRejectedError,
   type ConversationMessageInput,
   type RuntimeConversation,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 
 import { isOwnedQuestionnaireRequest } from './owned-action-lifecycle.js';
 import type { QuestionnaireRequestRecord } from './store.js';

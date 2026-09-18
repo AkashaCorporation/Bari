@@ -1,4 +1,4 @@
-import type { ReminderEmission } from '@mavis/agent-runtime';
+import type { ReminderEmission } from '@bari/agent-runtime';
 
 import { CONTEXT_USAGE_PROMPT_KINDS } from '../preparation/contracts.js';
 import type { LocalContextUsagePromptRange } from './contracts.js';

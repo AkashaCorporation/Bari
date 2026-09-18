@@ -21,12 +21,12 @@ import {
   type AgentMessage as BridgeAgentMessage,
   type MessageQueuePort,
   type SessionLifecyclePort,
-} from '@mavis/cron';
+} from '@bari/cron';
 import {
   MsgType,
   RespDataType,
   Role as AgentMessageRole,
-} from '@mavis/agent-core/protocol/agent-message';
+} from '@bari/agent-core/protocol/agent-message';
 import { Cron } from 'croner';
 
 import type { LocalApiAgentRoutes } from '../api/routes/agents.js';

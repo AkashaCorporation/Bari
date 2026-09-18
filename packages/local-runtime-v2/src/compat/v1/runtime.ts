@@ -1,7 +1,7 @@
 import type {
   InternalTurnPromptReadRegistry,
   PromptSnapshotSource,
-} from "@mavis/agent-runtime";
+} from "@bari/agent-runtime";
 import {
   buildCompressedModelImageFromBuffer,
   closeAgentDb,
@@ -27,12 +27,12 @@ import {
   type QuestionnaireRequestAdmission,
   type CreateLocalRuntimeHostOptions as V1CreateLocalRuntimeHostOptions,
   type LocalRuntimeProductHostOptions as V1LocalRuntimeProductHostOptions,
-} from "@mavis/local-runtime";
-import type { AgentReferenceResolver } from "@mavis/shared";
+} from "@bari/local-runtime";
+import type { AgentReferenceResolver } from "@bari/shared";
 import type {
   GlobalEventInput,
   GlobalThreadGoal,
-} from "@mavis/shared/global-events";
+} from "@bari/shared/global-events";
 import type {
   InitializeMcpServiceOptions,
   McpRuntimeCapability,

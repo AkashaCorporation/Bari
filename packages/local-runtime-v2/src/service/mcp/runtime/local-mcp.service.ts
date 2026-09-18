@@ -1,8 +1,8 @@
 import { ProjectMcpRuntime } from '../project-mcp.service.js';
 import { SessionMcpServers } from './session-servers.js';
 import { projectNativeTools, reserveConfiguredServerNames } from './native-tool-projection.js';
-import { McpNameRegistry } from '@mavis/mcp';
-import type { RuntimeTool, ToolResult } from '@mavis/agent-core/tools';
+import { McpNameRegistry } from '@bari/mcp';
+import type { RuntimeTool, ToolResult } from '@bari/agent-core/tools';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { LocalMavisMcpServiceAdapter } from '../tools/local-mavis-adapter.js';
@@ -27,9 +27,9 @@ import {
   withConfiguredConnectionTimeout,
 } from './settings-config.js';
 
-import type { McpServerLookup } from '@mavis/mcp/runtime/connection-pool';
-import type { McpConnectionTokenOverrides, ResolvedMcpServer } from '@mavis/mcp/runtime/types';
-import { MCP_DEFAULTS } from '@mavis/mcp/runtime/types';
+import type { McpServerLookup } from '@bari/mcp/runtime/connection-pool';
+import type { McpConnectionTokenOverrides, ResolvedMcpServer } from '@bari/mcp/runtime/types';
+import { MCP_DEFAULTS } from '@bari/mcp/runtime/types';
 import {
   buildBuiltinMatrixServerConfig,
   buildBuiltinMatrixTokenOverrides,

@@ -627,7 +627,9 @@ function readPendingUpdateFile(file: string): {
     typeof value.activeModulesRoot !== 'string' ||
     typeof value.stagedModulesRoot !== 'string' ||
     typeof value.backupModulesRoot !== 'string' ||
-    (value.packageName !== '@minimax/code' && value.packageName !== '@minimax-ai/code') ||
+    (value.packageName !== '@bari/code' &&
+      value.packageName !== '@minimax/code' &&
+      value.packageName !== '@minimax-ai/code') ||
     typeof value.expectedVersion !== 'string' ||
     !Array.isArray(value.launchers) ||
     !value.launchers.every(

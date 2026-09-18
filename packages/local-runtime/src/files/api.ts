@@ -16,8 +16,8 @@ import {
 } from 'node:path';
 import { promisify, TextDecoder } from 'node:util';
 import { Readable } from 'node:stream';
-import { getWorkspaceImagePreviewMimeType } from '@mavis/shared/media-asset-meta';
-import { getDataDir } from '@mavis/config';
+import { getWorkspaceImagePreviewMimeType } from '@bari/shared/media-asset-meta';
+import { getDataDir } from '@bari/config';
 import { LocalReviewLinkStore } from '../review-link/store.js';
 import { generateDefaultWorktreeBranch } from '../worktrees/branch.js';
 import { IdeLauncher, IdeLauncherError } from '../ide/launcher.js';

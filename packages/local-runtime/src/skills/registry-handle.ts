@@ -3,7 +3,7 @@ import {
   type SkillRegistry,
   type SkillRegistryWatcher,
   type SkillSourceRoot,
-} from '@mavis/skills';
+} from '@bari/skills';
 
 export interface RegistryHandle {
   registryPromise: Promise<SkillRegistry>;

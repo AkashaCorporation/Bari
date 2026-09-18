@@ -1,5 +1,5 @@
-import type { PiEventWriter } from "@mavis/agent-core/pi-turn-runner";
-import type { RuntimeTool } from "@mavis/agent-core/tools";
+import type { PiEventWriter } from "@bari/agent-core/pi-turn-runner";
+import type { RuntimeTool } from "@bari/agent-core/tools";
 import {
   buildLocalToolRegistry,
   LocalTodoWriteToolDef,
@@ -19,14 +19,14 @@ import {
   type LocalWebFetchAdapter,
   type LocalWebSearchAdapter,
   WebSearchToolDef,
-} from "@mavis/agent-tools/desktop";
-import { MatrixWebSearchToolDef } from "@mavis/agent-tools";
+} from "@bari/agent-tools/desktop";
+import { MatrixWebSearchToolDef } from "@bari/agent-tools";
 import {
   resolveAgentCapabilities,
   type AgentBuiltinMcpToolId,
   type AgentBuiltinSkillId,
   type ResolvedAgentCapabilities,
-} from "@mavis/config";
+} from "@bari/config";
 import { resolveFeatureAwareBuiltinSkillNames } from "../agent/feature-owned-skills.js";
 import type { ModuleMetricsReporter } from "../common/metrics.js";
 import { CU_DESKTOP_SKILL_NAME } from "../cu/gate.js";

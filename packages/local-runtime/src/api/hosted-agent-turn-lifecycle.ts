@@ -1,4 +1,4 @@
-import type { ThreadGoalBudgetCheckResult, ThreadGoalFailureClass } from '@mavis/goal';
+import type { ThreadGoalBudgetCheckResult, ThreadGoalFailureClass } from '@bari/goal';
 
 export interface HostedTurnLifecycleInput {
   readonly sessionId: string;

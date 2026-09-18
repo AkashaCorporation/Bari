@@ -1,7 +1,7 @@
-import type { RuntimeTool } from '@mavis/agent-core/tools';
-import type { ModelContextAssemblyCtx } from '@mavis/agent-runtime';
-import type { IModelCapabilities } from '@mavis/protocol';
-import type { ResolvedAgentCapabilities } from '@mavis/config';
+import type { RuntimeTool } from '@bari/agent-core/tools';
+import type { ModelContextAssemblyCtx } from '@bari/agent-runtime';
+import type { IModelCapabilities } from '@bari/protocol';
+import type { ResolvedAgentCapabilities } from '@bari/config';
 import type { LocalTurnAgentProfileFacts } from './local-turn-tool-catalog.js';
 import type { AgentHostTurnCapabilityView } from './turn-capability-lifecycle.js';
 

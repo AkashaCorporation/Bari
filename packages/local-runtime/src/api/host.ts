@@ -1,21 +1,21 @@
 import {
   CloudSessionReader,
   managedBackendRoutingHeaders,
-} from "@mavis/agent-tools/desktop";
+} from "@bari/agent-tools/desktop";
 import type { AgentMessage as PiAgentMessage } from "@earendil-works/pi-agent-core";
 import type {
   InternalTurnPromptReadRegistry,
   PromptSnapshotSource,
-} from "@mavis/agent-core";
+} from "@bari/agent-core";
 import type {
   PiLLMRequestFailureHook,
   PiLLMRequestObserver,
-} from "@mavis/agent-core/pi-turn-runner";
-import type { AgentMessage } from "@mavis/agent-core/protocol/agent-message";
-import { getConfig } from "@mavis/config";
-import type { RuntimeConversation } from "@mavis/conversation-contract";
-import type { CronStorePort } from "@mavis/cron";
-import type { GlobalEventInput } from "@mavis/shared/global-events";
+} from "@bari/agent-core/pi-turn-runner";
+import type { AgentMessage } from "@bari/agent-core/protocol/agent-message";
+import { getConfig } from "@bari/config";
+import type { RuntimeConversation } from "@bari/conversation-contract";
+import type { CronStorePort } from "@bari/cron";
+import type { GlobalEventInput } from "@bari/shared/global-events";
 import { join } from "node:path";
 import type { AgentReferenceResolver } from "../agent/port.js";
 import {

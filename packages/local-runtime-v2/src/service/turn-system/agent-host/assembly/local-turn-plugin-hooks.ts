@@ -4,9 +4,9 @@ import {
   PluginHookCoordinator,
   PluginHookRunner,
   renderPluginHookRejectionReminder,
-} from '@mavis/plugin-hooks';
-import { buildRuntimeWarningEvent } from '@mavis/agent-core/event-bridge';
-import type { PiEventWriter, TurnEventReporter } from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/plugin-hooks';
+import { buildRuntimeWarningEvent } from '@bari/agent-core/event-bridge';
+import type { PiEventWriter, TurnEventReporter } from '@bari/agent-core/pi-turn-runner';
 import type {
   PluginHookAdmissionTransaction,
   PluginHookCommandHandler,
@@ -14,7 +14,7 @@ import type {
   PluginHookEventName,
   PluginHookRunResult,
   PluginHookSessionEndFence,
-} from '@mavis/plugin-hooks';
+} from '@bari/plugin-hooks';
 
 import type { AgentExecutionSnapshot } from '../preparation/contracts.js';
 import type { LocalTurnExecutionInput } from '../runner/contracts.js';

@@ -1,4 +1,4 @@
-import { DeferredRuntimeConversation } from "@mavis/conversation-contract";
+import { DeferredRuntimeConversation } from "@bari/conversation-contract";
 import {
   LocalQuestionnaireService,
   createDeferredLocalAgentRuntimePort,
@@ -8,8 +8,8 @@ import {
   resolveAgentBashEnvPolicy,
   type DeferredLocalAgentRuntimePort,
   type CreatedLocalRuntimeHost as V1CreatedLocalRuntimeHost,
-} from "@mavis/local-runtime";
-import { logger } from "@mavis/shared/local-runtime-logging";
+} from "@bari/local-runtime";
+import { logger } from "@bari/shared/local-runtime-logging";
 
 import {
   createBackgroundRuntime,

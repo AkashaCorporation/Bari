@@ -11,7 +11,7 @@ import type {
   ListAgentsResult as ListAgentsResp,
   UpdateAgentInput as UpdateAgentReq,
   UpdateAgentResult as UpdateAgentResp,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 import {
   AgentServiceError,
   type AgentConfiguredDefinition,

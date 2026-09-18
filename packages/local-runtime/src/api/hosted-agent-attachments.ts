@@ -1,6 +1,6 @@
 import { basename, extname } from 'node:path';
 
-import type { MultimodalAttachmentCapabilities } from '@mavis/agent-tools';
+import type { MultimodalAttachmentCapabilities } from '@bari/agent-tools';
 
 import {
   discardLocalAssetRegistrations,

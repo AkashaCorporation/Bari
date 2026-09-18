@@ -1,4 +1,4 @@
-import type { MiniAppSurfaceSummary } from '@mavis/shared/miniapp-surface';
+import type { MiniAppSurfaceSummary } from '@bari/shared/miniapp-surface';
 
 import {
   miniAppBusyReason,

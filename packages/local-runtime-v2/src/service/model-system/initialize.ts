@@ -4,7 +4,7 @@ import {
   removeLocalProviderConfig,
   updateLocalByokConfig,
   updateLocalModelSelection,
-} from '@mavis/config';
+} from '@bari/config';
 
 import { LocalModelCache } from './catalog/model-cache.js';
 import { ProviderPresetCatalog } from './catalog/provider-presets/provider-presets.service.js';

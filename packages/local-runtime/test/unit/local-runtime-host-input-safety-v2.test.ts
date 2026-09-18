@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
-import { RuntimeEventStatus, RuntimeEventType, type IRuntimeEvent } from '@mavis/protocol';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
+import { RuntimeEventStatus, RuntimeEventType, type IRuntimeEvent } from '@bari/protocol';
 import { LocalRuntimeHost, type LocalTurnRunner } from '../../src/runtime/host.js';
 import { OUTPUT_REVISION_INSTRUCTION } from '../../src/runtime/output-safety-policy.js';
 

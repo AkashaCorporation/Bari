@@ -1,4 +1,4 @@
-import { withOpenCodeGoHeaders, withOpenRouterAttributionHeaders } from '@mavis/shared';
+import { withOpenCodeGoHeaders, withOpenRouterAttributionHeaders } from '@bari/shared';
 
 export type ModelProviderApi = 'anthropic-messages' | 'openai-completions' | 'openai-responses';
 

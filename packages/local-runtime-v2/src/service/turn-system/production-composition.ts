@@ -4,22 +4,22 @@ import type {
   AgentExtension,
   InternalTurnPromptReadRegistry,
   PromptSnapshotSource,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 import {
   sessionReportExtension,
   toolOutputBudgetExtension,
   type ToolOutputArtifactInput,
-} from '@mavis/agent-extension';
-import type { LLMRetryOptions } from '@mavis/agent-core/pi-turn-runner';
-import { describeLocalBrowserToolInput } from '@mavis/agent-tools/desktop';
-import type { IAgentConfig } from '@mavis/protocol';
-import type { GlobalEventInput } from '@mavis/shared/global-events';
+} from '@bari/agent-extension';
+import type { LLMRetryOptions } from '@bari/agent-core/pi-turn-runner';
+import { describeLocalBrowserToolInput } from '@bari/agent-tools/desktop';
+import type { IAgentConfig } from '@bari/protocol';
+import type { GlobalEventInput } from '@bari/shared/global-events';
 import {
   TOOL_RESULT_COMPACTION_DEFAULTS,
   parseToolResultCompactionConfig,
   type ResolvedAgentCapabilities,
   type RunawayGuardOverride,
-} from '@mavis/config';
+} from '@bari/config';
 import type { AppDb } from '../../infra/db/client.js';
 
 import type { ContentSafetyService } from '../content-safety/index.js';

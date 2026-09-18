@@ -1,5 +1,5 @@
-import type { AgentExtension, LlmCallPreparedHandler } from '@mavis/agent-runtime';
-import type { SessionLlmCallReportCapability } from '@mavis/session-report';
+import type { AgentExtension, LlmCallPreparedHandler } from '@bari/agent-runtime';
+import type { SessionLlmCallReportCapability } from '@bari/session-report';
 
 export interface SessionReportExtensionOptions {
   readonly reports: Pick<SessionLlmCallReportCapability, 'writeCurrent'>;

@@ -12,7 +12,7 @@ import {
 import { arch, platform } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 
-import type { MavisBuildEnv, MavisRegion } from '@mavis/config';
+import type { MavisBuildEnv, MavisRegion } from '@bari/config';
 
 export type TuiIncidentPhase = 'startup' | 'runtime' | 'shutdown';
 export type TuiIncidentSeverity = 'fatal' | 'error' | 'warning';

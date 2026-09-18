@@ -10,7 +10,7 @@
  * The ONLY adaptation vs main is the import source. main imports its `ToolCall`
  * type + `ToolCallStatus` enum from `../common/agent-protocol.js`; on this
  * branch the channel collector operates on `RespData` frames whose `tool_calls`
- * are typed as `ToolCall` from `@mavis/agent-core/protocol/agent-message`. That
+ * are typed as `ToolCall` from `@bari/agent-core/protocol/agent-message`. That
  * shape is identical (same fields, same `ToolCallStatus.Finished` / `.Failed`
  * casing — `ToolCallStatus` is a const object `{ Start:1, Finished:2,
  * Failed:3 }` there), so the body is byte-for-byte.
@@ -18,8 +18,8 @@
  * Kept in a separate file so `local-channel-runner.ts` stays under the
  * 2000-line source-file size cap.
  */
-import { parseMediaTags, placeholderMediaTags } from '@mavis/shared';
-import { ToolCallStatus, type ToolCall } from '@mavis/agent-core/protocol/agent-message';
+import { parseMediaTags, placeholderMediaTags } from '@bari/shared';
+import { ToolCallStatus, type ToolCall } from '@bari/agent-core/protocol/agent-message';
 
 const STRUCTURED_TAG_START_RE = /<(media|genui|deliver-assets)\b[^>]*(?:>|$)/giu;
 

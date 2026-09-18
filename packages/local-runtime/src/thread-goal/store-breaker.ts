@@ -4,7 +4,7 @@ import type {
   ThreadGoalBreakerResult,
   ThreadGoalStatus,
   ThreadGoalStatusReason,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import type { DatabaseLike } from '../persistence/db.js';
 import { rowToThreadGoalState, type ThreadGoalDbRow } from './store-row.js';

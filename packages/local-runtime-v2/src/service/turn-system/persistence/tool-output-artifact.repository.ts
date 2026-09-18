@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 import { link, lstat, mkdir, open, realpath, unlink } from 'node:fs/promises';
 import { isAbsolute, join, relative } from 'node:path';
 
-import { READ_MAX_LINE_CHARS } from '@mavis/agent-tools/read-contract';
+import { READ_MAX_LINE_CHARS } from '@bari/agent-tools/read-contract';
 
 const TOOL_OUTPUT_DIRECTORY = 'tool-outputs';
 // A worst-case JSON escape uses six characters (for example, "\u0000").

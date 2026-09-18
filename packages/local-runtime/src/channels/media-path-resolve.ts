@@ -22,7 +22,7 @@
 
 import { isAbsolute, join } from 'node:path';
 
-import type { OutboundMediaRef } from '@mavis/shared';
+import type { OutboundMediaRef } from '@bari/shared';
 
 export function rebaseMediaPath(
   ref: OutboundMediaRef,

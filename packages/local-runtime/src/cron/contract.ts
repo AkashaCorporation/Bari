@@ -3,7 +3,7 @@
  *
  * Bridges the IDL-generated DesktopService cron contract (flat structs from
  * `matrix/api_common/cron.thrift`, addressed by cron_id) onto the internal
- * `@mavis/cron` engine model (tagged-union `CronConfig.session`, `disabled`
+ * `@bari/cron` engine model (tagged-union `CronConfig.session`, `disabled`
  * polarity). Kept free of any HTTP `Response` / Hono coupling so both the
  * generated DesktopService methods and unit tests can reuse the exact same
  * mapping + validation logic without duplication.
@@ -24,13 +24,13 @@ import type {
   CronConfigUpdate,
   CronTaskState,
   SessionConfig,
-} from "@mavis/cron";
+} from "@bari/cron";
 import type {
   CreateCronInput as CreateCronInput,
   CronSessionConfig,
   CronTask,
   UpdateCronInput as UpdateCronInput,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 const CRON_NAME_RE = /^[^\s/\\:*?"<>|]+$/;
 const ACTIVE_HOURS_RE = /^\d{2}:\d{2}$/;

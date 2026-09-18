@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import fs, { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { getConfig, getConfigPath, MINIMAX_API_MODEL_CATALOG, resetConfig } from '@mavis/config';
+import { getConfig, getConfigPath, MINIMAX_API_MODEL_CATALOG, resetConfig } from '@bari/config';
 import yaml from 'js-yaml';
 import lockfile from 'proper-lockfile';
 

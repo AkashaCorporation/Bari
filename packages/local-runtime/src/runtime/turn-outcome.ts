@@ -1,10 +1,10 @@
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
 import {
   ProtocolErrorCode,
   RuntimeEventStatus,
   RuntimeEventType,
   type IRuntimeEvent,
-} from '@mavis/protocol';
+} from '@bari/protocol';
 
 import { parseByokErrorStatus } from './byok-error-attribution.js';
 import { hasWaitingForUserToolResult } from './waiting-for-user.js';

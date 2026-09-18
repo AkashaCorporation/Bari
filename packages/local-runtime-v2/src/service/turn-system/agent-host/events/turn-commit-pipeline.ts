@@ -2,7 +2,7 @@ import {
   RuntimeEventStatus,
   RuntimeEventType,
   type RuntimeEvent,
-} from '@mavis/agent-core/protocol';
+} from '@bari/agent-core/protocol';
 
 import {
   readCompactionAttemptId,

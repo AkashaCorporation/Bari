@@ -25,8 +25,8 @@
  *   concurrent calls.
  */
 
-import type { RuntimeTool, ToolExecutionContext } from '@mavis/agent-core/tools';
-import type { PiTurnHooks } from '@mavis/agent-core/pi-turn-runner';
+import type { RuntimeTool, ToolExecutionContext } from '@bari/agent-core/tools';
+import type { PiTurnHooks } from '@bari/agent-core/pi-turn-runner';
 import type { TSchema } from '@sinclair/typebox';
 
 import type {

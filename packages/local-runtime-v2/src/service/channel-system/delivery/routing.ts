@@ -1,4 +1,4 @@
-import type { ConversationChannelContext } from '@mavis/conversation-contract';
+import type { ConversationChannelContext } from '@bari/conversation-contract';
 
 import type { MessageSourceRecord } from '../../session-system/index.js';
 

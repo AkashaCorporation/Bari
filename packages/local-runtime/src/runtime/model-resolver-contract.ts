@@ -1,5 +1,5 @@
-import type { LLMModelConfig } from '@mavis/agent-core/pi-turn-runner';
-import type { IAgentConfig } from '@mavis/protocol';
+import type { LLMModelConfig } from '@bari/agent-core/pi-turn-runner';
+import type { IAgentConfig } from '@bari/protocol';
 
 export interface LocalRuntimeAuthContext {
   accessToken?: string;

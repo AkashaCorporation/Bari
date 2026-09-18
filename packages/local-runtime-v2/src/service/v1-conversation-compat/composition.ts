@@ -1,4 +1,4 @@
-import type { RuntimeConversation } from '@mavis/conversation-contract';
+import type { RuntimeConversation } from '@bari/conversation-contract';
 
 import type { SessionSystemOwner } from '../session-system/index.js';
 import type { V1ConversationAttachmentRegistrationPort } from './attachments/index.js';

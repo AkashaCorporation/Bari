@@ -35,7 +35,7 @@ import {
   snapshotPermissionInput,
   validatePermissionExecutionPlan,
   type ExecutionPlan,
-} from '@mavis/permission';
+} from '@bari/permission';
 import { logger } from '../../common/logger.js';
 import type { ChannelPermissionOutboundPort } from '../../channels/permission-bridge.js';
 import type { GlobalEventPublisher } from '../../events/global-events.js';

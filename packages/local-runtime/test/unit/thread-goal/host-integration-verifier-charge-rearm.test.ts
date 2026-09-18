@@ -10,7 +10,7 @@ import {
   type TranscriptWindowReader,
   type VerificationResult,
   type VerifierPort,
-} from "@mavis/goal";
+} from "@bari/goal";
 
 import { closeLocalRuntimeDb } from "../../../src/persistence/db.js";
 import { LocalThreadGoalIntegration } from "../../../src/thread-goal/host-integration.js";

@@ -18,7 +18,7 @@ import { afterAll, describe, expect, it, vi } from "vitest";
 import {
   getSandboxConfigDefaults,
   type SandboxFilesystemPolicy,
-} from "@mavis/config";
+} from "@bari/config";
 
 import { compileSandboxEffectivePolicy } from "../effective-policy.js";
 import { resolveSandboxInvocationContext } from "../invocation-context.js";
@@ -50,14 +50,14 @@ describe("srt-macos backend version pin", () => {
         "utf8",
       ),
     ) as { dependencies?: Record<string, string> };
-    const pinned = manifest.dependencies?.["@minimax/mcode-sandbox-runtime"];
+    const pinned = manifest.dependencies?.["@bari/mcode-sandbox-runtime"];
     expect(pinned).toBe("workspace:*");
 
     const backend = createSrtMacosBackend(fakeManager());
     expect(backend.describeVersions().backendVersion).toBe("0.0.74-mcode.2");
 
     const installed = createRequire(import.meta.url)(
-      "@minimax/mcode-sandbox-runtime/package.json",
+      "@bari/mcode-sandbox-runtime/package.json",
     ) as { version?: string };
     expect(installed.version).toBe(backend.describeVersions().backendVersion);
   });

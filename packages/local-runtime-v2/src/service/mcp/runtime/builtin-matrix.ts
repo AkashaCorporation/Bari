@@ -5,16 +5,16 @@ import {
   buildMatrixMcpToolDescriptors,
   createMatrixMcpRuntime,
   getDesktopMatrixEndpoint,
-} from '@mavis/agent-tools/desktop';
-import { getRuntimeRegion } from '@mavis/config';
+} from '@bari/agent-tools/desktop';
+import { getRuntimeRegion } from '@bari/config';
 
-import type { McpConnectionTokenOverrides } from '@mavis/mcp/runtime/types';
+import type { McpConnectionTokenOverrides } from '@bari/mcp/runtime/types';
 import type {
   LocalMcpRuntimeContext,
   LocalMcpServerConfig,
   LocalMcpToolInfo,
 } from '../contracts.js';
-import { resolveV2DirectoryContract } from '@mavis/shared/local-runtime-paths';
+import { resolveV2DirectoryContract } from '@bari/shared/local-runtime-paths';
 import { getRawRuntimeBuildEnv } from './routing-context.js';
 
 export const BUILTIN_MATRIX_SERVER_NAME = 'matrix';

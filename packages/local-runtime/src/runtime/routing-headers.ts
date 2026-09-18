@@ -1,9 +1,9 @@
-import type { MavisBuildEnv } from '@mavis/config';
+import type { MavisBuildEnv } from '@bari/config';
 import {
   managedBackendRoutingHeaders as buildManagedBackendRoutingHeaders,
   normalizeManagedBackendRoutingContext,
   type ManagedBackendRoutingContext,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 export type LocalRuntimeRoutingContext = ManagedBackendRoutingContext;
 

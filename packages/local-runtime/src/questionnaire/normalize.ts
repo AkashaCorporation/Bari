@@ -13,7 +13,7 @@ import {
   type AskUserToolImageInput,
   type AskUserToolInput,
   type AskUserToolStepInput,
-} from '@mavis/shared/questionnaire';
+} from '@bari/shared/questionnaire';
 
 export class QuestionnaireNormalizationError extends Error {
   constructor(message: string) {

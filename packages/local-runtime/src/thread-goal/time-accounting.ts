@@ -1,4 +1,4 @@
-import { isTerminalStatus, type ThreadGoalState } from '@mavis/goal';
+import { isTerminalStatus, type ThreadGoalState } from '@bari/goal';
 
 import type { LocalActiveTurnTiming } from '../turns/active-turn-timing.js';
 

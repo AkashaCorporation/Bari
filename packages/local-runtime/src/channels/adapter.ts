@@ -1,8 +1,8 @@
 import type {
   AskQuestionnaireReplyPayload,
   AskQuestionnaireRequest,
-} from '@mavis/shared/questionnaire';
-import type { OutboundMediaRef } from '@mavis/shared';
+} from '@bari/shared/questionnaire';
+import type { OutboundMediaRef } from '@bari/shared';
 
 import type { ChannelPlatform } from './route-api.js';
 import type { LocalChannelContext } from './infra.js';
@@ -30,7 +30,7 @@ import type { QuestionnaireReplyOutcome } from '../questionnaire/reply-outcome.j
  * This file is intentionally type-only: it defines the contract that MR-B/C/D
  * implement against. No platform SDK is imported here.
  *
- * Media is modelled with the canonical `OutboundMediaRef` from `@mavis/shared`
+ * Media is modelled with the canonical `OutboundMediaRef` from `@bari/shared`
  * (the same value object the UI's DeliverAssetsCard and `parseMediaTags`
  * produce) so the IM outbound surface never drifts from the UI on what counts
  * as a deliverable asset. The interactive `ask_user` round-trip rides as an

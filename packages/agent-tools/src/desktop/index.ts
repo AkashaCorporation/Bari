@@ -1,5 +1,5 @@
-import { toRuntimeTool } from '@mavis/agent-core/tools';
-import type { BashEnvPolicy } from '@mavis/agent-core/bash-subprocess-env';
+import { toRuntimeTool } from '@bari/agent-core/tools';
+import type { BashEnvPolicy } from '@bari/agent-core/bash-subprocess-env';
 
 import { LocalAskUserTool } from './local-ask-user.js';
 import { LocalFeatureEnableTool } from './local-feature-enable.js';

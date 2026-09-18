@@ -5,9 +5,9 @@ import type {
   LocalMavisCronCreationSessionTarget,
   LocalMavisCronSessionTarget,
   LocalMavisCronTask,
-} from '@mavis/agent-tools/desktop';
-import type { CronStorePort } from '@mavis/cron';
-import { generateWatchCronName, parseWatchInterval } from '@mavis/shared';
+} from '@bari/agent-tools/desktop';
+import type { CronStorePort } from '@bari/cron';
+import { generateWatchCronName, parseWatchInterval } from '@bari/shared';
 
 import {
   assertCronName,

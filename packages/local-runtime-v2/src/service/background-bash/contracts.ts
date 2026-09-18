@@ -1,1 +1,1 @@
-export type { LocalBackgroundBashExecutor } from '@mavis/agent-tools/desktop';
+export type { LocalBackgroundBashExecutor } from '@bari/agent-tools/desktop';

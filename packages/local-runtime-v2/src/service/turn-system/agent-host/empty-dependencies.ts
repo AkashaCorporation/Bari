@@ -1,4 +1,4 @@
-import { createAgentRuntime } from '@mavis/agent-runtime';
+import { createAgentRuntime } from '@bari/agent-runtime';
 
 import type { AgentExecutionSnapshot, AgentHostDependencies } from './contracts.js';
 

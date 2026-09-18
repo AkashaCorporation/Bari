@@ -1,4 +1,4 @@
-import type { RuntimeConversation } from '@mavis/conversation-contract';
+import type { RuntimeConversation } from '@bari/conversation-contract';
 
 import type { SessionSystemOwner } from '../../service/session-system/index.js';
 import type { TurnSystemOwner } from '../../service/turn-system/index.js';

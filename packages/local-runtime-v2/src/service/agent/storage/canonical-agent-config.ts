@@ -3,7 +3,7 @@ import { lstat, open, readlink, realpath, stat } from 'node:fs/promises';
 import { basename, dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { TextDecoder } from 'node:util';
 
-import { isDefaultAgentAvatarMarker } from '@mavis/shared/agent-avatar';
+import { isDefaultAgentAvatarMarker } from '@bari/shared/agent-avatar';
 import yaml from 'yaml';
 
 import { logger } from '../../../infra/logging/index.js';

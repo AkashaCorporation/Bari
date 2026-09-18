@@ -1,4 +1,4 @@
-import { isContinuationStatus, type ThreadGoalState } from '@mavis/goal';
+import { isContinuationStatus, type ThreadGoalState } from '@bari/goal';
 
 import {
   shouldArmExplicitResetRearm,

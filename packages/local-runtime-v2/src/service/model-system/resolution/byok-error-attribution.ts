@@ -5,7 +5,7 @@ import {
   type AssistantMessageEvent,
   type AssistantMessageEventStream,
 } from '@earendil-works/pi-ai';
-import { classifyLLMErrorToCode, LLM_ERROR_CODES } from '@mavis/shared/llm-error-classifier';
+import { classifyLLMErrorToCode, LLM_ERROR_CODES } from '@bari/shared/llm-error-classifier';
 
 const BYOK_ERROR_PREFIX = 'BYOK upstream error';
 const MAX_ERROR_MESSAGE_LENGTH = 1_200;

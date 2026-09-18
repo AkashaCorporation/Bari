@@ -1,8 +1,8 @@
 import { createHash, randomUUID } from 'node:crypto';
 
-import type { SandboxConfig } from '@mavis/config';
-import { normalizeSandboxSettings } from '@mavis/config/sandbox-settings';
-import type { LocalSandboxInvocationIdentity } from '@mavis/agent-tools/desktop';
+import type { SandboxConfig } from '@bari/config';
+import { normalizeSandboxSettings } from '@bari/config/sandbox-settings';
+import type { LocalSandboxInvocationIdentity } from '@bari/agent-tools/desktop';
 
 import type {
   PreparedNetworkPolicy,

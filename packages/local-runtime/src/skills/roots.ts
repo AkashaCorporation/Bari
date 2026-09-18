@@ -6,8 +6,8 @@ import {
   DEFAULT_SKILLS_CONFIG,
   type ExternalSourceKindLabel,
   type SkillsConfig,
-} from '@mavis/config';
-import type { SkillSourceKind, SkillSourceRoot } from '@mavis/skills';
+} from '@bari/config';
+import type { SkillSourceKind, SkillSourceRoot } from '@bari/skills';
 
 import type { LocalRuntimeConfig } from '../config/types.js';
 import { getBuiltinAgentsDirCandidates, getBuiltinSkillsDirCandidates } from './builtin.js';

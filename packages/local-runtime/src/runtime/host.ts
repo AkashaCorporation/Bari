@@ -1,12 +1,12 @@
 import type { LocalEventWriter } from "../events/sink.js";
-import { PiTurnRunner } from "@mavis/agent-core/pi-turn-runner";
-import { RuntimeEventStatus, RuntimeEventType } from "@mavis/protocol";
+import { PiTurnRunner } from "@bari/agent-core/pi-turn-runner";
+import { RuntimeEventStatus, RuntimeEventType } from "@bari/protocol";
 import {
   buildAbortedTerminalStatusEvent,
   buildCompletedTerminalStatusEvent,
-} from "@mavis/agent-core/event-bridge";
-import { getRuntimeBuildEnv } from "@mavis/config";
-import { BpeTokenEstimator } from "@mavis/context-manager";
+} from "@bari/agent-core/event-bridge";
+import { getRuntimeBuildEnv } from "@bari/config";
+import { BpeTokenEstimator } from "@bari/context-manager";
 
 import {
   createContentSafetyChecker,

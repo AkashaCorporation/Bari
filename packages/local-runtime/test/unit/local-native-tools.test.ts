@@ -4,8 +4,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it, vi } from 'vitest';
-import { resolveAgentCapabilities } from '@mavis/config';
-import type { IRuntimeEvent } from '@mavis/protocol';
+import { resolveAgentCapabilities } from '@bari/config';
+import type { IRuntimeEvent } from '@bari/protocol';
 
 import {
   buildLocalNativeRuntimeTools,

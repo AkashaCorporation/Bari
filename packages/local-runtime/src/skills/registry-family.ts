@@ -1,4 +1,4 @@
-import { type SkillEntry, type SkillRegistry, type SkillViewEntry } from '@mavis/skills';
+import { type SkillEntry, type SkillRegistry, type SkillViewEntry } from '@bari/skills';
 
 import { isLocalBuiltinSkillEnabled } from './builtin.js';
 import {

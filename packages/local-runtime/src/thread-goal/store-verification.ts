@@ -4,8 +4,8 @@ import {
   type LastVerificationV1,
   type ThreadGoalDecisionResult,
   type ThreadGoalRecordVerificationInput,
-} from '@mavis/goal';
-import { GOAL_CONFIG_DEFAULTS } from '@mavis/config';
+} from '@bari/goal';
+import { GOAL_CONFIG_DEFAULTS } from '@bari/config';
 
 import { runInImmediateTransaction, type DatabaseLike } from '../persistence/db.js';
 import { threadGoalStaleDecision } from './binding-stale.js';

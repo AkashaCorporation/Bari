@@ -1,4 +1,4 @@
-import type { RuntimeTool, RuntimeToolSource } from '@mavis/agent-core/tools';
+import type { RuntimeTool, RuntimeToolSource } from '@bari/agent-core/tools';
 import {
   filterCanonicalBuiltinMcpEntries,
   filterCanonicalNativeToolCeiling,
@@ -11,9 +11,9 @@ import {
   renderMcpToolSearchHintBlock,
   type McpDisclosureOptions,
   type McpToolEntry,
-} from '@mavis/agent-tools';
-import { AGENT_BUILTIN_MCP_TOOL_IDS, AGENT_BUILTIN_TOOL_IDS } from '@mavis/config';
-import type { IModelCapabilities } from '@mavis/protocol';
+} from '@bari/agent-tools';
+import { AGENT_BUILTIN_MCP_TOOL_IDS, AGENT_BUILTIN_TOOL_IDS } from '@bari/config';
+import type { IModelCapabilities } from '@bari/protocol';
 import type { AgentHostTurnCapabilityView } from './turn-capability-lifecycle.js';
 import type { HostCapabilityResolver } from './host-capability/contracts.js';
 import { mergeAgentHostTurnCapabilities } from './local-turn-plugin-capabilities.js';

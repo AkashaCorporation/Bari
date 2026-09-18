@@ -25,7 +25,7 @@
  * the action block first).
  */
 
-import type { AgentMessageProtocol } from '@mavis/agent-core/protocol/agent-message';
+import type { AgentMessageProtocol } from '@bari/agent-core/protocol/agent-message';
 
 // ---------------------------------------------------------------------------
 // Constants

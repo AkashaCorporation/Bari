@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises';
 
-import type { UserMessageInput } from '@mavis/agent-core/pi-turn-runner';
+import type { UserMessageInput } from '@bari/agent-core/pi-turn-runner';
 import {
   selectMultimodalAttachments,
   type MultimodalAttachmentCapabilities,
-} from '@mavis/agent-tools';
+} from '@bari/agent-tools';
 
 export type LocalMultimodalAttachmentCapabilities = MultimodalAttachmentCapabilities;
 

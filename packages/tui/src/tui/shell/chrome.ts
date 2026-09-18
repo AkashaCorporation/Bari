@@ -1,4 +1,4 @@
-import type { TuiCustomStatusLineConfig } from '@mavis/config';
+import type { TuiCustomStatusLineConfig } from '@bari/config';
 import { formatContextWindow } from '../../application/context-window.js';
 import type { Component } from '../rendering/component.js';
 import { stripAnsi, truncateToWidth, visibleWidth } from '../rendering/text.js';

@@ -1,8 +1,8 @@
 import type {
   PiHistoryChangedHookInput,
   RunTurnInput,
-} from '@mavis/agent-core/pi-turn-runner';
-import { PluginHookTranscript } from '@mavis/agent-tools';
+} from '@bari/agent-core/pi-turn-runner';
+import { PluginHookTranscript } from '@bari/agent-tools';
 
 export interface AgentHostPluginHookTranscript {
   readonly path: string;

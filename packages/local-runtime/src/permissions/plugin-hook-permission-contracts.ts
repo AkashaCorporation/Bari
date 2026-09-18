@@ -1,4 +1,4 @@
-import type { PermissionRule } from '@mavis/permission';
+import type { PermissionRule } from '@bari/permission';
 
 export type PluginHookPermissionUpdateDestination =
   | 'session'

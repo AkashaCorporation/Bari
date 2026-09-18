@@ -1,11 +1,11 @@
-import { type LocalWebSearchAdapter, type WebSearchInput } from '@mavis/agent-tools/desktop';
+import { type LocalWebSearchAdapter, type WebSearchInput } from '@bari/agent-tools/desktop';
 import {
   callMatrixTool,
   MATRIX_TOOL_PATHS,
   MATRIX_TOOL_TIMEOUTS,
   type MatrixToolContext,
-} from '@mavis/agent-tools/matrix';
-import type { ToolResult } from '@mavis/agent-core/tools';
+} from '@bari/agent-tools/matrix';
+import type { ToolResult } from '@bari/agent-core/tools';
 
 import { LocalMatrixClient, type LocalMatrixClientOptions } from '../matrix/local-matrix-client.js';
 

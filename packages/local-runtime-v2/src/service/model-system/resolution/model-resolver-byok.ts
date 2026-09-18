@@ -1,5 +1,5 @@
 import type { Api } from '@earendil-works/pi-ai';
-import { MINIMAX_API_MODEL_CATALOG, getRuntimeRegion } from '@mavis/config';
+import { MINIMAX_API_MODEL_CATALOG, getRuntimeRegion } from '@bari/config';
 
 import type {
   LocalByokProviderConfig,

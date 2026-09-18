@@ -1,6 +1,6 @@
 import type { LocalPermissionRequest } from '../host-helpers.js';
 import type { ChannelPermissionOrigin } from '../../channels/permission-bridge.js';
-import type { PermissionRuleMatcher } from '@mavis/permission';
+import type { PermissionRuleMatcher } from '@bari/permission';
 
 export interface LocalPermissionRequestInput {
   sessionId: string;

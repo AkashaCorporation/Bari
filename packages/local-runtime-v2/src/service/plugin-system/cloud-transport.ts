@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { open } from 'node:fs/promises';
 
-import { getRuntimeRegion } from '@mavis/config';
+import { getRuntimeRegion } from '@bari/config';
 
 import { writeFileChunkFully } from './file-chunk-writer.js';
 import { PLUGIN_PACKAGE_V1_LIMITS } from './plugin/package/package-contract.js';

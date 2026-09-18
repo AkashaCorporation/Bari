@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { PiTurnHooks, PiTurnRunnerLogger } from '@mavis/agent-core/pi-turn-runner';
+import type { PiTurnHooks, PiTurnRunnerLogger } from '@bari/agent-core/pi-turn-runner';
 import {
   MsgType,
   RespDataType,
@@ -7,8 +7,8 @@ import {
   ToolCallStatus,
   type RespData,
   type ToolCall,
-} from '@mavis/agent-core/protocol/agent-message';
-import { RuntimeEventType, type RuntimeEvent } from '@mavis/agent-core/protocol';
+} from '@bari/agent-core/protocol/agent-message';
+import { RuntimeEventType, type RuntimeEvent } from '@bari/agent-core/protocol';
 
 import type { LocalRuntimeTurnRunnerInput, LocalTurnEventWriter } from '../execution/contracts.js';
 

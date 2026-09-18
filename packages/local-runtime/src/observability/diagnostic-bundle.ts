@@ -107,7 +107,7 @@ const DEFAULT_ERROR_LEVEL_REGEX = /^(?:ERROR|WARN|FATAL)(?:\s|$)/;
 /**
  * CSI escape sequences (SGR colors, cursor movement). Log files written
  * before the disk arm started stripping ANSI (see
- * `@mavis/shared/logging/structured-logger.ts`) carry colorized level
+ * `@bari/shared/logging/structured-logger.ts`) carry colorized level
  * tokens like `\x1b[31mERROR\x1b[39m` that no plain-text `errorRegex` can
  * match; scanning the stripped line keeps those historical files eligible
  * for error-context extraction during their remaining retention window.

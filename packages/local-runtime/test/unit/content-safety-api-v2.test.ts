@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { SAFETY_CHECK_V2_SCENE } from '@mavis/shared/safety-check-v2';
+import { SAFETY_CHECK_V2_SCENE } from '@bari/shared/safety-check-v2';
 import { callLocalSafetyCheckV2 } from '../../src/content-safety/api-v2.js';
 import { callSafetyApi, SAFETY_SCENE } from '../../src/content-safety/api.js';
 

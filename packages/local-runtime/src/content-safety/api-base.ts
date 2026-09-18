@@ -1,4 +1,4 @@
-import type { MavisBuildEnv, MavisRegion } from '@mavis/config';
+import type { MavisBuildEnv, MavisRegion } from '@bari/config';
 
 const SAFETY_API_BASE: Record<MavisRegion, Record<MavisBuildEnv, string>> = {
   cn: {

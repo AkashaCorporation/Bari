@@ -2,7 +2,7 @@ import { isIP } from 'node:net';
 import { mkdir, realpath } from 'node:fs/promises';
 import path from 'node:path';
 
-import type { ResolvedMcpServer, TransportConfig } from '@mavis/mcp';
+import type { ResolvedMcpServer, TransportConfig } from '@bari/mcp';
 
 import { readPluginSkill } from '../../skill/reader.js';
 import {

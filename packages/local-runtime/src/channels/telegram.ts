@@ -19,8 +19,8 @@ import type {
   ChannelFamilyMutationKind,
 } from './channel-family-mutation.js';
 import type { LocalMessageAttachment } from '../messages/input.js';
-import type { OutboundMediaRef } from '@mavis/shared';
-import type { AskQuestionnaireRequest } from '@mavis/shared/questionnaire';
+import type { OutboundMediaRef } from '@bari/shared';
+import type { AskQuestionnaireRequest } from '@bari/shared/questionnaire';
 import { prepareChannelOutboundMessage } from './outbound-message.js';
 import {
   TelegramAttachmentDownloader,

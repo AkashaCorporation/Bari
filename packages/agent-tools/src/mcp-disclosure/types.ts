@@ -1,4 +1,4 @@
-import type { RuntimeTool, RuntimeToolSource, ToolDefinition } from '@mavis/agent-core/tools';
+import type { RuntimeTool, RuntimeToolSource, ToolDefinition } from '@bari/agent-core/tools';
 
 export type McpToolSource = RuntimeToolSource;
 

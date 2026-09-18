@@ -23,7 +23,7 @@ import type {
   LocalTaskControlAdapter,
   LocalTaskOutputReadOptions,
   LocalTaskOutputReadResult,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 import { logger } from '../common/logger.js';
 import { isLocalChildWorkerSession } from '../sessions/session-policy.js';
 import type { LocalSessionRecord } from '../sessions/controller.js';

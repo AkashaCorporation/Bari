@@ -9,8 +9,8 @@ import {
   type VerificationAttempt,
   type VerificationUsage,
   type VerifierPort,
-} from '@mavis/goal';
-import { GOAL_CONFIG_DEFAULTS, resolveModelCallRoute } from '@mavis/config';
+} from '@bari/goal';
+import { GOAL_CONFIG_DEFAULTS, resolveModelCallRoute } from '@bari/config';
 import { isContextOverflow, streamSimple, type AssistantMessage } from '@earendil-works/pi-ai';
 
 import {
@@ -278,7 +278,7 @@ function routeIdentity(
 }
 
 function sameDataRoute(worker: EvaluatorRouteIdentity, evaluator: EvaluatorRouteIdentity): boolean {
-  // Keep aligned with @mavis/goal's model-port route check; this v2 seam compares two identities
+  // Keep aligned with @bari/goal's model-port route check; this v2 seam compares two identities
   // before a model port exists, so merging the helpers would weaken their distinct input contracts.
   if (worker.kind !== evaluator.kind) return false;
   return worker.kind !== 'custom_provider' && worker.kind !== 'configured_provider'

@@ -3,7 +3,7 @@ import type {
   LocalTaskAdapter,
   LocalTaskRunResult,
   LocalTaskToolInput,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 import { createSubagentFinishTelemetrySink } from '../agent/subagent-telemetry.js';
 import { createBackgroundTaskId } from '../background-task/domain.js';

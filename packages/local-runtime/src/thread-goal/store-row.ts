@@ -11,7 +11,7 @@ import {
   type ThreadGoalStatus,
   type ThreadGoalStatusReason,
   type ThreadGoalWaitReason,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import { logger } from '../common/logger.js';
 import { THREAD_GOAL_WORKER_PROPOSAL_SUMMARY_MAX_CHARS } from './store-worker-proposal.js';

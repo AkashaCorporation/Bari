@@ -3,13 +3,13 @@ import {
   validateSigninPanel,
   type ClaimSigninData,
   type SigninPanel,
-} from '@mavis/shared/daily-signin';
+} from '@bari/shared/daily-signin';
 import {
   getRuntimeBuildEnv,
   getRuntimeRegion,
   type MavisBuildEnv,
   type MavisRegion,
-} from '@mavis/config';
+} from '@bari/config';
 
 import { createPublicGatewayRequest, publicGatewayOrigin } from '../runtime/public-gateway.js';
 import type { TuiDailyCheckinGateway } from './application.js';

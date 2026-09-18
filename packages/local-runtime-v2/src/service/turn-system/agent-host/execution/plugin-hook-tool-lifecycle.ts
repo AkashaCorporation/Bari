@@ -3,9 +3,9 @@ import type {
   PiBeforeToolCallHook,
   PiToolExecutionStartHook,
   PiTurnHooks,
-} from '@mavis/agent-core/pi-turn-runner';
-import { isRuntimeToolInputValid, type RuntimeTool } from '@mavis/agent-core/tools';
-import type { PluginHookRunResult } from '@mavis/plugin-hooks';
+} from '@bari/agent-core/pi-turn-runner';
+import { isRuntimeToolInputValid, type RuntimeTool } from '@bari/agent-core/tools';
+import type { PluginHookRunResult } from '@bari/plugin-hooks';
 
 import { getBrowserHostBinding } from '../assembly/host-capability/browser.js';
 import type { HostCapabilityReferenceTarget } from '../assembly/host-capability/contracts.js';
@@ -668,7 +668,7 @@ function pluginToolProvenance(
   input: Pick<LocalTurnExecutionInput, 'pluginMcpToolOwners' | 'assembly'>,
   toolName: string,
   delegated?: DelegatedToolCall,
-): Pick<import('@mavis/plugin-hooks').PluginHookEventInput, 'toolProvenance'> | object {
+): Pick<import('@bari/plugin-hooks').PluginHookEventInput, 'toolProvenance'> | object {
   const hostOwner =
     delegated?.target.pluginName ??
     directBrowserHostBinding(input.assembly.tools, toolName)?.pluginName;

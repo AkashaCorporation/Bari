@@ -10,7 +10,7 @@ import type {
   SessionOrigin,
   SessionModelSnapshot,
 } from '../repo/contract.js';
-import type { ConversationModelThinkingSelection } from '@mavis/conversation-contract';
+import type { ConversationModelThinkingSelection } from '@bari/conversation-contract';
 import type { SessionMemoryPolicyPatch } from '../memory-policy.js';
 
 export interface SessionMutationFields {

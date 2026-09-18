@@ -1,4 +1,4 @@
-import type { RunawayGuardToolPolicy } from '@mavis/agent-extension';
+import type { RunawayGuardToolPolicy } from '@bari/agent-extension';
 
 type RunawayGuardToolStep = Parameters<NonNullable<RunawayGuardToolPolicy['projectProgress']>>[0];
 type RunawayGuardToolResult = RunawayGuardToolStep['result'];

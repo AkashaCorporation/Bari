@@ -1,5 +1,5 @@
-import { decodeCronModel } from '@mavis/shared/cron-model';
-import { createCronSessionPurpose, formatCronRunTitle } from '@mavis/shared/cron-purpose';
+import { decodeCronModel } from '@bari/shared/cron-model';
+import { createCronSessionPurpose, formatCronRunTitle } from '@bari/shared/cron-purpose';
 
 import type { SessionLifecycleService, SessionSystemOwner } from '../session-system/index.js';
 import type { TurnService } from '../turn-system/index.js';

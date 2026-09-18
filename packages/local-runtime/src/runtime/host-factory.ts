@@ -1,4 +1,4 @@
-import { getConfig, isManagedRuntime } from "@mavis/config";
+import { getConfig, isManagedRuntime } from "@bari/config";
 
 import { LocalRuntimeApiHost } from "../api/host.js";
 import { copyV2LayoutMigrationReceipt } from "../persistence/migration/v2-migration.js";

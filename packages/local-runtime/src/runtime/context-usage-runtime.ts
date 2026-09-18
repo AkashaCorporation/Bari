@@ -1,4 +1,4 @@
-import { getRuntimeBuildEnv } from '@mavis/config';
+import { getRuntimeBuildEnv } from '@bari/config';
 
 import {
   ContextUsageCalibrationCoordinator,

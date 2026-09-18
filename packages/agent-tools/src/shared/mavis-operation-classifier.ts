@@ -6,7 +6,7 @@
  * classifier therefore reuse `normalizeMavisCommand`.
  */
 
-import type { ToolOperationClassifier } from '@mavis/agent-core/tools';
+import type { ToolOperationClassifier } from '@bari/agent-core/tools';
 
 export function normalizeMavisCommand(rawCommand: string): string {
   const tokens = rawCommand.trim().split(/\s+/).filter(Boolean);

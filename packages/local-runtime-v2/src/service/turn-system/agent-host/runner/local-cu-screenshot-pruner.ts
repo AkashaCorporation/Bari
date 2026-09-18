@@ -2,7 +2,7 @@ import type {
   PiBeforeLlmCallHook,
   PiBeforeLlmCallHookDecision,
   PiBeforeLlmCallHookInput,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 
 const SCREENSHOT_TOOLS = new Set([
   'desktop_screenshot',

@@ -2,7 +2,7 @@ import {
   requireTuiAgentAccess,
   requireTuiAccountLogin,
 } from "../../src/application/login-gate.js";
-import type { CliService } from "@mavis/local-runtime-v2/cli-service";
+import type { CliService } from "@bari/local-runtime-v2/cli-service";
 import { describe, expect, it, vi } from "vitest";
 
 import { TuiRuntimeAdapter } from "../../src/runtime/adapter.js";

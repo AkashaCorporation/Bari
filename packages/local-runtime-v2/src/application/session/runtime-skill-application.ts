@@ -2,7 +2,7 @@ import type {
   ListRuntimeSkillsInput as ListRuntimeSkillsReq,
   ListRuntimeSkillsResult as ListRuntimeSkillsResp,
   SkillInfo,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 interface LocalRuntimeSkillScope {
   readonly agentName?: string;

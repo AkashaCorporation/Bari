@@ -1,4 +1,4 @@
-import type { CliSendMessageReq } from '@mavis/local-runtime-v2/cli-service';
+import type { CliSendMessageReq } from '@bari/local-runtime-v2/cli-service';
 
 import type {
   TuiActiveRunControlPort,

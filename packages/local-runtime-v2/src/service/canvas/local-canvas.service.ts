@@ -6,8 +6,8 @@ import { basename, dirname, isAbsolute, relative, resolve, sep } from 'node:path
 import {
   decodeSessionDeliverableCanvasReference,
   getCanvasAssetRelativePath,
-} from '@mavis/shared/asset-markup';
-import { supportsCanvasImageAnnotation } from '@mavis/shared/media-asset-meta';
+} from '@bari/shared/asset-markup';
+import { supportsCanvasImageAnnotation } from '@bari/shared/media-asset-meta';
 
 import { and, eq } from 'drizzle-orm';
 

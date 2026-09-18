@@ -1,5 +1,5 @@
 /**
- * `skillsExtension`: Installs `SkillRegistry` through the `@mavis/agent-runtime` extension SPI
+ * `skillsExtension`: Installs `SkillRegistry` through the `@bari/agent-runtime` extension SPI
  * (design document §4.3 → `pi.registerTool + pi.registerReminderProvider`).
  *
  * Deviation from the §4.3 table: skills' `registerTool` refers to the host-side `skill` file reader
@@ -36,13 +36,13 @@ import type {
   ModelContextAssemblyCtx,
   Reminder,
   TurnAssemblyCtx,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 import {
   renderAvailableSkillsCatalog,
   type SkillRegistry,
   type SkillRenderOptions,
   type SkillSnapshot,
-} from '@mavis/skills';
+} from '@bari/skills';
 
 export type SkillMatcher = (
   ctx: TurnAssemblyCtx,

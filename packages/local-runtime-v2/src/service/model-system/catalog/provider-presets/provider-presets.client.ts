@@ -1,5 +1,5 @@
-import { DEFAULT_MODEL_PRESETS, getRuntimePresetKey, getRuntimeRegion } from '@mavis/config';
-import { MODELS_DEV_CATALOG_SOURCE_URL, type ModelsDevRegion } from '@mavis/shared/models-dev';
+import { DEFAULT_MODEL_PRESETS, getRuntimePresetKey, getRuntimeRegion } from '@bari/config';
+import { MODELS_DEV_CATALOG_SOURCE_URL, type ModelsDevRegion } from '@bari/shared/models-dev';
 
 export const MODELS_DEV_URL = MODELS_DEV_CATALOG_SOURCE_URL;
 

@@ -1,8 +1,8 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { resolveAgentCapabilities } from '@mavis/config';
-import { isTrustedBuiltinCreationSource } from '@mavis/agent-tools/desktop/subagent-roles';
+import { resolveAgentCapabilities } from '@bari/config';
+import { isTrustedBuiltinCreationSource } from '@bari/agent-tools/desktop/subagent-roles';
 
 import type { BuiltinAgentCatalog, BuiltinRenderInput } from '../builtin/catalog.js';
 import {

@@ -1,4 +1,4 @@
-import type { AsrConfig, Config, ModelConfig, ProviderAuthMode } from '@mavis/config';
+import type { AsrConfig, Config, ModelConfig, ProviderAuthMode } from '@bari/config';
 
 type LocalModelLimit = Partial<NonNullable<ModelConfig['limit']>>;
 type LocalModelModalities = Partial<NonNullable<ModelConfig['modalities']>>;
@@ -45,14 +45,14 @@ export interface LocalProviderConfig {
 
 export type LocalModelsConfig = Record<string, LocalProviderConfig>;
 
-/** BYOK: user's own MiniMax API key (mirrors `MinimaxApiConfig` in @mavis/config). */
+/** BYOK: user's own MiniMax API key (mirrors `MinimaxApiConfig` in @bari/config). */
 export interface LocalMinimaxApiConfig {
   apiKey?: string;
   baseURL?: string;
   modelContextLimits?: Record<string, number>;
 }
 
-/** BYOK: user-created external provider (mirrors `CustomProviderConfig` in @mavis/config). */
+/** BYOK: user-created external provider (mirrors `CustomProviderConfig` in @bari/config). */
 export interface LocalCustomProviderConfig extends LocalProviderConfig {
   name?: string;
   kind?: string;
@@ -128,7 +128,7 @@ export interface LocalRuntimeConfig {
     >;
   };
   /**
-   * Not a setting: the fallbacks `@mavis/config` recorded while parsing the
+   * Not a setting: the fallbacks `@bari/config` recorded while parsing the
    * `goal` tree. Out-of-range values clamp to a safe default instead of
    * failing config load, so this is the only trace a mistyped `goal` key
    * leaves. Empty when the tree parsed clean.

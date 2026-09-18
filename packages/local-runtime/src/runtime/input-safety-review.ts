@@ -1,5 +1,5 @@
-import type { PiEventWriter } from '@mavis/agent-core/pi-turn-runner';
-import { RuntimeEventStatus, RuntimeEventType } from '@mavis/protocol';
+import type { PiEventWriter } from '@bari/agent-core/pi-turn-runner';
+import { RuntimeEventStatus, RuntimeEventType } from '@bari/protocol';
 
 /** Only terminal delivery waits for input review; approved output can still stream. */
 export function gateTerminalOnInputReview(

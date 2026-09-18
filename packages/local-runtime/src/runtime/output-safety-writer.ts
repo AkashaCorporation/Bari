@@ -1,6 +1,6 @@
-import type { PiEventWriter } from '@mavis/agent-core/pi-turn-runner';
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
-import { RuntimeEventStatus, RuntimeEventType, type IRuntimeEvent } from '@mavis/protocol';
+import type { PiEventWriter } from '@bari/agent-core/pi-turn-runner';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
+import { RuntimeEventStatus, RuntimeEventType, type IRuntimeEvent } from '@bari/protocol';
 
 import { reviewBlocks, SAFETY_SCENE, type SafetyScene } from '../content-safety/api.js';
 import {

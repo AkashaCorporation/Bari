@@ -4,7 +4,7 @@ import { and, asc, eq } from 'drizzle-orm';
 import {
   PluginInstallationPolicy,
   type PluginInstallationPolicy as PluginInstallationPolicyType,
-} from '@mavis/protocol/local';
+} from '@bari/protocol/local';
 
 import type { AppDb } from '../../../../infra/db/client.js';
 import {

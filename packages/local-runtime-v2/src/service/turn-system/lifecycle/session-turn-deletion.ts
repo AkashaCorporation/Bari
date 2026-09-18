@@ -1,4 +1,4 @@
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
 
 import type { TurnController } from '../execution/contracts.js';
 import type { TurnRepository } from '../persistence/contracts.js';

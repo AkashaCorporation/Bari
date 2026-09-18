@@ -7,11 +7,11 @@ import {
   type NetworkConfig,
   type SandboxRuntimeConfig,
   type SandboxViolationEvent,
-} from '@minimax/mcode-sandbox-runtime';
+} from '@bari/mcode-sandbox-runtime';
 import {
   __getCommandTextMapSize,
   SandboxManager,
-} from '@minimax/mcode-sandbox-runtime/dist/sandbox/sandbox-manager.js';
+} from '@bari/mcode-sandbox-runtime/dist/sandbox/sandbox-manager.js';
 
 import { SandboxError } from '../sandbox-errors.js';
 import type {
@@ -56,7 +56,7 @@ const SRT_MACOS_CAPABILITIES: SandboxBackendCapabilities = Object.freeze({
 
 /**
  * Build-time constant for the bundled SRT runtime version. It must match the exact
- * `@minimax/mcode-sandbox-runtime` pin in `packages/local-runtime-v2/package.json`;
+ * `@bari/mcode-sandbox-runtime` pin in `packages/local-runtime-v2/package.json`;
  * the srt-macos unit tests fail on drift. Reading the dependency's `package.json`
  * via `createRequire` at runtime is forbidden here: the published TUI bundle does
  * not ship that file, and the unhandled `MODULE_NOT_FOUND` fired before
@@ -228,7 +228,7 @@ function runtimeConfig(policy: SandboxEffectivePolicy): SandboxRuntimeConfig {
 /**
  * SRT `network.disabled: true` turns the whole network subsystem off: no proxy
  * startup, unrestricted seatbelt network rules, zero proxy/cert env injection.
- * The exact-pinned `@minimax/mcode-sandbox-runtime` (>= 0.0.74-mcode.2, see
+ * The exact-pinned `@bari/mcode-sandbox-runtime` (>= 0.0.74-mcode.2, see
  * `SRT_RUNTIME_VERSION`) ships `disabled` in `NetworkConfigSchema`, so schema,
  * type and runtime consume the key from the same package. Older product
  * binaries bundle an older SRT and are unaffected by this code.

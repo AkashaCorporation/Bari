@@ -1783,7 +1783,7 @@ export async function wrapCommandWithSandboxLinux(
       if (!applySeccompPrefix) {
         logForDebugging(
           "[Sandbox Linux] apply-seccomp binary not available - unix socket blocking disabled. " +
-            "Install @minimax/mcode-sandbox-runtime globally for full protection.",
+            "Install @bari/mcode-sandbox-runtime globally for full protection.",
           { level: "warn" },
         );
       } else {

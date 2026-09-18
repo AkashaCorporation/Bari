@@ -1,9 +1,9 @@
-import type { SkillEntry, SkillSourceKind } from '@mavis/skills';
+import type { SkillEntry, SkillSourceKind } from '@bari/skills';
 import {
   SkillScope,
   SkillSourceType,
   type SkillInfo,
-} from '@mavis/protocol/local';
+} from '@bari/protocol/local';
 
 import { frontmatterString } from './registry-family.js';
 import type { InstalledSkillHubMetadata } from './registry-operations.js';

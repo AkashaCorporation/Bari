@@ -33,7 +33,7 @@
 import { accessSync, chmodSync, constants, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
-import { resolveBashEnvPolicy, type BashEnvPolicy } from '@mavis/agent-core/bash-subprocess-env';
+import { resolveBashEnvPolicy, type BashEnvPolicy } from '@bari/agent-core/bash-subprocess-env';
 
 /**
  * Delegates to the sibling `../bin/mavis-trash` rather than an absolute path so

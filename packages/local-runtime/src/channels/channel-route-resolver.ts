@@ -3,7 +3,7 @@ import {
   type ChannelRoutePreviewContext,
   type SessionStrategy,
 } from './route-api.js';
-import type { ChannelRoutingMode } from '@mavis/shared';
+import type { ChannelRoutingMode } from '@bari/shared';
 import { applyClientOwnerDefault } from './client-owner-routing.js';
 import {
   buildLocalChannelInboundRequestId,

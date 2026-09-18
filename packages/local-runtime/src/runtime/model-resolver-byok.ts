@@ -4,7 +4,7 @@
 // tree path. Custom providers never consult the Pi catalog by name; missing
 // limits use the dedicated BYOK fallbacks (not the legacy 2048 default).
 import type { Api } from '@earendil-works/pi-ai';
-import { MINIMAX_API_MODEL_CATALOG } from '@mavis/config';
+import { MINIMAX_API_MODEL_CATALOG } from '@bari/config';
 
 import type {
   LocalCustomProvidersConfig,

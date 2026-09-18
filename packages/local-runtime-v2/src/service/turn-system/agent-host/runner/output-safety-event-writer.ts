@@ -1,18 +1,18 @@
-import type { PiEventWriter } from '@mavis/agent-core/pi-turn-runner';
+import type { PiEventWriter } from '@bari/agent-core/pi-turn-runner';
 import {
   MsgType,
   RespDataType,
   type AgentMessage,
   type RespData,
-} from '@mavis/agent-core/protocol/agent-message';
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
-import type { MetricsClient } from '@mavis/shared/metrics-proxy';
+} from '@bari/agent-core/protocol/agent-message';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
+import type { MetricsClient } from '@bari/shared/metrics-proxy';
 import {
   RUNTIME_EVENT_SCHEMA,
   RuntimeEventStatus,
   RuntimeEventType,
   type IRuntimeEvent,
-} from '@mavis/protocol';
+} from '@bari/protocol';
 
 import {
   reviewBlocks,

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import { MIME_BY_EXTENSION, type OutboundMediaRef } from '@mavis/shared';
+import { MIME_BY_EXTENSION, type OutboundMediaRef } from '@bari/shared';
 
 import { type RetryOptions, withRetry } from '../../attachment-retry.js';
 import { imLogger as logger } from '../../../common/im-logger.js';

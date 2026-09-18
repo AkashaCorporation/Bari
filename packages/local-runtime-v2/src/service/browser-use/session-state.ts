@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { LocalBrowserSkillSessionStore } from '@mavis/agent-tools/desktop';
+import type { LocalBrowserSkillSessionStore } from '@bari/agent-tools/desktop';
 
 import type {
   BrowserTurnContextCapability,

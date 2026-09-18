@@ -1,4 +1,4 @@
-import type { GlobalEvent, GlobalEventInput } from '@mavis/shared/global-events';
+import type { GlobalEvent, GlobalEventInput } from '@bari/shared/global-events';
 
 export type GlobalEventPublisher = (event: GlobalEventInput) => void;
 

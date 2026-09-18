@@ -1,5 +1,5 @@
-import type { GlobalEvent } from '@mavis/shared/global-events';
-import { isLegacyManagedMinimaxProvider } from '@mavis/config';
+import type { GlobalEvent } from '@bari/shared/global-events';
+import { isLegacyManagedMinimaxProvider } from '@bari/config';
 
 import type {
   CodexOAuthManager,

@@ -1,4 +1,4 @@
-import type { PromptReadScope, PromptSnapshotSource, PromptTemplateRead } from '@mavis/agent-core';
+import type { PromptReadScope, PromptSnapshotSource, PromptTemplateRead } from '@bari/agent-core';
 
 export interface BuiltinPromptTemplate {
   readonly key: string;

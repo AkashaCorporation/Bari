@@ -4,7 +4,7 @@ import {
   supportsTuiNodeVersion,
 } from '../build-info.js';
 import type { RawTuiExecOptions } from '../headless/invocation.js';
-import type { MavisRegion } from '@mavis/config';
+import type { MavisRegion } from '@bari/config';
 import { createTuiProgram, type TuiInteractiveLaunchRequest } from './program.js';
 import type { McodeProviderCliRequest } from './provider-command.js';
 import type { McodePluginCliRequest } from '../plugin/contract.js';

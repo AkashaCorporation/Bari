@@ -1,4 +1,4 @@
-import { MINIMAX_API_MODEL_CATALOG, getRuntimeRegion } from '@mavis/config';
+import { MINIMAX_API_MODEL_CATALOG, getRuntimeRegion } from '@bari/config';
 
 import type { LocalModelConfig, LocalRuntimeConfig } from '../contracts.js';
 

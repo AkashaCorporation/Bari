@@ -1,6 +1,6 @@
 import { isDefaultThinkingModelId, type Api, type Model } from '@earendil-works/pi-ai';
-import type { LLMModelConfig } from '@mavis/agent-core/pi-turn-runner';
-import { ThinkingLevel, ThinkingMode } from '@mavis/protocol';
+import type { LLMModelConfig } from '@bari/agent-core/pi-turn-runner';
+import { ThinkingLevel, ThinkingMode } from '@bari/protocol';
 
 import { parseProviderId } from '../../../model-system/index.js';
 import type { LocalResolvedModelConfig } from '../../../model-system/index.js';

@@ -1,4 +1,4 @@
-import type { RuntimeTool, ToolDefinition } from '@mavis/agent-core/tools';
+import type { RuntimeTool, ToolDefinition } from '@bari/agent-core/tools';
 import { buildOrReuseIndex } from './search-index.js';
 import type {
   McpDisclosureOptions,

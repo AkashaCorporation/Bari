@@ -1,7 +1,7 @@
 import type {
   ConversationCommittedMessage,
   ConversationToolCall,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 
 import type { DisplayMessageRecord } from './repo/contract.js';
 

@@ -1,4 +1,4 @@
-import type { RuntimeConversation } from '@mavis/conversation-contract';
+import type { RuntimeConversation } from '@bari/conversation-contract';
 import { createRuntimeConversationApplication } from '../conversation/runtime-conversation-application.js';
 import type { SessionSystemOwner } from '../../service/session-system/index.js';
 import type { createRuntimeSkillApplication } from './runtime-skill-application.js';

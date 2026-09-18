@@ -1,8 +1,8 @@
 import type {
   SessionStreamErrorBody,
   SessionStreamFrameView,
-} from "@mavis/protocol/local";
-import type { ProcessLocalStreamResult } from "@mavis/conversation-contract";
+} from "@bari/protocol/local";
+import type { ProcessLocalStreamResult } from "@bari/conversation-contract";
 import {
   sanitizeDisplayAttachment,
   type SessionFrame,

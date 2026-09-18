@@ -7,8 +7,8 @@ import {
   isManagedRuntime,
   type MavisBuildEnv,
   type MavisRegion,
-} from '@mavis/config';
-import type { SkillSourceType } from '@mavis/protocol/local';
+} from '@bari/config';
+import type { SkillSourceType } from '@bari/protocol/local';
 
 import { json, readJsonBody } from '../api/host-helpers.js';
 import { LocalSkillHubInstallError } from './hub-errors.js';

@@ -4,11 +4,11 @@ import type {
   PiBeforeLlmCallHookInput,
   PiBeforeLlmCallReplaceMetadata,
   PiTurnRunnerLogger,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 import {
   CONTEXT_USAGE_COMPONENT_KINDS,
   type ContextUsageComponent,
-} from '@mavis/agent-core/protocol';
+} from '@bari/agent-core/protocol';
 
 import type { AgentHostCompactionDependencies } from '../contracts.js';
 import type { AgentEventContext } from '../events/contracts.js';

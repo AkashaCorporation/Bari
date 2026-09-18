@@ -1,5 +1,5 @@
-import type { AskQuestionnaireReplyPayload } from '@mavis/shared/questionnaire';
-import type { GlobalEventInput } from '@mavis/shared/global-events';
+import type { AskQuestionnaireReplyPayload } from '@bari/shared/questionnaire';
+import type { GlobalEventInput } from '@bari/shared/global-events';
 
 import { serializeQuestionnaireResponseMessage } from './serializer.js';
 import type { QuestionnaireRequestRecord } from './store.js';

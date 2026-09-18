@@ -1,4 +1,4 @@
-import type { ToolExecutionContext } from '@mavis/agent-core/tools';
+import type { ToolExecutionContext } from '@bari/agent-core/tools';
 
 import type { SessionSystemReadCapability } from '../../session-system/index.js';
 import type {

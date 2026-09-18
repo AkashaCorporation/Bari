@@ -1,17 +1,17 @@
-import type { IAgentConfig, ISkillRef } from '@mavis/protocol';
+import type { IAgentConfig, ISkillRef } from '@bari/protocol';
 import {
   isPromptSnapshotInvalidError,
   PromptSnapshotInvalidError,
   type PromptReadScope,
   type PromptSnapshotSource,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 import {
   DEFAULT_RETRY_CONTINUATION_PROMPT,
   DEFAULT_OUTPUT_REVISION_INSTRUCTION,
   OUTPUT_REVISION_PROMPT_KEY,
   RETRY_CONTINUATION_PROMPT_KEY,
 } from './prompt-templates.js';
-import { resolveAgentCapabilities, type ResolvedAgentCapabilities } from '@mavis/config';
+import { resolveAgentCapabilities, type ResolvedAgentCapabilities } from '@bari/config';
 import type { SessionRecord, TaskSessionBinding } from '../../../../session-system/index.js';
 import type {
   AgentExecutionSnapshot,

@@ -2,13 +2,13 @@ import type {
   CreateLocalRuntimeHostOptions,
   LocalRuntimeAuthContext,
   LocalRuntimeConfig,
-} from '@mavis/local-runtime-v2/process-local';
-import { getDefaultLocalRuntimeConfig } from '@mavis/local-runtime-v2';
+} from '@bari/local-runtime-v2/process-local';
+import { getDefaultLocalRuntimeConfig } from '@bari/local-runtime-v2';
 import {
   getRuntimeBuildEnv,
   getRuntimeRegion,
   readExplicitBetaFeatureFromFile,
-} from '@mavis/config';
+} from '@bari/config';
 import {
   AuthSessionChangedError,
   MCODE_OAUTH_SCOPES,
@@ -17,8 +17,8 @@ import {
   type AccessTokenLease,
   type AuthStatusSnapshot,
   type MCodeOAuthCore,
-} from '@mavis/oauth-core';
-import type { McodeToolsHostAuthSession } from '@mavis/mcode-tools-host';
+} from '@bari/oauth-core';
+import type { McodeToolsHostAuthSession } from '@bari/mcode-tools-host';
 import {
   createEmbeddedRuntimeHost,
   type EmbeddedRuntimeHost,

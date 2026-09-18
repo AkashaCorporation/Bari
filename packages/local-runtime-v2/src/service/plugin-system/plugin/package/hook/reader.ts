@@ -2,7 +2,7 @@ import {
   parsePluginHookDocuments,
   type PluginHookCommandHandler,
   type PluginHookSourceFormat,
-} from '@mavis/plugin-hooks';
+} from '@bari/plugin-hooks';
 
 import type { CanonicalPluginRoot } from '../filesystem.js';
 import type { PluginReaderDiagnostic } from '../types.js';

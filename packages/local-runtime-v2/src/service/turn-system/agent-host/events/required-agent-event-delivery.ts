@@ -3,8 +3,8 @@ import {
   RuntimeEventStatus,
   RuntimeEventType,
   type RuntimeEvent,
-} from '@mavis/agent-core/protocol';
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
+} from '@bari/agent-core/protocol';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
 
 import type { AgentHostHistoryFailure, CommittedHistoryChange } from '../history/contracts.js';
 import type { AgentHostTurnOutcome } from '../runner/contracts.js';

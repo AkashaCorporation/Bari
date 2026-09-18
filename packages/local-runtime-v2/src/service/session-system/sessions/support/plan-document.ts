@@ -1,6 +1,6 @@
 import { copyFile, lstat, mkdir, open, realpath, rename, rm } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join, relative } from 'node:path';
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
 
 import {
   createSessionHistoryLocationResolver,

@@ -1,5 +1,5 @@
-import { RespDataType, type AgentMessage } from '@mavis/agent-core/protocol/agent-message';
-import { RuntimeEventType, type IRuntimeEvent } from '@mavis/protocol';
+import { RespDataType, type AgentMessage } from '@bari/agent-core/protocol/agent-message';
+import { RuntimeEventType, type IRuntimeEvent } from '@bari/protocol';
 
 import type { LocalOutputSafetyEventWriter } from './output-safety-writer.js';
 

@@ -1,4 +1,4 @@
-import type { DriveNode } from "@mavis/protocol/local";
+import type { DriveNode } from "@bari/protocol/local";
 
 import type { MetricsClient } from "../common/metrics.js";
 import type { DataDirInput } from "../persistence/db.js";

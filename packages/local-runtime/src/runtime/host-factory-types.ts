@@ -1,6 +1,6 @@
-import type { LocalSandboxBashExecutionPort } from '@mavis/agent-tools/desktop';
-import type { RuntimeConversation } from '@mavis/conversation-contract';
-import type { PromptSnapshotSource } from '@mavis/agent-core';
+import type { LocalSandboxBashExecutionPort } from '@bari/agent-tools/desktop';
+import type { RuntimeConversation } from '@bari/conversation-contract';
+import type { PromptSnapshotSource } from '@bari/agent-core';
 
 import type { AgentReferenceResolver } from '../agent/port.js';
 import type { LocalAgentRuntimePort } from '../agent/runtime-port.js';
@@ -14,7 +14,7 @@ import type {
   LocalEvalReporterFactoryOptions,
 } from '../eval/types.js';
 import type { LocalMcpRuntimeCapability } from './mcp-capability.js';
-import type { McpRuntimeLogger } from '@mavis/mcp/runtime/types';
+import type { McpRuntimeLogger } from '@bari/mcp/runtime/types';
 import type { LocalHostDiagnosticsProvider } from '../observability/diagnostics-provider.js';
 import type { ObservabilityLogger } from '../observability/index.js';
 import type { LocalSessionController } from '../sessions/controller.js';

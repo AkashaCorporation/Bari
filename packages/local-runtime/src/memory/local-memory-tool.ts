@@ -1,4 +1,4 @@
-import type { LocalMemoryToolInput, LocalRuntimeToolContext } from '@mavis/agent-tools/desktop';
+import type { LocalMemoryToolInput, LocalRuntimeToolContext } from '@bari/agent-tools/desktop';
 
 import type { ModuleMetricsReporter } from '../common/metrics.js';
 import { LocalMemoryFacade } from './local-memory-facade.js';

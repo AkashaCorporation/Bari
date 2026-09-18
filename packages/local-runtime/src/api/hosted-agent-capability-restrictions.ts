@@ -1,4 +1,4 @@
-import type { ResolvedAgentCapabilities } from '@mavis/config';
+import type { ResolvedAgentCapabilities } from '@bari/config';
 
 import type { HostedAgentCapabilityRestrictions } from './hosted-agent-capabilities.js';
 

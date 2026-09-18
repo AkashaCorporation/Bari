@@ -1,11 +1,11 @@
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
-import type { CloudSessionReader, LocalMavisSessionAdapter } from '@mavis/agent-tools/desktop';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
+import type { CloudSessionReader, LocalMavisSessionAdapter } from '@bari/agent-tools/desktop';
 import {
   ConversationTurnRejectedError,
   isRuntimeConversationShutdownError,
   isRuntimeConversationUnavailableError,
   type RuntimeConversation,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 import { logger } from '../common/logger.js';
 import type { LocalSessionListOptions, LocalSessionRecord } from '../sessions/controller.js';
 

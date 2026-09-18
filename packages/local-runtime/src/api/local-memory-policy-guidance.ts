@@ -1,4 +1,4 @@
-import { LocalMemoryToolDef, type LocalRuntimeTool } from '@mavis/agent-tools/desktop';
+import { LocalMemoryToolDef, type LocalRuntimeTool } from '@bari/agent-tools/desktop';
 
 const READ_OPERATIONS = new Set(['read', 'search']);
 const WRITE_OPERATIONS = new Set(['append', 'edit', 'create', 'delete', 'write']);

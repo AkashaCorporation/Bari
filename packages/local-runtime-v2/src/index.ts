@@ -8,4 +8,4 @@ export {
   getDefaultLocalRuntimeConfig,
   resetDefaultLocalRuntimeConfig,
   resolveLocalRuntimeMode,
-} from '@mavis/local-runtime';
+} from '@bari/local-runtime';

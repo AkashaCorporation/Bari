@@ -22,7 +22,7 @@
  */
 
 import { Type, type Static } from '@sinclair/typebox';
-import type { ToolDefinition } from '@mavis/agent-core/tools';
+import type { ToolDefinition } from '@bari/agent-core/tools';
 
 import { WebSearchToolDef } from '../../shared/web-search.js';
 

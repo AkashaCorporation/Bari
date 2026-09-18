@@ -1,4 +1,4 @@
-import type { PromptSnapshotSource } from '@mavis/agent-runtime';
+import type { PromptSnapshotSource } from '@bari/agent-runtime';
 
 import { readPromptWithBuiltinFallback } from '../../../agent/index.js';
 import type { SessionRecord, SessionRepository } from '../repo/contract.js';

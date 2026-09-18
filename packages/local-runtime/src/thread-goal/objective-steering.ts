@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { ThreadGoalState } from '@mavis/goal';
+import type { ThreadGoalState } from '@bari/goal';
 
 export class ObjectiveSteeringTargetChangedError extends Error {
   constructor() {

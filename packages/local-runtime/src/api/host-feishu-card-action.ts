@@ -1,4 +1,4 @@
-import type { AskQuestionnaireReplyPayload } from '@mavis/shared/questionnaire';
+import type { AskQuestionnaireReplyPayload } from '@bari/shared/questionnaire';
 
 import { json } from './host-helpers.js';
 import { feishuClientId } from '../channels/feishu.js';

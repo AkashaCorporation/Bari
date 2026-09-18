@@ -9,9 +9,9 @@ import type {
   ListAgentsResult as ListAgentsResult,
   UpdateAgentInput as UpdateAgentInput,
   UpdateAgentResult as UpdateAgentResult,
-} from "@mavis/protocol/local";
-import type { AgentReferenceResolver } from "@mavis/shared";
-import type { LocalMavisAgentAdapter } from "@mavis/agent-tools/desktop";
+} from "@bari/protocol/local";
+import type { AgentReferenceResolver } from "@bari/shared";
+import type { LocalMavisAgentAdapter } from "@bari/agent-tools/desktop";
 
 export function isAgentNotFoundError(error: unknown): boolean {
   const candidate = Object(error) as { status?: unknown; code?: unknown };

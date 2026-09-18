@@ -6,7 +6,7 @@ import type { AgentMessage } from '@earendil-works/pi-agent-core';
 import type {
   PiBeforeLlmCallHookDecision,
   PiBeforeLlmCallHookInput,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 
 import type { LocalRuntimeLogger } from '../common/logger.js';
 import type { MetricsClient } from '../common/metrics.js';

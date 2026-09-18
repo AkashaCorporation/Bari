@@ -1,5 +1,5 @@
 {
-  "name": "@mavis/oauth-lease-protocol",
+  "name": "@bari/oauth-lease-protocol",
   "version": "0.1.0-beta.0",
   "description": "Credential-minimal local OAuth access-token lease protocol for Bari hosts and consumers.",
   "license": "MIT",

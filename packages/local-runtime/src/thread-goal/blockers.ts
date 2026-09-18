@@ -1,4 +1,4 @@
-import type { ThreadGoalWaitReason } from '@mavis/goal';
+import type { ThreadGoalWaitReason } from '@bari/goal';
 
 export type GoalDependencyBlockerReason = Extract<
   ThreadGoalWaitReason,

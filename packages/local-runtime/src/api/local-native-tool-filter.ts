@@ -1,9 +1,9 @@
-import { agentNameDescription, type LocalRuntimeTool } from '@mavis/agent-tools/desktop';
+import { agentNameDescription, type LocalRuntimeTool } from '@bari/agent-tools/desktop';
 import {
   AGENT_BUILTIN_TOOL_IDS,
   isAgentBuiltinToolEnabled,
   type ResolvedAgentCapabilities,
-} from '@mavis/config';
+} from '@bari/config';
 
 export function filterLocalBuiltinCapabilityTools(
   tools: LocalRuntimeTool[],

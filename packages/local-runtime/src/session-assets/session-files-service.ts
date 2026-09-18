@@ -18,16 +18,16 @@ import {
   collectMessageAssetItems,
   isCommitIdTransportId,
   type DeliverAssetItem,
-} from "@mavis/shared/asset-markup";
-import { deriveMediaKind, inferAssetMimeType } from "@mavis/shared";
+} from "@bari/shared/asset-markup";
+import { deriveMediaKind, inferAssetMimeType } from "@bari/shared";
 import {
   DriveNodeSource,
   DriveNodeType,
   type DriveNode,
   type ListSessionFilesResult as ListSessionFilesResult,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
-import type { AgentMessage } from "@mavis/agent-core/protocol/agent-message";
+import type { AgentMessage } from "@bari/agent-core/protocol/agent-message";
 import type {
   SessionAssetRecord,
   SessionAssetStore,

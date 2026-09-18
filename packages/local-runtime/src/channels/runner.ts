@@ -2,11 +2,11 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import yaml from 'js-yaml';
 
-import type { OutboundMediaRef } from '@mavis/shared';
+import type { OutboundMediaRef } from '@bari/shared';
 import {
   type ConversationCommittedMessage,
   type RuntimeConversationChannelView,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 
 import type {
   LocalChannelBridgeInfra,
@@ -323,7 +323,7 @@ export interface LocalChannelRunnerOptions {
    */
   questionnaireReplyHandler?: (input: {
     ctx: LocalChannelContext;
-    reply: import('@mavis/shared/questionnaire').AskQuestionnaireReplyPayload;
+    reply: import('@bari/shared/questionnaire').AskQuestionnaireReplyPayload;
   }) => Promise<QuestionnaireReplyOutcome | void>;
   /**
    * Optional permission reply resolver. When set, `dispatchInbound` asks

@@ -8,8 +8,8 @@ import {
   type LLMCallOutcome,
   type LLMCallUsage,
   type LLMRequestSettledEvent,
-} from '@mavis/agent-core/pi-turn-runner';
-import { createDefaultTokenEstimator } from '@mavis/context-manager';
+} from '@bari/agent-core/pi-turn-runner';
+import { createDefaultTokenEstimator } from '@bari/context-manager';
 
 import type { CheckpointSession } from '../algorithm/compact-context.js';
 import type { PromptSnapshotSource } from '../../agent-host/contracts.js';

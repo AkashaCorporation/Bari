@@ -1,5 +1,5 @@
 import type { TuiAttachment, TuiTransportAttachment } from '../types/invocation.js';
-import type { GlobalThreadGoal } from '@mavis/shared/global-events';
+import type { GlobalThreadGoal } from '@bari/shared/global-events';
 import type {
   TuiCompactionResult,
   TuiMcpServer,
@@ -25,7 +25,7 @@ import type {
   CliSendMessageOptions,
   ConversationSteerInput,
   ConversationSteerResult,
-} from '@mavis/local-runtime-v2/cli-service';
+} from '@bari/local-runtime-v2/cli-service';
 
 export type { TuiMessage, TuiMessagePart, TuiStreamEvent, TuiToolCall } from './stream-events.js';
 export type { TuiRuntimeEvent } from '../types/runtime-events.js';

@@ -1,6 +1,6 @@
 import type { AgentMessage } from '@earendil-works/pi-agent-core';
-import type { PiBeforeLlmCallHookInput } from '@mavis/agent-core/pi-turn-runner';
-import { resolveCompactionTokenBudget } from '@mavis/context-manager';
+import type { PiBeforeLlmCallHookInput } from '@bari/agent-core/pi-turn-runner';
+import { resolveCompactionTokenBudget } from '@bari/context-manager';
 
 import { createAutomaticFootprintMeasurer } from '../../compaction/automatic-context-compactor.js';
 import type { ContextUsageAnchorState } from '../../compaction/execution/usage-anchor.js';

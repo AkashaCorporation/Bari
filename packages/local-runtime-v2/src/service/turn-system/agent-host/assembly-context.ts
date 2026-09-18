@@ -2,7 +2,7 @@ import type {
   ModelContextAssemblyCtx,
   PromptReadScope,
   TurnAssemblyCtx,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 
 import type { SessionRecord } from '../../session-system/index.js';
 import type { AgentHostRunInput } from './contracts.js';

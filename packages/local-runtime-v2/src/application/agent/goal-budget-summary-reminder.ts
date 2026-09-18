@@ -1,4 +1,4 @@
-import type { AgentExtension } from '@mavis/agent-runtime';
+import type { AgentExtension } from '@bari/agent-runtime';
 
 const GOAL_BUDGET_SUMMARY_TURN_INTENT = 'goal-budget-summary';
 

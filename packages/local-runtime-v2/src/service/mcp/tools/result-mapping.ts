@@ -1,4 +1,4 @@
-import type { ToolResultContent } from '@mavis/agent-core/tools';
+import type { ToolResultContent } from '@bari/agent-core/tools';
 import type { LocalMcpCallResult } from '../contracts.js';
 import { readRecord } from '../runtime/config.js';
 

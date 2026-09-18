@@ -15,11 +15,11 @@ import { tmpdir } from "node:os";
 import {
   type CreateLocalRuntimeHostOptions,
   type CreatedLocalRuntimeHost,
-} from "@mavis/local-runtime";
-import { DeferredRuntimeConversation } from "@mavis/conversation-contract";
+} from "@bari/local-runtime";
+import { DeferredRuntimeConversation } from "@bari/conversation-contract";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { formatDefaultAgentAvatarMarker } from "@mavis/shared/agent-avatar";
-import { serializeAgentReference } from "@mavis/shared/agent-mention";
+import { formatDefaultAgentAvatarMarker } from "@bari/shared/agent-avatar";
+import { serializeAgentReference } from "@bari/shared/agent-mention";
 
 import { createV1RuntimeCompatibility } from "../../../../src/compat/v1/runtime.js";
 import { DatabaseClient } from "../../../../src/infra/db/client.js";

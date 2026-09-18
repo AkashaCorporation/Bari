@@ -1,4 +1,4 @@
-import type { RuntimeTool } from '@mavis/agent-core/tools';
+import type { RuntimeTool } from '@bari/agent-core/tools';
 
 import type { AgentHostPluginHookHandler } from '../plugin-hook-contracts.js';
 

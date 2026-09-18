@@ -6,13 +6,13 @@ import {
   isAgentBuiltinToolEnabled,
   parseAgentCapabilityConfig,
   type AgentCapabilityConfig,
-} from '@mavis/config';
+} from '@bari/config';
 import {
   PromptSnapshotInvalidError,
   type PromptReadScope,
   type PromptSnapshotSource,
   type PromptReadSnapshot,
-} from '@mavis/agent-runtime';
+} from '@bari/agent-runtime';
 
 import type {
   AgentAppMode,

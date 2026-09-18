@@ -5,7 +5,7 @@ import type {
   StoredCallSummary,
   StoredTurnSummary,
 } from './contracts.js';
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
 import { LlmContextInspectorServiceError } from './errors.js';
 import type { LlmContextInspectorHistoryStore } from './history-store.js';
 import { compareContextPrefix, type PrefixComparison } from './prefix-comparator.js';

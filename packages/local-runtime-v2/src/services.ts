@@ -1,19 +1,19 @@
-import { createMiniAppControlExtension } from "@mavis/agent-extension";
+import { createMiniAppControlExtension } from "@bari/agent-extension";
 import type {
   AgentExtension,
   InternalTurnPromptReadRegistry,
-} from "@mavis/agent-runtime";
-import type { RunawayGuardOverride } from "@mavis/config";
+} from "@bari/agent-runtime";
+import type { RunawayGuardOverride } from "@bari/config";
 import {
   getRuntimeRegion,
   isLocalSourceProvenanceEnabled,
-} from "@mavis/config";
-import type { RuntimeConversation } from "@mavis/conversation-contract";
+} from "@bari/config";
+import type { RuntimeConversation } from "@bari/conversation-contract";
 import type {
   GlobalEvent,
   GlobalEventInput,
-} from "@mavis/shared/global-events";
-import { isOrdinaryQuestionnaireResponseOrigin } from "@mavis/shared/questionnaire";
+} from "@bari/shared/global-events";
+import { isOrdinaryQuestionnaireResponseOrigin } from "@bari/shared/questionnaire";
 import { createGoalBudgetSummaryExtension } from "./application/agent/goal-budget-summary-reminder.js";
 import {
   combineLocalTurnToolPolicyGuards,

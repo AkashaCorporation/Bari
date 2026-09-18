@@ -1,10 +1,10 @@
-import type { McpToolEntry } from '@mavis/agent-tools';
+import type { McpToolEntry } from '@bari/agent-tools';
 import type {
   LocalMavisMcpAdapter,
   ManagedBackendRoutingContext as LocalRuntimeRoutingContext,
-} from '@mavis/agent-tools/desktop';
-import type { McpConnectionPool } from '@mavis/mcp/runtime/connection-pool';
-import type { McpConnectionTokenOverrides, McpToolCallResult } from '@mavis/mcp/runtime/types';
+} from '@bari/agent-tools/desktop';
+import type { McpConnectionPool } from '@bari/mcp/runtime/connection-pool';
+import type { McpConnectionTokenOverrides, McpToolCallResult } from '@bari/mcp/runtime/types';
 
 type McpTransport = 'stdio' | 'http' | 'streamable-http' | 'sse';
 

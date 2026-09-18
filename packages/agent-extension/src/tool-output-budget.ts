@@ -1,4 +1,4 @@
-import type { AgentExtension, AfterToolCallHandler, TurnAssemblyCtx } from '@mavis/agent-runtime';
+import type { AgentExtension, AfterToolCallHandler, TurnAssemblyCtx } from '@bari/agent-runtime';
 import { isSourceReferenceMarkerBlock } from './source-reference-marker.js';
 
 type TextBlock = { readonly type: 'text'; readonly text: string };

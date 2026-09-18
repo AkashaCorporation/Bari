@@ -1,7 +1,7 @@
 import { basename, extname } from 'node:path';
 
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
-import type { MultimodalAttachmentCapabilities } from '@mavis/agent-tools';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
+import type { MultimodalAttachmentCapabilities } from '@bari/agent-tools';
 import { resolveNativeImageMime } from './native-image-mime.js';
 import { resolveNativeVideoMime } from './user-media.js';
 

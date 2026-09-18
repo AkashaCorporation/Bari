@@ -1,4 +1,4 @@
-import type { ThreadGoalSignalCollector, ThreadGoalState, ThreadGoalStore } from '@mavis/goal';
+import type { ThreadGoalSignalCollector, ThreadGoalState, ThreadGoalStore } from '@bari/goal';
 
 import { GoalAdmission } from './admission.js';
 import { GoalBreaker } from './breaker.js';

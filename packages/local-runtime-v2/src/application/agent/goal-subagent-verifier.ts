@@ -1,11 +1,11 @@
-import { GOAL_VERIFIER_READONLY_PROFILE } from '@mavis/config';
+import { GOAL_VERIFIER_READONLY_PROFILE } from '@bari/config';
 import {
   createSubagentVerifierAdapter,
   VerificationDispatchError,
   type SubagentVerificationExecutionPort,
   type VerifierPort,
-} from '@mavis/goal';
-import type { AgentExtension } from '@mavis/agent-runtime';
+} from '@bari/goal';
+import type { AgentExtension } from '@bari/agent-runtime';
 
 import type { LocalConversationRuntimeConfig } from '../../service/model-system/index.js';
 import {

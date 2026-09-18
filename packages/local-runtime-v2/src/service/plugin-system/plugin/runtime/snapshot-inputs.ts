@@ -1,5 +1,5 @@
 import { lstat } from 'node:fs/promises';
-import { pluginMcpNameKey } from '@mavis/mcp';
+import { pluginMcpNameKey } from '@bari/mcp';
 
 import type { PluginSnapshotBuildInputs, PluginSnapshotBuildOptions } from '../../contracts.js';
 import type { PluginMcpInventorySeed } from '../../mcp/runtime.js';

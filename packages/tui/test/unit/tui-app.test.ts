@@ -22,7 +22,7 @@ import {
   normalizeTuiRuntimeEvent,
   type RawTuiRuntimeEvent,
 } from "../../src/runtime/event-normalizer.js";
-import type { SendMessageReq } from "@mavis/local-runtime-v2/cli-service";
+import type { SendMessageReq } from "@bari/local-runtime-v2/cli-service";
 import type { TuiObservability } from "../../src/observability/local-observability.js";
 import type { McodeAuthProgress } from "../../src/auth/application.js";
 import { formatTuiShortcut } from "../../src/tui/shell/shortcut-labels.js";

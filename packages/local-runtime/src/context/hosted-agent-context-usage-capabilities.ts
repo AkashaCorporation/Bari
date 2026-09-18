@@ -1,4 +1,4 @@
-import type { LLMModelConfig, PiEventWriter } from '@mavis/agent-core/pi-turn-runner';
+import type { LLMModelConfig, PiEventWriter } from '@bari/agent-core/pi-turn-runner';
 
 import {
   ContextUsageTurnTracker,

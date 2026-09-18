@@ -1,4 +1,4 @@
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
 
 import { mutateDurableYaml, readYamlDocument } from './durable-yaml.js';
 import type { ChannelPlatform } from './route-api.js';

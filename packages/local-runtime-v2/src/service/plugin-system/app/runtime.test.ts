@@ -1,4 +1,4 @@
-import { AgentToolMode } from '@mavis/protocol';
+import { AgentToolMode } from '@bari/protocol';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { ConnectedConnectorToolsResult, ConnectorCloudClient } from './cloud-client.js';

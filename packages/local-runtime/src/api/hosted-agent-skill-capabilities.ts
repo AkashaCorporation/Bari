@@ -1,4 +1,4 @@
-import type { ResolvedAgentCapabilities } from '@mavis/config';
+import type { ResolvedAgentCapabilities } from '@bari/config';
 
 import { resolveFeatureAwareBuiltinSkillNames } from '../agent/feature-owned-skills.js';
 import type { LocalRuntimeSkillScope, LocalSkillCatalogScope } from '../skills/skill-service.js';

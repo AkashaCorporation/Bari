@@ -1,5 +1,5 @@
-import type { PiAfterLlmCallHook } from '@mavis/agent-core/pi-turn-runner';
-import type { AgentExtension } from '@mavis/agent-runtime';
+import type { PiAfterLlmCallHook } from '@bari/agent-core/pi-turn-runner';
+import type { AgentExtension } from '@bari/agent-runtime';
 import type { BrowserUseTurnToolSafetyGuard } from './contracts.js';
 
 const ASK_USER_TOOL_NAME = 'ask_user';

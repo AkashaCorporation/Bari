@@ -1,4 +1,4 @@
-import { ThinkingLevel } from '@mavis/protocol';
+import { ThinkingLevel } from '@bari/protocol';
 import { describe, expect, it } from 'vitest';
 
 import type { LocalCustomProviderConfig, LocalRuntimeConfig } from '../contracts.js';

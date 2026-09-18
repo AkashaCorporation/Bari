@@ -1,4 +1,4 @@
-import { RuntimeEventStatus, RuntimeEventType } from '@mavis/agent-core/protocol';
+import { RuntimeEventStatus, RuntimeEventType } from '@bari/agent-core/protocol';
 
 import {
   QueueServiceError,

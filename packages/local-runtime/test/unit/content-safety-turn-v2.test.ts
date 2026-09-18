@@ -1,6 +1,6 @@
 import { LocalOutputSafetyEventWriter } from '../../src/runtime/output-safety-writer.js';
-import { RuntimeEventType, type IRuntimeEvent } from '@mavis/protocol';
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
+import { RuntimeEventType, type IRuntimeEvent } from '@bari/protocol';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
 import { describe, expect, it, vi } from 'vitest';
 import { createContentSafetyChecker, SAFETY_SCENE } from '../../src/content-safety/api.js';
 

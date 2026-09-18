@@ -1,7 +1,7 @@
 import path from 'node:path';
 
-import type { LocalHostTrashRuntime } from '@mavis/agent-tools/desktop';
-import { readWindowsTrashExecution } from '@mavis/permission';
+import type { LocalHostTrashRuntime } from '@bari/agent-tools/desktop';
+import { readWindowsTrashExecution } from '@bari/permission';
 
 import { logger } from '../common/logger.js';
 

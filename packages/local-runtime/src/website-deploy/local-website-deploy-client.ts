@@ -28,7 +28,7 @@
 import { lstat, realpath } from 'node:fs/promises';
 import { basename } from 'node:path';
 
-import type { LocalWebsiteDeployAdapter } from '@mavis/agent-tools/desktop';
+import type { LocalWebsiteDeployAdapter } from '@bari/agent-tools/desktop';
 
 import { logger } from '../common/logger.js';
 import type { LocalRuntimeAuthContext } from '../runtime/model-resolver.js';

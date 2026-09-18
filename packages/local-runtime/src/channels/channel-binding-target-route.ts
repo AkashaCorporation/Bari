@@ -1,4 +1,4 @@
-import type { ChannelRoutingMode } from '@mavis/shared';
+import type { ChannelRoutingMode } from '@bari/shared';
 
 import { json, readJsonBody } from '../api/http-helpers.js';
 import { serializeChannelBinding } from './channel-binding-codec.js';

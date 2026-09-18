@@ -5,7 +5,7 @@
  * `form_value` back.
  */
 export interface FeishuPendingQuestionnaire {
-  request: import('@mavis/shared/questionnaire').AskQuestionnaireRequest;
+  request: import('@bari/shared/questionnaire').AskQuestionnaireRequest;
   /** Exact Feishu client that rendered this card; never infer from host default. */
   clientName: string;
   chatId: string;

@@ -8,7 +8,7 @@ import {
   selectMultimodalAttachments,
   type MultimodalAttachmentCapabilities,
   type MultimodalAttachmentKind,
-} from '@mavis/agent-tools';
+} from '@bari/agent-tools';
 
 import {
   buildCompressedModelImageFromBuffer,

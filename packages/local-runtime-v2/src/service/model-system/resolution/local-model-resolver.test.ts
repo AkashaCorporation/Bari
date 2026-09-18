@@ -3,7 +3,7 @@ import {
   ThinkingMode,
   type IAgentConfig,
   type IModelCapabilities,
-} from '@mavis/protocol';
+} from '@bari/protocol';
 import { describe, expect, it, vi } from 'vitest';
 
 import { streamSimple } from '@earendil-works/pi-ai';

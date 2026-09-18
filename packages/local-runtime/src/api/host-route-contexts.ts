@@ -17,8 +17,8 @@ import type { MetricsClient } from '../common/metrics.js';
 import { resolveLocalPermissionService } from '../permissions/service.js';
 import type { LocalPermissionHostHandle as PermHostHandle } from '../permissions/service.js';
 import type { GlobalEventPublisher } from '../events/global-events.js';
-import type { RuntimeConversation } from '@mavis/conversation-contract';
-import type { ThreadGoalState } from '@mavis/goal';
+import type { RuntimeConversation } from '@bari/conversation-contract';
+import type { ThreadGoalState } from '@bari/goal';
 import type { LocalAgentRuntimePort } from '../agent/runtime-port.js';
 // preview_train read this from the v1 agent templates module, which the Agent
 // cutover deletes. `resolveLocalRuntimeLocale` is the surviving byte-identical

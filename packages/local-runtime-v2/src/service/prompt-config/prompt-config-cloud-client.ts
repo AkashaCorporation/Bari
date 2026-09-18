@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import { getRuntimeBuildEnv, getRuntimeRegion } from '@mavis/config';
+import { getRuntimeBuildEnv, getRuntimeRegion } from '@bari/config';
 
 import type {
   EncryptedPromptBundle,

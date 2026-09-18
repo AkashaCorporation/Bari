@@ -1,6 +1,6 @@
-import { buildStreamRespEvent } from '@mavis/agent-core/event-bridge';
-import { MsgType, RespDataType, type AgentMessage } from '@mavis/agent-core/protocol/agent-message';
-import type { LocalRuntimeToolContext, LocalTodoWriteToolInput } from '@mavis/agent-tools/desktop';
+import { buildStreamRespEvent } from '@bari/agent-core/event-bridge';
+import { MsgType, RespDataType, type AgentMessage } from '@bari/agent-core/protocol/agent-message';
+import type { LocalRuntimeToolContext, LocalTodoWriteToolInput } from '@bari/agent-tools/desktop';
 
 import { logger } from '../common/logger.js';
 

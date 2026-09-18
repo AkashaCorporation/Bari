@@ -1,4 +1,4 @@
-import type { CliService, SessionInfoView } from '@mavis/local-runtime-v2/cli-service';
+import type { CliService, SessionInfoView } from '@bari/local-runtime-v2/cli-service';
 import type {
   TuiAccountStatus,
   TuiEditMessageResult,

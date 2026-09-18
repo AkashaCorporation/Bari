@@ -11,7 +11,7 @@ import {
   type VerificationResult,
   type VerificationUsage,
   type VerifierPort,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import type { GlobalEventPublisher } from '../events/global-events.js';
 import type { ThreadGoalRuntimeEvent } from './events.js';

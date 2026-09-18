@@ -3,7 +3,7 @@ import type {
   AgentHostTurnRuntimeToolBinding as DesktopTurnRuntimeToolBinding,
   AgentHostTurnToolMode as DesktopTurnToolMode,
 } from '../../turn-system/index.js';
-import { AgentToolMode } from '@mavis/protocol';
+import { AgentToolMode } from '@bari/protocol';
 
 import {
   ConnectorCloudClient,

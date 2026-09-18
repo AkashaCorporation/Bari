@@ -1,10 +1,10 @@
-import type { RuntimeTool } from '@mavis/agent-core/tools';
+import type { RuntimeTool } from '@bari/agent-core/tools';
 import {
   attachPluginCapabilityAttribution,
   normalizedPluginSkillAttributionKey,
   selectPreferredAppPluginOwners,
   type PluginCapabilityAttributionIndex,
-} from '@mavis/agent-core/event-bridge';
+} from '@bari/agent-core/event-bridge';
 import {
   authorizeMcpInvokeReference,
   buildOrReuseIndex,
@@ -17,17 +17,17 @@ import {
   type McpModelIdentity,
   type McpInvokeReferenceTarget,
   type McpInvokeTargetResolution,
-} from '@mavis/agent-tools';
+} from '@bari/agent-tools';
 import {
   buildPluginReferenceReminder,
   detectPluginReferencesForMessages,
   type EffectivePluginCapabilityInventory,
-} from '@mavis/system-reminder';
+} from '@bari/system-reminder';
 import {
   InstalledPluginSource,
   PluginCapabilityType,
   type IPluginCapabilityProvenance,
-} from '@mavis/protocol';
+} from '@bari/protocol';
 
 import type { AgentHostTurnCapabilityView } from './turn-capability-lifecycle.js';
 import type {

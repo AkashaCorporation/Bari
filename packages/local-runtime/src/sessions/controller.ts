@@ -8,7 +8,7 @@ import type { Api, Context, Model } from '@earendil-works/pi-ai';
 import type {
   PiLLMRequestFailureHook,
   PiLLMRequestObserver,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 import type { MetricsClient } from '../common/metrics.js';
 import type { LocalEvalReporterFactoryLike } from '../eval/types.js';
 import type { DesktopErrorReporter } from '../error-reporting/index.js';

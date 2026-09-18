@@ -1,4 +1,4 @@
-import { resolveUpdateGoalMode } from '@mavis/goal';
+import { resolveUpdateGoalMode } from '@bari/goal';
 
 import type { LocalTurnToolPolicyGuard } from '../../service/turn-system/index.js';
 

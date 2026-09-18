@@ -1,5 +1,5 @@
-import { toAgentRequestRef } from '@mavis/agent-tools/desktop/subagent-roles';
-import type { PromptReadScope } from '@mavis/agent-runtime';
+import { toAgentRequestRef } from '@bari/agent-tools/desktop/subagent-roles';
+import type { PromptReadScope } from '@bari/agent-runtime';
 
 import {
   BuiltinAgentCatalog,

@@ -1,7 +1,7 @@
-import { toPiUserMessage, type PiHistoryChangedHookInput } from '@mavis/agent-core/pi-turn-runner';
-import { buildCompletedTerminalStatusEvent } from '@mavis/agent-core/event-bridge';
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
-import { RUNTIME_EVENT_SCHEMA, RuntimeEventType } from '@mavis/protocol';
+import { toPiUserMessage, type PiHistoryChangedHookInput } from '@bari/agent-core/pi-turn-runner';
+import { buildCompletedTerminalStatusEvent } from '@bari/agent-core/event-bridge';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
+import { RUNTIME_EVENT_SCHEMA, RuntimeEventType } from '@bari/protocol';
 
 import type {
   LocalRuntimeTurnRunnerInput,

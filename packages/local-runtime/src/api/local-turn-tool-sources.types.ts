@@ -1,6 +1,6 @@
-import type { PiEventWriter } from '@mavis/agent-core/pi-turn-runner';
-import type { RuntimeTool } from '@mavis/agent-core/tools';
-import type { McpToolEntry } from '@mavis/agent-tools';
+import type { PiEventWriter } from '@bari/agent-core/pi-turn-runner';
+import type { RuntimeTool } from '@bari/agent-core/tools';
+import type { McpToolEntry } from '@bari/agent-tools';
 import type {
   LocalBashAdapter,
   LocalSandboxBashOperationsFactory,
@@ -11,8 +11,8 @@ import type {
   LocalTaskAdapter,
   LocalTaskAppendAdapter,
   LocalTaskControlAdapter,
-} from '@mavis/agent-tools/desktop';
-import type { AgentBuiltinSkillId, ResolvedAgentCapabilities } from '@mavis/config';
+} from '@bari/agent-tools/desktop';
+import type { AgentBuiltinSkillId, ResolvedAgentCapabilities } from '@bari/config';
 
 import type { DesktopTurnCapabilityView } from '../runtime/desktop-turn-capabilities.js';
 import type { LocalRuntimeAuthContext } from '../runtime/model-resolver.js';

@@ -1,10 +1,10 @@
-import type { PiTurnHooks } from '@mavis/agent-core/pi-turn-runner';
+import type { PiTurnHooks } from '@bari/agent-core/pi-turn-runner';
 import {
   RespDataType,
   MsgType,
   Role,
   type RespData,
-} from '@mavis/agent-core/protocol/agent-message';
+} from '@bari/agent-core/protocol/agent-message';
 
 import { PI_TURN_RUNNER_LOGGER } from '../runtime/pi-turn-observability.js';
 import type { LocalEventWriter } from '../events/sink.js';

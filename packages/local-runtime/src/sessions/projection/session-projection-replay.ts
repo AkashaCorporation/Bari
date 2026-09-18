@@ -1,5 +1,5 @@
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 import type { LocalSessionRecord } from '../controller.js';
 import type { LocalSessionLedgerEvent, LocalSessionLedgerWatermark } from '../ledger/index.js';

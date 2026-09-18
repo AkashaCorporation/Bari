@@ -10,7 +10,7 @@ import {
   readPreviewTrainPinnedItemsOrderPreference,
   type CopyPendingQuestionnaireForForkInput,
   type CreatedLocalRuntimeHost,
-} from '@mavis/local-runtime';
+} from '@bari/local-runtime';
 
 import type {
   LegacyImportedAssetPort,

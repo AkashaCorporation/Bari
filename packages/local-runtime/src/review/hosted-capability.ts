@@ -3,9 +3,9 @@ import type {
   PiBeforeLlmCallHookDecision,
   PiBeforeLlmCallHookInput,
   PiBeforeToolCallHook,
-} from '@mavis/agent-core/pi-turn-runner';
-import type { RuntimeEvent } from '@mavis/agent-core/protocol';
-import type { LocalCodeReviewAdapter } from '@mavis/agent-tools/desktop';
+} from '@bari/agent-core/pi-turn-runner';
+import type { RuntimeEvent } from '@bari/agent-core/protocol';
+import type { LocalCodeReviewAdapter } from '@bari/agent-tools/desktop';
 import { logger as defaultLogger } from '../common/logger.js';
 import type { LocalSessionRecord } from '../sessions/controller.js';
 import { resolveLocalAppMode } from '../runtime/app-mode.js';

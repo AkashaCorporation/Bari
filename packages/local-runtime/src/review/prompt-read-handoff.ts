@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-import type { InternalTurnPromptReadRegistry, PromptReadScope } from '@mavis/agent-core';
+import type { InternalTurnPromptReadRegistry, PromptReadScope } from '@bari/agent-core';
 
 export type ReviewPromptReadHandoff =
   | { readonly requestedTurnId: string }

@@ -1,9 +1,9 @@
-import type { LocalBackgroundBashExecutor } from '@mavis/agent-tools/desktop';
+import type { LocalBackgroundBashExecutor } from '@bari/agent-tools/desktop';
 
 export type {
   LocalBackgroundBashExecutor,
   LocalBackgroundBashExecutorResult,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 /**
  * V1 cannot construct product Bash operations: the sandbox-aware operations

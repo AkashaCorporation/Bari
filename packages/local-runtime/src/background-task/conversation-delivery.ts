@@ -3,7 +3,7 @@ import {
   ConversationTurnRejectedError,
   type RuntimeConversation,
   type ConversationSteerInput,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 
 import { makeId } from '../api/host-helpers.js';
 import { observeSteerCompletion } from '../api/conversation-steer.js';

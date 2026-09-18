@@ -1,5 +1,5 @@
 import type { Api, Model } from '@earendil-works/pi-ai';
-import { ThinkingLevel, type IModelRef } from '@mavis/protocol';
+import { ThinkingLevel, type IModelRef } from '@bari/protocol';
 import { parseProviderId } from '../config/model-key.js';
 import {
   isMiniMaxM3ModelId,

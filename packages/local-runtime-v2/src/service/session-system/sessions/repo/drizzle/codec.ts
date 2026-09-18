@@ -1,5 +1,5 @@
 import type { sessions } from '../../../../../infra/db/schema/sessions.js';
-import type { ConversationModelThinkingSelection } from '@mavis/conversation-contract';
+import type { ConversationModelThinkingSelection } from '@bari/conversation-contract';
 import { canonicalProjectWorkspaceDir } from '../../../shared/workspace.js';
 import {
   SESSION_KINDS,

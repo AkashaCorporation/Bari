@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-import type { InternalTurnPromptReadRegistry, PromptSnapshotSource } from '@mavis/agent-core';
+import type { InternalTurnPromptReadRegistry, PromptSnapshotSource } from '@bari/agent-core';
 import {
   DEFAULT_BUDGET_LIMIT_TEMPLATE,
   DEFAULT_GOAL_CONTINUATION_TEMPLATE,
@@ -17,7 +17,7 @@ import {
   renderRecoveryTerminalAuditPrompt,
   renderTerminalAuditPrompt,
   type ThreadGoalState,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import { readPromptBundleScopeWithBuiltinFallback } from '../runtime/prompt-read.js';
 import type { InternalGoalPromptTurn } from './host-deps.js';

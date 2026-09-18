@@ -1,4 +1,4 @@
-import type { PiBeforeToolCallHook } from '@mavis/agent-core/pi-turn-runner';
+import type { PiBeforeToolCallHook } from '@bari/agent-core/pi-turn-runner';
 
 import type { ReviewTurnState } from './turn-state.js';
 

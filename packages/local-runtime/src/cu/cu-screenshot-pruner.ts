@@ -16,7 +16,7 @@ import type {
   PiBeforeLlmCallHook,
   PiBeforeLlmCallHookDecision,
   PiBeforeLlmCallHookInput,
-} from '@mavis/agent-core/pi-turn-runner';
+} from '@bari/agent-core/pi-turn-runner';
 import type { MetricsClient } from '../common/metrics.js';
 
 function recordMetric(record: () => void): void {

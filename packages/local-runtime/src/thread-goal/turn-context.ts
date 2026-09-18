@@ -3,7 +3,7 @@ import type {
   GoalTurnSignal,
   ThreadGoalBoundUsageResult,
   ThreadGoalSignalCollectionResult,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import type { LocalActiveTurnTiming } from '../turns/active-turn-timing.js';
 import type { NoProgressBreakerDecision } from './breaker.js';

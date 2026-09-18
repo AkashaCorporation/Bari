@@ -1,4 +1,4 @@
-import type { AgentMessage } from "@mavis/agent-core/protocol/agent-message";
+import type { AgentMessage } from "@bari/agent-core/protocol/agent-message";
 import type { LocalSessionRecord } from "../sessions/controller.js";
 import { LegacyOpencodeStore } from "./legacy-opencode-store.js";
 export interface LegacyHistoryReaderOptions {

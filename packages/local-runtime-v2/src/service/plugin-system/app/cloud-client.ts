@@ -1,4 +1,4 @@
-import { AgentToolMode } from '@mavis/protocol';
+import { AgentToolMode } from '@bari/protocol';
 
 import type {
   ConnectorCredentialSnapshot,

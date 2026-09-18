@@ -10,13 +10,14 @@ export const MCODE_PUBLIC_NPM_REGISTRY = 'https://registry.npmjs.org/';
 export const MCODE_PUBLIC_NPM_MIRROR_REGISTRY = 'https://registry.npmmirror.com/';
 const REGISTRY_FETCH_TIMEOUT_MS = 30_000;
 const MCODE_PACKAGE_BASENAME = 'code';
-const MCODE_INTERNAL_SCOPE = '@minimax';
+const MCODE_INTERNAL_SCOPE = '@bari';
+const MCODE_LEGACY_INTERNAL_SCOPE = '@minimax';
 const MCODE_PUBLIC_SCOPE = '@minimax-ai';
 // Public packaging rewrites this marker together with the bundled package identity.
 const MCODE_EMBEDDED_PACKAGE_NAME = '@minimax-ai/code' as McodeNpmPackageName;
 
 export type McodeNpmDistTag = 'latest' | 'test' | 'preview';
-export type McodeNpmPackageName = '@minimax/code' | '@minimax-ai/code';
+export type McodeNpmPackageName = '@bari/code' | '@minimax/code' | '@minimax-ai/code';
 type TuiBuildEnvironment = 'test' | 'staging' | 'prod';
 
 declare const __TUI_BUILD_ENV__: TuiBuildEnvironment | undefined;
@@ -120,8 +121,8 @@ export function classifyMcodeInstallPath(
     return 'bun-global';
   }
   if (
-    /\/lib\/node_modules\/@minimax(?:-ai)?\/code$/u.test(normalized) ||
-    /\/npm\/node_modules\/@minimax(?:-ai)?\/code$/u.test(normalized)
+    /\/lib\/node_modules\/@(?:bari|minimax(?:-ai)?)\/code$/u.test(normalized) ||
+    /\/npm\/node_modules\/@(?:bari|minimax(?:-ai)?)\/code$/u.test(normalized)
   ) {
     return 'npm-global';
   }
@@ -132,7 +133,10 @@ export function resolveMcodeNpmDistribution(
   packageName: McodeNpmPackageName = resolveMcodePackageName() ?? MCODE_EMBEDDED_PACKAGE_NAME,
   registry?: string,
 ): McodeNpmDistribution {
-  if (packageName === mcodePackageName(MCODE_INTERNAL_SCOPE)) {
+  if (
+    packageName === mcodePackageName(MCODE_INTERNAL_SCOPE) ||
+    packageName === mcodePackageName(MCODE_LEGACY_INTERNAL_SCOPE)
+  ) {
     const resolvedRegistry = registry ? new URL(registry).href : MCODE_INTERNAL_NPM_REGISTRY;
     if (resolvedRegistry === MCODE_INTERNAL_NPM_REGISTRY) {
       return { packageName, registry: resolvedRegistry };
@@ -417,7 +421,10 @@ export function resolveMcodePackageName(
 }
 
 export function isInternalMcodePackageName(packageName: string | undefined): boolean {
-  return packageName === mcodePackageName(MCODE_INTERNAL_SCOPE);
+  return (
+    packageName === mcodePackageName(MCODE_INTERNAL_SCOPE) ||
+    packageName === mcodePackageName(MCODE_LEGACY_INTERNAL_SCOPE)
+  );
 }
 
 export function resolveInstalledMcodePackageVersion(
@@ -627,6 +634,7 @@ function isResolvedPathInside(
 
 function parseMcodePackageName(value: unknown): McodeNpmPackageName | undefined {
   if (value === mcodePackageName(MCODE_INTERNAL_SCOPE)) return value as McodeNpmPackageName;
+  if (value === mcodePackageName(MCODE_LEGACY_INTERNAL_SCOPE)) return value as McodeNpmPackageName;
   if (value === mcodePackageName(MCODE_PUBLIC_SCOPE)) return value as McodeNpmPackageName;
   return undefined;
 }

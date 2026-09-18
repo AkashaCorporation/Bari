@@ -8,7 +8,7 @@
  * Multi-instance: registry can hold several adapters keyed by `clientName`.
  */
 
-import type { OutboundMediaRef } from '@mavis/shared';
+import type { OutboundMediaRef } from '@bari/shared';
 
 import { readFirstString } from '../../../api/http-helpers.js';
 

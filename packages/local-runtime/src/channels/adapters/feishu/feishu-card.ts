@@ -1,6 +1,6 @@
 import { createDecipheriv, createHash } from 'node:crypto';
 
-import type { AskQuestionnaireRequest } from '@mavis/shared/questionnaire';
+import type { AskQuestionnaireRequest } from '@bari/shared/questionnaire';
 
 import {
   type ChannelQuestionnaireOptionToken,

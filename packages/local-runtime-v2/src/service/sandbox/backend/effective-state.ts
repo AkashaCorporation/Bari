@@ -1,4 +1,4 @@
-import type { SandboxLocalAccess } from '@mavis/config';
+import type { SandboxLocalAccess } from '@bari/config';
 
 import type {
   PreparedNetworkPolicy,

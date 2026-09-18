@@ -1,5 +1,5 @@
-import { type SkillSourceKind, type SkillSourceRoot } from '@mavis/skills';
-import type { SkillFileInfo, SkillInfo } from '@mavis/protocol/local';
+import { type SkillSourceKind, type SkillSourceRoot } from '@bari/skills';
+import type { SkillFileInfo, SkillInfo } from '@bari/protocol/local';
 
 import { matchesAgentResourceInstance } from '../agent/resource-instance.js';
 import type { LocalRuntimeConfig } from '../config/types.js';

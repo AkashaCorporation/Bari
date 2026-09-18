@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import type { AgentDetail } from "@mavis/protocol/local";
+import type { AgentDetail } from "@bari/protocol/local";
 
 export async function isPersonaMissing(args: {
   agentConfigDir: string;

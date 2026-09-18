@@ -4,7 +4,7 @@ import { lstat, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
 
-import { isDefaultAgentAvatarMarker } from '@mavis/shared/agent-avatar';
+import { isDefaultAgentAvatarMarker } from '@bari/shared/agent-avatar';
 import yaml from 'yaml';
 
 import { publishFileIfAbsent, replaceFileAtomically } from '../../../infra/file/jsonl.js';

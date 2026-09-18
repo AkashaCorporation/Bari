@@ -3,7 +3,7 @@
  *
  * Bridges the IDL-generated DesktopService goal contract (flat structs from
  * `matrix/api_common/goal.thrift`, addressed by session_id) onto the internal
- * `@mavis/goal` `ThreadGoalStore` model. Kept free of any HTTP `Response` /
+ * `@bari/goal` `ThreadGoalStore` model. Kept free of any HTTP `Response` /
  * Hono coupling so both the generated DesktopService methods and unit tests
  * can reuse the exact same mapping + validation logic without duplication.
  *
@@ -29,13 +29,13 @@ import {
   type ThreadGoalPatchInput,
   type ThreadGoalState,
   type ThreadGoalStatus,
-} from "@mavis/goal";
+} from "@bari/goal";
 import type {
   AttachmentInput,
   CreateGoalInput as CreateGoalInput,
   GoalState,
   PatchGoalInput as PatchGoalInput,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 const VALID_STATUSES: ReadonlySet<ThreadGoalStatus> = new Set([
   "active",

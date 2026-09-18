@@ -2,7 +2,7 @@ import {
   QUESTIONNAIRE_TTL_MS,
   type AskQuestionnaireModePayload,
   type AskQuestionnaireRequest,
-} from '@mavis/shared/questionnaire';
+} from '@bari/shared/questionnaire';
 
 import type {
   BeginOwnedQuestionnaireInput,

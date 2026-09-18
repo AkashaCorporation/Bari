@@ -1,4 +1,4 @@
-import type { SandboxConfig } from '@mavis/config';
+import type { SandboxConfig } from '@bari/config';
 
 import type { SandboxEffectivePolicy, SandboxPolicyPathRoot } from './backend/types.js';
 

@@ -1,8 +1,8 @@
-import { getRuntimeBuildEnv, type MavisBuildEnv, type MavisRegion } from '@mavis/config';
+import { getRuntimeBuildEnv, type MavisBuildEnv, type MavisRegion } from '@bari/config';
 import {
   resolveProductBuildIdentity,
   type ProductBuildIdentity,
-} from '@mavis/shared/product-build-identity';
+} from '@bari/shared/product-build-identity';
 
 export type TuiBuildEnvironment = 'test' | 'staging' | 'prod';
 export type TuiBuildVariant = 'standard' | 'internal';

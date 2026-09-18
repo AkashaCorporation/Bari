@@ -1,4 +1,4 @@
-import { LocalMavisToolDef, type LocalRuntimeTool } from '@mavis/agent-tools/desktop';
+import { LocalMavisToolDef, type LocalRuntimeTool } from '@bari/agent-tools/desktop';
 
 /**
  * Arg fields only ever consumed by a `cron <action>` command. Leaving these in

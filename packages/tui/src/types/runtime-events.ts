@@ -1,10 +1,10 @@
 import type { TuiPendingPermission, TuiQuestionnaireRequest } from './runtime-models.js';
-import type { CompactionTokenUsage, GlobalThreadGoal } from '@mavis/shared/global-events';
+import type { CompactionTokenUsage, GlobalThreadGoal } from '@bari/shared/global-events';
 import type {
   SessionLLMRetryReason,
   SessionLLMRetryScope,
   SessionLLMRetryStatus,
-} from '@mavis/shared/llm-retry-event';
+} from '@bari/shared/llm-retry-event';
 
 interface TuiRuntimeEventBase {
   timestampMs: number;

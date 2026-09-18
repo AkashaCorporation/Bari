@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 
 import { DEFAULT_COMPACTION_SETTINGS } from '@earendil-works/pi-coding-agent';
-import type { PiTurnRunnerLogger } from '@mavis/agent-core/pi-turn-runner';
-import { resolveCompactionTokenBudget } from '@mavis/context-manager';
+import type { PiTurnRunnerLogger } from '@bari/agent-core/pi-turn-runner';
+import { resolveCompactionTokenBudget } from '@bari/context-manager';
 
 import type {
   ContextCompactionHooks,

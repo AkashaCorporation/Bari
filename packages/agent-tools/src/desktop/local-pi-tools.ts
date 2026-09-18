@@ -3,11 +3,11 @@ import {
   type ToolImpl,
   type ToolResult,
   type ToolResultContent,
-} from '@mavis/agent-core/tools';
+} from '@bari/agent-core/tools';
 import {
   sanitizeBashSubprocessEnv,
   type BashEnvPolicy,
-} from '@mavis/agent-core/bash-subprocess-env';
+} from '@bari/agent-core/bash-subprocess-env';
 import {
   createBashTool,
   createEditTool,

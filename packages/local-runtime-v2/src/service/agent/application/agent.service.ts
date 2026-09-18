@@ -3,8 +3,8 @@ import {
   isTrustedBuiltinCreationSource,
   resolveCanonicalSubagentRole,
   toAgentRequestRef,
-} from '@mavis/agent-tools/desktop/subagent-roles';
-import type { PromptReadScope } from '@mavis/agent-runtime';
+} from '@bari/agent-tools/desktop/subagent-roles';
+import type { PromptReadScope } from '@bari/agent-runtime';
 
 import {
   BuiltinAgentCatalog,

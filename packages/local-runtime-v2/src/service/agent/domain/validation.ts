@@ -1,8 +1,8 @@
 import {
   isCanonicalSubagentRole,
   resolveCanonicalSubagentRole,
-} from '@mavis/agent-tools/desktop/subagent-roles';
-import type { ResolvedAgentCapabilities } from '@mavis/config';
+} from '@bari/agent-tools/desktop/subagent-roles';
+import type { ResolvedAgentCapabilities } from '@bari/config';
 
 import type {
   AgentProfileRequest,

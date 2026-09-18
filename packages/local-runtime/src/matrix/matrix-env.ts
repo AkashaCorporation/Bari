@@ -3,7 +3,7 @@ import {
   getRuntimeRegion,
   type MavisBuildEnv,
   type MavisRegion,
-} from '@mavis/config';
+} from '@bari/config';
 
 const MANAGED_MATRIX_BASE_URLS: Record<MavisRegion, Record<MavisBuildEnv, string>> = {
   cn: {

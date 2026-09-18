@@ -7,9 +7,9 @@ import {
   type ContextUsageComponentKind,
   type ContextUsageSnapshot,
   type RuntimeEvent,
-} from '@mavis/agent-core/protocol';
-import { RespDataType, Role, type AgentMessage } from '@mavis/agent-core/protocol/agent-message';
-import type { CompactionTokenUsage } from '@mavis/shared/global-events';
+} from '@bari/agent-core/protocol';
+import { RespDataType, Role, type AgentMessage } from '@bari/agent-core/protocol/agent-message';
+import type { CompactionTokenUsage } from '@bari/shared/global-events';
 
 import type { MessageRepository } from './messages/repo/contract.js';
 import type { QueryCollapseProjector } from './query-collapse-projector.js';

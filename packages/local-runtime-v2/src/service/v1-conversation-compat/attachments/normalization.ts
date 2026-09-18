@@ -1,4 +1,4 @@
-import type { ConversationAttachment } from '@mavis/conversation-contract';
+import type { ConversationAttachment } from '@bari/conversation-contract';
 
 import { isInlineDisplayDataUrl } from '../../session-system/index.js';
 import type { RegisteredConversationAttachment } from './contracts.js';

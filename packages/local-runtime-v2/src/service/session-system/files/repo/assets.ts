@@ -1,4 +1,4 @@
-import { collectMessageAssetItems } from '@mavis/shared/asset-markup';
+import { collectMessageAssetItems } from '@bari/shared/asset-markup';
 import { mkdir, copyFile, lstat, rm, rmdir } from 'node:fs/promises';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { and, asc, desc, eq, gt, inArray, lt, notExists, or } from 'drizzle-orm';

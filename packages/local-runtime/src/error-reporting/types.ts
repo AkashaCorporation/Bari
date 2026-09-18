@@ -14,7 +14,7 @@
 
 import type { LocalRuntimeAuthContext } from '../runtime/model-resolver.js';
 import type { LocalRuntimeRoutingContext } from '../runtime/routing-headers.js';
-import type { MavisBuildEnv, MavisRegion } from '@mavis/config';
+import type { MavisBuildEnv, MavisRegion } from '@bari/config';
 
 /**
  * One caller-generated error event buffered in memory.

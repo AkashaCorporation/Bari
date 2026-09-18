@@ -2,7 +2,7 @@ import type {
   SandboxFilesystemPolicy,
   SandboxLocalAccess,
   SandboxNetworkPolicy,
-} from '@mavis/config';
+} from '@bari/config';
 
 export type SandboxPolicyPathRoot =
   | 'workspace'

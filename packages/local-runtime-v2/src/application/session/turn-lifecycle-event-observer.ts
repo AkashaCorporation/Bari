@@ -2,7 +2,7 @@ import {
   RuntimeEventStatus,
   RuntimeEventType,
   type RuntimeEvent,
-} from '@mavis/agent-core/protocol';
+} from '@bari/agent-core/protocol';
 
 import type { SessionRepository } from '../../service/session-system/index.js';
 import type {

@@ -1,4 +1,4 @@
-import type { RuntimeConversation } from '@mavis/conversation-contract';
+import type { RuntimeConversation } from '@bari/conversation-contract';
 
 export function normalizeSubagentFinalText(text: string): string {
   if (!/^\s*<annotation-result\b/iu.test(text)) return text;

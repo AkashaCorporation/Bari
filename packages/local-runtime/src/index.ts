@@ -76,12 +76,12 @@ export {
   searchFiles,
 } from "./files/api.js";
 
-export { collectEvalMetaInfo } from "@mavis/shared/eval-meta-info";
+export { collectEvalMetaInfo } from "@bari/shared/eval-meta-info";
 
 export {
   getConfig as getDefaultLocalRuntimeConfig,
   resetConfig as resetDefaultLocalRuntimeConfig,
-} from "@mavis/config";
+} from "@bari/config";
 export type { LocalRuntimeConfig } from "./config/types.js";
 export {
   createRuntimeTransportHost,

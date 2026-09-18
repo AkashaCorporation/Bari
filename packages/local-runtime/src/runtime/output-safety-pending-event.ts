@@ -1,5 +1,5 @@
-import type { IRuntimeEvent } from '@mavis/protocol';
-import type { RespData } from '@mavis/agent-core/protocol/agent-message';
+import type { IRuntimeEvent } from '@bari/protocol';
+import type { RespData } from '@bari/agent-core/protocol/agent-message';
 
 /**
  * Pending event queue entry.

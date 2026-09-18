@@ -1,4 +1,4 @@
-import type { MavisBuildEnv } from '@mavis/config';
+import type { MavisBuildEnv } from '@bari/config';
 
 /** Read the managed-routing gate without a config fallback. */
 export function getRawRuntimeBuildEnv(): MavisBuildEnv | undefined {

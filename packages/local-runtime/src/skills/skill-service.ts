@@ -10,8 +10,8 @@
 //
 // The skill domain owns its registry provider; callers supply config + optional roots.
 // DesktopService pulls it through the process-scoped `getSkillService()` accessor.
-import type { SkillSourceRoot } from '@mavis/skills';
-import type { SkillFileInfo, SkillInfo } from '@mavis/protocol/local';
+import type { SkillSourceRoot } from '@bari/skills';
+import type { SkillFileInfo, SkillInfo } from '@bari/protocol/local';
 
 import type { LocalRuntimeConfig } from '../config/types.js';
 import type { MetricsClient } from '../common/metrics.js';

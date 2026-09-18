@@ -2,8 +2,8 @@ import type {
   InternalTurnPromptReadRegistry,
   PromptReadScope,
   PromptSnapshotSource,
-} from '@mavis/agent-core';
-import type { RuntimeConversation } from '@mavis/conversation-contract';
+} from '@bari/agent-core';
+import type { RuntimeConversation } from '@bari/conversation-contract';
 
 import type { LocalRuntimeLogger } from '../common/logger.js';
 import type { MetricsClient } from '../common/metrics.js';

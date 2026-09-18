@@ -4,8 +4,8 @@ import type {
   AgentBuiltinSkillId,
   AgentBuiltinToolId,
   ResolvedAgentCapabilities,
-} from '@mavis/config';
-import type { PromptReadScope } from '@mavis/agent-runtime';
+} from '@bari/config';
+import type { PromptReadScope } from '@bari/agent-runtime';
 import type { InputSafetyDecision } from '../../../content-safety/index.js';
 import type { LocalResolvedModelConfig } from '../../../model-system/index.js';
 import type {

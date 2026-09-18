@@ -5,7 +5,7 @@ import path from 'node:path';
 import {
   PluginInstallationPolicy,
   type PluginInstallationPolicy as PluginInstallationPolicyType,
-} from '@mavis/protocol/local';
+} from '@bari/protocol/local';
 
 import { materializeOfficialPluginArchive } from '../package/archive-cache.js';
 import { pluginDigestCacheKey } from '../package/package-contract.js';

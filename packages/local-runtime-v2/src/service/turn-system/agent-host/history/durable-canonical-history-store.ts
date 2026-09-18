@@ -8,7 +8,7 @@ import type {
   SettleTurnTailMutation,
   TurnHistoryMutationCommit,
 } from './contracts.js';
-import { KeyedOperationLane } from '@mavis/shared/keyed-operation-lane';
+import { KeyedOperationLane } from '@bari/shared/keyed-operation-lane';
 import {
   AgentHostDependencyUnavailableError,
   assertAgentHostCapabilityAvailable,

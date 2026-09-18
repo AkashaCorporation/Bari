@@ -2,7 +2,7 @@ import type {
   AskQuestionnaireReplyAnswer,
   AskQuestionnaireReplyPayload,
   AskQuestionnaireRequest,
-} from '@mavis/shared/questionnaire';
+} from '@bari/shared/questionnaire';
 
 import { QUESTIONNAIRE_OTHER_SUFFIX, type QuestionnaireSubmitActionValue } from './feishu-card.js';
 

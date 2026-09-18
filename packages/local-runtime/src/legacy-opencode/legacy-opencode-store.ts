@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import os from 'node:os';
 import path from 'node:path';
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 import { loadBetterSqlite3Module } from '../persistence/better-sqlite3-loader.js';
 import type {

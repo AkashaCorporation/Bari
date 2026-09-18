@@ -1,5 +1,5 @@
 import type { LocalSessionRecord } from '../sessions/controller.js';
-import type { AgentBuiltinSkillId, ResolvedAgentCapabilities } from '@mavis/config';
+import type { AgentBuiltinSkillId, ResolvedAgentCapabilities } from '@bari/config';
 import { buildLocalBashAdapter } from '../background-task/bash-runner.js';
 import type {
   LocalMavisAgentAdapter,
@@ -7,7 +7,7 @@ import type {
   LocalMavisSessionAdapter,
   LocalCodeReviewAdapter,
   LocalSandboxBashExecutionPort,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 import { buildLocalTurnToolSources, type LocalTurnToolSources } from './local-native-tools.js';
 import { buildLocalTaskAdapter } from './local-task-runner.js';
 import { buildLocalTaskAppendAdapter } from './local-task-append.js';

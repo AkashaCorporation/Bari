@@ -1,5 +1,5 @@
-import { getRuntimePresetKey, resolveModelAvailability } from '@mavis/config';
-import { ThinkingLevel } from '@mavis/protocol';
+import { getRuntimePresetKey, resolveModelAvailability } from '@bari/config';
+import { ThinkingLevel } from '@bari/protocol';
 
 import type { LocalConversationRuntimeConfig, LocalModelConfig } from '../contracts.js';
 import { MANAGED_MINIMAX_PROVIDER_ID, MINIMAX_API_PROVIDER_ID } from '../identity.js';

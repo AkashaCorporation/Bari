@@ -1,5 +1,5 @@
 import type { AgentMessage } from '@earendil-works/pi-agent-core';
-import type { EvalMetaInfo } from '@mavis/shared/eval-meta-info';
+import type { EvalMetaInfo } from '@bari/shared/eval-meta-info';
 
 export interface LocalEvalReporterContext {
   readonly sessionId: string;

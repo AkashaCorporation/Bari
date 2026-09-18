@@ -1,4 +1,4 @@
-import type { ThreadGoalBudgetLimits, ThreadGoalState } from '@mavis/goal';
+import type { ThreadGoalBudgetLimits, ThreadGoalState } from '@bari/goal';
 
 import type { GoalDependencyGates } from './dependency-gates.js';
 import { resolveThreadGoalBudgetLimits, type ThreadGoalGateConfig } from './gate.js';

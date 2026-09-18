@@ -4,7 +4,7 @@ import {
   ThreadGoalAlreadyExistsError,
   ThreadGoalBudgetLimitedError,
   type ThreadGoalState,
-} from "@mavis/goal";
+} from "@bari/goal";
 
 import {
   ThreadGoalContractError,

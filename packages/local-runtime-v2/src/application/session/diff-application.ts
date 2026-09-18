@@ -8,7 +8,7 @@ import type {
   RevertTurnDiffInput as RevertTurnDiffReq,
   RevertTurnDiffResult as RevertTurnDiffResp,
   TurnDiffView,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 import type { V1SessionCompatibility } from "../../compat/v1/session.js";
 import {

@@ -27,7 +27,7 @@
 
 import { isAbsolute } from 'node:path';
 
-import { stripRuntimeBoundaryKeysFrom } from '@mavis/shared/runtime-boundary-env';
+import { stripRuntimeBoundaryKeysFrom } from '@bari/shared/runtime-boundary-env';
 
 export type BashEnvSanitizeMode = 'off' | 'scrub' | 'strict';
 

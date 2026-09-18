@@ -1,5 +1,5 @@
-import { digestThreadGoalObjective, type ThreadGoalState } from "@mavis/goal";
-import type { RuntimeConversation } from "@mavis/conversation-contract";
+import { digestThreadGoalObjective, type ThreadGoalState } from "@bari/goal";
+import type { RuntimeConversation } from "@bari/conversation-contract";
 import { describe, expect, it, vi } from "vitest";
 
 import type { LocalSessionRecord } from "../../src/sessions/controller.js";

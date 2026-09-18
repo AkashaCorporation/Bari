@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { release } from 'node:os';
 
-import { getRuntimeRegion, type MavisBuildEnv, type MavisRegion } from '@mavis/config';
+import { getRuntimeRegion, type MavisBuildEnv, type MavisRegion } from '@bari/config';
 
 import type {
   TuiFeedbackPhase,

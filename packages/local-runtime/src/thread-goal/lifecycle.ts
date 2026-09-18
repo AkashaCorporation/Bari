@@ -1,5 +1,5 @@
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
-import type { RuntimeTool, ToolExecutionContext } from '@mavis/agent-core/tools';
+import type { RuntimeTool, ToolExecutionContext } from '@bari/agent-core/tools';
 import {
   ThreadGoalBudgetLimitedError,
   ThreadGoalEpochConflictError,
@@ -11,7 +11,7 @@ import {
   type ThreadGoalStore,
   type ThreadGoalTokenBudgetMutationInput,
   type ThreadGoalTokenBudgetMutationResult,
-} from '@mavis/goal';
+} from '@bari/goal';
 import type { TSchema } from '@sinclair/typebox';
 
 import type { GlobalEventPublisher } from '../events/global-events.js';

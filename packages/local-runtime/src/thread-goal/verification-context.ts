@@ -6,7 +6,7 @@ import type {
   VerificationAttempt,
   VerificationDispatchError,
   VerificationResult,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 export interface ThreadGoalSettlementInput {
   readonly sessionId: string;
@@ -15,7 +15,7 @@ export interface ThreadGoalSettlementInput {
   readonly tokens: number;
   readonly retracted: boolean;
   readonly usageIncomplete?: boolean;
-  readonly failureClass?: import('@mavis/goal').ThreadGoalFailureClass;
+  readonly failureClass?: import('@bari/goal').ThreadGoalFailureClass;
   readonly finalAssistantText?: string;
   readonly workerModelKey?: string;
   /**

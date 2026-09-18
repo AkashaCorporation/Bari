@@ -1,4 +1,4 @@
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 const INTERNAL_USER_SOURCES = new Set(['system', 'communication', 'team-engine']);
 const SYNTHETIC_RESPONSE_RE = /<(questionnaire|permission)-response\b/u;

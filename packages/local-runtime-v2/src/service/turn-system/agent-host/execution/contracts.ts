@@ -1,4 +1,4 @@
-import type { RuntimeEvent } from '@mavis/agent-core/protocol';
+import type { RuntimeEvent } from '@bari/agent-core/protocol';
 import type {
   PiAfterToolCallHook,
   PiBeforeLlmCallHook,
@@ -10,8 +10,8 @@ import type {
   RunTurnInput,
   TurnEventReporter,
   UserMessageInput,
-} from '@mavis/agent-core/pi-turn-runner';
-import type { RuntimeTool, ToolExecutionContext } from '@mavis/agent-core/tools';
+} from '@bari/agent-core/pi-turn-runner';
+import type { RuntimeTool, ToolExecutionContext } from '@bari/agent-core/tools';
 
 import type { InputSafetyDecision } from '../../../content-safety/index.js';
 import type {

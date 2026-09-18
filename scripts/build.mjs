@@ -72,7 +72,7 @@ const sourcePlugin = {
     });
   },
 };
-const version = packages.get("@minimax/code").manifest.version;
+const version = packages.get("@bari/code").manifest.version;
 const result = await build({
   absWorkingDir: root,
   entryPoints: {
@@ -143,7 +143,7 @@ console.log(
 writeFileSync(
   path.join(outdir, "package.json"),
   JSON.stringify(
-    { name: "@minimax-ai/code", version, type: "module", private: true },
+    { name: "@bari/code", version, type: "module", private: true },
     null,
     2,
   ) + "\n",

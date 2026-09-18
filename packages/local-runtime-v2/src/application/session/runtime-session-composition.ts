@@ -1,6 +1,6 @@
-import { isLocalSourceProvenanceEnabled } from '@mavis/config';
-import type { InternalTurnPromptReadRegistry } from '@mavis/agent-runtime';
-import type { GlobalEventInput } from '@mavis/shared/global-events';
+import { isLocalSourceProvenanceEnabled } from '@bari/config';
+import type { InternalTurnPromptReadRegistry } from '@bari/agent-runtime';
+import type { GlobalEventInput } from '@bari/shared/global-events';
 
 import type { V1SessionCompatibility } from '../../compat/v1/session.js';
 import { AgentServiceError, type LocalAgentService } from '../../service/agent/index.js';

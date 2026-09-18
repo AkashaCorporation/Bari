@@ -23,7 +23,7 @@ import {
   getRuntimeRegion,
   type MavisBuildEnv,
   type MavisRegion,
-} from '@mavis/config';
+} from '@bari/config';
 
 import { logger } from '../common/logger.js';
 import type { LocalRuntimeAuthContext } from '../runtime/model-resolver.js';

@@ -1,4 +1,4 @@
-import type { ThreadGoalState, ThreadGoalStore } from '@mavis/goal';
+import type { ThreadGoalState, ThreadGoalStore } from '@bari/goal';
 
 import type { LocalThreadGoalIntegrationDeps } from './host-deps.js';
 import { buildThreadGoalKickoffMessage, threadGoalKickoffClientRequestId } from './kickoff.js';

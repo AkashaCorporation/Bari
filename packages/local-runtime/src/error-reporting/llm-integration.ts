@@ -9,7 +9,7 @@
  * number, pointing to the actual failure observation site in agent-core.
  */
 
-import type { PiLLMRequestFailureHook } from '@mavis/agent-core/pi-turn-runner';
+import type { PiLLMRequestFailureHook } from '@bari/agent-core/pi-turn-runner';
 
 import { formatErrorLog } from './reporter.js';
 import type { DesktopErrorReporter } from './types.js';

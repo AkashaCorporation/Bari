@@ -2,8 +2,8 @@ import {
   RuntimeEventStatus,
   RuntimeEventType,
   type RuntimeEvent,
-} from '@mavis/agent-core/protocol';
-import type { ConversationChannelContext } from '@mavis/conversation-contract';
+} from '@bari/agent-core/protocol';
+import type { ConversationChannelContext } from '@bari/conversation-contract';
 
 import type { DisplayMessageRecord } from '../../session-system/index.js';
 import { toConversationCommittedMessage } from '../../session-system/index.js';

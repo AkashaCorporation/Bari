@@ -1,5 +1,5 @@
 import { panelLayout } from '../../widgets/panel-frame.js';
-import type { MavisRegion } from '@mavis/config';
+import type { MavisRegion } from '@bari/config';
 import type { Component } from '../../rendering/component.js';
 import {
   tuiChalk as chalk,

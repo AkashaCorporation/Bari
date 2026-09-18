@@ -1,4 +1,4 @@
-import { SAFETY_CHECK_V2_SCENE, SafetyCheckV2Error } from '@mavis/shared/safety-check-v2';
+import { SAFETY_CHECK_V2_SCENE, SafetyCheckV2Error } from '@bari/shared/safety-check-v2';
 import { callSafetyApi, SAFETY_SCENE, type SafetyCheckResult } from './api.js';
 import { callLocalSafetyCheckV2 } from './api-v2.js';
 

@@ -2,7 +2,7 @@ import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import yaml from 'js-yaml';
 
-import type { OutboundMediaRef } from '@mavis/shared';
+import type { OutboundMediaRef } from '@bari/shared';
 
 import {
   type DeadLetterRefKind,
@@ -347,7 +347,7 @@ export class LocalWeChatChannelClient implements LocalMultiChannelClient {
     sessionId?: string;
     queueItemId?: string;
     error?: string;
-    questionnaire?: import('@mavis/shared/questionnaire').AskQuestionnaireRequest;
+    questionnaire?: import('@bari/shared/questionnaire').AskQuestionnaireRequest;
   }): Promise<LocalChannelOutboundMessage> {
     const outbound = prepareChannelOutboundMessage(input);
     // Questionnaire branch — render via the adapter's WeChat questionnaire

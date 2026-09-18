@@ -1,4 +1,4 @@
-import { collectMessageAssetItems } from '@mavis/shared/asset-markup';
+import { collectMessageAssetItems } from '@bari/shared/asset-markup';
 import { and, desc, eq } from 'drizzle-orm';
 
 import type { AppDb } from '../../../../infra/db/client.js';

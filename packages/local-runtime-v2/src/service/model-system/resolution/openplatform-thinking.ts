@@ -1,4 +1,4 @@
-import type { IModelRef } from '@mavis/protocol';
+import type { IModelRef } from '@bari/protocol';
 
 export const OPENPLATFORM_THINKING_VARIANTS_CAPABILITY = 'openplatform_thinking_variants';
 

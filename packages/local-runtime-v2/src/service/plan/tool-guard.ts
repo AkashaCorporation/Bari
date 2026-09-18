@@ -1,4 +1,4 @@
-import { isSameResolvedPath } from '@mavis/permission';
+import { isSameResolvedPath } from '@bari/permission';
 
 import type { PlanPolicyGuard, PlanTurnPolicySnapshot } from './contracts.js';
 

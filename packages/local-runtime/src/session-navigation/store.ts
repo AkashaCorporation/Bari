@@ -1,4 +1,4 @@
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 import { withLocalRuntimeDb, type DataDirInput, type DatabaseLike } from '../persistence/db.js';
 import { isNavigableUserInput, projectNavigationText, takeUnicodeCodePoints } from './text.js';

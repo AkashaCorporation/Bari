@@ -1,5 +1,5 @@
 import type { CommittedQueueCapability } from '../session-system/index.js';
-import { INTERNAL_TURN_ID_PREFIX } from '@mavis/shared/turn-identity';
+import { INTERNAL_TURN_ID_PREFIX } from '@bari/shared/turn-identity';
 
 const PLAN_CONTINUATION_IDENTITY_PREFIXES = [
   `${INTERNAL_TURN_ID_PREFIX}plan-enter:`,

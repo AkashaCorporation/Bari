@@ -3,7 +3,7 @@ import type {
   GetRootSessionResult as GetRootSessionResp,
   ReplaceRootSessionInput as ReplaceRootSessionReq,
   ReplaceRootSessionResult as ReplaceRootSessionResp,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 import {
   RootInvariantError,

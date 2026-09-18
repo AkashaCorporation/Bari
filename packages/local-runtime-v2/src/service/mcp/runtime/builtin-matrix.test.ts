@@ -45,7 +45,7 @@ const desktopMocks = vi.hoisted(() => ({
   }),
 }));
 
-vi.mock('@mavis/agent-tools/desktop', () => ({
+vi.mock('@bari/agent-tools/desktop', () => ({
   createMatrixMcpRuntime: desktopMocks.createMatrixMcpRuntime,
   buildMatrixMcpToolDescriptors: desktopMocks.buildMatrixMcpToolDescriptors,
   getDesktopMatrixEndpoint: desktopMocks.getDesktopMatrixEndpoint,
@@ -254,11 +254,11 @@ describe('builtin Matrix MCP server config', () => {
     try {
       const runtimeEntry = join(
         tmp,
-        'node_modules/@mavis/local-runtime-v2/dist/service/mcp/runtime/builtin-matrix.js',
+        'node_modules/@bari/local-runtime-v2/dist/service/mcp/runtime/builtin-matrix.js',
       );
       const entrypoint = join(
         tmp,
-        'node_modules/@mavis/agent-tools/dist/desktop/matrix-mcp-stdio.js',
+        'node_modules/@bari/agent-tools/dist/desktop/matrix-mcp-stdio.js',
       );
       await mkdir(dirname(entrypoint), { recursive: true });
       await writeFile(entrypoint, '#!/usr/bin/env node\n', 'utf8');

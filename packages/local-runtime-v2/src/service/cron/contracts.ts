@@ -1,7 +1,7 @@
 import type {
   CronDeliveryRequest as CronTurnDeliveryRequest,
   CronDeliveryResult as CronTurnDeliveryResult,
-} from "@mavis/protocol/local";
+} from "@bari/protocol/local";
 
 export const CRON_SCHEDULER_HANDLER_KEY = "cron.run";
 

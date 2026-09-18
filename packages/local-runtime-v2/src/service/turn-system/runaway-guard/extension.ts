@@ -1,5 +1,5 @@
-import { runawayGuardExtension, type RunawayGuardExtensionOptions } from '@mavis/agent-extension';
-import { resolveRunawayGuardConfig } from '@mavis/config';
+import { runawayGuardExtension, type RunawayGuardExtensionOptions } from '@bari/agent-extension';
+import { resolveRunawayGuardConfig } from '@bari/config';
 import { createProductionRunawayGuardToolPolicies } from './tool-policy.js';
 import { createRunawayGuardObserver, type RunawayGuardObserverOptions } from './observation.js';
 

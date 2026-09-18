@@ -10,7 +10,7 @@
  * cannot be matched to a numbered option fall through as `selectedOther: true`
  * with the raw text as `otherText`.
  */
-import type { AskQuestionnaireReplyPayload } from '@mavis/shared/questionnaire';
+import type { AskQuestionnaireReplyPayload } from '@bari/shared/questionnaire';
 
 import type {
   ChannelQuestionnairePending,

@@ -2,8 +2,8 @@ import { describe, expect, it, vi } from "vitest";
 import {
   RuntimeEventStatus,
   RuntimeEventType,
-} from "@mavis/agent-core/protocol";
-import type { ThreadGoalBudgetCheckResult } from "@mavis/goal";
+} from "@bari/agent-core/protocol";
+import type { ThreadGoalBudgetCheckResult } from "@bari/goal";
 
 import {
   createV1AttachmentRegistration,

@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 
 import type { AgentMessage } from '@earendil-works/pi-agent-core';
 import { DEFAULT_COMPACTION_SETTINGS } from '@earendil-works/pi-coding-agent';
-import type { PiBeforeLlmCallHook, PiTurnRunnerLogger } from '@mavis/agent-core/pi-turn-runner';
-import { resolveCompactionTokenBudget } from '@mavis/context-manager';
+import type { PiBeforeLlmCallHook, PiTurnRunnerLogger } from '@bari/agent-core/pi-turn-runner';
+import { resolveCompactionTokenBudget } from '@bari/context-manager';
 
 import type {
   AutomaticContextCompactionInput,

@@ -1,5 +1,5 @@
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 import type { LocalQueuedMessage } from '../messages/queue.js';
 

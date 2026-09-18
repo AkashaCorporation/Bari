@@ -1,5 +1,5 @@
-import { getSandboxConfigDefaults, type SandboxConfig } from '@mavis/config';
-import { resolveBashEnvPolicy } from '@mavis/agent-core/bash-subprocess-env';
+import { getSandboxConfigDefaults, type SandboxConfig } from '@bari/config';
+import { resolveBashEnvPolicy } from '@bari/agent-core/bash-subprocess-env';
 
 import { createSrtMacosBackend } from './backend/srt-macos.js';
 import type { SandboxBackendDescriptorForTest } from './backend/types.js';

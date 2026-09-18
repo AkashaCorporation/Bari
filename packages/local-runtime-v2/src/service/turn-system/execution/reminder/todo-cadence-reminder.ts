@@ -1,5 +1,5 @@
-import type { PiBeforeLlmCallHook } from '@mavis/agent-core/pi-turn-runner';
-import { summarizeTodoStatuses } from '@mavis/system-reminder';
+import type { PiBeforeLlmCallHook } from '@bari/agent-core/pi-turn-runner';
+import { summarizeTodoStatuses } from '@bari/system-reminder';
 
 import { formatTodoCadenceReminderContent } from '../../agent-host/history/canonical-history-validation.js';
 import {

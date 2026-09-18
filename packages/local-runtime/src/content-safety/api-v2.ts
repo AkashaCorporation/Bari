@@ -3,13 +3,13 @@ import {
   getRuntimeRegion,
   type MavisBuildEnv,
   type MavisRegion,
-} from '@mavis/config';
+} from '@bari/config';
 import {
   GATEWAY_SAFETY_CHECK_V2_HTTP_ACTION,
   postSafetyCheckV2,
   SafetyCheckV2Error,
   type SafetyCheckV2Scene,
-} from '@mavis/shared/safety-check-v2';
+} from '@bari/shared/safety-check-v2';
 
 import type { LocalRuntimeAuthContext } from '../runtime/model-resolver.js';
 import {

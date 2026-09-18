@@ -4,9 +4,9 @@ import { AuthStorage } from '@earendil-works/pi-coding-agent';
 import type {
   PiLLMRequestFailureHook,
   PiLLMRequestObserver,
-} from '@mavis/agent-core/pi-turn-runner';
-import { resolveAgentCapabilities, type AgentBuiltinSkillId } from '@mavis/config';
-import type { IRuntimeEvent } from '@mavis/protocol';
+} from '@bari/agent-core/pi-turn-runner';
+import { resolveAgentCapabilities, type AgentBuiltinSkillId } from '@bari/config';
+import type { IRuntimeEvent } from '@bari/protocol';
 
 import { createChildBashLifecycle } from '../background-task/child-bash-lifecycle.js';
 import { isLocalChildWorkerSession } from '../sessions/session-policy.js';
@@ -48,8 +48,8 @@ import type {
   HostedTurnLifecycleInput,
   HostedTurnSettlementInput,
 } from './hosted-agent-turn-lifecycle.js';
-import type { RuntimeConversation } from '@mavis/conversation-contract';
-import type { InternalTurnPromptReadRegistry, PromptSnapshotSource } from '@mavis/agent-core';
+import type { RuntimeConversation } from '@bari/conversation-contract';
+import type { InternalTurnPromptReadRegistry, PromptSnapshotSource } from '@bari/agent-core';
 import { HostedReviewCapability } from '../review/hosted-capability.js';
 import { resolveBuiltinReviewPromptDir } from '../review/preparation.js';
 import { classifyThreadGoalFailure } from '../thread-goal/failure-classification.js';

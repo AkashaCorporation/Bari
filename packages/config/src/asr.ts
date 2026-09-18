@@ -2,7 +2,7 @@
 //
 // Types and config parsers split out from `config.ts` to keep that file
 // under the 2000-line gate. Re-exported by `config.ts` so callers continue
-// to import from `@mavis/config` exactly as before.
+// to import from `@bari/config` exactly as before.
 //
 // ## Provider policy (post Seed/Qwen retirement)
 //

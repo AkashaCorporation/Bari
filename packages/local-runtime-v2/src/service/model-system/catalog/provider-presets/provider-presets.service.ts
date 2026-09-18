@@ -1,4 +1,4 @@
-import { getRuntimeRegion } from '@mavis/config';
+import { getRuntimeRegion } from '@bari/config';
 
 import type { ByokProviderPresetView, UserModelInputView } from '../../contracts.js';
 import { normalizeProviderBaseUrl } from '../../connectivity/provider-request.js';

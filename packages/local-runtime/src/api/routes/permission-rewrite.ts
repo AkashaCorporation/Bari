@@ -1,5 +1,5 @@
 import type { BeforeToolCallContext } from '@earendil-works/pi-agent-core';
-import type { ExecutionPlan } from '@mavis/permission';
+import type { ExecutionPlan } from '@bari/permission';
 
 /**
  * Apply a complete effective-input snapshot onto the live `toolContext.args`

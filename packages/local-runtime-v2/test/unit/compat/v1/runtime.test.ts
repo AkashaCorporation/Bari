@@ -1,10 +1,10 @@
 import {
   type CreateLocalRuntimeHostOptions,
   type CreatedLocalRuntimeHost,
-} from "@mavis/local-runtime";
-import { DeferredRuntimeConversation } from "@mavis/conversation-contract";
-import type { ThreadGoalState, ThreadGoalStore } from "@mavis/goal";
-import type { AgentReferenceResolver } from "@mavis/shared";
+} from "@bari/local-runtime";
+import { DeferredRuntimeConversation } from "@bari/conversation-contract";
+import type { ThreadGoalState, ThreadGoalStore } from "@bari/goal";
+import type { AgentReferenceResolver } from "@bari/shared";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -34,9 +34,9 @@ const mocked = vi.hoisted(() => ({
   applyCollision: vi.fn(),
 }));
 
-vi.mock("@mavis/local-runtime", async () => {
+vi.mock("@bari/local-runtime", async () => {
   const actual = await vi.importActual<Record<string, unknown>>(
-    "@mavis/local-runtime",
+    "@bari/local-runtime",
   );
   return {
     ...actual,

@@ -1,6 +1,6 @@
 import { streamSimple, type Api, type Context, type Model } from '@earendil-works/pi-ai';
 import type { AgentMessage, StreamFn } from '@earendil-works/pi-agent-core';
-import { LLM_RETRY_CALL_IDENTITY } from '@mavis/agent-core/pi-turn-runner';
+import { LLM_RETRY_CALL_IDENTITY } from '@bari/agent-core/pi-turn-runner';
 import {
   estimateMessagesTokens,
   estimateSystemPromptAndToolTokens,

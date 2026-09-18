@@ -35,13 +35,13 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { readWindowsTrashExecution } from '@mavis/permission';
+import { readWindowsTrashExecution } from '@bari/permission';
 import { describe, expect, it, vi } from 'vitest';
 import type {
   CloudClassifyRequest,
   CloudClassifyVerdict,
   CloudGatewayClient,
-} from '@mavis/permission';
+} from '@bari/permission';
 
 import {
   LocalPermissionFacade,

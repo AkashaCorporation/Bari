@@ -3,7 +3,7 @@ import type {
   ThreadGoalFailureClass,
   ThreadGoalSettleBoundTurnInput,
   ThreadGoalStatusReason,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 export type ThreadGoalSettlementStage = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 

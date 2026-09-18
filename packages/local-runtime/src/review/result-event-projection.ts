@@ -1,5 +1,5 @@
-import { RuntimeEventType, type RuntimeEvent } from '@mavis/agent-core/protocol';
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
+import { RuntimeEventType, type RuntimeEvent } from '@bari/agent-core/protocol';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
 
 import type { ReviewActivityIdentity } from './activity-events.js';
 import type { ReviewOutcome } from './types.js';

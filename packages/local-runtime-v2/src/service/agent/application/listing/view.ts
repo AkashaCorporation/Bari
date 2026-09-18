@@ -1,7 +1,7 @@
 import {
   isTrustedBuiltinCreationSource,
   toAgentRequestRef,
-} from '@mavis/agent-tools/desktop/subagent-roles';
+} from '@bari/agent-tools/desktop/subagent-roles';
 
 import {
   resolveCanonicalCapabilities,

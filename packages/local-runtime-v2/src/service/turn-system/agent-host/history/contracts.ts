@@ -1,5 +1,5 @@
-import type { PiAgentMessage, PiHistoryChangedHookInput } from '@mavis/agent-core/pi-turn-runner';
-import type { TurnAssemblyCtx } from '@mavis/agent-runtime';
+import type { PiAgentMessage, PiHistoryChangedHookInput } from '@bari/agent-core/pi-turn-runner';
+import type { TurnAssemblyCtx } from '@bari/agent-runtime';
 
 interface MinimalNativeCompactionSummary extends Readonly<Record<string, unknown>> {
   readonly role: 'compactionSummary';

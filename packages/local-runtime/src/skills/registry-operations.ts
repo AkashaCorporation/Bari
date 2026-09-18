@@ -2,13 +2,13 @@ import { readdir, readFile, realpath, rm, stat } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { SkillRegistry, type SkillEntry, type SkillSourceKind } from '@mavis/skills';
+import { SkillRegistry, type SkillEntry, type SkillSourceKind } from '@bari/skills';
 import {
   type CreatorInfo,
   type SkillFileInfo,
   type SkillInfo,
   type SkillSourceType,
-} from '@mavis/protocol/local';
+} from '@bari/protocol/local';
 
 import type { LocalRuntimeConfig } from '../config/types.js';
 import type { SubagentTelemetryHost } from '../agent/subagent-telemetry.js';

@@ -11,7 +11,7 @@ import {
   type TurnCommittedFacts,
   type ConversationTurnResult,
   type RuntimeConversation,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 
 import {
   isInlineDisplayDataUrl,

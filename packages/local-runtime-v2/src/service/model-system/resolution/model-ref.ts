@@ -5,8 +5,8 @@ import {
   ThinkingMode,
   type IModelCapabilities,
   type IModelRef,
-} from '@mavis/protocol';
-import type { ConversationModelThinkingSelection } from '@mavis/conversation-contract';
+} from '@bari/protocol';
+import type { ConversationModelThinkingSelection } from '@bari/conversation-contract';
 
 import {
   LocalModelProviderError,

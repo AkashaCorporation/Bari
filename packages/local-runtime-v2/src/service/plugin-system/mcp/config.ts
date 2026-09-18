@@ -1,7 +1,7 @@
 import { realpath } from 'node:fs/promises';
 import path from 'node:path';
 
-import type { ResolvedMcpServer, TransportConfig } from '@mavis/mcp';
+import type { ResolvedMcpServer, TransportConfig } from '@bari/mcp';
 
 import {
   isRecord,

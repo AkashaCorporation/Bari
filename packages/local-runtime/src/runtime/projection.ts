@@ -3,7 +3,7 @@ import {
   type IRuntimeEvent,
   type IRuntimeStopReason,
   type RuntimeEventStatus,
-} from '@mavis/protocol';
+} from '@bari/protocol';
 
 export interface LocalRuntimeStreamRespFrame {
   kind: 'stream.resp';

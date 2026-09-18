@@ -1,4 +1,4 @@
-import type { ConversationModelThinkingSelection } from '@mavis/conversation-contract';
+import type { ConversationModelThinkingSelection } from '@bari/conversation-contract';
 
 import type { SessionKind, SessionRecord } from '../repo/contract.js';
 import { SessionServiceError } from '../errors.js';

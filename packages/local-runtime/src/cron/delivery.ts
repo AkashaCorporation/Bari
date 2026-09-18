@@ -17,7 +17,7 @@
  *   yet, so the gate only produced a misleading prompt note with no delivery.
  */
 
-import type { ChannelDeliveryPort, CronChannelRunner } from '@mavis/cron';
+import type { ChannelDeliveryPort, CronChannelRunner } from '@bari/cron';
 
 import type { LocalChannelBindingStore, LocalChannelContext } from '../channels/infra.js';
 import type { LocalChannelRunner } from '../channels/runner.js';

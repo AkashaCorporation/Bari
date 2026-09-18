@@ -1,4 +1,4 @@
-import type { EvalMetaInfo } from '@mavis/shared/eval-meta-info';
+import type { EvalMetaInfo } from '@bari/shared/eval-meta-info';
 
 import { logger } from '../common/logger.js';
 import {

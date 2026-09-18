@@ -4,7 +4,7 @@ import { readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { AgentMessage as PiAgentMessage } from '@earendil-works/pi-agent-core';
-import type { AgentMessage } from '@mavis/agent-core/protocol/agent-message';
+import type { AgentMessage } from '@bari/agent-core/protocol/agent-message';
 
 import type { MetricsClient } from '../../common/metrics.js';
 import type { DataDirInput } from '../../persistence/db.js';

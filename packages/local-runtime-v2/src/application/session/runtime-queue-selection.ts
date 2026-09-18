@@ -1,4 +1,4 @@
-import { isOrdinaryQuestionnaireResponseOrigin } from '@mavis/shared/questionnaire';
+import { isOrdinaryQuestionnaireResponseOrigin } from '@bari/shared/questionnaire';
 import type { V1ServiceCompatibility } from '../../compat/v1/runtime.js';
 import { composeQueuedItemClassifier, type PlanService } from '../../service/plan/index.js';
 import type { SessionSystemOwner } from '../../service/session-system/index.js';

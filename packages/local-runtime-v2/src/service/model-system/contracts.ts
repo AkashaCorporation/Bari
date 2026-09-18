@@ -1,6 +1,6 @@
 import type { Api } from '@earendil-works/pi-ai';
 import type { StreamFn } from '@earendil-works/pi-agent-core';
-import type { LLMModelConfig } from '@mavis/agent-core/pi-turn-runner';
+import type { LLMModelConfig } from '@bari/agent-core/pi-turn-runner';
 import type {
   AgentCapabilityConfig,
   Config,
@@ -8,8 +8,8 @@ import type {
   ModelConfig,
   ProviderAuthMode,
   ResolvedAgentCapabilities,
-} from '@mavis/config';
-import type { IAgentConfig } from '@mavis/protocol';
+} from '@bari/config';
+import type { IAgentConfig } from '@bari/protocol';
 
 import type { ModelProviderApi, ModelProviderSource } from './identity.js';
 
@@ -127,7 +127,7 @@ export interface LocalConversationRuntimeConfig extends LocalRuntimeConfig {
   /** Goal verifier policy consumed by process-local auxiliary model calls. */
   readonly goal?: Config['goal'];
   readonly memory?: Partial<Config['memory']>;
-  /** Session title auto-generation flag — see @mavis/config SessionTitleConfig. */
+  /** Session title auto-generation flag — see @bari/config SessionTitleConfig. */
   readonly sessionTitle?: Config['sessionTitle'];
   /** Runaway Guard local policy resolved from config.yaml. */
   readonly runawayGuard?: Config['runawayGuard'];
@@ -216,7 +216,7 @@ export interface LocalModelResolverOptions {
     loginEpoch?: string,
   ) => void | Promise<void>;
   readonly routingContextGetter?: () =>
-    | import('@mavis/agent-tools/desktop').ManagedBackendRoutingContext
+    | import('@bari/agent-tools/desktop').ManagedBackendRoutingContext
     | undefined;
   readonly providerAuthGetter?: (
     provider: string,

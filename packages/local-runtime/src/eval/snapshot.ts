@@ -1,4 +1,4 @@
-import { boundedJsonStringify } from '@mavis/shared/bounded-json-stringify';
+import { boundedJsonStringify } from '@bari/shared/bounded-json-stringify';
 
 import { isSensitiveFieldKey, LOCAL_PI_CAPTURE_ORIGIN, maskText } from './payload.js';
 import type { EvalReportRequest, LocalEvalSnapshotInput } from './types.js';

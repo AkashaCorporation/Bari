@@ -1,4 +1,4 @@
-import type { ConversationMessageInput } from '@mavis/conversation-contract';
+import type { ConversationMessageInput } from '@bari/conversation-contract';
 
 import type {
   RegisteredConversationAttachment,

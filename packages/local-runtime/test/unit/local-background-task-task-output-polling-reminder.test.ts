@@ -8,8 +8,8 @@ import {
   type AssistantMessageEventStream,
 } from '@earendil-works/pi-ai';
 import type { StreamFn } from '@earendil-works/pi-agent-core';
-import { toRuntimeTool, type RuntimeTool } from '@mavis/agent-core/tools';
-import { LocalTaskOutputTool } from '@mavis/agent-tools/desktop';
+import { toRuntimeTool, type RuntimeTool } from '@bari/agent-core/tools';
+import { LocalTaskOutputTool } from '@bari/agent-tools/desktop';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { LocalTaskRunnerHostWithSessionLookup } from '../../src/api/local-task-host.js';

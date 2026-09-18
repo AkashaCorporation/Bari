@@ -14,9 +14,9 @@ import {
   type RunTurnInput,
   type UserMessageInput,
   toPiUserMessage,
-} from '@mavis/agent-core/pi-turn-runner';
-import { type RuntimeTool, type ToolExecutionContext } from '@mavis/agent-core/tools';
-import { buildCompletedTerminalStatusEvent } from '@mavis/agent-core/event-bridge';
+} from '@bari/agent-core/pi-turn-runner';
+import { type RuntimeTool, type ToolExecutionContext } from '@bari/agent-core/tools';
+import { buildCompletedTerminalStatusEvent } from '@bari/agent-core/event-bridge';
 import {
   beginLocalPluginHookTurn,
   createLocalPluginHookEventReporter,

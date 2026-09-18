@@ -1,4 +1,4 @@
-import type { LocalSandboxInvocationIdentity } from '@mavis/agent-tools/desktop';
+import type { LocalSandboxInvocationIdentity } from '@bari/agent-tools/desktop';
 import { SandboxError } from '../sandbox-errors.js';
 import type {
   SanitizedSandboxViolation,

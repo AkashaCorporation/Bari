@@ -1,4 +1,4 @@
-import { decodeCronModel, encodeCronModel } from '@mavis/shared/cron-model';
+import { decodeCronModel, encodeCronModel } from '@bari/shared/cron-model';
 import type {
   CreateCronDefinitionCommand,
   CronDefinitionView,

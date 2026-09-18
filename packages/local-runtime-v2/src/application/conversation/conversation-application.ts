@@ -16,18 +16,18 @@ import type {
   SteerSessionResult as SteerSessionResp,
   SessionStreamErrorBody,
   SessionStreamFrameView,
-} from "@mavis/protocol/local";
-import { TurnContinuationState as TurnContinuationStateView } from "@mavis/protocol/local";
+} from "@bari/protocol/local";
+import { TurnContinuationState as TurnContinuationStateView } from "@bari/protocol/local";
 import type {
   ProcessLocalContext,
   ProcessLocalStreamResult,
-} from "@mavis/conversation-contract";
+} from "@bari/conversation-contract";
 import type {
   ConversationSteerInput,
   ConversationSteerResult,
-} from "@mavis/conversation-contract";
-import { normalizeAbortSource } from "@mavis/agent-core/pi-turn-runner";
-import { isServerOwnedTurnId } from "@mavis/shared/turn-identity";
+} from "@bari/conversation-contract";
+import { normalizeAbortSource } from "@bari/agent-core/pi-turn-runner";
+import { isServerOwnedTurnId } from "@bari/shared/turn-identity";
 
 import {
   isSameSessionAgentName,

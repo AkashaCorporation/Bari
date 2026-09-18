@@ -4,7 +4,7 @@ import {
   type ConversationModelThinkingSelection,
   type ConversationModelSelection,
   type ConversationTaskModelSelection,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 
 import type {
   SessionKind,

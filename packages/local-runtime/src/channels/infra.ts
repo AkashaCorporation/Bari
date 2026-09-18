@@ -56,7 +56,7 @@ import { reportChannelResourceAmbiguity } from './channel-resource-ambiguity.js'
 import type { CompactionOutcome } from '../api/routes/compaction.js';
 import { imLogger as logger } from '../common/im-logger.js';
 import type { ModuleMetricsReporter } from '../common/metrics.js';
-import { channelRoutingModeForStrategy, type ChannelRoutingMode } from '@mavis/shared';
+import { channelRoutingModeForStrategy, type ChannelRoutingMode } from '@bari/shared';
 import { mutateDurableYaml, readYamlDocument } from './durable-yaml.js';
 import {
   defaultChannelMessageFilter,

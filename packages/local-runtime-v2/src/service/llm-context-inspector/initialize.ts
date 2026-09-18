@@ -1,4 +1,4 @@
-import { getRuntimeBuildEnv, isInternalBuild } from '@mavis/config';
+import { getRuntimeBuildEnv, isInternalBuild } from '@bari/config';
 
 import {
   createLlmCaptureRecorder,

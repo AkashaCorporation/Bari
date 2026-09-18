@@ -5,8 +5,8 @@ import {
   isAgentBuiltinToolEnabled,
   type AgentBuiltinToolId,
   type ResolvedAgentCapabilities,
-} from '@mavis/config';
-import { roleDirectoryText } from '@mavis/agent-tools/desktop/subagent-roles';
+} from '@bari/config';
+import { roleDirectoryText } from '@bari/agent-tools/desktop/subagent-roles';
 
 import type { BuiltinRenderInput } from './definitions.js';
 

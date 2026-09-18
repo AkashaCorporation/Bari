@@ -1,4 +1,4 @@
-import type { PiAfterToolCallHook } from '@mavis/agent-core/pi-turn-runner';
+import type { PiAfterToolCallHook } from '@bari/agent-core/pi-turn-runner';
 
 import { logger } from '../common/logger.js';
 

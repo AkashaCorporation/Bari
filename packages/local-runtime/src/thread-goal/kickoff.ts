@@ -1,4 +1,4 @@
-import { digestThreadGoalObjective, type ThreadGoalState } from '@mavis/goal';
+import { digestThreadGoalObjective, type ThreadGoalState } from '@bari/goal';
 
 import type { LocalMessageAttachment, LocalMessageInput } from '../messages/input.js';
 import type { LocalQueuedMessage } from '../messages/queue.js';

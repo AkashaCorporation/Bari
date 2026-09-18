@@ -1,4 +1,4 @@
-import type { PiBeforeLlmCallHook } from '@mavis/agent-core/pi-turn-runner';
+import type { PiBeforeLlmCallHook } from '@bari/agent-core/pi-turn-runner';
 
 import type { BackgroundReminderFacts } from '../../agent-host/assembly/local-turn-input-preparation.js';
 import type { BackgroundCadenceReminder } from '../../agent-host/execution/contracts.js';

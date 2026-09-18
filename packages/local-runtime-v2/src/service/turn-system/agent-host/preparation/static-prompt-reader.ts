@@ -5,7 +5,7 @@ import {
   isAgentBuiltinToolEnabled,
   resolveAgentCapabilities,
   type ResolvedAgentCapabilities,
-} from '@mavis/config';
+} from '@bari/config';
 
 const LEGACY_AGENT_INSTRUCTIONS_FILE = '\x43\x4c\x41\x55\x44\x45.md';
 const PROJECT_INSTRUCTIONS_MAX_BYTES = 32 * 1024;

@@ -8,7 +8,7 @@ import type {
   LocalMavisMcpAdapter,
   LocalMavisMcpCreateRequest,
   LocalMavisMcpUpdateRequest,
-} from '@mavis/agent-tools/desktop';
+} from '@bari/agent-tools/desktop';
 
 type EmitBusEvent = (type: string, payload: Record<string, unknown>) => void;
 

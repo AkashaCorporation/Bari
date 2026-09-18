@@ -1,4 +1,4 @@
-import type { PiStepEndHookInput } from '@mavis/agent-core/pi-turn-runner';
+import type { PiStepEndHookInput } from '@bari/agent-core/pi-turn-runner';
 import type {
   RunawayGuardProgressProjection,
   RunawayGuardToolPolicy,

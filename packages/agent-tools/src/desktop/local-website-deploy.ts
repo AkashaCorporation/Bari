@@ -44,7 +44,7 @@ import {
   type ToolDefinition,
   type ToolImpl,
   type ToolResult,
-} from '@mavis/agent-core/tools';
+} from '@bari/agent-core/tools';
 
 import { resolveWithinWorkspace } from './path-guard.js';
 import type {

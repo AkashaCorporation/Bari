@@ -1,7 +1,7 @@
-import { toPiUserMessage, type PiAgentMessage } from '@mavis/agent-core/pi-turn-runner';
-import { buildCompletedTerminalStatusEvent } from '@mavis/agent-core/event-bridge';
-import { RespDataType } from '@mavis/agent-core/protocol/agent-message';
-import { RuntimeEventType, type IRuntimeEvent } from '@mavis/protocol';
+import { toPiUserMessage, type PiAgentMessage } from '@bari/agent-core/pi-turn-runner';
+import { buildCompletedTerminalStatusEvent } from '@bari/agent-core/event-bridge';
+import { RespDataType } from '@bari/agent-core/protocol/agent-message';
+import { RuntimeEventType, type IRuntimeEvent } from '@bari/protocol';
 import type { LocalEventWriter } from '../events/sink.js';
 import type { LocalRuntimeTurnInput, LocalToolContext } from './host-types.js';
 

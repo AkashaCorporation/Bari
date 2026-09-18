@@ -5,7 +5,7 @@ import {
   type ModelAvailabilityConfigView,
   type PartialGoalConfig,
   type GoalVerificationEvidenceMode,
-} from '@mavis/config';
+} from '@bari/config';
 import {
   digestThreadGoalObjective,
   type GoalTurnBinding,
@@ -13,7 +13,7 @@ import {
   type ThreadGoalBudgetLimits,
   type ThreadGoalState,
   type ThreadGoalWaitReason,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import { firstGoalBlocker } from './blockers.js';
 

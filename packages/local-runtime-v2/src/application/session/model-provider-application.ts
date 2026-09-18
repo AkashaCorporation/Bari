@@ -1,6 +1,6 @@
 import { publishBestEffort } from '../events.js';
-import { ThinkingLevel } from '@mavis/protocol';
-import { getRuntimePresetKey, resolveModelAvailability } from '@mavis/config';
+import { ThinkingLevel } from '@bari/protocol';
+import { getRuntimePresetKey, resolveModelAvailability } from '@bari/config';
 import {
   LocalModelProviderError,
   MANAGED_MINIMAX_PROVIDER_ID,

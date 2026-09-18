@@ -5,8 +5,8 @@ import type {
   AgentHostTurnRuntimeToolBinding as DesktopTurnRuntimeToolBinding,
 } from '../../../turn-system/index.js';
 import type { AgentHostTurnHostBinding as DesktopTurnHostBinding } from '../../../turn-system/agent-host/assembly/turn-capability-lifecycle.js';
-import { McpNameRegistry, configuredMcpNameKey, pluginMcpNameKey } from '@mavis/mcp';
-import { buildPluginSkillRuntimeName } from '@mavis/shared';
+import { McpNameRegistry, configuredMcpNameKey, pluginMcpNameKey } from '@bari/mcp';
+import { buildPluginSkillRuntimeName } from '@bari/shared';
 
 import type {
   PluginMcpServer,

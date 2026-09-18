@@ -2,12 +2,12 @@ import type { LocalMessageInput } from '../messages/input.js';
 import type { DataDirInput } from '../persistence/db.js';
 import type { LocalActiveTurnTimingReader } from '../turns/active-turn-timing.js';
 import type { GlobalEventPublisher } from '../events/global-events.js';
-import type { ThreadGoalState } from '@mavis/goal';
+import type { ThreadGoalState } from '@bari/goal';
 import type {
   InternalTurnPromptReadRegistry,
   PromptReadScope,
   PromptSnapshotSource,
-} from '@mavis/agent-core';
+} from '@bari/agent-core';
 
 import type { ThreadGoalRuntimeEventSink } from './events.js';
 import type { ThreadGoalGateConfig } from './gate.js';

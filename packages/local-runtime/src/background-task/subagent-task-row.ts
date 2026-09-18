@@ -1,4 +1,4 @@
-import type { LocalRuntimeToolContext, LocalTaskToolInput } from '@mavis/agent-tools/desktop';
+import type { LocalRuntimeToolContext, LocalTaskToolInput } from '@bari/agent-tools/desktop';
 
 import type { LocalTaskTargetFacts } from '../agent/port.js';
 import type { LocalTaskRunnerHostWithSessionLookup } from '../api/local-task-host.js';

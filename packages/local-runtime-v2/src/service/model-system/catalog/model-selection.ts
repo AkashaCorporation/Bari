@@ -1,16 +1,16 @@
-import { ThinkingLevel } from '@mavis/protocol';
+import { ThinkingLevel } from '@bari/protocol';
 import { modelRefForModel, type ManagedModelParameterSnapshot } from '../resolution/model-ref.js';
 import type {
   ConversationModelThinkingBudgets,
   ConversationModelThinkingSelection,
   ConversationModelSelection,
-} from '@mavis/conversation-contract';
+} from '@bari/conversation-contract';
 import {
   DEFAULT_MODEL_PRESETS,
   getRuntimePresetKey,
   isLegacyManagedMinimaxProvider,
   resolveModelAvailability,
-} from '@mavis/config';
+} from '@bari/config';
 import { LocalModelProviderError, type LocalRuntimeConfig } from '../contracts.js';
 import { parseProviderId, parseSourceQualifiedModelKey } from '../resolution/model-key.js';
 

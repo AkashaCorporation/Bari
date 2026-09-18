@@ -1,1 +1,1 @@
-export * from '@mavis/shared/local-runtime-diagnostics/jsonl-file-sink';
+export * from '@bari/shared/local-runtime-diagnostics/jsonl-file-sink';

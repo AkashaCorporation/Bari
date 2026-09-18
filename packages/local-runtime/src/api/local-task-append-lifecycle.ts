@@ -1,5 +1,5 @@
-import type { LocalRuntimeToolContext, LocalTaskRunResult } from '@mavis/agent-tools/desktop';
-import type { ConversationTurnResult } from '@mavis/conversation-contract';
+import type { LocalRuntimeToolContext, LocalTaskRunResult } from '@bari/agent-tools/desktop';
+import type { ConversationTurnResult } from '@bari/conversation-contract';
 
 import type { BackgroundTask } from '../background-task/domain.js';
 import { persistLocalSubagentTaskTerminal } from '../background-task/terminal.js';

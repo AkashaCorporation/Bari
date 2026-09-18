@@ -1,4 +1,4 @@
-import type { RunTurnCaller, UserMessageInput } from '@mavis/agent-core/pi-turn-runner';
+import type { RunTurnCaller, UserMessageInput } from '@bari/agent-core/pi-turn-runner';
 
 import type { SessionRecord } from '../../../session-system/index.js';
 import type { AcceptedTurnLease } from '../runner/contracts.js';

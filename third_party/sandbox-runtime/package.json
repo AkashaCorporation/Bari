@@ -1,5 +1,5 @@
 {
-  "name": "@minimax/mcode-sandbox-runtime",
+  "name": "@bari/mcode-sandbox-runtime",
   "version": "0.0.74-mcode.2",
   "private": true,
   "type": "module",

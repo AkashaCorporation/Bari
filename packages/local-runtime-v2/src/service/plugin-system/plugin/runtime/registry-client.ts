@@ -16,7 +16,7 @@ import {
   type PluginMarketplaceSummary,
   type PluginInstallationPolicy as PluginInstallationPolicyType,
   type SkillHubItem,
-} from '@mavis/protocol/local';
+} from '@bari/protocol/local';
 
 import {
   PluginSystemCloudTransport,

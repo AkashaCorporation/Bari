@@ -2,7 +2,7 @@ import type { LocalChannelBridgeInfra, LocalChannelContext } from '../channels/i
 import { LocalChannelRunner } from '../channels/runner.js';
 import type { ModuleMetricsReporter } from '../common/metrics.js';
 import type { QuestionnaireReplyOutcome } from '../questionnaire/reply-outcome.js';
-import type { RuntimeConversationChannelView } from '@mavis/conversation-contract';
+import type { RuntimeConversationChannelView } from '@bari/conversation-contract';
 
 export function createChannelRunner(input: {
   infra: LocalChannelBridgeInfra;
@@ -23,7 +23,7 @@ export function createChannelRunner(input: {
    */
   questionnaireReplyHandler?: (input: {
     ctx: LocalChannelContext;
-    reply: import('@mavis/shared/questionnaire').AskQuestionnaireReplyPayload;
+    reply: import('@bari/shared/questionnaire').AskQuestionnaireReplyPayload;
   }) => Promise<QuestionnaireReplyOutcome | void>;
   /**
    * Optional permission reply resolver — runner asks this BEFORE the

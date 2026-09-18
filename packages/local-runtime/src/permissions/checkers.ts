@@ -5,7 +5,7 @@ import {
   parseRmTargets,
   parseWindowsNativeDelete,
   unwrapCommandWrappers,
-} from '@mavis/permission';
+} from '@bari/permission';
 
 export type LocalPermissionCheckerBehavior = 'deny' | 'ask';
 

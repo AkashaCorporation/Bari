@@ -1,4 +1,4 @@
-import type { LocalTaskRunResult } from '@mavis/agent-tools/desktop';
+import type { LocalTaskRunResult } from '@bari/agent-tools/desktop';
 
 import type { LocalTaskRunnerHostWithSessionLookup } from '../api/local-task-host.js';
 import { logger } from '../common/logger.js';

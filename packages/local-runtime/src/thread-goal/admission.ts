@@ -6,7 +6,7 @@ import {
   type ThreadGoalState,
   type ThreadGoalStore,
   type ThreadGoalWaitReason,
-} from '@mavis/goal';
+} from '@bari/goal';
 
 import type { GlobalEventPublisher } from '../events/global-events.js';
 import type { LocalActiveTurnTimingReader } from '../turns/active-turn-timing.js';

@@ -2,8 +2,8 @@ import { Buffer } from 'node:buffer';
 
 import type { AgentMessage } from '@earendil-works/pi-agent-core';
 import type { Api, Model } from '@earendil-works/pi-ai';
-import { projectAgentMessagesForModel } from '@mavis/agent-core/pi-turn-runner';
-import { createDefaultTokenEstimator } from '@mavis/context-manager';
+import { projectAgentMessagesForModel } from '@bari/agent-core/pi-turn-runner';
+import { createDefaultTokenEstimator } from '@bari/context-manager';
 
 import type { ContextFootprint, PairedContextFootprint } from '../algorithm/tool-trim-admission.js';
 import type { ContextUsageAnchorKey, ContextUsageAnchorState } from './usage-anchor.js';

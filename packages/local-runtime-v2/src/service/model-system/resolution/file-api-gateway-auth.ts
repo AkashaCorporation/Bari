@@ -3,8 +3,8 @@ import { createHash } from 'node:crypto';
 import {
   managedBackendRoutingHeaders,
   type ManagedBackendRoutingContext,
-} from '@mavis/agent-tools/desktop';
-import type { MavisBuildEnv } from '@mavis/config';
+} from '@bari/agent-tools/desktop';
+import type { MavisBuildEnv } from '@bari/config';
 
 import type { LocalRuntimeAuthContext } from '../contracts.js';
 

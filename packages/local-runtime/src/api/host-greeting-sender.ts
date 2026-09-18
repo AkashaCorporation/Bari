@@ -1,4 +1,4 @@
-import type { ConversationAcceptedTurn } from '@mavis/conversation-contract';
+import type { ConversationAcceptedTurn } from '@bari/conversation-contract';
 import type { LocalSessionRecord } from '../sessions/controller.js';
 
 export interface LocalGreetingSystemReminderSenderOptions {

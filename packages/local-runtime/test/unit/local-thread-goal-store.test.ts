@@ -30,7 +30,7 @@ import {
   digestThreadGoalObjective,
   type GoalTurnBinding,
   type LastVerificationV1,
-} from "@mavis/goal";
+} from "@bari/goal";
 
 import { closeLocalRuntimeDb, openLocalRuntimeDb } from "../../src/persistence/db.js";
 import { SqliteThreadGoalStore } from "../../src/thread-goal/store.js";
