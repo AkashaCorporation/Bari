@@ -8,31 +8,31 @@ import type { TuiAcpRuntime } from './runtime.js';
 export const TUI_ACP_EXTENSION_VERSION = 1;
 
 const TUI_ACP_GOAL_METHODS = [
-  'mcode/session/goal/get',
-  'mcode/session/goal/create',
-  'mcode/session/goal/patch',
-  'mcode/session/goal/clear',
+  'bari/session/goal/get',
+  'bari/session/goal/create',
+  'bari/session/goal/patch',
+  'bari/session/goal/clear',
 ] as const;
 
 export const TUI_ACP_EXTENSION_METHODS = [
   'session/activate',
-  'mcode/session/activate',
-  'mcode/session/steer',
-  'mcode/session/queue/list',
-  'mcode/session/queue/enqueue',
-  'mcode/session/queue/update',
-  'mcode/session/queue/delete',
-  'mcode/session/queue/steer',
+  'bari/session/activate',
+  'bari/session/steer',
+  'bari/session/queue/list',
+  'bari/session/queue/enqueue',
+  'bari/session/queue/update',
+  'bari/session/queue/delete',
+  'bari/session/queue/steer',
   ...TUI_ACP_GOAL_METHODS,
-  'mcode/session/delegation/get',
-  'mcode/session/delegation/stop',
+  'bari/session/delegation/get',
+  'bari/session/delegation/stop',
 ] as const;
 
 export const TUI_ACP_EXTENSION_NOTIFICATIONS = [
-  'mcode/session/current_session_update',
-  'mcode/session/queue_update',
-  'mcode/session/goal_update',
-  'mcode/session/delegation_update',
+  'bari/session/current_session_update',
+  'bari/session/queue_update',
+  'bari/session/goal_update',
+  'bari/session/delegation_update',
 ] as const;
 
 export function tuiAcpExtensionCapabilities(runtime: Pick<TuiAcpRuntime, 'isGoalEnabled'>): {
@@ -49,7 +49,7 @@ export function tuiAcpExtensionCapabilities(runtime: Pick<TuiAcpRuntime, 'isGoal
     notifications: goalEnabled
       ? TUI_ACP_EXTENSION_NOTIFICATIONS
       : TUI_ACP_EXTENSION_NOTIFICATIONS.filter(
-          (notification) => notification !== 'mcode/session/goal_update',
+          (notification) => notification !== 'bari/session/goal_update',
         ),
   };
 }
@@ -80,7 +80,7 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
     options.activateSession(sessionId);
     if (options.extensionNotificationsEnabled()) {
       await client
-        .notify('mcode/session/current_session_update', { sessionId })
+        .notify('bari/session/current_session_update', { sessionId })
         .catch(() => undefined);
     }
     return { sessionId };
@@ -89,11 +89,11 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
   options.app.onRequest('session/activate', parseSessionRequest, ({ params, client }) =>
     activateSession(params.sessionId, client),
   );
-  options.app.onRequest('mcode/session/activate', parseSessionRequest, ({ params, client }) =>
+  options.app.onRequest('bari/session/activate', parseSessionRequest, ({ params, client }) =>
     activateSession(params.sessionId, client),
   );
 
-  options.app.onRequest('mcode/session/steer', parseTextRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/steer', parseTextRequest, async ({ params }) => {
     resolve(params.sessionId);
     const expectedTurnId = options.activePromptTurnId(params.sessionId);
     if (!expectedTurnId) {
@@ -106,7 +106,7 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
       sessionId: params.sessionId,
       source: 'api',
       message: { content: params.text },
-      producerId: 'mcode-acp',
+      producerId: 'bari-acp',
       idempotencyKey: params.clientRequestId ?? createRequestId(),
       preDelivery: {
         accept: ({ mode, turnId }) => {
@@ -139,17 +139,17 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
     return { turnId: result.turnId, mode: result.mode };
   });
 
-  options.app.onRequest('mcode/session/queue/list', parseSessionRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/queue/list', parseSessionRequest, async ({ params }) => {
     resolve(params.sessionId);
     return { items: await options.runtime.listQueuedMessages(params.sessionId) };
   });
 
-  options.app.onRequest('mcode/session/queue/enqueue', parseTextRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/queue/enqueue', parseTextRequest, async ({ params }) => {
     resolve(params.sessionId);
     return options.runtime.enqueueMessage(params.sessionId, params.text);
   });
 
-  options.app.onRequest('mcode/session/queue/update', parseQueueTextRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/queue/update', parseQueueTextRequest, async ({ params }) => {
     resolve(params.sessionId);
     return {
       item:
@@ -161,25 +161,25 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
     };
   });
 
-  options.app.onRequest('mcode/session/queue/delete', parseQueueItemRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/queue/delete', parseQueueItemRequest, async ({ params }) => {
     resolve(params.sessionId);
     return {
       item: (await options.runtime.deleteQueuedMessage(params.sessionId, params.itemId)) ?? null,
     };
   });
 
-  options.app.onRequest('mcode/session/queue/steer', parseQueueItemRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/queue/steer', parseQueueItemRequest, async ({ params }) => {
     resolve(params.sessionId);
     return options.runtime.steerQueuedMessage(params.sessionId, params.itemId);
   });
 
-  options.app.onRequest('mcode/session/goal/get', parseSessionRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/goal/get', parseSessionRequest, async ({ params }) => {
     requireGoalEnabled();
     resolve(params.sessionId);
     return { goal: (await options.runtime.getGoal(params.sessionId)) ?? null };
   });
 
-  options.app.onRequest('mcode/session/goal/create', parseGoalCreateRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/goal/create', parseGoalCreateRequest, async ({ params }) => {
     requireGoalEnabled();
     resolve(params.sessionId);
     return {
@@ -191,7 +191,7 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
     };
   });
 
-  options.app.onRequest('mcode/session/goal/patch', parseGoalPatchRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/goal/patch', parseGoalPatchRequest, async ({ params }) => {
     requireGoalEnabled();
     resolve(params.sessionId);
     return {
@@ -203,20 +203,20 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
     };
   });
 
-  options.app.onRequest('mcode/session/goal/clear', parseSessionRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/goal/clear', parseSessionRequest, async ({ params }) => {
     requireGoalEnabled();
     resolve(params.sessionId);
     return { cleared: await options.runtime.clearGoal(params.sessionId) };
   });
 
-  options.app.onRequest('mcode/session/delegation/get', parseSessionRequest, async ({ params }) => {
+  options.app.onRequest('bari/session/delegation/get', parseSessionRequest, async ({ params }) => {
     const session = resolve(params.sessionId);
     const rootSessionId = await resolveRootSessionId(options.runtime, session);
     return { snapshot: await options.runtime.getDelegationSnapshot(rootSessionId) };
   });
 
   options.app.onRequest(
-    'mcode/session/delegation/stop',
+    'bari/session/delegation/stop',
     parseSessionRequest,
     async ({ params }) => {
       const session = resolve(params.sessionId);
@@ -229,7 +229,7 @@ export function registerTuiAcpExtensions(options: RegisterTuiAcpExtensionsOption
 export function supportsTuiAcpExtensionNotifications(
   capabilities: acp.ClientCapabilities,
 ): boolean {
-  const extension = capabilities._meta?.['minimax-code/extensions'];
+  const extension = capabilities._meta?.['bari/extensions'];
   return (
     extension === true ||
     (isRecord(extension) &&

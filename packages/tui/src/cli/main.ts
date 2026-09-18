@@ -150,8 +150,14 @@ export async function runTuiCli(dependencies: RunTuiCliDependencies = {}): Promi
       },
       runUpdate: async () => {
         completedCommandExitMode = 'natural';
-        const runUpdate = dependencies.runUpdate ?? defaultRunUpdate;
-        await runUpdate(MINIMAX_CODE_VERSION);
+        const runUpdate = dependencies.runUpdate;
+        if (runUpdate) {
+          await runUpdate(MINIMAX_CODE_VERSION);
+          return;
+        }
+        processRef.stdout.write(
+          'Updates are not available in this source distribution yet. Follow https://github.com/AkashaCorporation/Bari for new releases.\n',
+        );
       },
       runProvider: async (request, lane) => {
         const runProvider = dependencies.runProvider ?? defaultRunProvider;
@@ -275,11 +281,6 @@ async function defaultRunLogin(
 async function defaultRunLogout(region?: MavisRegion): Promise<string> {
   const { runTuiLogout } = await import('./auth-command.js');
   return runTuiLogout({ region });
-}
-
-async function defaultRunUpdate(version: string): Promise<void> {
-  const { runMcodeUpdate } = await import('./update.js');
-  await runMcodeUpdate(version);
 }
 
 async function defaultRunProvider(

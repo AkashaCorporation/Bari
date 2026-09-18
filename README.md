@@ -60,7 +60,7 @@ bari login --region global
 
 Complete sign-in in your browser, then open `bari` and use `/status` to check your account and `/provider` to choose a model. Run `bari logout` to sign out.
 
-Token Plan requires an account with available credits. User data is stored in `~/.minimax-code` by default. MiniMax account, model, and Token Plan documentation lives at [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start).
+Token Plan requires an account with available credits. User data is stored in `~/.bari` by default; an existing `~/.minimax-code` profile keeps being used until `~/.bari` exists. Set `BARI_DATA_DIR` to override. MiniMax account, model, and Token Plan documentation lives at [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start).
 
 <details>
 <summary>Use your own API key (BYOK)</summary>

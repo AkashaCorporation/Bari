@@ -145,7 +145,7 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
 
   program
     .command('update')
-    .description('Check for and install a Bari update')
+    .description('Check for a Bari update (unavailable in this source build)')
     .allowExcessArguments(false)
     .action(options.runUpdate);
 

@@ -4,7 +4,7 @@ Bari's TUI usage telemetry is disabled by default. No business telemetry client 
 
 ## Turn it on or off
 
-Add this to the active profile's `config.yaml`, normally `~/.minimax-code/config.yaml`, then restart Bari:
+Add this to the active profile's `config.yaml`, normally `~/.bari/config.yaml` (or `~/.minimax-code/config.yaml` for a legacy profile), then restart Bari:
 
 ```yaml
 telemetry:

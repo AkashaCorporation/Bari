@@ -467,7 +467,7 @@ export class TuiActiveRunFlow {
           ...(options.displayContent ? { displayContent: options.displayContent } : {}),
           ...(options.attachments?.length ? { attachments: options.attachments } : {}),
         },
-        producerId: 'mcode',
+        producerId: 'bari',
         idempotencyKey: requestId,
         ...(requestedTurnId ? { requestedTurnId } : {}),
       });

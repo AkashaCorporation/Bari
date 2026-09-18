@@ -33,7 +33,7 @@ On Windows, also use `node` with the appropriate local absolute path. Do not ove
 
 Run `/login` in the TUI or `pnpm bari login`, choosing the region for your account. Token Plan requires an account and available credits. See the root README for BYOK configuration and testing.
 
-The default data directory is `~/.minimax-code`, inherited from the upstream baseline; a future release will introduce `~/.bari` with migration. For tests, explicitly set `MINIMAX_DATA_DIR` to a temporary directory to keep normal sessions separate. Use `$env:MINIMAX_DATA_DIR = 'C:\path\to\test-profile'` in PowerShell or `export MINIMAX_DATA_DIR=/path/to/test-profile` in a POSIX shell.
+The default data directory is `~/.bari`. Existing `~/.minimax-code` profiles keep working: when `~/.bari` does not exist and `~/.minimax-code` does, the legacy directory is used without copying anything. `BARI_DATA_DIR` overrides the default; `MINIMAX_DATA_DIR` and `MAVIS_DATA_DIR` remain supported for compatibility. For tests, explicitly set `BARI_DATA_DIR` to a temporary directory to keep normal sessions separate. Use `$env:BARI_DATA_DIR = 'C:\path\to\test-profile'` in PowerShell or `export BARI_DATA_DIR=/path/to/test-profile` in a POSIX shell.
 
 ## Update or remove
 

@@ -129,14 +129,15 @@ test(
           params: {
             protocolVersion: 1,
             clientCapabilities: { _meta: { "terminal-auth": true } },
-            clientInfo: { name: "minimax-code-smoke", version: "1" },
+            clientInfo: { name: "bari-smoke", version: "1" },
           },
         }) + "\n",
       );
     });
     assert.equal(response.error, undefined, JSON.stringify(response));
     assert.equal(response.result.protocolVersion, 1);
-    assert.equal(response.result.authMethods[0].id, "minimax-code-login");
+    assert.equal(response.result.authMethods[0].id, "bari-login");
+    assert.equal(response.result.agentInfo.name, "bari");
     assert.equal(response.result.agentInfo.version, version);
     child.stdin.end();
     await new Promise((resolve, reject) => {
@@ -198,4 +199,14 @@ test("local plugin browsing remains available with managed services offline", (t
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, /Usage:/);
   }
+});
+
+test("update command reports the source-distribution policy", (t) => {
+  const result = spawnSync(process.execPath, [cli, "update"], {
+    ...fixture(t),
+    encoding: "utf8",
+    timeout: 15000,
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /not available in this source distribution/);
 });

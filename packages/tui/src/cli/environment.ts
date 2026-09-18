@@ -56,6 +56,7 @@ export function configureTuiRuntimeEnvironment(
       'cn',
   });
   if (dataDir) {
+    target.BARI_DATA_DIR = dataDir;
     target.MINIMAX_DATA_DIR = dataDir;
     target.MAVIS_DATA_DIR = dataDir;
   }

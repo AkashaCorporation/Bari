@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { resolveMcodeDataEnvironment, type McodeDataEnvironment } from '../auth/environment.js';
@@ -5,7 +6,11 @@ import { configureTuiRuntimeEnvironment } from '../cli/environment.js';
 
 export type TuiDefaultDataDirResolver = () => string;
 
+export const BARI_DATA_DIR_BASENAME = '.bari';
+export const LEGACY_TUI_DATA_DIR_BASENAME = '.minimax-code';
+
 export interface TuiDataDirEnvironment {
+  BARI_DATA_DIR?: string;
   MINIMAX_DATA_DIR?: string;
   MAVIS_DATA_DIR?: string;
 }
@@ -17,8 +22,15 @@ export interface PrepareTuiDataDirOptions {
   configureRuntimeEnvironment?: typeof configureTuiRuntimeEnvironment;
 }
 
+export function resolveDefaultTuiDataDirAtHome(homeDir: string): string {
+  const bariDataDir = join(homeDir, BARI_DATA_DIR_BASENAME);
+  if (existsSync(bariDataDir)) return bariDataDir;
+  const legacyDataDir = join(homeDir, LEGACY_TUI_DATA_DIR_BASENAME);
+  return existsSync(legacyDataDir) ? legacyDataDir : bariDataDir;
+}
+
 export function resolveDefaultTuiDataDir(_buildEnv: McodeDataEnvironment): string {
-  return join(homedir(), '.minimax-code');
+  return resolveDefaultTuiDataDirAtHome(homedir());
 }
 
 function getDefaultTuiDataDir(): string {
@@ -26,6 +38,9 @@ function getDefaultTuiDataDir(): string {
 }
 
 function readDataDirOverride(environment: TuiDataDirEnvironment): string | undefined {
+  const bariDataDir = environment.BARI_DATA_DIR?.trim();
+  if (bariDataDir) return bariDataDir;
+
   const minimaxDataDir = environment.MINIMAX_DATA_DIR?.trim();
   if (minimaxDataDir) return minimaxDataDir;
 

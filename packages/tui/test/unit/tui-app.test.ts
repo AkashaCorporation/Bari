@@ -3623,7 +3623,7 @@ describe("createTuiApp", () => {
         sessionId: "session-1",
         source: "api",
         message: { content: "focus on the failing test" },
-        producerId: "mcode",
+        producerId: "bari",
         idempotencyKey: expect.stringMatching(/^run_action_/u),
       }),
     );
@@ -3710,7 +3710,7 @@ describe("createTuiApp", () => {
             sessionId: "session-1",
             source: "api",
             message: { content: "focus on the failing test" },
-            producerId: "mcode",
+            producerId: "bari",
             idempotencyKey: expect.stringMatching(/^run_action_/u),
             requestedTurnId: "turn-active",
           }),

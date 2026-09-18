@@ -1309,7 +1309,9 @@ function parseRepoName(remoteUrl: string): string | null {
 
 function getExplicitPublicDataDirEnv(): string | undefined {
   return (
-    process.env.MINIMAX_DATA_DIR?.trim() || process.env.MAVIS_DATA_DIR?.trim()
+    process.env.BARI_DATA_DIR?.trim() ||
+    process.env.MINIMAX_DATA_DIR?.trim() ||
+    process.env.MAVIS_DATA_DIR?.trim()
   );
 }
 

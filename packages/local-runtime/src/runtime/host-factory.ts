@@ -64,6 +64,7 @@ export function createLocalRuntimeHost(
   // Expose resolved dataDir so skill content template variables
   // ({{DATA_DIR}}) resolve correctly regardless of entry point
   // (Electron, CLI, daemon).
+  process.env.BARI_DATA_DIR = dataDir;
   process.env.MINIMAX_DATA_DIR = dataDir;
 
   const runtimeNowMs = nowMs ?? (() => Date.now());

@@ -60,7 +60,7 @@ bari login --region global
 
 在浏览器中完成登录，再启动 `bari`，通过 `/status` 检查账号、通过 `/provider` 选择模型。退出登录使用 `bari logout`。
 
-Token Plan 需要账号和可用额度。用户数据默认存储在 `~/.minimax-code`。MiniMax 账号、模型与 Token Plan 文档见 [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start)。
+Token Plan 需要账号和可用额度。用户数据默认存储在 `~/.bari`；已有 `~/.minimax-code` 配置时继续沿用旧目录，直到 `~/.bari` 出现。可用 `BARI_DATA_DIR` 覆盖。MiniMax 账号、模型与 Token Plan 文档见 [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start)。
 
 Token Plan 需要账号与可用额度。默认用户数据保存在 `~/.minimax-code`。
 

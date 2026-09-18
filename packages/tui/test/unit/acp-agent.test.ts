@@ -961,26 +961,26 @@ describe('Bari ACP agent', () => {
         authMethods: [
           {
             type: 'terminal',
-            id: 'minimax-code-login',
+            id: 'bari-login',
             name: 'Sign in to Bari',
             args: ['login'],
           },
         ],
-        agentInfo: { name: 'minimax-code', title: 'Bari', version: '1.2.3' },
+        agentInfo: { name: 'bari', title: 'Bari', version: '1.2.3' },
         _meta: {
-          'minimax-code/extensions': {
+          'bari/extensions': {
             version: 1,
             methods: expect.arrayContaining([
               'session/activate',
-              'mcode/session/steer',
-              'mcode/session/goal/create',
-              'mcode/session/delegation/get',
+              'bari/session/steer',
+              'bari/session/goal/create',
+              'bari/session/delegation/get',
             ]),
             notifications: [
-              'mcode/session/current_session_update',
-              'mcode/session/queue_update',
-              'mcode/session/goal_update',
-              'mcode/session/delegation_update',
+              'bari/session/current_session_update',
+              'bari/session/queue_update',
+              'bari/session/goal_update',
+              'bari/session/delegation_update',
             ],
           },
         },
@@ -2041,7 +2041,7 @@ describe('Bari ACP agent', () => {
         expect(initialized.authMethods).toEqual([
           {
             type: 'terminal',
-            id: 'minimax-code-login',
+            id: 'bari-login',
             name: 'Sign in to Bari',
             args: ['login'],
           },
@@ -2862,7 +2862,7 @@ describe('Bari ACP agent', () => {
       });
       await vi.waitFor(() => expect(replyQuestionnaire).toHaveBeenCalledOnce());
       await expect(
-        connection.request('mcode/session/steer', {
+        connection.request('bari/session/steer', {
           sessionId: session.sessionId,
           text: 'Do not activate another turn',
         }),
@@ -3998,7 +3998,7 @@ describe('Bari ACP agent', () => {
       .client({ name: 'test-client' })
       .onNotification(acp.methods.client.session.update, ({ params }) => activeUpdates.push(params))
       .onNotification(
-        'mcode/session/current_session_update',
+        'bari/session/current_session_update',
         (value) => value as { sessionId: string | null },
         ({ params }) => currentSessionUpdates.push(params),
       );
@@ -4007,7 +4007,7 @@ describe('Bari ACP agent', () => {
       await connection.request(acp.methods.agent.initialize, {
         protocolVersion: acp.PROTOCOL_VERSION,
         clientCapabilities: {
-          _meta: { 'minimax-code/extensions': { version: 1, notifications: true } },
+          _meta: { 'bari/extensions': { version: 1, notifications: true } },
         },
       });
       const session = await connection.request(acp.methods.agent.session.new, {
@@ -4020,7 +4020,7 @@ describe('Bari ACP agent', () => {
         }),
       ).resolves.toEqual({ sessionId: 'session-1' });
       await expect(
-        connection.request<{ sessionId: string }, { sessionId: string }>('mcode/session/activate', {
+        connection.request<{ sessionId: string }, { sessionId: string }>('bari/session/activate', {
           sessionId: session.sessionId,
         }),
       ).resolves.toEqual({ sessionId: 'session-1' });
@@ -4029,14 +4029,14 @@ describe('Bari ACP agent', () => {
         connection.request<
           { itemId: string; position: number },
           { sessionId: string; text: string }
-        >('mcode/session/queue/enqueue', {
+        >('bari/session/queue/enqueue', {
           sessionId: session.sessionId,
           text: '\n  Run checks next  \n',
         }),
       ).resolves.toEqual({ itemId: 'queue-1', position: 1 });
       await expect(
         connection.request<{ items: unknown[] }, { sessionId: string }>(
-          'mcode/session/queue/list',
+          'bari/session/queue/list',
           { sessionId: session.sessionId },
         ),
       ).resolves.toEqual({ items: [] });
@@ -4044,7 +4044,7 @@ describe('Bari ACP agent', () => {
         connection.request<
           { item: { content: string } },
           { sessionId: string; itemId: string; text: string }
-        >('mcode/session/queue/update', {
+        >('bari/session/queue/update', {
           sessionId: session.sessionId,
           itemId: 'queue-1',
           text: '\n    Run focused checks  \n',
@@ -4052,7 +4052,7 @@ describe('Bari ACP agent', () => {
       ).resolves.toMatchObject({ item: { content: 'Run focused checks' } });
       await expect(
         connection.request<{ item: { status: string } }, { sessionId: string; itemId: string }>(
-          'mcode/session/queue/delete',
+          'bari/session/queue/delete',
           {
             sessionId: session.sessionId,
             itemId: 'queue-1',
@@ -4063,14 +4063,14 @@ describe('Bari ACP agent', () => {
         connection.request<
           { queueItemId: string; turnId: string },
           { sessionId: string; itemId: string }
-        >('mcode/session/queue/steer', {
+        >('bari/session/queue/steer', {
           sessionId: session.sessionId,
           itemId: 'queue-1',
         }),
       ).resolves.toEqual({ queueItemId: 'queue-1', turnId: 'turn-2' });
       await expect(
         connection.request<{ goal: unknown | null }, { sessionId: string }>(
-          'mcode/session/goal/get',
+          'bari/session/goal/get',
           {
             sessionId: session.sessionId,
           },
@@ -4080,7 +4080,7 @@ describe('Bari ACP agent', () => {
         connection.request<
           { goal: { goalId: string; objective: string } },
           { sessionId: string; objective: string; tokenBudget: number }
-        >('mcode/session/goal/create', {
+        >('bari/session/goal/create', {
           sessionId: session.sessionId,
           objective: 'Ship ACP',
           tokenBudget: 8_000,
@@ -4088,7 +4088,7 @@ describe('Bari ACP agent', () => {
       ).resolves.toMatchObject({ goal: { goalId: 'goal-1', objective: 'Ship ACP' } });
       await expect(
         connection.request<{ goal: { status: string } }, { sessionId: string; status: string }>(
-          'mcode/session/goal/patch',
+          'bari/session/goal/patch',
           {
             sessionId: session.sessionId,
             status: 'paused',
@@ -4097,19 +4097,19 @@ describe('Bari ACP agent', () => {
       ).resolves.toMatchObject({ goal: { status: 'paused' } });
       await expect(
         connection.request<{ cleared: boolean }, { sessionId: string }>(
-          'mcode/session/goal/clear',
+          'bari/session/goal/clear',
           { sessionId: session.sessionId },
         ),
       ).resolves.toEqual({ cleared: true });
       await expect(
         connection.request<{ snapshot: { rootSessionId: string } }, { sessionId: string }>(
-          'mcode/session/delegation/get',
+          'bari/session/delegation/get',
           { sessionId: session.sessionId },
         ),
       ).resolves.toMatchObject({ snapshot: { rootSessionId: 'session-1' } });
       await expect(
         connection.request<{ receipt: { rootStopped: boolean } }, { sessionId: string }>(
-          'mcode/session/delegation/stop',
+          'bari/session/delegation/stop',
           { sessionId: session.sessionId },
         ),
       ).resolves.toMatchObject({ receipt: { rootStopped: true } });
@@ -4132,7 +4132,7 @@ describe('Bari ACP agent', () => {
         connection.request<
           { turnId: string; mode: string },
           { sessionId: string; text: string; clientRequestId: string }
-        >('mcode/session/steer', {
+        >('bari/session/steer', {
           sessionId: session.sessionId,
           text: '\n  Prioritize protocol tests  \n',
           clientRequestId: 'client-steer-1',
@@ -4174,7 +4174,7 @@ describe('Bari ACP agent', () => {
         sessionId: 'session-1',
         source: 'api',
         message: { content: '\n  Prioritize protocol tests  \n' },
-        producerId: 'mcode-acp',
+        producerId: 'bari-acp',
         idempotencyKey: 'client-steer-1',
         preDelivery: { accept: expect.any(Function) },
       }),
@@ -4207,7 +4207,7 @@ describe('Bari ACP agent', () => {
       await vi.waitFor(() => expect(sendMessage).toHaveBeenCalledOnce());
 
       await expect(
-        connection.request('mcode/session/steer', {
+        connection.request('bari/session/steer', {
           sessionId: session.sessionId,
           text: 'Must not become a new Turn',
         }),
@@ -4271,7 +4271,7 @@ describe('Bari ACP agent', () => {
         return { turnId: 'turn-new', mode: 'steered' };
       });
       await expect(
-        connection.request('mcode/session/steer', {
+        connection.request('bari/session/steer', {
           sessionId: session.sessionId,
           text: 'Do not activate',
         }),
@@ -4282,7 +4282,7 @@ describe('Bari ACP agent', () => {
         return { turnId: 'turn-other', mode: 'steered' };
       });
       await expect(
-        connection.request('mcode/session/steer', {
+        connection.request('bari/session/steer', {
           sessionId: session.sessionId,
           text: 'Do not steer another Turn',
         }),
@@ -4301,7 +4301,7 @@ describe('Bari ACP agent', () => {
     const agent = createTuiAcpAgent({ runtime, version: '1.2.3' });
     const goalUpdates: unknown[] = [];
     const client = acp.client({ name: 'test-client' }).onNotification(
-      'mcode/session/goal_update',
+      'bari/session/goal_update',
       (value) => value as { sessionId: string; goal: unknown },
       ({ params }) => goalUpdates.push(params),
     );
@@ -4310,29 +4310,29 @@ describe('Bari ACP agent', () => {
       const initialized = await connection.request(acp.methods.agent.initialize, {
         protocolVersion: acp.PROTOCOL_VERSION,
         clientCapabilities: {
-          _meta: { 'minimax-code/extensions': { version: 1, notifications: true } },
+          _meta: { 'bari/extensions': { version: 1, notifications: true } },
         },
       });
-      const extensions = initialized._meta?.['minimax-code/extensions'] as {
+      const extensions = initialized._meta?.['bari/extensions'] as {
         methods: string[];
         notifications: string[];
       };
       expect(extensions.methods).not.toEqual(
         expect.arrayContaining([
-          'mcode/session/goal/get',
-          'mcode/session/goal/create',
-          'mcode/session/goal/patch',
-          'mcode/session/goal/clear',
+          'bari/session/goal/get',
+          'bari/session/goal/create',
+          'bari/session/goal/patch',
+          'bari/session/goal/clear',
         ]),
       );
-      expect(extensions.notifications).not.toContain('mcode/session/goal_update');
+      expect(extensions.notifications).not.toContain('bari/session/goal_update');
 
       const session = await connection.request(acp.methods.agent.session.new, {
         cwd: '/workspace',
         mcpServers: [],
       });
       await expect(
-        connection.request('mcode/session/goal/create', {
+        connection.request('bari/session/goal/create', {
           sessionId: session.sessionId,
           objective: 'Should not persist',
         }),
@@ -4412,7 +4412,7 @@ describe('Bari ACP agent', () => {
         updates.push(params);
       })
       .onNotification(
-        'mcode/session/queue_update',
+        'bari/session/queue_update',
         (value) => value as { sessionId: string; items: unknown[] },
         ({ params }) => queueUpdates.push(params),
       )
@@ -4425,7 +4425,7 @@ describe('Bari ACP agent', () => {
           plan: {},
           elicitation: { form: {} },
           _meta: {
-            'minimax-code/extensions': { version: 1, notifications: true },
+            'bari/extensions': { version: 1, notifications: true },
           },
         },
       });
@@ -4917,7 +4917,7 @@ describe('Bari ACP agent', () => {
         protocolVersion: acp.PROTOCOL_VERSION,
         clientCapabilities: {
           elicitation: { form: {} },
-          _meta: { 'minimax-code/extensions': { version: 1, notifications: true } },
+          _meta: { 'bari/extensions': { version: 1, notifications: true } },
         },
       });
       await connection.request(acp.methods.agent.session.new, {
@@ -5360,7 +5360,7 @@ describe('Bari ACP agent', () => {
     const delegationUpdates: unknown[] = [];
     const agent = createTuiAcpAgent({ runtime, version: '1.2.3' });
     const client = acp.client({ name: 'test-client' }).onNotification(
-      'mcode/session/delegation_update',
+      'bari/session/delegation_update',
       (params) => params,
       ({ params }) => delegationUpdates.push(params),
     );
@@ -5369,7 +5369,7 @@ describe('Bari ACP agent', () => {
       await connection.request(acp.methods.agent.initialize, {
         protocolVersion: acp.PROTOCOL_VERSION,
         clientCapabilities: {
-          _meta: { 'minimax-code/extensions': { version: 1, notifications: true } },
+          _meta: { 'bari/extensions': { version: 1, notifications: true } },
         },
       });
       for (let index = 0; index < 3; index += 1) {

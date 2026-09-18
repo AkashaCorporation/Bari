@@ -42,7 +42,7 @@ import { modelSupportsVariant } from './model-selection.js';
 import { TuiAcpPromptContinuation } from './prompt-continuation.js';
 import { TuiAcpUpdateProjector } from './updates.js';
 
-const AUTH_METHOD_ID = 'minimax-code-login';
+const AUTH_METHOD_ID = 'bari-login';
 const AVAILABLE_COMMANDS_RETRY_DELAY_MS = 100;
 const ACP_HISTORY_PAGE_SIZE = 100;
 const MAX_DETACHED_LIFECYCLES_PER_SESSION = 2;
@@ -184,7 +184,7 @@ export function createTuiAcpAgent(options: CreateTuiAcpAgentOptions): acp.AgentA
     activeAcpSessionId = undefined;
     if (supportsTuiAcpExtensionNotifications(clientCapabilities)) {
       void client
-        .notify('mcode/session/current_session_update', { sessionId: null })
+        .notify('bari/session/current_session_update', { sessionId: null })
         .catch(() => undefined);
     }
   };
@@ -429,12 +429,12 @@ export function createTuiAcpAgent(options: CreateTuiAcpAgentOptions): acp.AgentA
           }
         : {}),
       agentInfo: {
-        name: 'minimax-code',
+        name: 'bari',
         title: 'Bari',
         version: options.version,
       },
       _meta: {
-        'minimax-code/extensions': {
+        'bari/extensions': {
           version: TUI_ACP_EXTENSION_VERSION,
           methods: [...extensionCapabilities.methods],
           notifications: [...extensionCapabilities.notifications],
@@ -1344,7 +1344,7 @@ function createRuntimeControlProjections(options: {
         if (!isCurrent()) return;
         const items = await options.runtime.listQueuedMessages(runtimeSessionId);
         if (!isCurrent()) return;
-        await options.client.notify('mcode/session/queue_update', {
+        await options.client.notify('bari/session/queue_update', {
           sessionId: acpSessionId,
           items,
         });
@@ -1359,7 +1359,7 @@ function createRuntimeControlProjections(options: {
       key: `${acpSessionId}\0goal`,
       run: async (signal) => {
         if (!isCurrentAttachment(options.sessions, acpSessionId, active, signal)) return;
-        await options.client.notify('mcode/session/goal_update', {
+        await options.client.notify('bari/session/goal_update', {
           sessionId: acpSessionId,
           goal,
         });
@@ -1373,7 +1373,7 @@ function createRuntimeControlProjections(options: {
       key: `${acpSessionId}\0goal`,
       run: async (signal) => {
         if (!isCurrentAttachment(options.sessions, acpSessionId, active, signal)) return;
-        await options.client.notify('mcode/session/goal_update', {
+        await options.client.notify('bari/session/goal_update', {
           sessionId: acpSessionId,
           goal: null,
           goalId,
@@ -1425,7 +1425,7 @@ async function notifyDelegationUpdates(
       snapshots.set(rootSessionId, snapshot);
     }
     if (!isCurrent()) continue;
-    await client.notify('mcode/session/delegation_update', {
+    await client.notify('bari/session/delegation_update', {
       sessionId: acpSessionId,
       snapshot,
     });
