@@ -14,6 +14,9 @@ export type McodeProviderCliRequest =
       readonly models: readonly string[];
       readonly apiKeyEnv?: string;
       readonly saveAndUse?: boolean;
+      readonly contextWindow?: number;
+      readonly maxOutput?: number;
+      readonly effortOptions?: readonly string[];
     }
   | { readonly action: 'remove'; readonly providerId: string; readonly confirmed: boolean }
   | {
@@ -63,7 +66,20 @@ export async function runMcodeProviderCommand(
         baseUrl: request.baseUrl,
         apiKey,
         apiFormat: request.apiFormat,
-        models: request.models.map((modelId) => ({ modelId })),
+        models: request.models.map((modelId) => ({
+          modelId,
+          ...(request.effortOptions?.length ? { effortOptions: [...request.effortOptions] } : {}),
+          ...(request.contextWindow !== undefined || request.maxOutput !== undefined
+            ? {
+                limit: {
+                  ...(request.contextWindow !== undefined
+                    ? { context: request.contextWindow }
+                    : {}),
+                  ...(request.maxOutput !== undefined ? { output: request.maxOutput } : {}),
+                },
+              }
+            : {}),
+        })),
         saveAndUse: request.saveAndUse,
       });
       return `Provider added: ${request.name}`;

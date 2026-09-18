@@ -3206,6 +3206,7 @@
     "packages/tui/test/unit/model-effort.test.ts",
     "packages/tui/test/unit/plugin-application.test.ts",
     "packages/tui/test/unit/provider-application.test.ts",
+    "packages/tui/test/unit/provider-command-add.test.ts",
     "packages/tui/test/unit/run-coordinator-usage.test.ts",
     "packages/tui/test/unit/run-coordinator.test.ts",
     "packages/tui/test/unit/runtime-event-normalizer.test.ts",

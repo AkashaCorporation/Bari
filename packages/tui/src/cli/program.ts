@@ -191,6 +191,13 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
       'anthropic-messages',
     )
     .option('--model <id>', 'model ID (repeatable)', collectOptionValue, [])
+    .option('--context <tokens>', 'model context window in tokens', parsePositiveInteger)
+    .option('--max-output <tokens>', 'model max output tokens', parsePositiveInteger)
+    .option(
+      '--effort <levels>',
+      'reasoning effort levels, comma-separated (for example low,high,max)',
+      parseEffortLevels,
+    )
     .option('--api-key-env <name>', 'environment variable containing the API key')
     .option('--use', 'select the first model as the default')
     .action(
@@ -199,6 +206,9 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
         baseUrl: string;
         apiFormat: McodeProviderApiFormat;
         model: string[];
+        context?: number;
+        maxOutput?: number;
+        effort?: string[];
         apiKeyEnv?: string;
         use?: boolean;
       }) => {
@@ -213,6 +223,11 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
           models: commandOptions.model,
           apiKeyEnv: commandOptions.apiKeyEnv,
           saveAndUse: commandOptions.use,
+          ...(commandOptions.context !== undefined
+            ? { contextWindow: commandOptions.context }
+            : {}),
+          ...(commandOptions.maxOutput !== undefined ? { maxOutput: commandOptions.maxOutput } : {}),
+          ...(commandOptions.effort?.length ? { effortOptions: commandOptions.effort } : {}),
         });
       },
     );
@@ -365,6 +380,25 @@ function resolveExecReviewOptions(exec: Command, review: Command): RawTuiExecOpt
 
 function collectOptionValue(value: string, previous: string[]): string[] {
   return [...previous, value];
+}
+
+function parsePositiveInteger(value: string): number {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) {
+    throw new InvalidArgumentError('expected a positive integer');
+  }
+  return parsed;
+}
+
+function parseEffortLevels(value: string): string[] {
+  const levels = value
+    .split(',')
+    .map((level) => level.trim())
+    .filter((level) => level.length > 0);
+  if (levels.length === 0) {
+    throw new InvalidArgumentError('expected at least one effort level');
+  }
+  return levels;
 }
 
 function parseLoginRegion(value: string): MavisRegion {

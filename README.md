@@ -67,11 +67,11 @@ BYOK does not require a MiniMax login. Set `MCODE_PROVIDER_API_KEY` in your curr
 ```bash
 bari provider add --name my-provider --base-url https://example.com/v1 \
   --api-format openai-completions --model my-model \
-  --api-key-env MCODE_PROVIDER_API_KEY --use
+  --api-key-env MCODE_PROVIDER_API_KEY
 bari
 ```
 
-Supported API formats: `openai-completions`, `openai-responses`, and `anthropic-messages`. See the [model examples](docs/examples.md#2-choose-your-own-model) for environment variable setup, connection checks, and model overrides for a single run. OpenCode Go subscribers can use the pinned preset described in the [OpenCode Go example](docs/examples.md#opencode-go).
+Supported API formats: `openai-completions`, `openai-responses`, and `anthropic-messages`. Optional metadata flags (`--context`, `--max-output`, `--effort low,high,max`) declare the model's real limits and reasoning levels; without them the runtime applies conservative defaults. New providers become selectable after `bari provider test`. See the [model examples](docs/examples.md#2-choose-your-own-model) for environment variable setup, connection checks, and model overrides for a single run. OpenCode Go subscribers can use the pinned preset described in the [OpenCode Go example](docs/examples.md#opencode-go).
 
 </details>
 
