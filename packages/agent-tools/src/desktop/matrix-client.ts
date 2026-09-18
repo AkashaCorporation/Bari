@@ -1,5 +1,6 @@
 import { Agent, fetch as undiciFetch, type Dispatcher } from 'undici';
 import type { MatrixExecutor } from '../cloud/matrix-tools/index.js';
+import { MatrixManagedLoginRequiredError } from '../cloud/matrix-tools/client.js';
 import {
   getDesktopMatrixEndpoint,
   isManagedMatrixBaseUrl,
@@ -194,11 +195,8 @@ export class DesktopMatrixClient implements MatrixExecutor {
   buildHeaders(extraHeaders: Record<string, string> = {}): Record<string, string> {
     const token = this.explicitAccessToken ?? this.getManagedAccessToken();
     if (!token) {
-      throw new Error(
-        this.useManagedAuth
-          ? 'Matrix tools require a managed-login access token.'
-          : 'Matrix tools require MATRIX_TOKEN for non-managed MATRIX_BASE_URL.',
-      );
+      if (this.useManagedAuth) throw new MatrixManagedLoginRequiredError();
+      throw new Error('Matrix tools require MATRIX_TOKEN for non-managed MATRIX_BASE_URL.');
     }
     return {
       'User-Agent': MATRIX_USER_AGENT,

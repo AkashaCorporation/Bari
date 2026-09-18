@@ -9,6 +9,7 @@ export const WebSearchToolDef = {
     'Prefer primary or authoritative sources. For important, surprising, disputed, or source-dependent claims, cross-check key facts across multiple reliable sources when practical. State when sources conflict or only one reliable source is available.',
     'Search misses do not prove non-existence. If results are inconclusive, inspect an authoritative source with an available page-reading tool, or state that the claim could not be verified.',
     'Report only searches actually performed and cite URLs returned by tools. A search result does not establish that its source page was opened or verified; claim that only after a tool actually read the page.',
+    'Cloud web search requires a MiniMax managed login. Without one this tool is unavailable: use web_fetch instead of retrying the same query.',
   ].join('\n'),
   schema: Type.Object({
     query: Type.String({ description: 'Search query.' }),

@@ -60,9 +60,27 @@ interface BaseResp {
 
 const MATRIX_TOOL_REQUEST_FAILED = 'MATRIX_TOOL_REQUEST_FAILED';
 const MATRIX_TOOL_BUSINESS_FAILED = 'MATRIX_TOOL_BUSINESS_FAILED';
+const MATRIX_TOOL_LOGIN_REQUIRED = 'MATRIX_TOOL_LOGIN_REQUIRED';
 const MATRIX_TOOL_REQUEST_FAILED_TEXT = 'MATRIX_TOOL_REQUEST_FAILED: Matrix tool request failed.';
 const MATRIX_TOOL_BUSINESS_FAILED_TEXT =
   'MATRIX_TOOL_BUSINESS_FAILED: Matrix tool request was rejected.';
+const MATRIX_TOOL_LOGIN_REQUIRED_TEXT =
+  'MATRIX_TOOL_LOGIN_REQUIRED: Cloud tools require a MiniMax managed login. Run /login to enable them, or use web_fetch without an account.';
+
+/**
+ * Thrown when a managed Matrix gateway call has no managed-login token, which
+ * happens on BYOK-only sessions. The executor raises it before any HTTP request
+ * leaves the process, so callMatrixTool can report an actionable cause instead
+ * of the generic request-failure text.
+ */
+export class MatrixManagedLoginRequiredError extends Error {
+  constructor(
+    message = 'Cloud tools require a MiniMax managed login. Run /login to enable them, or use web_fetch without an account.',
+  ) {
+    super(message);
+    this.name = 'MatrixManagedLoginRequiredError';
+  }
+}
 
 export async function callMatrixTool(opts: CallMatrixToolOptions): Promise<ToolResult> {
   const { toolName, path, input, archonServer, signal } = opts;
@@ -77,9 +95,13 @@ export async function callMatrixTool(opts: CallMatrixToolOptions): Promise<ToolR
       timeoutMs: resolveTimeout(opts),
     });
   } catch (err) {
+    if (signal?.aborted) throw err;
+    if (err instanceof MatrixManagedLoginRequiredError) {
+      logCallError(opts, startMs, undefined, MATRIX_TOOL_LOGIN_REQUIRED);
+      return matrixLoginRequiredFailure(toolName, path);
+    }
     const httpStatus = httpStatusFromError(err);
     logCallError(opts, startMs, httpStatus);
-    if (signal?.aborted) throw err;
     return matrixRequestFailure(toolName, path, httpStatus);
   }
 
@@ -210,13 +232,27 @@ function logCallError(
   opts: CallMatrixToolOptions,
   startMs: number,
   httpStatus: number | undefined,
+  code: string = MATRIX_TOOL_REQUEST_FAILED,
 ): void {
   const { toolName, path, ctx, signal } = opts;
   const durationMs = Date.now() - startMs;
   ctx.matrixLogger?.warn(
     ctx,
-    `matrix-tools error tool=${toolName} path=${path} stage=request code=${MATRIX_TOOL_REQUEST_FAILED} http_status=${httpStatus ?? 'none'} duration_ms=${durationMs} aborted=${signal?.aborted === true} session=${ctx.sessionId} turn=${ctx.turnId}`,
+    `matrix-tools error tool=${toolName} path=${path} stage=request code=${code} http_status=${httpStatus ?? 'none'} duration_ms=${durationMs} aborted=${signal?.aborted === true} session=${ctx.sessionId} turn=${ctx.turnId}`,
   );
+}
+
+function matrixLoginRequiredFailure(toolName: string, path: string): ToolResult {
+  return {
+    tool_name: toolName,
+    text: MATRIX_TOOL_LOGIN_REQUIRED_TEXT,
+    content: [{ type: 'text', text: MATRIX_TOOL_LOGIN_REQUIRED_TEXT }],
+    details: {
+      ok: false,
+      path,
+      error_code: MATRIX_TOOL_LOGIN_REQUIRED,
+    },
+  };
 }
 
 function matrixRequestFailure(

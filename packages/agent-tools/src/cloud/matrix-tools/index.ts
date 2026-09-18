@@ -68,6 +68,7 @@ import { MatrixWebSearchTool } from './tools/web-search.js';
 export {
   callMatrixTool,
   callMatrixToolRaw,
+  MatrixManagedLoginRequiredError,
   type CallMatrixToolOptions,
   type CallMatrixToolRawResult,
 } from './client.js';

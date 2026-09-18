@@ -289,6 +289,7 @@
     "packages/agent-runtime/src/types.ts",
     "packages/agent-tools/package.json",
     "packages/agent-tools/src/cloud/matrix-tools/aigc-helpers.ts",
+    "packages/agent-tools/src/cloud/matrix-tools/client.test.ts",
     "packages/agent-tools/src/cloud/matrix-tools/client.ts",
     "packages/agent-tools/src/cloud/matrix-tools/file-transfer.ts",
     "packages/agent-tools/src/cloud/matrix-tools/index.ts",
