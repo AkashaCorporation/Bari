@@ -4,6 +4,12 @@ export const MINIMAX_CODE_MIN_NODE_VERSION = '22.19.0';
 export const MINIMAX_CODE_SUPPORTED_NODE_VERSIONS = '22.19+, 24, 25, or 26';
 export const TUI_BUILD_PROFILE = 'tui';
 export const MINIMAX_CODE_PACKAGE_NAME = '@minimax-ai/code';
+const ACCEPTED_PACKAGE_NAMES = new Set([
+  MINIMAX_CODE_PACKAGE_NAME,
+  '@bari/code',
+  '@minimax/code',
+  '@akashacorporation/bari',
+]);
 
 interface PackageManifest {
   name: string;
@@ -17,9 +23,7 @@ export function resolveTuiPackageVersion(moduleUrl: string | URL = import.meta.u
         readFileSync(new URL(relativePath, moduleUrl), 'utf8'),
       ) as Partial<PackageManifest>;
       if (
-        (manifest.name === MINIMAX_CODE_PACKAGE_NAME ||
-          manifest.name === '@bari/code' ||
-          manifest.name === '@minimax/code') &&
+        ACCEPTED_PACKAGE_NAMES.has(manifest.name ?? '') &&
         typeof manifest.version === 'string' &&
         manifest.version.length > 0
       ) {

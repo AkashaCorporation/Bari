@@ -3273,6 +3273,7 @@
     "scripts/lib/tui-npm-bundle-profile.mjs",
     "scripts/lib/tui-package-privacy.mjs",
     "scripts/lib/vitest-suites.mjs",
+    "scripts/pack.mjs",
     "scripts/prepare-source-sync.mjs",
     "scripts/run-vitest-suite.mjs",
     "scripts/source-candidate.mjs",
