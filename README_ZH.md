@@ -19,6 +19,7 @@
   <img src="docs/assets/source-preview.svg" alt="Source preview">
   <img src="docs/assets/node.svg" alt="Compatibility: Node.js 22.19+, 24.2+, 25, and 26">
   <a href="LICENSE-STATUS.md"><img src="docs/assets/license.svg" alt="First-party default license: MIT"></a>
+  <a href="https://www.npmjs.com/package/@akashacorporation/bari"><img src="https://img.shields.io/npm/v/@akashacorporation/bari" alt="npm version"></a>
 </p>
 
 在终端里读懂项目、修改代码并运行测试。使用 MiniMax 账号、OpenCode Go 订阅或自己的 API Key，把搜索、插件和多模态工具接入同一个工作流。
@@ -29,20 +30,16 @@
 
 ## 快速开始
 
-### 1. 从源码构建 Bari
+### 1. 安装 Bari
 
-Bari 目前以源码形式发布。你需要 Git、**Node.js 22.19+（22.x）、24.2+（24.x）、25 或 26**，以及 **pnpm 9.12.0**：
+需要 **Node.js 22.19+（22.x）、24.2+（24.x）、25 或 26**：
 
 ```bash
-git clone https://github.com/AkashaCorporation/Bari.git
-cd Bari
-pnpm install --frozen-lockfile
-pnpm build
-pnpm bari --version
-pnpm bari --help
+npm install -g @akashacorporation/bari
+bari --version
 ```
 
-首次构建需要联网；依赖和经过校验的内置工具包均来自公共 npm。pnpm 安装、系统依赖和更新方法见[安装指南](docs/installation.md)。
+想直接运行最新源码，请见[从源码构建](#从源码构建)。
 
 ### 2. 登录账号或配置 API Key
 

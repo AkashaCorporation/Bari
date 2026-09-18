@@ -19,6 +19,7 @@
   <img src="docs/assets/source-preview.svg" alt="Source preview">
   <img src="docs/assets/node.svg" alt="Compatibility: Node.js 22.19+, 24.2+, 25, and 26">
   <a href="LICENSE-STATUS.md"><img src="docs/assets/license.svg" alt="First-party default license: MIT"></a>
+  <a href="https://www.npmjs.com/package/@akashacorporation/bari"><img src="https://img.shields.io/npm/v/@akashacorporation/bari" alt="npm version"></a>
 </p>
 
 Understand a project, make changes, and run tests from your terminal. Use a MiniMax account, an OpenCode Go subscription, or your own API key, with search, plugins, and multimodal tools in the same workflow.
@@ -29,20 +30,16 @@ Understand a project, make changes, and run tests from your terminal. Use a Mini
 
 ## Quick start
 
-### 1. Build Bari from source
+### 1. Install Bari
 
-Bari is distributed as source for now. You need Git, **Node.js 22.19+ (22.x), 24.2+ (24.x), 25, or 26**, and **pnpm 9.12.0**:
+With **Node.js 22.19+ (22.x), 24.2+ (24.x), 25, or 26**:
 
 ```bash
-git clone https://github.com/AkashaCorporation/Bari.git
-cd Bari
-pnpm install --frozen-lockfile
-pnpm build
-pnpm bari --version
-pnpm bari --help
+npm install -g @akashacorporation/bari
+bari --version
 ```
 
-The first build requires an internet connection. Dependencies and the integrity-checked embedded tools bundle come from public npm. See the [installation guide](docs/installation.md) for pnpm setup, system dependencies, and updates.
+To run the latest source instead, follow [Build from source](#build-from-source).
 
 ### 2. Sign in or bring your own API key
 

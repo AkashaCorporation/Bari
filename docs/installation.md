@@ -1,6 +1,17 @@
-# Install from source
+# Installation
 
-Bari is distributed as source. The upstream MiniMax Code CLI is published as [`@minimax-ai/code`](https://www.npmjs.com/package/@minimax-ai/code); installing that package does not install Bari. Follow the steps below to build this checkout.
+## npm
+
+```bash
+npm install -g @akashacorporation/bari
+bari --version
+```
+
+Requires Node.js 22.19+ (22.x), 24.2+ (24.x), 25, or 26. The package ships the built CLI and installs the native SQLite and terminal dependencies for the current platform.
+
+## From source
+
+Bari is also distributed as source. The upstream MiniMax Code CLI is published as [`@minimax-ai/code`](https://www.npmjs.com/package/@minimax-ai/code); installing that package does not install Bari. Follow the steps below to build this checkout.
 
 For a source build, you need Git, Node.js 22.19+ (22.x), 24.2+ (24.x), 25, or 26, and pnpm 9.12.0. Regular CI uses Node.js 24 across Linux, macOS, and Windows. Initial installation and build require access to public npm.
 
