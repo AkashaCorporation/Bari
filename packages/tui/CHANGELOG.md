@@ -7,6 +7,20 @@ This changelog covers important changes that directly affect Bari TUI users. It 
 
 Internal refactors, test-only changes, and changes limited to other product surfaces are excluded.
 
+## 0.5.0 · 2026-09-18
+
+### Added
+
+- Bari is installable from npm as `@akashacorporation/bari`, and `bari provider add` accepts
+  `--context`, `--max-output`, and `--effort` metadata for BYOK models.
+- The bundled `hexcore-jobs` skill drives HikariSystem HexCore analysis jobs without hardcoded
+  paths, and the product-routing skill is now `bari-product`.
+
+### Fixed
+
+- Subagent and custom-agent spawning resolves packaged agent, prompt, and skill assets from the CLI
+  entry point, so delegation works from any working directory instead of only the source checkout.
+
 ## 0.4.12 · 2026-09-18
 
 ### Improved

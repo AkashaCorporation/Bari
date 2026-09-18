@@ -8,6 +8,20 @@ TUI 正式版中用户能直接感知的重要变化。收录范围以 TUI 用�
 
 仅内部重构、测试调整，或只影响其他产品界面且不改变 TUI 行为的变化不记录。
 
+## 0.5.0 · 2026-09-18
+
+### 新增
+
+- 支持通过 npm 安装：`npm install -g @akashacorporation/bari`；`bari provider add` 新增
+  `--context`、`--max-output`、`--effort` 元数据参数。
+- 内置 `hexcore-jobs` Skill，可在不含硬编码路径的前提下驱动 HikariSystem HexCore 分析任务；
+  产品路由 Skill 更名为 `bari-product`。
+
+### 问题修复
+
+- 子 Agent 与自定义 Agent 的启动改为从 CLI 入口解析打包后的 Agent、Prompt 与 Skill 资源，
+  任何工作目录下都能正常委派，不再限于源码仓库。
+
 ## 0.4.12 · 2026-09-18
 
 ### 体验改进
