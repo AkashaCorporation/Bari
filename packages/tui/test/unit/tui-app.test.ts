@@ -325,7 +325,7 @@ function createRuntime(): TuiRuntime {
       draftId: "feedback-draft-1",
       description,
       diagnostics: [
-        { label: "Client", value: "mcode 0.1.0" },
+        { label: "Client", value: "bari 0.1.0" },
         { label: "Runtime", value: "clean · cli" },
         { label: "Session", value: sessionId ?? "not included" },
       ],
@@ -1104,7 +1104,7 @@ describe("createTuiApp", () => {
     },
   );
 
-  it("shows the MCode prompt in an empty Composer and hides it after input", async () => {
+  it("shows the Bari prompt in an empty Composer and hides it after input", async () => {
     const app = createTuiApp({
       runtime: createRuntime(),
       terminal: new FakeTerminal(),
@@ -1452,24 +1452,24 @@ describe("createTuiApp", () => {
     await app.ready;
     await vi.waitFor(() => {
       expect(terminal.writes.join("")).toContain(
-        "A new version of MCode is available",
+        "A new version of Bari is available",
       );
     });
 
     const rendered = terminal.writes.join("");
     expect(checkForUpdate).toHaveBeenCalledTimes(1);
-    expect(rendered).toContain("Run '/update' to install MCode 1.2.4");
+    expect(rendered).toContain("Run '/update' to install Bari 1.2.4");
 
     await app.submit("Start working");
     expect(app.getSurface()).toBe("conversation");
     expect(app.tui.render(80).join("\n")).not.toContain(
-      "A new version of MCode is available",
+      "A new version of Bari is available",
     );
 
     await app.submit("/new");
     expect(app.getSurface()).toBe("welcome");
     expect(app.tui.render(80).join("\n")).toContain(
-      "A new version of MCode is available",
+      "A new version of Bari is available",
     );
     await app.stop();
   });
@@ -1634,7 +1634,7 @@ describe("createTuiApp", () => {
       await app.stop();
 
       expect(terminal.writes.join("")).not.toContain(
-        "A new version of MCode is available",
+        "A new version of Bari is available",
       );
       expect(
         app.transcript.snapshot().filter((cell) => cell.kind === "error"),
@@ -1654,7 +1654,7 @@ describe("createTuiApp", () => {
     const applyUpdate = vi.fn(async () => ({
       applied: true,
       message:
-        "MCode 1.2.4 is installed. Restart running MCode sessions to use it.",
+        "Bari 1.2.4 is installed. Restart running Bari sessions to use it.",
     }));
     const app = createTuiApp({
       runtime: createRuntime(),
@@ -1670,7 +1670,7 @@ describe("createTuiApp", () => {
 
     expect(inspectUpdate).toHaveBeenCalledOnce();
     expect(app.interaction.current()?.render(80).join("\n")).toContain(
-      "MCode update",
+      "Bari update",
     );
     app.interaction.current()?.handleInput?.("\r");
     await vi.waitFor(() =>
@@ -1685,7 +1685,7 @@ describe("createTuiApp", () => {
       expect(
         app.transcript
           .snapshot()
-          .some((cell) => cell.content.includes("MCode update completed")),
+          .some((cell) => cell.content.includes("Bari update completed")),
       ).toBe(true),
     );
     await app.stop();
@@ -1714,7 +1714,7 @@ describe("createTuiApp", () => {
       applyUpdate: async () => ({
         applied: true,
         restartRequired: true,
-        message: "MCode 1.2.4 is staged safely.",
+        message: "Bari 1.2.4 is staged safely.",
       }),
       requestRestart,
     });
@@ -1767,7 +1767,7 @@ describe("createTuiApp", () => {
           .snapshot()
           .some((cell) =>
             cell.content.includes(
-              "MCode update failed: Finish or stop the active response before updating.",
+              "Bari update failed: Finish or stop the active response before updating.",
             ),
           ),
       ).toBe(true),
@@ -1846,7 +1846,7 @@ describe("createTuiApp", () => {
     await app.ready;
     app.start();
     const rendered = app.tui.render(80).join("\n");
-    expect(rendered).not.toContain("Starting MiniMax Code");
+    expect(rendered).not.toContain("Starting Bari");
     expect(rendered).not.toContain("Loading session");
     await app.stop();
   });
@@ -2632,7 +2632,7 @@ describe("createTuiApp", () => {
     expect(conversation).toContain("Say hello");
     expect(conversation).toContain("Hello from the Agent");
     expect(terminal.started).toBe(true);
-    expect(terminal.title).toBe("Minimax Code");
+    expect(terminal.title).toBe("Bari");
     expect(runtime.createSession).toHaveBeenCalledWith({
       workspaceDir: "/workspace",
     });
@@ -2705,7 +2705,7 @@ describe("createTuiApp", () => {
 
     await vi.waitFor(() => expect(terminal.title).toBe(sessionTitle));
     await app.submit("/status");
-    expect(terminal.titleUpdates).toEqual(["Minimax Code", sessionTitle]);
+    expect(terminal.titleUpdates).toEqual(["Bari", sessionTitle]);
 
     await app.stop();
   });
@@ -3139,7 +3139,7 @@ describe("createTuiApp", () => {
       expect(rendered).toContain("Running");
       expect(rendered).not.toContain("Running · 0s");
       expect(rendered).not.toContain("Running · Read");
-      expect(rendered).not.toContain("MCode · Running");
+      expect(rendered).not.toContain("Bari · Running");
       expect(rendered).toContain("Ctrl+O details");
       expect(rendered).toContain("Esc stop");
       expect(rendered).not.toContain("Enter run next");
@@ -3240,7 +3240,7 @@ describe("createTuiApp", () => {
         .filter(
           (line) =>
             line.includes("Inspecting the repository") &&
-            !line.includes("MCode"),
+            !line.includes("Bari"),
         ).length;
     let expandedThinkingRows = 0;
 
@@ -3260,7 +3260,7 @@ describe("createTuiApp", () => {
         expect(rendered).toContain("Ctrl+O details");
         expect(rendered).toContain("Esc stop");
         expect(rendered).toContain("Thinking…");
-        expect(rendered).not.toContain("MCode ·");
+        expect(rendered).not.toContain("Bari ·");
         expect(rendered).not.toContain("Thinking · Inspecting the repository");
         expandedThinkingRows = countThinkingBodyRows(rendered);
         expect(expandedThinkingRows).toBeGreaterThan(0);
@@ -5186,7 +5186,7 @@ describe("createTuiApp", () => {
     const panel = app.interaction.current();
     expect(panel?.render(80).join("\n")).toContain("Review feedback");
     panel?.handleInput?.("d");
-    expect(panel?.render(80).join("\n")).toContain("Client  mcode 0.1.0");
+    expect(panel?.render(80).join("\n")).toContain("Client  bari 0.1.0");
 
     terminal.input?.("\r");
     await vi.waitFor(() =>
@@ -5250,7 +5250,7 @@ describe("createTuiApp", () => {
     expect(app.interaction.isActive()).toBe(true);
     expect(app.transcript.snapshot()).toEqual(transcriptBeforeStatus);
     const statusOutput = app.tui.render(80).join("\n");
-    expect(statusOutput).toContain("MCode status");
+    expect(statusOutput).toContain("Bari status");
     expect(statusOutput).toContain("Model");
     expect(statusOutput).not.toContain("/status");
     expect(statusOutput).toContain("/workspace");
@@ -5339,7 +5339,7 @@ describe("createTuiApp", () => {
             state: "authenticated" as const,
             message:
               _region === "en"
-                ? "Signed in with MiniMax Global. Restart MCode to use this account region."
+                ? "Signed in with MiniMax Global. Restart Bari to use this account region."
                 : "Signed in with MiniMax.",
           };
         },
@@ -5431,7 +5431,7 @@ describe("createTuiApp", () => {
       {
         kind: "final-summary",
         content:
-          "Signed in with MiniMax Global. Restart MCode to use this account region.",
+          "Signed in with MiniMax Global. Restart Bari to use this account region.",
       },
       {
         kind: "final-summary",
@@ -5736,7 +5736,7 @@ describe("createTuiApp", () => {
     expect(app.tui.hasOverlay()).toBe(false);
     expect(app.interaction.isActive()).toBe(true);
     expect(app.transcript.snapshot()).toEqual(transcriptBeforeStatus);
-    expect(app.tui.render(80).join("\n")).toContain("MCode status");
+    expect(app.tui.render(80).join("\n")).toContain("Bari status");
 
     resolveSessionPage?.({
       sessions: [
@@ -6516,7 +6516,7 @@ describe("createTuiApp", () => {
     expect(runtime.getSession).toHaveBeenCalledWith("session-existing");
     expect(app.interaction.current()).toBeDefined();
     expect(app.transcript.snapshot()).toEqual(transcriptBeforeStatus);
-    expect(app.tui.render(100).join("\n")).toContain("MCode status");
+    expect(app.tui.render(100).join("\n")).toContain("Bari status");
     expect(runtime.renameSession).toHaveBeenCalledWith(
       "session-existing",
       "Renamed session",
@@ -9100,7 +9100,7 @@ describe("createTuiApp", () => {
       content: "Proceed?  Yes",
     });
     expect(app.interaction.current()).toBeDefined();
-    expect(app.tui.render(80).join("\n")).toContain("MCode status");
+    expect(app.tui.render(80).join("\n")).toContain("Bari status");
     expect(app.transcript.snapshot()).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -9505,7 +9505,7 @@ describe("createTuiApp", () => {
     await vi.waitFor(() =>
       expect(app.transcript.get("question:question-review")).toMatchObject({
         status: "resolved",
-        detail: "Answer sent · MCode is continuing…",
+        detail: "Answer sent · Bari is continuing…",
       }),
     );
 
@@ -9594,7 +9594,7 @@ describe("createTuiApp", () => {
         app.transcript.get("question:question-delayed-reply"),
       ).toMatchObject({
         status: "resolved",
-        detail: "Answer sent · MCode is continuing…",
+        detail: "Answer sent · Bari is continuing…",
       }),
     );
     await vi.waitFor(() =>
@@ -11175,7 +11175,7 @@ describe("createTuiApp", () => {
     );
     expect(app.tui.render(80).join("\n")).toContain("Loading");
     expect(app.tui.render(80).join("\n")).not.toContain("Loading · 0s");
-    expect(app.tui.render(80).join("\n")).not.toContain("MCode ·");
+    expect(app.tui.render(80).join("\n")).not.toContain("Bari ·");
     terminal.input?.("\x1b");
     await vi.waitFor(() =>
       expect(app.controller.snapshot().activeTurnId).toBeUndefined(),

@@ -14,7 +14,7 @@ import { consumeLoginRestartHandoff } from '../tui/login-restart-handoff.js';
 import type { McodeTelemetryCliAction } from './telemetry-command.js';
 
 const OUTPUT_DRAIN_TIMEOUT_MS = 250;
-const MINIMAX_CODE_PROCESS_TITLE = 'minimax-code';
+const MINIMAX_CODE_PROCESS_TITLE = 'bari';
 
 export interface TuiOutputStream {
   readonly destroyed: boolean;
@@ -86,7 +86,7 @@ export async function runTuiCli(dependencies: RunTuiCliDependencies = {}): Promi
     dependencies.supportsNodeVersion ?? ((version: string) => supportsTuiNodeVersion(version));
   if (!supportsNodeVersion(processRef.versions.node)) {
     processRef.stderr.write(
-      `Minimax Code supports Node.js ${MINIMAX_CODE_SUPPORTED_NODE_VERSIONS}; current version is ${processRef.versions.node}.\n`,
+      `Bari supports Node.js ${MINIMAX_CODE_SUPPORTED_NODE_VERSIONS}; current version is ${processRef.versions.node}.\n`,
     );
     processRef.exitCode = 1;
     return;
@@ -211,7 +211,7 @@ async function formatTuiCliError(error: unknown): Promise<string> {
   const { buildMcodePackageManagerCommand } = await import('../update/install-source.js');
   const command = buildMcodePackageManagerCommand('npm-global', MINIMAX_CODE_VERSION);
   return [
-    'MCode could not load its native SQLite dependency.',
+    'Bari could not load its native SQLite dependency.',
     'If npm reported blocked install scripts, the installation needs explicit script approval.',
     'Reinstall with the original installer. For npm installations, run:',
     `  ${command.display} --foreground-scripts`,

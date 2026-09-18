@@ -47,7 +47,7 @@ class MutableLines implements Component {
   invalidate(): void {}
 }
 
-describe('MCode Pi Engine local deltas', () => {
+describe('Bari Pi Engine local deltas', () => {
   it('fits Text padding within narrow terminal widths', () => {
     const text = new Text('content', 2, 0);
 

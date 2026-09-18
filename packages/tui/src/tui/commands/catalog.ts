@@ -133,13 +133,13 @@ const COMMAND_SOURCES: readonly TuiCommandSource[] = [
   },
   {
     name: 'update',
-    description: 'Check for and install an MCode update',
+    description: 'Check for and install an Bari update',
     category: 'Application',
     discoverability: 'search-only',
   },
   {
     name: 'changelog',
-    description: 'Show the packaged MCode update history',
+    description: 'Show the packaged Bari update history',
     category: 'Application',
   },
   {
@@ -304,7 +304,7 @@ const COMMAND_SOURCES: readonly TuiCommandSource[] = [
   },
   {
     name: 'login',
-    description: 'Sign in to use MiniMax Code Agent features',
+    description: 'Sign in to use Bari Agent features',
     category: 'Runtime',
     discoverability: 'contextual',
     visibleWhen: (context) => !context.managedTokenPresent,
@@ -359,7 +359,7 @@ const COMMAND_SOURCES: readonly TuiCommandSource[] = [
   },
   {
     name: 'settings',
-    description: 'Configure the MCode terminal interface',
+    description: 'Configure the Bari terminal interface',
     category: 'Application',
   },
   {
@@ -500,7 +500,7 @@ const COMMAND_SOURCES: readonly TuiCommandSource[] = [
   {
     name: 'quit',
     aliases: ['exit'],
-    description: 'Exit Minimax Code',
+    description: 'Exit Bari',
     category: 'Application',
     readiness: 'immediate',
   },

@@ -266,7 +266,7 @@ function createRuntime(
   };
 }
 
-describe('MiniMax Code ACP agent', () => {
+describe('Bari ACP agent', () => {
   it('advertises and executes native help and model commands without starting an Agent turn', async () => {
     const { runtime, sendMessage, listModels, selectModel } = createRuntime([], {
       models: [
@@ -962,11 +962,11 @@ describe('MiniMax Code ACP agent', () => {
           {
             type: 'terminal',
             id: 'minimax-code-login',
-            name: 'Sign in to MiniMax Code',
+            name: 'Sign in to Bari',
             args: ['login'],
           },
         ],
-        agentInfo: { name: 'minimax-code', title: 'MiniMax Code', version: '1.2.3' },
+        agentInfo: { name: 'minimax-code', title: 'Bari', version: '1.2.3' },
         _meta: {
           'minimax-code/extensions': {
             version: 1,
@@ -2042,7 +2042,7 @@ describe('MiniMax Code ACP agent', () => {
           {
             type: 'terminal',
             id: 'minimax-code-login',
-            name: 'Sign in to MiniMax Code',
+            name: 'Sign in to Bari',
             args: ['login'],
           },
         ]);
@@ -3112,7 +3112,7 @@ describe('MiniMax Code ACP agent', () => {
           cwd: '/workspace',
           mcpServers: [],
         }),
-      ).rejects.toThrow('mcode login');
+      ).rejects.toThrow('bari login');
     });
 
     expect(createSession).not.toHaveBeenCalled();
@@ -5981,7 +5981,7 @@ describe('MiniMax Code ACP agent', () => {
           additionalDirectories: ['/other'],
           mcpServers: [],
         }),
-      ).rejects.toThrow('Additional directories are not supported by MiniMax Code ACP');
+      ).rejects.toThrow('Additional directories are not supported by Bari ACP');
     });
 
     expect(createSession).not.toHaveBeenCalled();

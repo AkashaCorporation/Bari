@@ -323,7 +323,7 @@ export class McodeUpdateApplication {
     options: McodeUpdateApplyOptions = {},
   ): Promise<McodeUpdateOutcome> {
     if (plan.kind === 'manual' || plan.kind === 'current' || plan.kind === 'ahead') {
-      throw new Error(`MCode update plan ${plan.kind} cannot be applied automatically.`);
+      throw new Error(`Bari update plan ${plan.kind} cannot be applied automatically.`);
     }
     if (plan.kind === 'available') {
       const result = await this.dependencies.createManagedService().apply({
@@ -335,12 +335,12 @@ export class McodeUpdateApplication {
         ? {
             applied: true,
             message:
-              `MCode ${result.latestVersion} is installed. ` +
-              'Restart running MCode sessions to use it.',
+              `Bari ${result.latestVersion} is installed. ` +
+              'Restart running Bari sessions to use it.',
           }
         : {
             applied: false,
-            message: `MCode ${result.currentVersion} is already active.`,
+            message: `Bari ${result.currentVersion} is already active.`,
           };
     }
 
@@ -353,15 +353,15 @@ export class McodeUpdateApplication {
     const installedVersion = this.dependencies.readInstalledPackageVersion();
     if (installedVersion !== plan.latestVersion) {
       throw new Error(
-        `MCode update installed ${installedVersion || '<unknown>'}; expected ${plan.latestVersion}.`,
+        `Bari update installed ${installedVersion || '<unknown>'}; expected ${plan.latestVersion}.`,
       );
     }
     reportMcodeUpdatePhase(options, 'completed', false);
     return {
       applied: true,
       message:
-        `MCode ${plan.latestVersion} was installed through ${packageManagerName(plan.source)}. ` +
-        'Restart MCode to use the installed version.',
+        `Bari ${plan.latestVersion} was installed through ${packageManagerName(plan.source)}. ` +
+        'Restart Bari to use the installed version.',
     };
   }
 

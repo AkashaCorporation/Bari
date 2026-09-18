@@ -375,7 +375,7 @@ export class TuiFeatureFlow {
         const session = this.options.controller.snapshot().session;
         return {
           sessionId: session?.sessionId,
-          title: session?.title || 'MCode Transcript',
+          title: session?.title || 'Bari Transcript',
           exportedAtMs: Date.now(),
         };
       },
@@ -434,7 +434,7 @@ export class TuiFeatureFlow {
       this.options.append(
         formatTuiActionFailure(error, {
           summary: "Couldn't load the packaged changelog.",
-          nextStep: 'Reinstall or update MCode, then retry /changelog.',
+          nextStep: 'Reinstall or update Bari, then retry /changelog.',
         }),
         'warning',
       );
@@ -1026,7 +1026,7 @@ export class TuiFeatureFlow {
           this.options.append(
             formatTuiActionFailure(error, {
               summary: 'Plugin updated, but its Skills could not be refreshed.',
-              nextStep: 'Restart MCode or retry /plugins.',
+              nextStep: 'Restart Bari or retry /plugins.',
             }),
             'warning',
           );
@@ -1108,7 +1108,7 @@ export class TuiFeatureFlow {
 
   async showAccountStatus(): Promise<void> {
     await this.showReportInspection(
-      'MCode status',
+      'Bari status',
       'Loading status…',
       async (publish) => {
         const session = this.options.controller.snapshot().session;

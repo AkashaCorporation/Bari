@@ -121,7 +121,7 @@ export class TuiFeedbackService {
       draftId,
       description,
       diagnostics: [
-        { label: 'Client', value: `mcode ${cleanFeedbackText(this.options.appVersion)}` },
+        { label: 'Client', value: `bari ${cleanFeedbackText(this.options.appVersion)}` },
         { label: 'Runtime', value: 'clean · cli' },
         {
           label: 'Platform',
@@ -184,7 +184,7 @@ export class TuiFeedbackService {
     let token = auth?.accessToken?.trim();
     if (!token)
       throw feedbackError(
-        'MiniMax Code sign-in is required. Run /login, then retry.',
+        'Bari sign-in is required. Run /login, then retry.',
         'feedback_login_required',
         401,
         true,
@@ -215,14 +215,14 @@ export class TuiFeedbackService {
       const realUserID = auth?.realUserID?.trim();
       if (!token)
         throw feedbackError(
-          'MiniMax Code sign-in is required. Run /login, then retry.',
+          'Bari sign-in is required. Run /login, then retry.',
           'feedback_login_required',
           401,
           true,
         );
       if (!realUserID)
         throw feedbackError(
-          'MiniMax Code account identity is not ready. Check the connection, then retry.',
+          'Bari account identity is not ready. Check the connection, then retry.',
           'feedback_upload_failed',
           503,
           true,

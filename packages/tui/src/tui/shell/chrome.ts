@@ -35,11 +35,11 @@ export class TuiUpdateNotice implements Component {
 
     const headline = fitFirstStatusCandidate(
       [
-        ` ${chalk.bold.hex(colors.signal)('✦ A new version of MCode is available')} ${chalk.hex(
+        ` ${chalk.bold.hex(colors.signal)('✦ A new version of Bari is available')} ${chalk.hex(
           colors.text,
         )('— update for the latest improvements')}`,
-        ` ${chalk.bold.hex(colors.signal)(`✦ MCode ${this.availableVersion} is available`)}`,
-        ` ${chalk.bold.hex(colors.signal)('✦ MCode update available')}`,
+        ` ${chalk.bold.hex(colors.signal)(`✦ Bari ${this.availableVersion} is available`)}`,
+        ` ${chalk.bold.hex(colors.signal)('✦ Bari update available')}`,
       ],
       safeWidth,
     );
@@ -47,7 +47,7 @@ export class TuiUpdateNotice implements Component {
       [
         ` ${chalk.hex(colors.muted)("Run '")}${chalk.bold.hex(colors.signal)(
           '/update',
-        )}${chalk.hex(colors.muted)(`' to install MCode ${this.availableVersion}`)}`,
+        )}${chalk.hex(colors.muted)(`' to install Bari ${this.availableVersion}`)}`,
         ` ${chalk.hex(colors.muted)('Run ')}${chalk.bold.hex(colors.signal)(
           '/update',
         )}${chalk.hex(colors.muted)(` to install ${this.availableVersion}`)}`,

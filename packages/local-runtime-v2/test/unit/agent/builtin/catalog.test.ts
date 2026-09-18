@@ -858,7 +858,7 @@ describe("BuiltinAgentCatalog session surfaces", () => {
     expect(codingZh.persona).toBe(coding.persona);
     expect(codingZh.corePrompt).toBe(coding.corePrompt);
     expect(cli.corePrompt).toContain(
-      "user's active MiniMax Code terminal conversation",
+      "user's active Bari terminal conversation",
     );
     expect(coding.corePrompt).toContain("this agent's root session");
     expect(cli.corePrompt).toContain("# Core Judgment");
@@ -1116,7 +1116,7 @@ describe("BuiltinAgentCatalog TUI prompt profile", () => {
       const enabled = await catalog.render(input);
       const child = await catalog.render({ ...input, surface: "task-child" });
       expect(enabled.corePrompt).toContain(
-        "You are a coding agent running in the MiniMax Code terminal",
+        "You are a coding agent running in the Bari terminal",
       );
       expect(enabled.corePrompt).toContain("markdown in a terminal");
       expect(enabled.corePrompt).toContain("## Deliverable Files");
@@ -1218,7 +1218,7 @@ describe("BuiltinAgentCatalog persona assets", () => {
       "Report results faithfully: say what succeeded, what failed, what was skipped, and what remains unverified.",
     );
     expect(persona).toContain("display_name: Mavis");
-    expect(persona).toContain("MiniMax Code");
+    expect(persona).toContain("Bari");
     expect(persona).not.toContain("You are Mavis");
     expect(persona).not.toContain("Core Judgment");
     expect(persona).not.toContain("customer service");
@@ -1417,7 +1417,7 @@ describe("BuiltinAgentCatalog prompt modes", () => {
       rendered.push(enabled);
     }
     expect(rendered[0]?.corePrompt).toContain(
-      "You are a coding agent running in the MiniMax Code terminal",
+      "You are a coding agent running in the Bari terminal",
     );
     expect(rendered[1]?.corePrompt).toContain(
       "You help users with software engineering tasks.",

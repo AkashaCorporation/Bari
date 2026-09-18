@@ -23,7 +23,7 @@ Dependencies (all `pip3 install --user`):
   - Pillow
 
 Local runtime must be running with authenticated native Matrix tools; the script
-reads __MAVIS_RUNTIME_PORT first, then the active MiniMax Code data directory's daemon.port file
+reads __MAVIS_RUNTIME_PORT first, then the active Bari data directory's daemon.port file
 name (fallback 5321).
 """
 
@@ -131,7 +131,7 @@ def _runtime_call_matrix_tool(tool: str, args: dict) -> dict:
     except urllib.error.URLError as e:
         die(
             f"Cannot connect to local runtime at port {_runtime_port()}: {e.reason}. "
-            f"Restart the MiniMax Code app, or set __MAVIS_RUNTIME_PORT to the runtime port."
+            f"Restart the Bari app, or set __MAVIS_RUNTIME_PORT to the runtime port."
         )
 
 

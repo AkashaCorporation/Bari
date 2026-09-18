@@ -49,9 +49,9 @@ const VIDEO_PREVIEW_MIME_TYPES = new Map<string, string>([
   ['.ogv', 'video/ogg'],
   ['.webm', 'video/webm'],
 ]);
-const RC_REQUEST_SOURCE_HEADER = 'X-MCode-Request-Source';
+const RC_REQUEST_SOURCE_HEADER = 'X-Bari-Request-Source';
 const RC_REQUEST_SOURCE_VALUE = 'remote-control';
-const RC_FILE_CONTENT_MAX_BYTES_HEADER = 'X-MCode-Remote-Control-File-Content-Max-Bytes';
+const RC_FILE_CONTENT_MAX_BYTES_HEADER = 'X-Bari-Remote-Control-File-Content-Max-Bytes';
 const DEFAULT_RC_FILE_CONTENT_MAX_BYTES = 10 * 1024 * 1024;
 const TEXT_EXTENSIONS = new Set([
   '.css',
@@ -371,7 +371,7 @@ async function routeFileApi(
         'Content-Type': thumbnail.mimeType,
         'Content-Length': String(thumbnail.bytes.byteLength),
         'Cache-Control': 'private, no-store',
-        'X-MCode-Thumbnail-Cache': thumbnail.cache,
+        'X-Bari-Thumbnail-Cache': thumbnail.cache,
       },
     });
   }

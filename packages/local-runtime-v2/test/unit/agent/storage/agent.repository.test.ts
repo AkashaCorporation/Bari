@@ -1030,8 +1030,8 @@ function registerBuiltinCanonicalPublicationTests(): void {
       });
       expect(profile.corePrompt).toContain(
         promptMode === "tui"
-          ? "You are a coding agent running in the MiniMax Code terminal"
-          : "You run inside MiniMax Code",
+          ? "You are a coding agent running in the Bari terminal"
+          : "You run inside Bari",
       );
       expect(profile.corePrompt).toContain("# Harness");
       expect(profile.corePrompt.includes("## Media Output")).toBe(
@@ -1054,7 +1054,7 @@ function registerBuiltinCanonicalPublicationTests(): void {
       expect(profile.corePrompt).toContain("# Memory");
       expect(frozen.corePrompt).not.toContain("# Memory");
       expect(frozen.corePrompt).not.toContain(
-        "user's active MiniMax Code terminal conversation",
+        "user's active Bari terminal conversation",
       );
       expect(frozen.corePrompt).not.toContain("this agent's root session");
       expect(frozen.surfacePrompt).toContain("hidden TUI child Agent");

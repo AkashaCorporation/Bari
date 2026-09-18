@@ -161,7 +161,7 @@ export async function executeTuiAcpCommand(options: {
   if (!selected) {
     throw acp.RequestError.invalidParams(
       undefined,
-      `MiniMax Code Runtime rejected model selection ${formatModelSelection(selection)}.`,
+      `Bari Runtime rejected model selection ${formatModelSelection(selection)}.`,
     );
   }
   return { handled: true, output: `Model selected: ${formatModelSelection(selection)}` };

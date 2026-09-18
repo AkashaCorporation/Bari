@@ -1,4 +1,4 @@
-# MiniMax Code workflows reference
+# Bari workflows reference
 
 Use this reference for Coding/Work modes, workspace, tasks/history, conversation collaboration, code review, permissions, Browser, Files/Changes/Terminal panels, shortcuts, Goal, schedules, Remote Control, and IM.
 
@@ -8,7 +8,7 @@ Treat a workflow as the combination of product surface, workspace/project contex
 
 ## Official source discovery
 
-Use only the current region's MiniMax Code index:
+Use only the current region's Bari index:
 
 - `region: cn` → `https://agent.minimaxi.com/docs/llms.txt`
 - `region: en` → `https://agent.minimax.io/docs/llms.txt`

@@ -1,6 +1,6 @@
 # A real coding task
 
-![Real MiniMax Code terminal replay: request, failing tests, a code fix, and passing tests](assets/tui-demo.gif)
+![Real Bari terminal replay: request, failing tests, a code fix, and passing tests](assets/tui-demo.gif)
 
 [Play or download the MP4](assets/tui-demo.mp4) · [View the full-size still](assets/tui-demo.png) · [Example source](../examples/clamp)
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { createExecResult, isExecResult } from '../../src/headless/contract.js';
 
-describe('mcode exec result contract', () => {
+describe('bari exec result contract', () => {
   it('emits the single schemaVersion=1 contract with parsed structured output', () => {
     const result = createExecResult(
       {

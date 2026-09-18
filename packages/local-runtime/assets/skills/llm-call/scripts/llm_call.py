@@ -2,7 +2,7 @@
 """
 Multi-protocol LLM caller.
 
-Reads provider config from the active MiniMax Code data directory and calls LLM APIs using the
+Reads provider config from the active Bari data directory and calls LLM APIs using the
 correct protocol (Messages, OpenAI Chat Completions, or Gemini
 generateContent) based on the provider's `npm` field.
 
@@ -367,7 +367,7 @@ class LLMCaller:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Call LLM APIs using config from the active MiniMax Code data directory",
+        description="Call LLM APIs using config from the active Bari data directory",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

@@ -1,19 +1,19 @@
-# MCode TUI Engine local changes
+# Bari TUI Engine local changes
 
 This ledger starts at the exact Pi source baseline recorded in `BASELINE.json`. It records every
-MCode-owned difference from that baseline.
+Bari-owned difference from that baseline.
 
 | ID   | Origin                 | Scope                                                                   | Change                                                                                                                                                                                          | Behavior impact                                                                                                                                   | Evidence                                                                                   |
 | ---- | ---------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | L001 | Initial import         | all upstream TypeScript files                                           | Rewrite relative `.ts` module specifiers to `.js` for NodeNext.                                                                                                                                 | none                                                                                                                                              | `BASELINE.json`; baseline verifier                                                         |
-| L002 | Initial import         | source ownership                                                        | Store the adapted Pi snapshot in MCode `engine/`.                                                                                                                                               | none                                                                                                                                              | source inventory                                                                           |
+| L002 | Initial import         | source ownership                                                        | Store the adapted Pi snapshot in Bari `engine/`.                                                                                                                                               | none                                                                                                                                              | source inventory                                                                           |
 | L003 | Initial import         | product import boundary                                                 | Add `public.ts` as the only product-facing engine import entry.                                                                                                                                 | none                                                                                                                                              | source boundary check                                                                      |
 | L004 | Initial import         | provenance                                                              | Record upstream identity, per-file hashes and the adapted tree digest.                                                                                                                          | none                                                                                                                                              | baseline verifier                                                                          |
-| L005 | Initial import         | TypeScript contract                                                     | Apply only the type-level changes required by the shared ES2022 strict MCode build.                                                                                                             | none intended                                                                                                                                     | unified typecheck/build                                                                    |
+| L005 | Initial import         | TypeScript contract                                                     | Apply only the type-level changes required by the shared ES2022 strict Bari build.                                                                                                             | none intended                                                                                                                                     | unified typecheck/build                                                                    |
 | L006 | Runtime integration    | `public.ts` utility surface                                             | Export current Pi key, text and layout utilities through the product-facing barrel so product adapters can reuse Engine behavior without importing implementation modules.                      | Product input, text layout and regular feature viewport allocation use the canonical Pi Engine implementation.                                    | key/width/Markdown/editor corpus; regular feature renderer tests                           |
-| L007 | Product rendering      | `components/markdown.ts` product hooks                                  | Add compact plain fenced-code chrome and terminal `<br>` semantics so MCode can preserve its visual contract without a second Markdown implementation.                                          | MCode keeps its compact code presentation while inheriting Pi Markdown, LaTeX and terminal-image behavior.                                        | Engine Markdown corpus; code-block and Transcript focused tests                            |
-| L008 | Product input          | `components/input.ts` and `components/select-list.ts` product hooks     | Add configurable prompt/paste transform/mask plus product filtering and bounded wrapped descriptions so the superseded MCode copies can be deleted.                                             | Product search, secret input and decision lists use the Pi Engine implementations without losing MCode presentation behavior.                     | Input, SelectList, decision-picker and interaction focused tests                           |
-| L009 | Editor integration     | `components/editor.ts` generic adapter hooks and `index.ts` type export | Add serializable state capture/restore, range replacement, paste interception, autocomplete telemetry and undo extension state so the duplicate MCode editing state machine can be deleted.     | All generic editing behavior now executes in Pi Editor; the product wrapper owns only Draft persistence and attachment identity.                  | Complete Pi Editor corpus; Engine delta test; product Draft/attachment/failed-submit tests |
+| L007 | Product rendering      | `components/markdown.ts` product hooks                                  | Add compact plain fenced-code chrome and terminal `<br>` semantics so Bari can preserve its visual contract without a second Markdown implementation.                                          | Bari keeps its compact code presentation while inheriting Pi Markdown, LaTeX and terminal-image behavior.                                        | Engine Markdown corpus; code-block and Transcript focused tests                            |
+| L008 | Product input          | `components/input.ts` and `components/select-list.ts` product hooks     | Add configurable prompt/paste transform/mask plus product filtering and bounded wrapped descriptions so the superseded Bari copies can be deleted.                                             | Product search, secret input and decision lists use the Pi Engine implementations without losing Bari presentation behavior.                     | Input, SelectList, decision-picker and interaction focused tests                           |
+| L009 | Editor integration     | `components/editor.ts` generic adapter hooks and `index.ts` type export | Add serializable state capture/restore, range replacement, paste interception, autocomplete telemetry and undo extension state so the duplicate Bari editing state machine can be deleted.     | All generic editing behavior now executes in Pi Editor; the product wrapper owns only Draft persistence and attachment identity.                  | Complete Pi Editor corpus; Engine delta test; product Draft/attachment/failed-submit tests |
 | L011 | Fullscreen interaction | `layout.ts`, `tui-alt-screen.ts` and `public.ts` mouse dispatch         | Route SGR press, drag and release events through the rendered Pi layout before Alt text selection, using layout-local coordinates and deepest-target precedence.                                | Fullscreen product interactions such as Plan Review remain mouse-operable without restoring the deleted product-owned selection or renderer path. | Alt renderer integration; Chat layout; Inline panel; Plan Review mouse tests               |
 | L013 | Pi maintenance         | `components/text.ts` and `components/markdown.ts`                       | Adopt Pi post-0.84.2 fixes for adaptive narrow-width padding and wrapped table style restoration.                                                                                               | Narrow panes stay within terminal width, and wrapped links do not leak styles into table borders or adjacent cells.                               | Engine local-delta narrow-width regression; Pi Markdown corpus                             |
 | L014 | Native packaging       | `native-module-path.ts`, `native-modifiers.ts` and `terminal.ts`        | Resolve native helpers from the installed `@minimax/code` package root before standalone archive fallbacks.                                                                                     | Packaged Apple Terminal and Windows modifier/VT helpers load from the actual release layout.                                                      | Native candidate unit contract; package layout inspection                                  |
@@ -47,7 +47,7 @@ fork contract and must not be reintroduced as compatibility infrastructure.
 
 Future entries must include:
 
-- the concrete MCode product contract that Pi cannot satisfy;
+- the concrete Bari product contract that Pi cannot satisfy;
 - the smallest source difference needed;
 - user-visible behavior impact;
 - focused evidence;
@@ -55,15 +55,15 @@ Future entries must include:
 
 Pi-specific environment variables, symbol names and package-layout assumptions remain unchanged from
 the imported Pi baseline. Product integration should pass supported constructor options first. A Pi
-source change is allowed only after a real MCode integration problem is demonstrated.
+source change is allowed only after a real Bari integration problem is demonstrated.
 
 `L011` can be removed once the selected Pi baseline exposes equivalent layout-targeted component
-mouse dispatch and MCode has migrated to that upstream contract.
+mouse dispatch and Bari has migrated to that upstream contract.
 
 `L016` can be removed once the selected Pi baseline contains equivalent child stdout/stderr error
 containment for fd-backed autocomplete.
 
-`L017` can be removed once the selected Pi baseline contains the bounded terminal writer and MCode
+`L017` can be removed once the selected Pi baseline contains the bounded terminal writer and Bari
 no longer needs the NodeNext-adapted copy of that implementation.
 
 `L018` can be removed once the selected Pi baseline orders direct and recursive autocomplete matches
@@ -73,10 +73,10 @@ with the same depth, length and path tie-breakers.
 selection joiners.
 
 `L020` can be removed once the selected Pi baseline exposes the same fullscreen selection-copy
-options and helpers used by MCode hosts.
+options and helpers used by Bari hosts.
 
 `L021` can be removed once the selected Pi baseline exposes equivalent host and environment
-capability overrides and MCode no longer needs a product-facing Engine export for them.
+capability overrides and Bari no longer needs a product-facing Engine export for them.
 
 `L022` supports a per-frame `render(width, placeholder)` override, falling back to the constructor option when omitted. `/btw` supplies display copy only; it no longer slices and replaces rendered editor lines, avoiding truncation of the zero-width cursor marker after padding. Drafts, history, and submitted text are unchanged. Evidence: regular / fullscreen cursor regression in `tui-composer-cursor.test.ts` and the per-frame placeholder contract in `editor-behavior.test.ts`.
 
@@ -90,7 +90,7 @@ Remove `L024` when the selected Pi baseline natively matches legacy-terminal `Ct
 - Minimal difference: optional `handlesViewportKeys` on Component; TuiAltScreen checks the focused component before keyboard viewport navigation. Components without it retain existing behavior; mouse and global search are unchanged.
 - User impact: paging scrolls fixed-frame panel content instead of being swallowed by an empty outer viewport.
 - Evidence: `tui-chat-layout.test.ts` sends actual PgDn / PgUp sequences through VirtualTerminal; `tui-alt-screen.test.ts` verifies default scrolling; built CLI regular / fullscreen PTY checks at 40×12 change changelog lines from 1–5 to 5–9.
-- Removal condition: the selected Pi baseline provides equivalent focused-component keyboard-navigation ownership and MCode migrates to it.
+- Removal condition: the selected Pi baseline provides equivalent focused-component keyboard-navigation ownership and Bari migrates to it.
 
 ## L032: Continuous command-argument completion
 

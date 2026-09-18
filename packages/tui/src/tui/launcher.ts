@@ -62,7 +62,7 @@ import { schedulePendingMcodePrefixUpdate } from '../update/prefix-update.js';
 import { MCODE_TUI_RESULT_PATH_ENV } from './automation/result-writer.js';
 import { startTuiStartupStatus, type TuiStartupStatus } from './startup-status.js';
 
-const MINIMAX_CODE_EXIT_SLOGAN = 'Intelligence with everyone, bye~';
+const MINIMAX_CODE_EXIT_SLOGAN = 'Bari, bye~';
 export interface LaunchTuiOptions {
   version: string;
   initialPrompt?: string;
@@ -151,7 +151,7 @@ export async function launchTui(
   dependencies: LaunchTuiDependencies = {},
 ): Promise<void> {
   if (!options.terminal && (!process.stdin.isTTY || !process.stdout.isTTY)) {
-    throw new Error('Minimax Code interactive mode requires a TTY.');
+    throw new Error('Bari interactive mode requires a TTY.');
   }
 
   const homeDirectory = options.homeDir ?? homedir();
@@ -462,7 +462,7 @@ export async function launchTui(
         report: (error) => {
           try {
             process.stderr.write(
-              `Minimax Code TUI stopped unexpectedly: ${tuiErrorDiagnostic(error)}. Restart MCode; if it keeps happening, report it through an available support channel.\n`,
+              `Bari TUI stopped unexpectedly: ${tuiErrorDiagnostic(error)}. Restart Bari; if it keeps happening, report it through an available support channel.\n`,
             );
           } catch {
             // The terminal may already be disconnected.
@@ -844,7 +844,7 @@ export function resolveRestartArguments(
   if (!nodeExecutable) return [...environmentArgs, ...resumeArgs, ...promptArgs];
   const entryFile = argv[1];
   if (!entryFile || !isExistingFile(entryFile)) {
-    throw new Error('Unable to restart MCode because its Node.js entry file is unavailable.');
+    throw new Error('Unable to restart Bari because its Node.js entry file is unavailable.');
   }
   return [entryFile, ...environmentArgs, ...resumeArgs, ...promptArgs];
 }
@@ -877,7 +877,7 @@ export function formatTuiExitMessage(sessionId?: string): string {
 export function formatTuiSessionHint(sessionId: string): string | undefined {
   const normalized = sessionId.trim();
   if (!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/u.test(normalized)) return undefined;
-  return `\nContinue this session with:\n  mcode --session ${normalized}\n`;
+  return `\nContinue this session with:\n  bari --session ${normalized}\n`;
 }
 
 async function prepareInitialTuiState(

@@ -1,10 +1,10 @@
 # TUI usage telemetry
 
-MCode's TUI usage telemetry is disabled by default. No business telemetry client is created and no business telemetry request is sent until the user opts in.
+Bari's TUI usage telemetry is disabled by default. No business telemetry client is created and no business telemetry request is sent until the user opts in.
 
 ## Turn it on or off
 
-Add this to the active profile's `config.yaml`, normally `~/.minimax-code/config.yaml`, then restart MCode:
+Add this to the active profile's `config.yaml`, normally `~/.minimax-code/config.yaml`, then restart Bari:
 
 ```yaml
 telemetry:
@@ -14,11 +14,11 @@ telemetry:
 Remove the setting or set it to `false` to turn reporting off. Either environment variable below also turns it off and takes precedence over the config file:
 
 ```sh
-MCODE_DISABLE_TELEMETRY=1 mcode
-DO_NOT_TRACK=1 mcode
+MCODE_DISABLE_TELEMETRY=1 bari
+DO_NOT_TRACK=1 bari
 ```
 
-Inspect the effective setting with `mcode telemetry status`. Run `mcode telemetry preview` to see a representative decoded request. Preview does not send a request. When telemetry is disabled, preview shows `request: null`.
+Inspect the effective setting with `bari telemetry status`. Run `bari telemetry preview` to see a representative decoded request. Preview does not send a request. When telemetry is disabled, preview shows `request: null`.
 
 ## Data sent
 
@@ -37,7 +37,7 @@ The decoded JSON envelope contains:
 | `distinct_id`                    | The same fresh random ID                      |
 | `lib.$lib`                       | `js`                                          |
 | `lib.$lib_method`                | `code`                                        |
-| `lib.$lib_version`               | MCode version                                 |
+| `lib.$lib_version`               | Bari version                                 |
 | `properties`                     | Common and event-specific fields listed below |
 | `type`                           | `track`                                       |
 | `event`                          | Event name from the table below               |
@@ -51,7 +51,7 @@ Every `properties` object includes:
 | `os`          | Node.js platform name, such as `darwin`, `linux`, or `win32` |
 | `region`      | `cn` or `en`                                                 |
 | `build_env`   | `dev`, `test`, `staging`, or `prod`                          |
-| `app_version` | MCode version                                                |
+| `app_version` | Bari version                                                |
 
 Event-specific fields are limited to:
 
@@ -64,9 +64,9 @@ Event-specific fields are limited to:
 - `slash_command_click`: `chat_type`; `command_type` (`skill`, `new_chat`, `summarize`, `plan_mode`, `goal_mode`, `other`).
 - `at_command_click`: `chat_type`; `command_type` (`plugins`, `goal_mode`, `plan_mode`, `file`, `directory`).
 
-MCode does not send account IDs, device IDs, workspace paths or names, session IDs, model names, prompts, responses, filenames, command text, plugin names, or credentials through this channel. The receiver requires an identity-shaped envelope, so the client creates a fresh random event ID for each request. It is never persisted or reused and cannot link two events on its own. MCode does not add an account authorization header to these requests.
+Bari does not send account IDs, device IDs, workspace paths or names, session IDs, model names, prompts, responses, filenames, command text, plugin names, or credentials through this channel. The receiver requires an identity-shaped envelope, so the client creates a fresh random event ID for each request. It is never persisted or reused and cannot link two events on its own. Bari does not add an account authorization header to these requests.
 
-As with any network request, the receiving server can observe transport metadata such as the source IP address. The client does not add that value to the event payload. `mcode telemetry preview` displays the decoded envelope.
+As with any network request, the receiving server can observe transport metadata such as the source IP address. The client does not add that value to the event payload. `bari telemetry preview` displays the decoded envelope.
 
 ## Destinations
 

@@ -2,11 +2,11 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/wordmark-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="docs/assets/wordmark-light.svg">
-    <img src="docs/assets/wordmark-light.svg" alt="MiniMax Code" width="760">
+    <img src="docs/assets/wordmark-light.svg" alt="Bari" width="760">
   </picture>
 </p>
 
-<h1 align="center">MiniMax Code</h1>
+<h1 align="center">Bari</h1>
 <p align="center">A terminal coding agent with MiniMax, your own models, and tools beyond code.</p>
 <p align="center">
   <a href="#快速开始">Get started</a> ·
@@ -23,60 +23,44 @@
 
 在终端里读懂项目、修改代码并运行测试。使用 MiniMax 账号或自己的模型，把搜索、插件和多模态工具接入同一个工作流。
 
-[![MiniMax Code 真实 TUI：修复 clamp、查看代码 diff 并运行测试](docs/assets/tui-demo.png)](docs/demo.md)
+[![Bari 真实 TUI：修复 clamp、查看代码 diff 并运行测试](docs/assets/tui-demo.png)](docs/demo.md)
 
 <p align="center"><a href="docs/demo.md">观看 20 秒真实演示 →</a> · 真实终端输出回放，已压缩等待时间</p>
 
 ## 快速开始
 
-### 1. 安装 MCode
+### 1. 从源码构建 Bari
 
-按操作系统选择官方安装器。安装器会安装最新版 CLI，并在需要时准备兼容的 Node.js，无需 `sudo` 或管理员权限；目前不支持 Alpine / musl Linux。
-
-**macOS / Linux / WSL**
+Bari 目前以源码形式发布。你需要 Git、**Node.js 22.19+（22.x）、24.2+（24.x）、25 或 26**，以及 **pnpm 9.12.0**：
 
 ```bash
-curl -fsSL https://filecdn.minimax.chat/public/install.sh | bash
+git clone https://github.com/AkashaCorporation/Bari.git
+cd Bari
+pnpm install --frozen-lockfile
+pnpm build
+pnpm bari --version
+pnpm bari --help
 ```
 
-**Windows（PowerShell）**
-
-```powershell
-irm https://filecdn.minimax.chat/public/install.ps1 | iex
-```
-
-**npm**：适用于已安装 **Node.js 22.19+（22.x）、24.2+（24.x）、25 或 26** 的环境。
-
-```bash
-npm install -g @minimax-ai/code@latest --registry=https://registry.npmjs.org/ --ignore-scripts=false --include=optional --allow-scripts=@minimax-ai/code,better-sqlite3
-```
-
-该 npm 命令使用公共 registry，包含可选的 SQLite 依赖，并允许执行主包和 SQLite 的安装脚本。固定版本和 Node.js 兼容范围见[安装指南](docs/installation.md)。
-
-重新打开终端后检查安装：
-
-```bash
-mcode --version
-mcode --help
-```
-
-参阅官网的[快速开始](https://agent.minimaxi.com/docs/cli/quick-start)、[功能与配置](https://agent.minimaxi.com/docs/cli/features)和[故障排查](https://agent.minimaxi.com/docs/cli/faq)。
+首次构建需要联网；依赖和经过校验的 `mcode-tools` 均来自公共 npm。pnpm 安装、系统依赖和更新方法见[安装指南](docs/installation.md)。
 
 ### 2. 登录账号或配置 API Key
 
 中国大陆账号运行：
 
 ```bash
-mcode login
+bari login
 ```
 
 Global 账号运行：
 
 ```bash
-mcode login --region global
+bari login --region global
 ```
 
-在浏览器中完成登录，再启动 `mcode`，通过 `/status` 检查账号、通过 `/provider` 选择模型。退出登录使用 `mcode logout`。
+在浏览器中完成登录，再启动 `bari`，通过 `/status` 检查账号、通过 `/provider` 选择模型。退出登录使用 `bari logout`。
+
+Token Plan 需要账号和可用额度。用户数据默认存储在 `~/.minimax-code`。MiniMax 账号、模型与 Token Plan 文档见 [agent.minimax.io/docs](https://agent.minimax.io/docs/cli/quick-start)。
 
 Token Plan 需要账号与可用额度。默认用户数据保存在 `~/.minimax-code`。
 
@@ -86,10 +70,10 @@ Token Plan 需要账号与可用额度。默认用户数据保存在 `~/.minimax
 BYOK 无需先登录 MiniMax。先在当前 shell 中设置 `MCODE_PROVIDER_API_KEY`，再添加提供方；将下方示例地址和模型名替换为实际配置：
 
 ```bash
-mcode provider add --name my-provider --base-url https://example.com/v1 \
+bari provider add --name my-provider --base-url https://example.com/v1 \
   --api-format openai-completions --model my-model \
   --api-key-env MCODE_PROVIDER_API_KEY --use
-mcode
+bari
 ```
 
 支持 `openai-completions`、`openai-responses` 和 `anthropic-messages`。连接测试、单次模型切换及环境变量设置见 [模型示例](docs/examples.md#2-choose-your-own-model)。
@@ -102,31 +86,31 @@ mcode
 
 ```bash
 cd /path/to/your/project
-mcode
+bari
 ```
 
 在 TUI 中描述任务，也可以在启动时直接提交：
 
 ```bash
-mcode "Find a failing test, fix the implementation, and run the relevant tests."
+bari "Find a failing test, fix the implementation, and run the relevant tests."
 ```
 
-使用 `mcode init .` 生成或更新 `AGENTS.md` 项目指导。任务中应说明期望结果、修改边界和验证方式。
+使用 `bari init .` 生成或更新 `AGENTS.md` 项目指导。任务中应说明期望结果、修改边界和验证方式。
 
 | 入口 | 命令 | 适用场景 |
 | --- | --- | --- |
-| 交互式 TUI | `mcode [prompt]` | 探索代码、持续对话、审阅修改与权限确认。 |
-| Headless | `mcode exec [prompt]` | Shell、CI、批处理与评测。 |
-| ACP | `mcode acp` | 支持 Agent Client Protocol 的编辑器与客户端。 |
+| 交互式 TUI | `bari [prompt]` | 探索代码、持续对话、审阅修改与权限确认。 |
+| Headless | `bari exec [prompt]` | Shell、CI、批处理与评测。 |
+| ACP | `bari acp` | 支持 Agent Client Protocol 的编辑器与客户端。 |
 
 ### 继续之前的工作
 
 ```bash
 # 恢复当前工作区最近的会话
-mcode --continue
+bari --continue
 
 # 打开会话选择器
-mcode --session
+bari --session
 ```
 
 在 TUI 中输入 `/sessions` 查找历史会话，输入 `/help` 查看完整命令与快捷键。
@@ -163,43 +147,39 @@ mcode --session
 
 ## 从源码构建
 
-开发 MCode 或运行本仓库源码需要 Git、Node.js **22.19+（22 系列）、24.2+（24 系列）、25 或 26**，以及 **pnpm 9.12.0**。
+开发 Bari 或运行本仓库源码需要 Git、Node.js **22.19+（22 系列）、24.2+（24 系列）、25 或 26**，以及 **pnpm 9.12.0**。
 
 ```bash
-git clone https://github.com/MiniMax-AI/minimax-code.git
-cd minimax-code
+git clone https://github.com/AkashaCorporation/Bari.git
+cd Bari
 pnpm install --frozen-lockfile
 pnpm build
-pnpm mcode
+pnpm bari
 ```
 
 首次构建需要联网；依赖和经过校验的 `mcode-tools` 均来自公共 npm。pnpm 安装、系统依赖和更新方法见[源码安装指南](docs/installation.md)。
 
-从源码目录运行时，将上方示例中的 `mcode` 替换为 `pnpm mcode`。要在自己的项目中工作，先切换到项目目录，再运行构建产物：
+从源码目录运行时，将上方示例中的 `bari` 替换为 `pnpm bari`。要在自己的项目中工作，先切换到项目目录，再运行构建产物：
 
 ```bash
-node /absolute/path/to/minimax-code/dist/cli.js
+node /absolute/path/to/Bari/dist/cli.js
 ```
 
-本仓库目标为 **0.4.12 源码预览**。安装已发布的包与构建本仓库是两条独立路径，版本一致不代表构建来源完全相同，详见[版本与证据基线](docs/open-source-status.md#version-and-evidence-baseline)。
+本仓库目标为 **0.4.12 上游源码基线**。安装上游已发布的包与构建本仓库是两条独立路径，版本一致不代表构建来源完全相同，详见[版本与证据基线](docs/open-source-status.md#version-and-evidence-baseline)。
 
 ## 文档与贡献
 
 - [安装与更新](docs/installation.md) · [使用示例](docs/examples.md) · [TUI 状态栏](packages/tui/docs/status-line-config.md)
-- [贡献指南](CONTRIBUTING.md) · [报告 Bug / 提出建议](https://github.com/MiniMax-AI/minimax-code/issues/new/choose) · [报告安全问题](SECURITY.md)
+- [贡献指南](CONTRIBUTING.md) · [报告 Bug / 提出建议](https://github.com/AkashaCorporation/Bari/issues/new/choose) · [报告安全问题](SECURITY.md)
 - [全部文档](docs/README.md)：架构、能力对照、验证记录、源码同步和发布流程。
 
 项目文档以英文为主，本页为首页的简体中文译文。
 
-目前仅接受仓库协作者提交代码和文档 Pull Request。如果你不是协作者，但有想法或方案，欢迎先通过 [Issue](https://github.com/MiniMax-AI/minimax-code/issues/new/choose) 讨论。请在报告中移除密钥、账号信息和私人项目内容。
+目前仅接受仓库协作者提交代码和文档 Pull Request。如果你不是协作者，但有想法或方案，欢迎先通过 [Issue](https://github.com/AkashaCorporation/Bari/issues/new/choose) 讨论。请在报告中移除密钥、账号信息和私人项目内容。
 
-## 桌面版与问题反馈
+## 问题反馈
 
-<img src="https://filecdn.minimax.chat/public/c3ebbd2e-f55b-48d7-adff-030abb63e06d.png" alt="MiniMax Code 桌面版" width="100%" />
-
-[下载 macOS 或 Windows 桌面版](https://agent.minimaxi.com/download) · [报告问题或提问](https://github.com/MiniMax-AI/minimax-code/issues/new/choose)
-
-本仓库也承接 MiniMax Code 桌面版的问题反馈。公开源码范围为终端 TUI、Headless CLI 和 ACP，不包含桌面应用源码。提交 Issue 时请选择对应产品。桌面版问题请注明应用版本、操作系统，以及「设置 → 通用 → 上传日志」生成的日志上传 ID（如可用）；CLI 问题请注明 `mcode --version`、运行入口与最小复现。报告中请移除凭据和私人项目内容。
+本仓库用于提交 Bari 的问题。公开源码范围为终端 TUI、Headless CLI 和 ACP。CLI 问题请注明 `bari --version`、运行入口与最小复现。报告中请移除凭据和私人项目内容。[报告问题或提问](https://github.com/AkashaCorporation/Bari/issues/new/choose)。
 
 ## 许可
 

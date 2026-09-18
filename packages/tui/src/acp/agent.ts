@@ -316,7 +316,7 @@ export function createTuiAcpAgent(options: CreateTuiAcpAgentOptions): acp.AgentA
 
   app.onConnect((connection) => {
     if (hasConnected) {
-      connection.close(new Error('MCode ACP supports exactly one Client connection per process.'));
+      connection.close(new Error('Bari ACP supports exactly one Client connection per process.'));
       return;
     }
     hasConnected = true;
@@ -422,7 +422,7 @@ export function createTuiAcpAgent(options: CreateTuiAcpAgentOptions): acp.AgentA
               {
                 type: 'terminal' as const,
                 id: AUTH_METHOD_ID,
-                name: 'Sign in to MiniMax Code',
+                name: 'Sign in to Bari',
                 args: ['login'],
               },
             ],
@@ -430,7 +430,7 @@ export function createTuiAcpAgent(options: CreateTuiAcpAgentOptions): acp.AgentA
         : {}),
       agentInfo: {
         name: 'minimax-code',
-        title: 'MiniMax Code',
+        title: 'Bari',
         version: options.version,
       },
       _meta: {
@@ -921,7 +921,7 @@ export function createTuiAcpAgent(options: CreateTuiAcpAgentOptions): acp.AgentA
       if (typeof params.value !== 'string') {
         throw acp.RequestError.invalidParams(
           undefined,
-          'MiniMax Code ACP configuration options are select controls.',
+          'Bari ACP configuration options are select controls.',
         );
       }
 
@@ -1169,8 +1169,8 @@ export function createTuiAcpAgent(options: CreateTuiAcpAgentOptions): acp.AgentA
       throw acp.RequestError.internalError(
         undefined,
         result.error
-          ? `MiniMax Code Runtime failed: ${result.error}`
-          : 'MiniMax Code Runtime failed.',
+          ? `Bari Runtime failed: ${result.error}`
+          : 'Bari Runtime failed.',
       );
     } finally {
       context.signal.removeEventListener('abort', cancel);
@@ -1655,7 +1655,7 @@ function assertNoAdditionalDirectories(directories: readonly string[] | undefine
   if (!directories?.length) return;
   throw acp.RequestError.invalidParams(
     undefined,
-    'Additional directories are not supported by MiniMax Code ACP.',
+    'Additional directories are not supported by Bari ACP.',
   );
 }
 
@@ -2032,8 +2032,8 @@ async function followQuestionnaireContinuations(options: {
         throw acp.RequestError.internalError(
           undefined,
           transition.message
-            ? `MiniMax Code Runtime continuation failed: ${transition.message}`
-            : 'MiniMax Code Runtime continuation failed.',
+            ? `Bari Runtime continuation failed: ${transition.message}`
+            : 'Bari Runtime continuation failed.',
         );
       }
 
@@ -2058,7 +2058,7 @@ async function followQuestionnaireContinuations(options: {
     if (error instanceof acp.RequestError) throw error;
     throw acp.RequestError.internalError(
       undefined,
-      `MiniMax Code Runtime continuation failed: ${error instanceof Error ? error.message : String(error)}`,
+      `Bari Runtime continuation failed: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
 }
@@ -2089,7 +2089,7 @@ async function assertAuthenticated(runtime: TuiAcpRuntime): Promise<void> {
     await requireTuiAgentAccess(runtime);
   } catch (error) {
     if (error instanceof TuiLoginRequiredError) {
-      throw acp.RequestError.authRequired(undefined, 'Run `mcode login` and try again.');
+      throw acp.RequestError.authRequired(undefined, 'Run `bari login` and try again.');
     }
     throw error;
   }

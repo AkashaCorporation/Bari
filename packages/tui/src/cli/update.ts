@@ -39,14 +39,14 @@ export async function runMcodeUpdate(
   if (plan.kind === 'current') {
     write(
       plan.source === 'managed-installer'
-        ? `MCode ${plan.currentVersion} is current on ${plan.channel}.\n`
-        : `MCode ${plan.currentVersion} is current on @${plan.packageTag}.\n`,
+        ? `Bari ${plan.currentVersion} is current on ${plan.channel}.\n`
+        : `Bari ${plan.currentVersion} is current on @${plan.packageTag}.\n`,
     );
     return;
   }
   if (plan.kind === 'ahead') {
     write(
-      `MCode ${plan.currentVersion} is newer than ${
+      `Bari ${plan.currentVersion} is newer than ${
         plan.source === 'managed-installer' ? plan.channel : `@${plan.packageTag}`
       } ${plan.latestVersion}; no update was applied.\n`,
     );
@@ -54,7 +54,7 @@ export async function runMcodeUpdate(
   }
   if (plan.kind === 'manual') {
     write(
-      'MCode could not identify the owner of this installation. ' +
+      'Bari could not identify the owner of this installation. ' +
         `Update manually with:\n  ${plan.command}\n`,
     );
     return;
@@ -153,7 +153,7 @@ class McodeUpdateCliProgress {
     const outputActivity = this.latestOutputAtMs
       ? `; last output ${Math.max(0, Math.floor((Date.now() - this.latestOutputAtMs) / 1000))}s ago`
       : '; waiting for output';
-    const phase = this.phase ? phaseLabel(this.phase) : 'Updating MCode';
+    const phase = this.phase ? phaseLabel(this.phase) : 'Updating Bari';
     this.writePersistent(
       `${this.processLabel} is still running (${elapsedSeconds}s elapsed${outputActivity}) · ${phase}.`,
     );
@@ -202,12 +202,12 @@ function renderAvailableUpdate(
 ): string {
   if (plan.kind === 'available') {
     return (
-      `MCode ${plan.latestVersion} is available on ${plan.channel} ` +
+      `Bari ${plan.latestVersion} is available on ${plan.channel} ` +
       `(current ${plan.currentVersion}).\n`
     );
   }
   return (
-    `MCode ${plan.latestVersion} is available on @${plan.packageTag} ` +
+    `Bari ${plan.latestVersion} is available on @${plan.packageTag} ` +
     `(current ${plan.currentVersion}, installed through ${plan.source.replace('-global', '')}).\n` +
     `Command: ${plan.command.display}\n`
   );
@@ -218,7 +218,7 @@ function renderNonInteractiveInstruction(
 ): string {
   return plan.kind === 'package-manager'
     ? `No interactive confirmation is available. Run: ${plan.command.display}`
-    : 'No interactive confirmation is available. Run `mcode update` from a terminal to install it.';
+    : 'No interactive confirmation is available. Run `bari update` from a terminal to install it.';
 }
 
 async function confirmInTerminal(message: string): Promise<boolean> {

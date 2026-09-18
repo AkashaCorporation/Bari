@@ -1,6 +1,6 @@
 # Examples
 
-Build the project using the [installation guide](installation.md). Run the `pnpm mcode` commands below from the source root. For interactive tasks, open the target project directory and launch the built CLI by absolute path.
+Build the project using the [installation guide](installation.md). Run the `pnpm bari` commands below from the source root. For interactive tasks, open the target project directory and launch the built CLI by absolute path.
 
 ## 1. Edit code and run tests
 
@@ -42,12 +42,12 @@ $env:MCODE_PROVIDER_API_KEY = [System.Net.NetworkCredential]::new('', $secureKey
 Add, inspect, and test the provider:
 
 ```bash
-pnpm mcode provider add --name my-provider --base-url https://example.com/v1 \
+pnpm bari provider add --name my-provider --base-url https://example.com/v1 \
   --api-format openai-completions --model my-model \
   --api-key-env MCODE_PROVIDER_API_KEY --use
-pnpm mcode provider list
-pnpm mcode provider test <provider-id> --model <model-id>
-pnpm mcode exec "Explain this project's test entry points" --model <provider-id>/<model-id>
+pnpm bari provider list
+pnpm bari provider test <provider-id> --model <model-id>
+pnpm bari exec "Explain this project's test entry points" --model <provider-id>/<model-id>
 ```
 
 Replace the example URL, model name, and IDs with your configuration and the IDs returned by the list command. `--use` sets the default model; `exec --model` overrides only the current run. Backslash line continuations are for POSIX shells; use a single line in PowerShell.
@@ -65,7 +65,7 @@ Acceptance observed an actual `web_search` call and returned results; see the [v
 Paste your own image into the TUI, or attach a file explicitly:
 
 ```bash
-pnpm mcode exec "Describe this UI screenshot's layout and suggest three improvements" \
+pnpm bari exec "Describe this UI screenshot's layout and suggest three improvements" \
   --file /absolute/path/to/your-screenshot.png
 ```
 

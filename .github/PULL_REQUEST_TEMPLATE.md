@@ -1,4 +1,4 @@
-> Thanks for your interest in contributing. For now, code and documentation pull requests are accepted only from repository collaborators. If you are not a collaborator, please [open an issue](https://github.com/MiniMax-AI/minimax-code/issues/new/choose) so we can discuss your idea.
+> Thanks for your interest in contributing. For now, code and documentation pull requests are accepted only from repository collaborators. If you are not a collaborator, please [open an issue](https://github.com/AkashaCorporation/Bari/issues/new/choose) so we can discuss your idea.
 
 ## Change
 

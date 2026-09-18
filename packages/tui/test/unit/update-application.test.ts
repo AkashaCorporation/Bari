@@ -57,7 +57,7 @@ describe('McodeUpdateApplication', () => {
     const onPhase = vi.fn();
     await expect(application.apply(plan, { signal, onPhase })).resolves.toMatchObject({
       applied: true,
-      message: 'MCode 1.2.4 is installed. Restart running MCode sessions to use it.',
+      message: 'Bari 1.2.4 is installed. Restart running Bari sessions to use it.',
     });
     expect(apply).toHaveBeenCalledWith({
       channel: 'stable',
@@ -107,7 +107,7 @@ describe('McodeUpdateApplication', () => {
     const signal = new AbortController().signal;
     await expect(application.apply(plan, { onOutput, onPhase, signal })).resolves.toMatchObject({
       applied: true,
-      message: 'MCode 1.2.4 was installed through pnpm. Restart MCode to use the installed version.',
+      message: 'Bari 1.2.4 was installed through pnpm. Restart Bari to use the installed version.',
     });
     expect(createManagedService).not.toHaveBeenCalled();
     expect(resolveLatestPackageVersion).toHaveBeenCalledWith('test');
@@ -369,12 +369,12 @@ describe('McodeUpdateApplication', () => {
     const plan = await application.inspect();
 
     await expect(application.apply(plan)).rejects.toThrow(
-      'MCode update installed 1.2.3; expected 1.2.4.',
+      'Bari update installed 1.2.3; expected 1.2.4.',
     );
   });
 });
 
-describe('MCode update install-source commands', () => {
+describe('Bari update install-source commands', () => {
   it.each([
     ['/opt/homebrew/lib/node_modules/@minimax-ai/code', 'npm-global'],
     ['C:\\Users\\demo\\AppData\\Roaming\\npm\\node_modules\\@minimax\\code', 'npm-global'],
@@ -504,7 +504,7 @@ describe('MCode update install-source commands', () => {
     ]);
     expect(() =>
       resolveMcodeNpmDistribution('@minimax-ai/code', 'https://registry.example.com/'),
-    ).toThrow('Unsupported MCode npm registry');
+    ).toThrow('Unsupported Bari npm registry');
   });
 
   it('uses the active package manifest entry when argv points at the npm bin shim', async () => {
@@ -545,7 +545,7 @@ describe('MCode update install-source commands', () => {
       applied: true,
       restartRequired: false,
       message:
-        'MCode 1.2.4 is installed. New MCode sessions will use it; running sessions can continue normally.',
+        'Bari 1.2.4 is installed. New Bari sessions will use it; running sessions can continue normally.',
     });
     expect(activateVersionedPrefix).toHaveBeenCalledWith({
       stagingPrefix: '/opt/minimax/releases/.staging-1.2.4',
@@ -597,7 +597,7 @@ describe('MCode update install-source commands', () => {
       );
 
       await expect(application.inspect()).rejects.toThrow(
-        `MCode pending update metadata is invalid at ${pendingFile}.`,
+        `Bari pending update metadata is invalid at ${pendingFile}.`,
       );
     } finally {
       rmSync(prefix, { recursive: true, force: true });
@@ -657,7 +657,7 @@ describe('MCode update install-source commands', () => {
       );
 
       await expect(application.inspect()).rejects.toThrow(
-        `MCode pending update file is outside its active prefix: ${pendingFile}`,
+        `Bari pending update file is outside its active prefix: ${pendingFile}`,
       );
     } finally {
       rmSync(prefix, { recursive: true, force: true });
@@ -737,7 +737,7 @@ describe('MCode update install-source commands', () => {
       await expect(application.apply(plan)).resolves.toEqual({
         applied: false,
         restartRequired: true,
-        message: 'MCode 1.2.4 is already staged. It will activate after this process exits.',
+        message: 'Bari 1.2.4 is already staged. It will activate after this process exits.',
       });
     } finally {
       rmSync(prefix, { recursive: true, force: true });
@@ -796,7 +796,7 @@ describe('MCode update install-source commands', () => {
       );
 
       await expect(application.inspect()).rejects.toThrow(
-        `MCode pending update artifacts are incomplete at ${pendingFile}.`,
+        `Bari pending update artifacts are incomplete at ${pendingFile}.`,
       );
     } finally {
       rmSync(prefix, { recursive: true, force: true });
@@ -871,7 +871,7 @@ describe('MCode update install-source commands', () => {
       await expect(application.apply(plan)).resolves.toEqual({
         applied: false,
         restartRequired: true,
-        message: 'MCode 1.2.4 is already active. Restarting will finish update cleanup.',
+        message: 'Bari 1.2.4 is already active. Restarting will finish update cleanup.',
       });
     } finally {
       rmSync(prefix, { recursive: true, force: true });

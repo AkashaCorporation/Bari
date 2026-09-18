@@ -1,6 +1,6 @@
-# MCode TUI Changelog
+# Bari TUI Changelog
 
-This changelog covers important changes that directly affect MCode TUI users. It includes:
+This changelog covers important changes that directly affect Bari TUI users. It includes:
 
 - Features, interactions, display, compatibility, installation, and updates in the TUI itself.
 - Shared Runtime, Agent, Tool, and Skill changes that alter TUI behavior.
@@ -269,7 +269,7 @@ Internal refactors, test-only changes, and changes limited to other product surf
 
 ### Fixed
 
-- When MCode shares its data directory with MiniMax Desktop, official model endpoints are now
+- When Bari shares its data directory with MiniMax Desktop, official model endpoints are now
   resolved in memory for the current environment: reading configuration or first-run initialization
   no longer writes new official endpoints into the shared config file, so older Desktop versions
   keep working alongside the TUI. Custom (BYOK) endpoints behave as before.
@@ -280,7 +280,7 @@ Internal refactors, test-only changes, and changes limited to other product surf
   and migration records are preserved; only explicit user selections are written back to
   configuration.
 - Installing or updating with npm 12 no longer breaks the native SQLite module: install and update
-  authorize the MCode and `better-sqlite3` lifecycle scripts and keep optional native dependencies.
+  authorize the Bari and `better-sqlite3` lifecycle scripts and keep optional native dependencies.
   When native SQLite fails to load, startup prints a repair command matching the install registry,
   and early startup errors are reported instead of failing silently.
 
@@ -297,7 +297,7 @@ Internal refactors, test-only changes, and changes limited to other product surf
   also be edited, restored, or deleted. Sending a new message while paused offers to send it first
   and then continue the original queue, or to clear pending messages first; cancelling keeps your
   draft. Reopening the session shows the paused queue and waits for you to continue.
-- In-TUI updates now run npm with MCode's own Node runtime and validate the new version's native
+- In-TUI updates now run npm with Bari's own Node runtime and validate the new version's native
   modules with that exact runtime before activation, fixing startup failures after updating on
   machines whose system Node version differs. If validation fails, the previous version stays
   active.
@@ -384,7 +384,7 @@ Internal refactors, test-only changes, and changes limited to other product surf
 ### Improved
 
 - Internal test and staging builds accept an explicit global `--lane <name>` for OAuth integration
-  testing. Production builds reject the option, and MCode does not infer a lane from environment
+  testing. Production builds reject the option, and Bari does not infer a lane from environment
   variables.
 - The Composer now identifies Prompt, Command, and Skill input before submission, shows a localized
   empty-state hint, and treats text following no-argument slash commands as a regular prompt.
@@ -393,7 +393,7 @@ Internal refactors, test-only changes, and changes limited to other product surf
   recovery, and follow-up delivery.
 - Model retries, Goal completion, and compaction report clearer progress and actual Provider token
   usage. Plan Review content remains scrollable in the Transcript.
-- Installing MCode now exposes the managed `mcode-tools` command without requiring a TUI startup and
+- Installing Bari now exposes the managed `mcode-tools` command without requiring a TUI startup and
   keeps package-owned launchers clean across updates.
 
 ### Fixed
@@ -574,7 +574,7 @@ Internal refactors, test-only changes, and changes limited to other product surf
 - Ctrl+C exit confirmation now stays armed until the next press. Clearing a Draft can be undone with
   Ctrl+Z without a fixed 500 ms window.
 - Startup defers nonessential dependencies.
-- The MiniMax Code product-knowledge Skill is now a top-level router with trusted region context and
+- The Bari product-knowledge Skill is now a top-level router with trusted region context and
   topic-specific references for accounts, Agents, extensions, workflows, and more.
 
 ### Fixed
@@ -596,7 +596,7 @@ Internal refactors, test-only changes, and changes limited to other product surf
 
 ### Improved
 
-- `/update` reports the real number of blocking MCode sessions and waits for older processes to exit
+- `/update` reports the real number of blocking Bari sessions and waits for older processes to exit
   safely instead of abandoning activation after a fixed timeout.
 - Slash Review switches to a compact Git-discovery prompt when context is tight, preserving review
   output and recovery paths.

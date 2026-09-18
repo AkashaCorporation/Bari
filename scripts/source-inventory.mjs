@@ -41,7 +41,7 @@ if (
     .digest("hex") !== rootLicenseSha256
 )
   violations.push(
-    "LICENSE: expected MIT text with the reviewed MiniMax Code attribution",
+    "LICENSE: expected MIT text with the reviewed Bari attribution",
   );
 const internalText =
   /(?:[\w.-]+\.xaminim\.com|weaver\/idl|@mavis\/thrift-gen|\/Users\/minimax(?:\/|\b)|\/archon\/internal\/api\/)/u;
