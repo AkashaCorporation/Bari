@@ -13,6 +13,7 @@ import {
   type PromptSnapshotSource,
   type PromptReadSnapshot,
 } from '@bari/agent-runtime';
+import { resolveBuiltinAssetDir } from '@bari/shared/builtin-assets';
 
 import type {
   AgentAppMode,
@@ -584,29 +585,13 @@ export class BuiltinAgentCatalog {
 
   private async assetsDir(): Promise<string> {
     const configured = process.env.MAVIS_BUILTIN_AGENTS_V2_DIR?.trim() || this.assetsDirOverride;
-    const here = dirname(fileURLToPath(import.meta.url));
-    const candidates = configured
-      ? [configured]
-      : [
-          resolve(here, '../../../../assets/agents'),
-          resolve(here, '../assets/agents'),
-          resolve(here, 'assets/agents'),
-          ...entrypointAgentAssetsCandidates(),
-          resolve(process.cwd(), 'packages/local-runtime-v2/assets/agents'),
-          resolve(process.cwd(), 'assets/agents'),
-          resolve(process.cwd(), 'assets/local-runtime-v2/agents'),
-        ];
-    for (const candidate of candidates) {
-      const roster = await this.readOptionalFile(join(candidate, BUILTIN_ROSTER_FILE));
-      if (roster !== undefined) return candidate;
-    }
-    throw new Error('Local Runtime V2 built-in Agent assets are missing.');
+    const resolved = await resolveBuiltinAssetDir('agents', {
+      moduleUrl: import.meta.url,
+      ...(configured ? { explicit: configured } : {}),
+    });
+    if (!resolved) throw new Error('Local Runtime V2 built-in Agent assets are missing.');
+    return resolved;
   }
-}
-
-function entrypointAgentAssetsCandidates(): string[] {
-  const entry = process.argv[1];
-  return entry ? [resolve(dirname(entry), 'assets/agents')] : [];
 }
 
 function resolvePromptMode(input: BuiltinRenderInput): AgentPromptMode {  return input.promptMode ?? (input.promptProfile === 'tui' ? 'tui' : input.appMode);

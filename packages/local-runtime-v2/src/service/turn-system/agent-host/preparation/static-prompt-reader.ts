@@ -6,6 +6,7 @@ import {
   resolveAgentCapabilities,
   type ResolvedAgentCapabilities,
 } from '@bari/config';
+import { resolveBuiltinAssetDir } from '@bari/shared/builtin-assets';
 
 const LEGACY_AGENT_INSTRUCTIONS_FILE = '\x43\x4c\x41\x55\x44\x45.md';
 const PROJECT_INSTRUCTIONS_MAX_BYTES = 32 * 1024;
@@ -154,30 +155,11 @@ async function requireAgentAssetsDir(explicit: string | undefined): Promise<stri
   if (root) return root;
   throw new Error('Mandatory local-runtime-v2 Agent prompt asset root is missing.');
 }
-
-function entrypointAgentAssetsCandidates(): string[] {
-  const entry = process.argv[1];
-  return entry ? [resolve(dirname(entry), 'assets/agents')] : [];
-}
-
-async function resolveAgentAssetsDir(explicit: string | undefined): Promise<string | undefined> {  const here = dirname(fileURLToPath(import.meta.url));
-  const configured = explicit?.trim();
-  const candidates = configured
-    ? [configured]
-    : [
-        resolve(here, '../../../../../assets/agents'),
-        resolve(here, '../assets/agents'),
-        resolve(here, 'assets/agents'),
-        ...entrypointAgentAssetsCandidates(),
-        resolve(process.cwd(), 'assets/agents'),
-        resolve(here, 'assets/local-runtime-v2/agents'),
-        resolve(process.cwd(), 'packages/local-runtime-v2/assets/agents'),
-        resolve(process.cwd(), 'assets/local-runtime-v2/agents'),
-      ];
-  for (const candidate of candidates) {
-    if (await isDirectory(candidate)) return candidate;
-  }
-  return undefined;
+async function resolveAgentAssetsDir(explicit: string | undefined): Promise<string | undefined> {
+  return resolveBuiltinAssetDir('agents', {
+    moduleUrl: import.meta.url,
+    ...(explicit?.trim() ? { explicit: explicit.trim() } : {}),
+  });
 }
 
 async function readProjectInstructionsOrEmpty(

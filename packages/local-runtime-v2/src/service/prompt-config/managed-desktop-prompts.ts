@@ -3,13 +3,9 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { assertPromptRelativePath } from './storage/prompt-path.js';
+import { resolveBuiltinAssetDir } from '@bari/shared/builtin-assets';
 
 const MANAGED_DESKTOP_PROMPT_GROUP_NAMES = ['desktop_agent'] as const;
-
-function entrypointAgentAssetsCandidates(): string[] {
-  const entry = process.argv[1];
-  return entry ? [resolve(dirname(entry), 'assets/agents')] : [];
-}
 
 type ManagedDesktopPromptGroupName = (typeof MANAGED_DESKTOP_PROMPT_GROUP_NAMES)[number];
 
@@ -17,25 +13,14 @@ export interface ManagedDesktopPromptRegistry {
   readonly groups: Readonly<Record<ManagedDesktopPromptGroupName, readonly string[]>>;
   readonly paths: ReadonlySet<string>;
 }
-
 /** Resolves the same packaged asset directory used by BuiltinAgentCatalog. */
-export async function resolveBuiltinPromptAssetsDir(): Promise<string> {  const configured = process.env.MAVIS_BUILTIN_AGENTS_V2_DIR?.trim();
-  const here = dirname(fileURLToPath(import.meta.url));
-  const candidates = configured
-    ? [configured]
-    : [
-        resolve(here, '../../../assets/agents'),
-        resolve(here, '../../assets/agents'),
-        resolve(here, '../assets/agents'),
-        ...entrypointAgentAssetsCandidates(),
-        resolve(process.cwd(), 'packages/local-runtime-v2/assets/agents'),
-        resolve(process.cwd(), 'assets/agents'),
-        resolve(process.cwd(), 'assets/local-runtime-v2/agents'),
-      ];
-  for (const candidate of candidates) {
-    if (await hasRoster(candidate)) return candidate;
-  }
-  throw new Error('Local Runtime V2 built-in Agent assets are missing.');
+export async function resolveBuiltinPromptAssetsDir(): Promise<string> {
+  const resolved = await resolveBuiltinAssetDir('agents', {
+    moduleUrl: import.meta.url,
+    explicit: process.env.MAVIS_BUILTIN_AGENTS_V2_DIR?.trim() || undefined,
+  });
+  if (!resolved) throw new Error('Local Runtime V2 built-in Agent assets are missing.');
+  return resolved;
 }
 
 /** Loads the package-owned registry shared by Runtime and the Electron package gate. */

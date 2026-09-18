@@ -11,6 +11,10 @@
       "types": "./src/mavis-tags.ts",
       "import": "./dist/mavis-tags.js"
     },
+    "./builtin-assets": {
+      "types": "./src/builtin-assets.ts",
+      "import": "./dist/builtin-assets.js"
+    },
     "./llm-error-classifier": {
       "types": "./src/llm-error-classifier.ts",
       "import": "./dist/llm-error-classifier.js"

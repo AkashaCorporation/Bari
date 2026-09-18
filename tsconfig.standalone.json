@@ -187,6 +187,9 @@
       "@bari/shared/bounded-json-stringify": [
         "./packages/shared/src/bounded-json-stringify.ts"
       ],
+      "@bari/shared/builtin-assets": [
+        "./packages/shared/src/builtin-assets.ts"
+      ],
       "@bari/shared/cron-model": [
         "./packages/shared/src/cron-model.ts"
       ],

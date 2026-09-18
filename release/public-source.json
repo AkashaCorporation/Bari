@@ -2693,6 +2693,8 @@
     "packages/shared/src/asset-markup/message-assets.ts",
     "packages/shared/src/bounded-json-stringify.ts",
     "packages/shared/src/browser-manifest.ts",
+    "packages/shared/src/builtin-assets.test.ts",
+    "packages/shared/src/builtin-assets.ts",
     "packages/shared/src/channel-context.ts",
     "packages/shared/src/channel-format-hints.ts",
     "packages/shared/src/channel-plugin.ts",
