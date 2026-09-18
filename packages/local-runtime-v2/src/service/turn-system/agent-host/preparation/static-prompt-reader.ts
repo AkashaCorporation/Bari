@@ -155,14 +155,20 @@ async function requireAgentAssetsDir(explicit: string | undefined): Promise<stri
   throw new Error('Mandatory local-runtime-v2 Agent prompt asset root is missing.');
 }
 
-async function resolveAgentAssetsDir(explicit: string | undefined): Promise<string | undefined> {
-  const here = dirname(fileURLToPath(import.meta.url));
+function entrypointAgentAssetsCandidates(): string[] {
+  const entry = process.argv[1];
+  return entry ? [resolve(dirname(entry), 'assets/agents')] : [];
+}
+
+async function resolveAgentAssetsDir(explicit: string | undefined): Promise<string | undefined> {  const here = dirname(fileURLToPath(import.meta.url));
   const configured = explicit?.trim();
   const candidates = configured
     ? [configured]
     : [
         resolve(here, '../../../../../assets/agents'),
+        resolve(here, '../assets/agents'),
         resolve(here, 'assets/agents'),
+        ...entrypointAgentAssetsCandidates(),
         resolve(process.cwd(), 'assets/agents'),
         resolve(here, 'assets/local-runtime-v2/agents'),
         resolve(process.cwd(), 'packages/local-runtime-v2/assets/agents'),

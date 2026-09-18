@@ -6,6 +6,11 @@ import { assertPromptRelativePath } from './storage/prompt-path.js';
 
 const MANAGED_DESKTOP_PROMPT_GROUP_NAMES = ['desktop_agent'] as const;
 
+function entrypointAgentAssetsCandidates(): string[] {
+  const entry = process.argv[1];
+  return entry ? [resolve(dirname(entry), 'assets/agents')] : [];
+}
+
 type ManagedDesktopPromptGroupName = (typeof MANAGED_DESKTOP_PROMPT_GROUP_NAMES)[number];
 
 export interface ManagedDesktopPromptRegistry {
@@ -14,14 +19,15 @@ export interface ManagedDesktopPromptRegistry {
 }
 
 /** Resolves the same packaged asset directory used by BuiltinAgentCatalog. */
-export async function resolveBuiltinPromptAssetsDir(): Promise<string> {
-  const configured = process.env.MAVIS_BUILTIN_AGENTS_V2_DIR?.trim();
+export async function resolveBuiltinPromptAssetsDir(): Promise<string> {  const configured = process.env.MAVIS_BUILTIN_AGENTS_V2_DIR?.trim();
   const here = dirname(fileURLToPath(import.meta.url));
   const candidates = configured
     ? [configured]
     : [
         resolve(here, '../../../assets/agents'),
         resolve(here, '../../assets/agents'),
+        resolve(here, '../assets/agents'),
+        ...entrypointAgentAssetsCandidates(),
         resolve(process.cwd(), 'packages/local-runtime-v2/assets/agents'),
         resolve(process.cwd(), 'assets/agents'),
         resolve(process.cwd(), 'assets/local-runtime-v2/agents'),

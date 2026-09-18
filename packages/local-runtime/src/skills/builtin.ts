@@ -387,7 +387,9 @@ export function getBuiltinSkillsDirCandidates(): string[] {
   return dedupePaths([
     process.env.MAVIS_BUILTIN_SKILLS_DIR,
     resolve(here, '../../assets/skills'),
+    resolve(here, '../assets/skills'),
     resolve(here, 'assets/skills'),
+    ...entrypointAssetCandidates('skills'),
     resolve(process.cwd(), 'packages/local-runtime/assets/skills'),
     resolve(process.cwd(), 'node_modules/@bari/local-runtime/assets/skills'),
   ]);
@@ -398,11 +400,23 @@ export function getBuiltinAgentsDirCandidates(): string[] {
   return dedupePaths([
     process.env.MAVIS_BUILTIN_AGENTS_DIR,
     resolve(here, '../../assets/agents'),
+    resolve(here, '../assets/agents'),
     resolve(here, 'assets/agents'),
     resolve(here, '../../../local-runtime-v2/assets/agents'),
+    ...entrypointAssetCandidates('agents'),
     resolve(process.cwd(), 'packages/local-runtime-v2/assets/agents'),
     resolve(process.cwd(), 'assets/agents'),
   ]);
+}
+
+/**
+ * Bundled builds (esbuild) flatten sources into dist/chunks, so module-relative
+ * candidates can overshoot. The CLI entry point keeps the packaged layout
+ * (`<dist-or-package>/assets/<kind>`) valid from any working directory.
+ */
+function entrypointAssetCandidates(kind: 'agents' | 'skills'): string[] {
+  const entry = process.argv[1];
+  return entry ? [resolve(dirname(entry), 'assets', kind)] : [];
 }
 
 function normalizeAgentName(agentName: string): string {

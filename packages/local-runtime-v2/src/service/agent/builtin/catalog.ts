@@ -589,7 +589,9 @@ export class BuiltinAgentCatalog {
       ? [configured]
       : [
           resolve(here, '../../../../assets/agents'),
+          resolve(here, '../assets/agents'),
           resolve(here, 'assets/agents'),
+          ...entrypointAgentAssetsCandidates(),
           resolve(process.cwd(), 'packages/local-runtime-v2/assets/agents'),
           resolve(process.cwd(), 'assets/agents'),
           resolve(process.cwd(), 'assets/local-runtime-v2/agents'),
@@ -602,8 +604,12 @@ export class BuiltinAgentCatalog {
   }
 }
 
-function resolvePromptMode(input: BuiltinRenderInput): AgentPromptMode {
-  return input.promptMode ?? (input.promptProfile === 'tui' ? 'tui' : input.appMode);
+function entrypointAgentAssetsCandidates(): string[] {
+  const entry = process.argv[1];
+  return entry ? [resolve(dirname(entry), 'assets/agents')] : [];
+}
+
+function resolvePromptMode(input: BuiltinRenderInput): AgentPromptMode {  return input.promptMode ?? (input.promptProfile === 'tui' ? 'tui' : input.appMode);
 }
 
 function usesV2Prompts(input: BuiltinRenderInput): boolean {
