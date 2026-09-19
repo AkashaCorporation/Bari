@@ -40,6 +40,10 @@ node /absolute/path/to/Bari/dist/cli.js
 
 On Windows, also use `node` with the appropriate local absolute path. Do not overwrite another globally installed command with this source build.
 
+## Network proxies
+
+Bari reads `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, and `NO_PROXY` (upper- or lowercase) at startup and routes provider tests, model requests, and managed gateway calls through the configured proxy. Values may include or omit the scheme, so a corporate `proxy.corp:8080` works. Loopback hosts (`localhost`, `127.0.0.1`, `::1`) are always bypassed in addition to your `NO_PROXY` entries.
+
 ## Accounts and data
 
 Run `/login` in the TUI or `pnpm bari login`, choosing the region for your account. Token Plan requires an account and available credits. See the root README for BYOK configuration and testing.

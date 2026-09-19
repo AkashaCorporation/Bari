@@ -37,13 +37,11 @@ export function resolveTuiProxyConfiguration(
     firstProxyValue(environment, 'HTTPS_PROXY', 'https_proxy') ?? allProxy ?? httpProxy;
 
   if (!httpProxy && !httpsProxy) return { mode: 'direct' };
-  validateProxyValue(httpProxy);
-  validateProxyValue(httpsProxy);
 
   return {
     mode: 'proxy',
-    httpProxy: httpProxy?.value ?? '',
-    httpsProxy: httpsProxy?.value ?? '',
+    httpProxy: httpProxy ? normalizeProxyValue(httpProxy) : '',
+    httpsProxy: httpsProxy ? normalizeProxyValue(httpsProxy) : '',
     noProxy: withLoopbackNoProxy(environment.NO_PROXY ?? environment.no_proxy),
   };
 }
@@ -77,17 +75,24 @@ function firstProxyValue(
   return undefined;
 }
 
-function validateProxyValue(proxy: ProxyValue | undefined): void {
-  if (!proxy) return;
+/**
+ * Accepts both `http://host:port` and the scheme-less `host:port` form that
+ * corporate environments commonly export, and returns a normalized URL.
+ */
+function normalizeProxyValue(proxy: ProxyValue): string {
+  const candidate = /^[a-z][a-z0-9+.-]*:\/\//iu.test(proxy.value)
+    ? proxy.value
+    : `http://${proxy.value}`;
   let url: URL;
   try {
-    url = new URL(proxy.value);
+    url = new URL(candidate);
   } catch {
     throw new Error(`${proxy.name} must be an http:// or https:// URL.`);
   }
   if ((url.protocol !== 'http:' && url.protocol !== 'https:') || !url.hostname) {
     throw new Error(`${proxy.name} must be an http:// or https:// URL.`);
   }
+  return url.toString();
 }
 
 function withLoopbackNoProxy(existing: string | undefined): string {

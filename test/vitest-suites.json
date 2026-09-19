@@ -15,6 +15,7 @@
       "packages/tui/test/unit/mcode-tools-integration.test.ts",
       "packages/tui/test/unit/provider-application.test.ts",
       "packages/tui/test/unit/provider-command-add.test.ts",
+      "packages/tui/test/unit/network-proxy.test.ts",
       "packages/tui/test/unit/plugin-application.test.ts",
       "packages/tui/test/unit/tui-plugin-manager.test.ts",
       "packages/tui/test/unit/daily-checkin-application.test.ts",
