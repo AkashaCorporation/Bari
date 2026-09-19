@@ -19,6 +19,11 @@ const environment = { ...process.env };
 if (process.platform === "win32") {
   environment.TEMP = environment.TMP = realpathSync.native(tmpdir());
 }
+// Windows CI runners periodically stall the default 5s per-test budget on
+// otherwise healthy spawn/PTY/SQLite tests, which forced unrelated reruns on
+// every release. Widen the budget on win32 only; other platforms keep the
+// stricter upstream default.
+const testTimeoutArgs = process.platform === "win32" ? ["--testTimeout=20000"] : [];
 const result = spawnSync(
   process.execPath,
   [
@@ -26,6 +31,7 @@ const result = spawnSync(
     "run",
     "--config",
     "vitest.oss.config.mjs",
+    ...testTimeoutArgs,
     ...files,
   ],
   { stdio: "inherit", cwd: repositoryRoot, env: environment },
