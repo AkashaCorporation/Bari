@@ -23,6 +23,13 @@ Internal refactors, test-only changes, and changes limited to other product surf
   `memory.enabled` setting instead of being forced off, so the memory tool and the Memory prompt sections
   are available where the self-evolution skills run. Cron and Computer Use remain restricted on those surfaces.
 
+### Fixed
+
+- PATH integration no longer persists the `bin` directory of ephemeral data directories (tests and
+  `BARI_DATA_DIR` overrides); a Windows user PATH could otherwise grow past the system limit until new
+  processes lost their PATH entirely. Stale temp entries are pruned on the next start with a real data
+  directory.
+
 ## 0.6.0 · 2026-09-19
 
 ### Added

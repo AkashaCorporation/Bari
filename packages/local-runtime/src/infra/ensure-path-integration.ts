@@ -3,13 +3,19 @@
  * `mavis`, `minimax`, and `mavis-trash` are available in new terminal
  * sessions.
  *
+ * Ephemeral data directories (anything below the OS temp directory, which is
+ * what tests and `BARI_DATA_DIR` overrides use) are never persisted: a temp
+ * path must not outlive the directory it points at. On Windows the planner
+ * also prunes stale temp entries a previous run may have left behind, so a
+ * polluted user PATH self-heals the next time a real data directory starts.
+ *
  * Best-effort: failures are swallowed — PATH integration must never block
  * local-runtime startup.
  */
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { join } from 'node:path';
-import { homedir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { homedir, tmpdir } from 'node:os';
 
 const PATH_MARKER = '# Added by Bari';
 
@@ -17,6 +23,7 @@ export function ensurePathIntegration(dataDir: string): void {
   const binDir = join(dataDir, 'bin');
 
   try {
+    if (isPathInsideDirectory(binDir, tmpdir())) return;
     if (process.platform === 'darwin' || process.platform === 'linux') {
       ensurePosixShellPath(binDir);
     } else if (process.platform === 'win32') {
@@ -25,6 +32,46 @@ export function ensurePathIntegration(dataDir: string): void {
   } catch {
     // Best-effort — never block startup.
   }
+}
+
+/**
+ * Pure planning for the Windows user PATH: drops entries below the OS temp
+ * directory, ensures `binDir` is present exactly once, and returns `undefined`
+ * when the stored value is already correct.
+ */
+export function planWindowsUserPath(input: {
+  readonly currentPath: string;
+  readonly binDir: string;
+  readonly tempDir: string;
+}): string | undefined {
+  const entries = input.currentPath
+    .split(';')
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+  const seen = new Set<string>();
+  const kept: string[] = [];
+  for (const entry of entries) {
+    if (isPathInsideDirectory(entry, input.tempDir)) continue;
+    const key = normalizedPath(entry);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    kept.push(entry);
+  }
+  const hasBinDir = seen.has(normalizedPath(input.binDir));
+  const next = hasBinDir ? kept : [input.binDir, ...kept];
+  const nextPath = next.join(';');
+  return nextPath === entries.join(';') ? undefined : nextPath;
+}
+
+function normalizedPath(value: string): string {
+  const resolved = resolve(value).replace(/\\/gu, '/');
+  return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+}
+
+function isPathInsideDirectory(candidate: string, directory: string): boolean {
+  const dir = normalizedPath(directory).replace(/\/+$/u, '');
+  const target = normalizedPath(candidate);
+  return target === dir || target.startsWith(`${dir}/`);
 }
 
 // ---------------------------------------------------------------------------
@@ -57,7 +104,6 @@ function ensurePosixShellPath(binDir: string): void {
 function ensureWindowsUserPath(binDir: string): void {
   // Use execFileSync (not execSync) so cmd.exe does not expand values such as
   // %USERPROFILE% while the existing PATH is being read or written.
-  const normalizedBinDir = binDir.replace(/\\/g, '/').toLowerCase();
   let currentPath = '';
   let registryType = 'REG_EXPAND_SZ';
 
@@ -86,16 +132,13 @@ function ensureWindowsUserPath(binDir: string): void {
       registryType = value[2];
       currentPath = value[3] ?? '';
     }
-    const hasBinDir = currentPath
-      .split(';')
-      .some((entry) => entry.trim().replace(/\\/g, '/').toLowerCase() === normalizedBinDir);
-    if (hasBinDir) return;
   } catch {
     // Timeout, access errors, missing key, etc. must never trigger an overwrite.
     return;
   }
 
-  const newPath = currentPath ? `${binDir};${currentPath}` : binDir;
+  const newPath = planWindowsUserPath({ currentPath, binDir, tempDir: tmpdir() });
+  if (newPath === undefined) return;
   execFileSync(
     'reg',
     ['add', 'HKCU\\Environment', '/v', 'Path', '/t', registryType, '/d', newPath, '/f'],

@@ -2634,6 +2634,7 @@
     "packages/local-runtime/test/unit/content-safety-api-fail-policy.test.ts",
     "packages/local-runtime/test/unit/content-safety-api-v2.test.ts",
     "packages/local-runtime/test/unit/content-safety-turn-v2.test.ts",
+    "packages/local-runtime/test/unit/ensure-path-integration.test.ts",
     "packages/local-runtime/test/unit/error-reporting-privacy.test.ts",
     "packages/local-runtime/test/unit/local-background-task-task-output-polling-reminder.test.ts",
     "packages/local-runtime/test/unit/local-file-api-save.test.ts",
