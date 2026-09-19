@@ -75,6 +75,8 @@ export interface BashEnvSanitizeResult {
 export const BASH_SUBPROCESS_SCRUB: readonly string[] = [
   // Provider / LLM auth — the runtime re-reads these per-request itself
   'MCODE_PROVIDER_API_KEY',
+  'BARI_PROVIDER_API_KEY',
+  'OPENCODE_API_KEY',
   'ANTHROPIC_API_KEY',
   'ANTHROPIC_AUTH_TOKEN',
   'CLAUDE_CODE_OAUTH_TOKEN',

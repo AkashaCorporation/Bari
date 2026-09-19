@@ -9,6 +9,10 @@ import {
 const providerEnv = {
   MCODE_PROVIDER_API_KEY: 'synthetic-provider-value',
   INPUT_MCODE_PROVIDER_API_KEY: 'synthetic-input-value',
+  BARI_PROVIDER_API_KEY: 'synthetic-bari-provider-value',
+  INPUT_BARI_PROVIDER_API_KEY: 'synthetic-bari-input-value',
+  OPENCODE_API_KEY: 'synthetic-opencode-value',
+  INPUT_OPENCODE_API_KEY: 'synthetic-opencode-input-value',
   MCODE_PROVIDER_BASE_URL: 'https://provider.example.invalid',
   MCODE_PROVIDER_MODEL: 'synthetic-model',
   CUSTOM_PROVIDER_API_KEY: 'synthetic-custom-value',
@@ -25,11 +29,28 @@ describe('bash subprocess default provider credentials', () => {
       const policy = resolveBashEnvPolicy(undefined, original);
       expect(policy.mode).toBe('scrub');
       const { env, removed } = sanitizeBashSubprocessEnv(original, policy);
-      const { MCODE_PROVIDER_API_KEY, INPUT_MCODE_PROVIDER_API_KEY, ...preserved } = original;
+      const {
+        MCODE_PROVIDER_API_KEY,
+        INPUT_MCODE_PROVIDER_API_KEY,
+        BARI_PROVIDER_API_KEY,
+        INPUT_BARI_PROVIDER_API_KEY,
+        OPENCODE_API_KEY,
+        INPUT_OPENCODE_API_KEY,
+        ...preserved
+      } = original;
       expect(env).toEqual(preserved);
-      expect(removed).toEqual(['INPUT_MCODE_PROVIDER_API_KEY', 'MCODE_PROVIDER_API_KEY']);
+      expect(removed).toEqual([
+        'BARI_PROVIDER_API_KEY',
+        'INPUT_BARI_PROVIDER_API_KEY',
+        'INPUT_MCODE_PROVIDER_API_KEY',
+        'INPUT_OPENCODE_API_KEY',
+        'MCODE_PROVIDER_API_KEY',
+        'OPENCODE_API_KEY',
+      ]);
       expect(original.MCODE_PROVIDER_API_KEY).toBe(MCODE_PROVIDER_API_KEY);
       expect(original.INPUT_MCODE_PROVIDER_API_KEY).toBe(INPUT_MCODE_PROVIDER_API_KEY);
+      expect(original.BARI_PROVIDER_API_KEY).toBe(BARI_PROVIDER_API_KEY);
+      expect(original.OPENCODE_API_KEY).toBe(OPENCODE_API_KEY);
     },
   );
 
@@ -38,6 +59,8 @@ describe('bash subprocess default provider credentials', () => {
     const result = createBashEnvSpawnHook({ mode: 'scrub' })(original);
     expect(result.env).not.toHaveProperty('MCODE_PROVIDER_API_KEY');
     expect(result.env).not.toHaveProperty('INPUT_MCODE_PROVIDER_API_KEY');
+    expect(result.env).not.toHaveProperty('BARI_PROVIDER_API_KEY');
+    expect(result.env).not.toHaveProperty('OPENCODE_API_KEY');
     expect(result.command).toBe(original.command);
     expect(original.env).toEqual(providerEnv);
   });
