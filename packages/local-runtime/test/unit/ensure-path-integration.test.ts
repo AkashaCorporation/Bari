@@ -6,53 +6,44 @@ describe('planWindowsUserPath', () => {
   const tempDir = 'C:\\Users\\tester\\AppData\\Local\\Temp';
   const binDir = 'C:\\Users\\tester\\.bari\\bin';
   const smokeBin = `${tempDir}\\minimax-code-smoke-abc123\\bin`;
+  const plan = (currentPath: string): string | undefined =>
+    planWindowsUserPath({ currentPath, binDir, tempDir, caseInsensitive: true });
 
   it('prepends the bin directory when it is missing', () => {
-    expect(planWindowsUserPath({ currentPath: 'C:\\Tools;D:\\Other', binDir, tempDir })).toBe(
-      `${binDir};C:\\Tools;D:\\Other`,
-    );
+    expect(plan('C:\\Tools;D:\\Other')).toBe(`${binDir};C:\\Tools;D:\\Other`);
   });
 
   it('returns undefined when the stored value is already correct', () => {
-    expect(planWindowsUserPath({ currentPath: binDir, binDir, tempDir })).toBeUndefined();
-    expect(
-      planWindowsUserPath({ currentPath: `${binDir};C:\\Tools`, binDir, tempDir }),
-    ).toBeUndefined();
+    expect(plan(binDir)).toBeUndefined();
+    expect(plan(`${binDir};C:\\Tools`)).toBeUndefined();
   });
 
   it('prunes stale temp entries while keeping the bin directory', () => {
     expect(
-      planWindowsUserPath({
-        currentPath: `${smokeBin};${binDir};C:\\Tools;${tempDir}\\minimax-code-byok-x\\bin`,
-        binDir,
-        tempDir,
-      }),
+      plan(`${smokeBin};${binDir};C:\\Tools;${tempDir}\\minimax-code-byok-x\\bin`),
     ).toBe(`${binDir};C:\\Tools`);
   });
 
   it('prunes stale temp entries and prepends the bin directory when missing', () => {
-    expect(
-      planWindowsUserPath({
-        currentPath: `${smokeBin};C:\\Tools`,
-        binDir,
-        tempDir,
-      }),
-    ).toBe(`${binDir};C:\\Tools`);
+    expect(plan(`${smokeBin};C:\\Tools`)).toBe(`${binDir};C:\\Tools`);
   });
 
   it('collapses duplicate entries case-insensitively', () => {
-    expect(
-      planWindowsUserPath({
-        currentPath: `${binDir};C:\\Tools;c:\\users\\tester\\.BARI\\BIN`,
-        binDir,
-        tempDir,
-      }),
-    ).toBe(`${binDir};C:\\Tools`);
+    expect(plan(`${binDir};C:\\Tools;c:\\users\\tester\\.BARI\\BIN`)).toBe(`${binDir};C:\\Tools`);
   });
 
   it('ignores empty entries and surrounding whitespace', () => {
-    expect(planWindowsUserPath({ currentPath: ` ;C:\\Tools; `, binDir, tempDir })).toBe(
-      `${binDir};C:\\Tools`,
-    );
+    expect(plan(' ;C:\\Tools; ')).toBe(`${binDir};C:\\Tools`);
+  });
+
+  it('keeps POSIX entries case-sensitive when case-insensitive planning is off', () => {
+    expect(
+      planWindowsUserPath({
+        currentPath: '/usr/local/bin;/usr/LOCAL/bin',
+        binDir: '/home/tester/.bari/bin',
+        tempDir: '/tmp',
+        caseInsensitive: false,
+      }),
+    ).toBe('/home/tester/.bari/bin;/usr/local/bin;/usr/LOCAL/bin');
   });
 });

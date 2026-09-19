@@ -37,13 +37,16 @@ export function ensurePathIntegration(dataDir: string): void {
 /**
  * Pure planning for the Windows user PATH: drops entries below the OS temp
  * directory, ensures `binDir` is present exactly once, and returns `undefined`
- * when the stored value is already correct.
+ * when the stored value is already correct. Windows PATH comparison is
+ * case-insensitive; tests may pin that behavior on any platform.
  */
 export function planWindowsUserPath(input: {
   readonly currentPath: string;
   readonly binDir: string;
   readonly tempDir: string;
+  readonly caseInsensitive?: boolean;
 }): string | undefined {
+  const caseInsensitive = input.caseInsensitive ?? process.platform === 'win32';
   const entries = input.currentPath
     .split(';')
     .map((entry) => entry.trim())
@@ -51,26 +54,30 @@ export function planWindowsUserPath(input: {
   const seen = new Set<string>();
   const kept: string[] = [];
   for (const entry of entries) {
-    if (isPathInsideDirectory(entry, input.tempDir)) continue;
-    const key = normalizedPath(entry);
+    if (isPathInsideDirectory(entry, input.tempDir, caseInsensitive)) continue;
+    const key = normalizedPath(entry, caseInsensitive);
     if (seen.has(key)) continue;
     seen.add(key);
     kept.push(entry);
   }
-  const hasBinDir = seen.has(normalizedPath(input.binDir));
+  const hasBinDir = seen.has(normalizedPath(input.binDir, caseInsensitive));
   const next = hasBinDir ? kept : [input.binDir, ...kept];
   const nextPath = next.join(';');
   return nextPath === entries.join(';') ? undefined : nextPath;
 }
 
-function normalizedPath(value: string): string {
+function normalizedPath(value: string, caseInsensitive = process.platform === 'win32'): string {
   const resolved = resolve(value).replace(/\\/gu, '/');
-  return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+  return caseInsensitive ? resolved.toLowerCase() : resolved;
 }
 
-function isPathInsideDirectory(candidate: string, directory: string): boolean {
-  const dir = normalizedPath(directory).replace(/\/+$/u, '');
-  const target = normalizedPath(candidate);
+function isPathInsideDirectory(
+  candidate: string,
+  directory: string,
+  caseInsensitive?: boolean,
+): boolean {
+  const dir = normalizedPath(directory, caseInsensitive).replace(/\/+$/u, '');
+  const target = normalizedPath(candidate, caseInsensitive);
   return target === dir || target.startsWith(`${dir}/`);
 }
 
