@@ -42,6 +42,7 @@
       "packages/agent-core/test/unit/event-bridge/converters.test.ts",
       "packages/shared/src/builtin-assets.test.ts",
       "packages/agent-tools/src/desktop/local-task.test.ts",
+      "packages/local-runtime/test/unit/background-task-progress.test.ts",
       "packages/agent-tools/src/cloud/matrix-tools/client.test.ts",
       "packages/agent-core/test/unit/image-dimensions.test.ts",
       "packages/agent-modules/mcp/test/connection-pool-abort.test.ts",

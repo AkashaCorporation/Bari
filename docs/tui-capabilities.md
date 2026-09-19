@@ -19,6 +19,7 @@ The evidence column summarizes the historical TUI 0.3.11 restoration record from
 | Auto permissions | Cloud classifier restored; local rules and confirmation on failure retained | Classifier client, permission facade, and sandbox tests |
 | Model catalog | Online catalog and bundled snapshot fallback restored | Actual build boundary checks and offline startup; online catalog contents not accepted |
 | Files, shell, subagents, sessions, headless, ACP | Actual runtime retained | BYOK, file reads, session resume, ACP, sandbox, and status protocol tests |
+| Background task progress | A heartbeat steers a `<background-task-progress>` notice to the owner every few minutes with elapsed time, last activity, and a stall hint; `BARI_TASK_PROGRESS_INTERVAL_MS` overrides the interval and `0` disables it. The heartbeat never stops the task | Heartbeat prompt, interval, and fake-timer lifecycle tests |
 | Built-in skills, MCP, plugin tools | Original TUI assets and activation conditions retained | Asset build, plugin, and MCP tests; no claim that every skill has passed a real task |
 
 ## Desktop boundary

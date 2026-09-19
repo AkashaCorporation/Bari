@@ -22,6 +22,7 @@ import {
 import { normalizeLocalTaskInput, taskModelSelectionFor } from '../api/local-task-input.js';
 import { resolveLocalTaskAgentTarget } from '../api/local-task-subagents.js';
 import { admitBackgroundTask, drainBackgroundTasks } from './lifecycle.js';
+import { startLocalBackgroundTaskProgressHeartbeat } from './progress-delivery.js';
 
 export async function startBackgroundLocalTask(input: {
   host: LocalTaskRunnerHostWithSessionLookup;
@@ -143,6 +144,7 @@ async function startAdmittedBackgroundLocalTask(
   }
 
   const startedChildSession = childSession;
+  startLocalBackgroundTaskProgressHeartbeat(input.host, taskId);
   const settled = runBackgroundLocalTaskTurn({
     host: input.host,
     taskId,
