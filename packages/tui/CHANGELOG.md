@@ -7,6 +7,29 @@ This changelog covers important changes that directly affect Bari TUI users. It 
 
 Internal refactors, test-only changes, and changes limited to other product surfaces are excluded.
 
+## 0.6.0 · 2026-09-19
+
+### Added
+
+- Background task progress heartbeat: while a delegated background task runs, the owner conversation receives a
+  progress notice with elapsed time, last activity, and a stall hint instead of waiting blind until completion
+  (`BARI_TASK_PROGRESS_INTERVAL_MS` overrides the interval; `0` disables it; the heartbeat never stops the task).
+- `bari provider add --use` tests the first model before saving and selecting it, and the command accepts
+  `--context`, `--max-output`, and `--effort` metadata for BYOK models.
+
+### Fixed
+
+- Pulled upstream fixes: literal dollar sequences in replace-all edits, retained context usage after compaction,
+  and bash permission wrapper bypass plus provider credential scrubbing.
+- `POST /api/file/save` creates new files instead of returning 404.
+- Provider keys no longer land in world-readable config files on POSIX, and scheme-less corporate proxy values
+  such as `proxy.corp:8080` work for all proxied requests.
+
+### Privacy
+
+- Telemetry channels now require separate opt-in: usage events (`telemetry.enabled`), runtime performance metrics
+  (`telemetry.metrics`), and automatic error diagnostics (`telemetry.diagnostics`). Global opt-outs still win.
+
 ## 0.5.1 · 2026-09-19
 
 ### Fixed
