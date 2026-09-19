@@ -199,7 +199,7 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
       parseEffortLevels,
     )
     .option('--api-key-env <name>', 'environment variable containing the API key')
-    .option('--use', 'select the first model as the default')
+    .option('--use', 'test the first model, then save and select it as the default')
     .action(
       (commandOptions: {
         name: string;

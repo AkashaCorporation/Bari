@@ -67,11 +67,11 @@ BYOK 无需先登录 MiniMax。先在当前 shell 中设置 `MCODE_PROVIDER_API_
 ```bash
 bari provider add --name my-provider --base-url https://example.com/v1 \
   --api-format openai-completions --model my-model \
-  --api-key-env MCODE_PROVIDER_API_KEY
+  --api-key-env MCODE_PROVIDER_API_KEY --use
 bari
 ```
 
-支持 `openai-completions`、`openai-responses` 和 `anthropic-messages`。可选元数据参数（`--context`、`--max-output`、`--effort low,high,max`）用于声明模型的真实上下文与推理档位；不带这些参数时运行时会套用保守默认值。新提供方需先 `bari provider test` 才能被选中。连接测试、单次模型切换及环境变量设置见 [模型示例](docs/examples.md#2-choose-your-own-model)。OpenCode Go 订阅用户可直接使用内置预设，见 [OpenCode Go 示例](docs/examples.md#opencode-go)。
+支持 `openai-completions`、`openai-responses` 和 `anthropic-messages`。可选元数据参数（`--context`、`--max-output`、`--effort low,high,max`）用于声明模型的真实上下文与推理档位；不带这些参数时运行时会套用保守默认值。加 `--use` 时会先测试首个模型再保存并选中，测试失败则不会保存任何内容。连接测试、单次模型切换及环境变量设置见 [模型示例](docs/examples.md#2-choose-your-own-model)。OpenCode Go 订阅用户可直接使用内置预设，见 [OpenCode Go 示例](docs/examples.md#opencode-go)。
 
 </details>
 

@@ -45,13 +45,13 @@ Add, inspect, and test the provider:
 pnpm bari provider add --name my-provider --base-url https://example.com/v1 \
   --api-format openai-completions --model my-model \
   --context 200000 --max-output 8192 --effort low,high \
-  --api-key-env MCODE_PROVIDER_API_KEY
+  --api-key-env MCODE_PROVIDER_API_KEY --use
 pnpm bari provider list
 pnpm bari provider test <provider-id> --model <model-id>
 pnpm bari exec "Explain this project's test entry points" --model <provider-id>/<model-id>
 ```
 
-Replace the example URL, model name, and IDs with your configuration and the IDs returned by the list command. `--context`, `--max-output`, and `--effort` are optional metadata for the listed models. New providers must pass `provider test` before they can be activated; `exec --model` overrides the model for the current run only. Backslash line continuations are for POSIX shells; use a single line in PowerShell.
+Replace the example URL, model name, and IDs with your configuration and the IDs returned by the list command. `--context`, `--max-output`, and `--effort` are optional metadata for the listed models. `--use` tests the first model before saving and selecting it; when the test fails nothing is saved, so omit `--use` if you want to store the provider first and test it separately. `exec --model` overrides the model for the current run only. Backslash line continuations are for POSIX shells; use a single line in PowerShell.
 
 [Live acceptance](verification.md) separately verified MiniMax Token Plan and one configured BYOK provider. This is not a guarantee for every compatible service.
 
@@ -65,12 +65,11 @@ export OPENCODE_API_KEY
 pnpm bari provider add --name "OpenCode Go" --base-url https://opencode.ai/zen/go/v1 \
   --api-format openai-completions --model deepseek-v4.1-flash \
   --context 1000000 --max-output 384000 --effort low,high,max \
-  --api-key-env OPENCODE_API_KEY
-pnpm bari provider test custom_provider:opencode-go --model deepseek-v4.1-flash
+  --api-key-env OPENCODE_API_KEY --use
 pnpm bari
 ```
 
-A new provider must pass a connection test before it can be activated, so `bari provider add --use` is rejected until then; select the model with `/model` in the TUI (or pass `--model custom_provider:opencode-go/deepseek-v4.1-flash` for a single `bari exec` run). `--context`, `--max-output`, and `--effort` declare model metadata; without them the runtime falls back to conservative defaults (for example, a 200k context window instead of the model's real one).
+`--use` runs a connection test with the first model before saving and selecting it; when the test fails, nothing is saved and you can retry with a corrected URL, key, or model ID. `--context`, `--max-output`, and `--effort` declare model metadata; without them the runtime falls back to conservative defaults (for example, a 200k context window instead of the model's real one). You can still select the model later with `/model` in the TUI, or pass `--model custom_provider:opencode-go/deepseek-v4.1-flash` for a single `bari exec` run.
 
 In PowerShell, capture the key with the `Read-Host` pattern above and use `$env:OPENCODE_API_KEY`. Requests to `https://opencode.ai/zen/go` automatically carry a per-conversation session header and a `Bari` user agent, so the provider only needs the key. The `/provider` wizard lists OpenCode Go with the pinned model catalog, including `deepseek-v4.1-flash`.
 

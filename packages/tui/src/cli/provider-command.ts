@@ -61,26 +61,52 @@ export async function runMcodeProviderCommand(
           `Provider API key is missing. Set ${envName} or pass --api-key-env <name>.`,
         );
       }
+      const models = request.models.map((modelId) => ({
+        modelId,
+        ...(request.effortOptions?.length ? { effortOptions: [...request.effortOptions] } : {}),
+        ...(request.contextWindow !== undefined || request.maxOutput !== undefined
+          ? {
+              limit: {
+                ...(request.contextWindow !== undefined
+                  ? { context: request.contextWindow }
+                  : {}),
+                ...(request.maxOutput !== undefined ? { output: request.maxOutput } : {}),
+              },
+            }
+          : {}),
+      }));
+      if (request.saveAndUse) {
+        const modelId = request.models[0];
+        if (!modelId) throw new Error('At least one --model <id> is required.');
+        const result = await context.application.saveCandidate({
+          name: request.name,
+          baseUrl: request.baseUrl,
+          apiKey,
+          apiFormat: request.apiFormat,
+          models,
+          modelId,
+          saveAndUse: true,
+        });
+        if (!result.success) {
+          throw new Error(
+            formatTuiActionFailure(
+              result.status?.lastErrorMessage ?? result.status?.state ?? 'Connection unavailable',
+              {
+                summary: 'Provider connection test failed. Nothing was saved or selected.',
+                nextStep:
+                  'Check the URL, API key, and first model ID, then retry; omit --use to save without testing.',
+              },
+            ),
+          );
+        }
+        return `Provider added and selected: ${request.name}`;
+      }
       await context.application.create({
         name: request.name,
         baseUrl: request.baseUrl,
         apiKey,
         apiFormat: request.apiFormat,
-        models: request.models.map((modelId) => ({
-          modelId,
-          ...(request.effortOptions?.length ? { effortOptions: [...request.effortOptions] } : {}),
-          ...(request.contextWindow !== undefined || request.maxOutput !== undefined
-            ? {
-                limit: {
-                  ...(request.contextWindow !== undefined
-                    ? { context: request.contextWindow }
-                    : {}),
-                  ...(request.maxOutput !== undefined ? { output: request.maxOutput } : {}),
-                },
-              }
-            : {}),
-        })),
-        saveAndUse: request.saveAndUse,
+        models,
       });
       return `Provider added: ${request.name}`;
     }
