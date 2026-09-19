@@ -53,6 +53,7 @@ export const AGENT_BUILTIN_SKILL_IDS = [
   'deep-research',
   'deploy-website',
   'docx',
+  'dream',
   'edit-deployed-website',
   'hexcore-jobs',
   'init',

@@ -1577,6 +1577,7 @@
     "packages/local-runtime/assets/skills/docx/scripts/unpack_docx.py",
     "packages/local-runtime/assets/skills/docx/scripts/validate_template_manifest.py",
     "packages/local-runtime/assets/skills/docx/scripts/verify_anchor_atomicity.py",
+    "packages/local-runtime/assets/skills/dream/SKILL.md",
     "packages/local-runtime/assets/skills/edit-deployed-website/SKILL.md",
     "packages/local-runtime/assets/skills/hexcore-jobs/SKILL.md",
     "packages/local-runtime/assets/skills/hexcore-jobs/references/job-workflow.md",

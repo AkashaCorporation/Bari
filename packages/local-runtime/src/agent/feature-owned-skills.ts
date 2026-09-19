@@ -55,6 +55,8 @@ function isStandaloneSkillUsable(
   switch (skillName) {
     case 'code-review':
       return isAgentBuiltinToolEnabled(capabilities, 'read');
+    case 'dream':
+      return isAgentBuiltinToolEnabled(capabilities, 'read');
     case 'compose-next':
       return hasTools(capabilities, ['read', 'write', 'edit', 'bash']);
     case 'deep-research':
