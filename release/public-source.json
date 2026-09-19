@@ -1449,6 +1449,7 @@
     "packages/local-runtime/assets/prompts/code-review/review-candidates.md",
     "packages/local-runtime/assets/prompts/code-review/reviewer-system.md",
     "packages/local-runtime/assets/skills/code-review/SKILL.md",
+    "packages/local-runtime/assets/skills/compose-next/SKILL.md",
     "packages/local-runtime/assets/skills/cu-desktop/SKILL.md",
     "packages/local-runtime/assets/skills/deep-research/SKILL.md",
     "packages/local-runtime/assets/skills/deep-research/scripts/render_plan.py",

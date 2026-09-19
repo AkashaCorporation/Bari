@@ -49,6 +49,7 @@ export type AgentBuiltinMcpToolId = (typeof AGENT_BUILTIN_MCP_TOOL_IDS)[number];
  */
 export const AGENT_BUILTIN_SKILL_IDS = [
   'code-review',
+  'compose-next',
   'deep-research',
   'deploy-website',
   'docx',
