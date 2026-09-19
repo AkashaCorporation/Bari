@@ -10,6 +10,7 @@ import { LocalGrepTool } from './local-grep.js';
 import { LocalSkillTool } from './local-skill.js';
 import { LocalMavisTool } from './local-mavis.js';
 import { LocalMemoryTool } from './local-memory.js';
+import { LocalHistoryTool } from './local-history.js';
 import { LocalCodeReviewTool } from './local-code-review.js';
 import {
   LocalTaskOutputTool,
@@ -35,6 +36,7 @@ import type {
   LocalWebSearchAdapter,
   LocalWebsiteDeployAdapter,
   LocalMemoryAdapter,
+  LocalHistoryAdapter,
   LocalCodeReviewAdapter,
   LocalMavisAgentAdapter,
   LocalMavisCronAdapter,
@@ -108,6 +110,7 @@ export interface LocalToolRegistryDeps {
   taskControlAdapter?: LocalTaskControlAdapter;
   websiteDeployAdapter?: LocalWebsiteDeployAdapter;
   memoryAdapter?: LocalMemoryAdapter;
+  historyAdapter?: LocalHistoryAdapter;
   codeReviewAdapter?: LocalCodeReviewAdapter;
   mavisAgentAdapter?: LocalMavisAgentAdapter;
   mavisCronAdapter?: LocalMavisCronAdapter;
@@ -138,6 +141,9 @@ export function buildLocalToolRegistry(deps: LocalToolRegistryDeps): Map<string,
   }
   if (deps.memoryAdapter) {
     tools.push(toRuntimeTool(new LocalMemoryTool(deps.memoryAdapter)));
+  }
+  if (deps.historyAdapter) {
+    tools.push(toRuntimeTool(new LocalHistoryTool(deps.historyAdapter)));
   }
   if (deps.codeReviewAdapter) {
     tools.push(toRuntimeTool(new LocalCodeReviewTool(deps.codeReviewAdapter)));

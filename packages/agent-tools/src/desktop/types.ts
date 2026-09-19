@@ -18,6 +18,7 @@ import type {
   LocalTodoWriteToolInput,
   LocalWebFetchToolInput,
   LocalMemoryToolInput,
+  LocalHistoryToolInput,
   LocalMavisToolInput,
   LocalCodeReviewToolInput,
 } from './builtin-defs.js';
@@ -525,6 +526,14 @@ export interface LocalMemoryAdapter {
   execute(
     ctx: LocalRuntimeToolContext,
     input: LocalMemoryToolInput,
+    signal?: AbortSignal,
+  ): Promise<{ text: string; details?: Record<string, unknown> }>;
+}
+
+export interface LocalHistoryAdapter {
+  execute(
+    ctx: LocalRuntimeToolContext,
+    input: LocalHistoryToolInput,
     signal?: AbortSignal,
   ): Promise<{ text: string; details?: Record<string, unknown> }>;
 }

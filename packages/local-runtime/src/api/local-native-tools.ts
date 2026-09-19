@@ -32,6 +32,7 @@ import type { ModuleMetricsReporter } from "../common/metrics.js";
 import { CU_DESKTOP_SKILL_NAME } from "../cu/gate.js";
 import type { LocalMemoryFacade } from "../memory/local-memory-facade.js";
 import { executeLocalMemoryTool } from "../memory/local-memory-tool.js";
+import { createLocalHistoryAdapter } from "../history/local-history-store.js";
 import type { DesktopTurnCapabilityView } from "../runtime/desktop-turn-capabilities.js";
 import type { LocalRuntimeAuthContext } from "../runtime/model-resolver.js";
 import type { LocalRuntimeRoutingContext } from "../runtime/routing-headers.js";
@@ -223,6 +224,10 @@ export function buildLocalNativeRuntimeTools(input: {
                   },
                 ),
             }
+          : undefined,
+      historyAdapter:
+        input.dataDir && !input.excludeAgentResources
+          ? createLocalHistoryAdapter(input.dataDir)
           : undefined,
       mavisAgentAdapter: input.mavisAgentAdapter,
       mavisCronAdapter: input.mavisCronAdapter,
