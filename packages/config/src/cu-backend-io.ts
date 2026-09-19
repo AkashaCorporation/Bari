@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
 import { getConfig, getConfigPath, resetConfig } from './config.js';
+import { writeConfigFileSecure } from './secure-config-write.js';
 import {
   type CuBackend,
   DEFAULT_CU_BACKEND,
@@ -51,7 +52,7 @@ export function setCuBackend(value: CuBackend): void {
 
   raw.cuBackend = value;
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
-  fs.writeFileSync(configPath, yaml.dump(raw), 'utf-8');
+  writeConfigFileSecure(configPath, yaml.dump(raw));
   resetConfig();
 }
 

@@ -555,7 +555,12 @@ async function routeFileApi(
     }
   }
   if (method === 'POST' && tail === 'save') {
-    return routeFileSave(request, { readJsonBody, resolveBodyPath, readString, json });
+    return routeFileSave(request, {
+      readJsonBody,
+      resolveBodyPath: resolveCreatableBodyPath,
+      readString,
+      json,
+    });
   }
   if (method === 'POST' && tail === 'commit-message') {
     const body = await readJsonBody(request);
@@ -1960,6 +1965,20 @@ async function resolveBodyPath(
     : json({ error: resolved.error, code: resolved.code }, { status: resolved.status });
 }
 
+/** Like {@link resolveBodyPath}, but a missing final path component is allowed so save can create it. */
+async function resolveCreatableBodyPath(
+  body: Record<string, unknown>,
+): Promise<{ absolute: string } | Response> {
+  const workspace = readString(body, 'workspace');
+  const filePath = readString(body, 'path');
+  if (!workspace) return json({ error: 'workspace is required' }, { status: 400 });
+  if (!filePath) return json({ error: 'path is required' }, { status: 400 });
+  const resolved = await resolveCreatableWorkspacePath(workspace, filePath);
+  return resolved.ok
+    ? { absolute: resolved.absolute }
+    : json({ error: resolved.error, code: resolved.code }, { status: resolved.status });
+}
+
 async function resolveWorkspacePath(workspace: string, child: string): Promise<string | undefined> {
   const root = resolveWorkspace(workspace);
   const target = resolveInside(root, child);
@@ -2011,6 +2030,64 @@ async function resolveExistingWorkspacePath(
   }
 
   return { ok: true, absolute: realTarget };
+}
+
+/**
+ * Resolves a path that may not exist yet (file creation). Existing targets keep
+ * the strict symlink check; otherwise the nearest existing ancestor must resolve
+ * inside the workspace, so a missing final component cannot escape it.
+ */
+async function resolveCreatableWorkspacePath(
+  workspace: string,
+  child: string,
+): Promise<ExistingWorkspacePathResult> {
+  const root = resolveWorkspace(workspace);
+  const target = resolveInside(root, child);
+  if (!target) {
+    return {
+      ok: false,
+      status: 400,
+      error: 'Path traversal denied',
+      code: 'PATH_TRAVERSAL',
+    };
+  }
+
+  let realRoot: string;
+  try {
+    realRoot = await realpath(root);
+  } catch (error) {
+    return { ok: false, ...classifyExistingPathError(error, 'workspace') };
+  }
+
+  try {
+    const realTarget = await realpath(target);
+    if (!isPathInside(realRoot, realTarget)) {
+      return { ok: false, status: 400, error: 'Path traversal denied', code: 'PATH_TRAVERSAL' };
+    }
+    return { ok: true, absolute: realTarget };
+  } catch (error) {
+    const classified = classifyExistingPathError(error, 'file');
+    if (classified.status !== 404) return { ok: false, ...classified };
+  }
+
+  let ancestor = dirname(target);
+  while (isPathInside(root, ancestor) || ancestor === root) {
+    try {
+      const realAncestor = await realpath(ancestor);
+      if (!isPathInside(realRoot, realAncestor)) break;
+      const absolute = resolve(realAncestor, relative(ancestor, target));
+      return isPathInside(realRoot, absolute)
+        ? { ok: true, absolute }
+        : { ok: false, status: 400, error: 'Path traversal denied', code: 'PATH_TRAVERSAL' };
+    } catch (error) {
+      const classified = classifyExistingPathError(error, 'file');
+      if (classified.status !== 404) return { ok: false, ...classified };
+    }
+    if (ancestor === root) break;
+    ancestor = dirname(ancestor);
+  }
+
+  return { ok: false, status: 404, error: 'Parent directory not found', code: 'PARENT_NOT_FOUND' };
 }
 
 function resolveWorkspace(workspace: string): string {

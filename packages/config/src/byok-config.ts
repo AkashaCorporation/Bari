@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import { writeConfigFileSecure } from './secure-config-write.js';
 
 import type {
   CustomProvidersConfig,
@@ -243,10 +244,9 @@ export function migrateLegacyByokProvidersOnDisk(
   writeLegacyMigrationMarker(raw, marker);
   try {
     const backupPath = backupConfigForMigration(configPath);
-    fs.writeFileSync(
+    writeConfigFileSecure(
       configPath,
       yaml.dump(raw, { indent: 2, lineWidth: -1, noRefs: true }),
-      'utf-8',
     );
     return { migrated: true, migratedProviders, backupPath };
   } catch (err) {

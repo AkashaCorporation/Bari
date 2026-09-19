@@ -8,6 +8,7 @@ import os from "node:os";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import yaml from "js-yaml";
+import { restrictConfigFilePermissions, writeConfigFileSecure } from "./secure-config-write.js";
 import { parseTuiConfig, type TuiConfig } from "./tui-config.js";
 import {
   applyManagedMinimaxContextLimits,
@@ -1646,10 +1647,9 @@ function syncManagedPresetBaseUrl(configPath: string): void {
     return;
 
   (options as Record<string, unknown>).baseURL = presetBaseURL;
-  fs.writeFileSync(
+  writeConfigFileSecure(
     configPath,
     yaml.dump(raw, { indent: 2, lineWidth: -1, noRefs: true }),
-    "utf-8",
   );
 }
 
@@ -1829,6 +1829,7 @@ function ensureConfigFile(): void {
     const defaultConfigPath = path.join(defaultDataDir, "config.yaml");
     if (configPath !== defaultConfigPath && fs.existsSync(defaultConfigPath)) {
       fs.copyFileSync(defaultConfigPath, configPath);
+      restrictConfigFilePermissions(configPath);
     }
     return;
   }
@@ -1839,7 +1840,7 @@ function ensureConfigFile(): void {
     provider: managedPresetBaseUrlSyncEnabled ? preset.provider : undefined,
     defaultModel: preset.defaultModel,
   });
-  fs.writeFileSync(configPath, content, "utf-8");
+  writeConfigFileSecure(configPath, content);
 }
 
 function readConfigFile(configPath = getConfigPath()): Record<string, unknown> {
