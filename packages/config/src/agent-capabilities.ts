@@ -52,6 +52,7 @@ export const AGENT_BUILTIN_SKILL_IDS = [
   'compose-next',
   'deep-research',
   'deploy-website',
+  'distill',
   'docx',
   'dream',
   'edit-deployed-website',

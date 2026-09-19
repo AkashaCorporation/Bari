@@ -57,6 +57,8 @@ function isStandaloneSkillUsable(
       return isAgentBuiltinToolEnabled(capabilities, 'read');
     case 'dream':
       return isAgentBuiltinToolEnabled(capabilities, 'read');
+    case 'distill':
+      return hasTools(capabilities, ['read', 'write', 'edit', 'bash']);
     case 'compose-next':
       return hasTools(capabilities, ['read', 'write', 'edit', 'bash']);
     case 'deep-research':
