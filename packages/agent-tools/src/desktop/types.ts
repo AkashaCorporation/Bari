@@ -262,6 +262,8 @@ export interface LocalTaskRunResult {
   finalText?: string;
   errorMessage?: string;
   eventCount?: number;
+  /** Wall-clock duration of the delegated run, added by the task tool. */
+  durationMs?: number;
   verification?: VerificationReport;
 }
 

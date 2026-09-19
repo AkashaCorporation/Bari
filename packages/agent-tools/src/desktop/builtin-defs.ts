@@ -545,7 +545,11 @@ for the parent to persist.
 - Foreground is the default and waits for the result. Use it when the result
   blocks your next decision. Use run_in_background=true only for independent
   work while you continue non-overlapping work. Completion automatically resumes
-  the owner; avoid routine polling.
+  the owner. For long background work, call task_output periodically (it supports
+  a bounded wait and output cursors) so you can report progress instead of waiting
+  blind until the finish event.
+- Set timeout_ms to bound a foreground task. When it elapses the child is
+  cancelled and the result reports the timeout plus the elapsed duration.
 - Continue the child asynchronously with task_append using task_id; read
   task_output with the returned task_id. If the native mavis tool is available,
   "session send" with session_id waits synchronously for a reply. Start a new
@@ -582,6 +586,13 @@ const LocalTaskSchema = Type.Object(
       Type.Boolean({
         description:
           'Optional; defaults to false. True starts background execution and returns a task_id.',
+      }),
+    ),
+    timeout_ms: Type.Optional(
+      Type.Integer({
+        minimum: 1000,
+        description:
+          'Foreground only. Cancel the child and return an aborted result when it runs longer than this many milliseconds. Ignored for background tasks.',
       }),
     ),
   },

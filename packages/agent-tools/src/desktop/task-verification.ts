@@ -121,17 +121,23 @@ export function formatLocalTaskParentReport(result: LocalTaskRunResult): string 
   const changedFiles = verification?.changedFiles ?? [];
   const observationNotes = verification?.observationNotes ?? [];
 
-  return [
+  const lines = [
     `run_status: ${result.status}`,
+    ...(result.durationMs !== undefined ? [`duration_ms: ${result.durationMs}`] : []),
     `requested_agent_name: ${result.requestedAgentName}`,
     `resolved_agent_name: ${result.resolvedAgentName ?? 'missing'}`,
-    `model_verdict: ${verification?.modelVerdict ?? 'missing'}`,
-    `file_change: ${verification?.fileChange ?? 'missing'}`,
-    `file_change_limitations: ${FILE_CHANGE_OBSERVATION_NOTICE}`,
+  ];
+  if (verification?.modelVerdict) lines.push(`model_verdict: ${verification.modelVerdict}`);
+  if (verification?.fileChange) {
+    lines.push(`file_change: ${verification.fileChange}`);
+    lines.push(`file_change_limitations: ${FILE_CHANGE_OBSERVATION_NOTICE}`);
+  }
+  lines.push(
     `changed_files: ${changedFiles.length > 0 ? changedFiles.join(', ') : 'none'}`,
     `observation_notes: ${observationNotes.length > 0 ? observationNotes.join(' | ') : 'none'}`,
     'final_text:',
     result.finalText ?? '',
     `error_message: ${result.errorMessage ?? ''}`,
-  ].join('\n');
+  );
+  return lines.join('\n');
 }

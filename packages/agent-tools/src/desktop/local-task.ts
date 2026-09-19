@@ -2,7 +2,7 @@ import { bindTool, type ToolImpl, type ToolResult } from '@bari/agent-core/tools
 
 import { LocalTaskToolDef, type LocalTaskToolInput } from './builtin-defs.js';
 import { formatLocalTaskParentReport } from './task-verification.js';
-import type { LocalRuntimeToolContext, LocalTaskAdapter } from './types.js';
+import type { LocalRuntimeToolContext, LocalTaskAdapter, LocalTaskRunResult } from './types.js';
 import { withPluginHookCompatibleToolResponse } from '../plugin-hooks/vendor-tool-response.js';
 
 @bindTool(LocalTaskToolDef)
@@ -61,13 +61,50 @@ export class LocalTaskTool implements ToolImpl<
         : result;
     }
 
-    const run = await this.adapter.runForeground(ctx, input, signal);
+    const startedAtMs = Date.now();
+    const timeoutMs = input.timeout_ms;
+    let timeoutFired = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let runSignal = signal;
+    if (timeoutMs !== undefined) {
+      const controller = new AbortController();
+      if (signal) {
+        if (signal.aborted) controller.abort(signal.reason);
+        else
+          signal.addEventListener('abort', () => controller.abort(signal.reason), { once: true });
+      }
+      timer = setTimeout(() => {
+        timeoutFired = true;
+        controller.abort(new Error(`Task timed out after ${timeoutMs} ms`));
+      }, timeoutMs);
+      runSignal = controller.signal;
+    }
+
+    let run: LocalTaskRunResult;
+    try {
+      run = await this.adapter.runForeground(ctx, input, runSignal);
+    } catch (error) {
+      if (!timeoutFired) throw error;
+      run = { status: 'aborted', requestedAgentName: input.agent_name };
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+    const durationMs = Date.now() - startedAtMs;
+    if (timeoutFired) {
+      run = {
+        ...run,
+        status: 'aborted',
+        errorMessage: run.errorMessage ?? `Task timed out after ${timeoutMs} ms`,
+      };
+    }
+
     if (run.status !== 'succeeded') {
       const errorMessage = run.errorMessage ?? 'Agent task failed';
       const text = `<task_error${taskIdAttribute(run.taskId)}${sessionIdAttribute(run.subSessionId)}>\n${formatLocalTaskParentReport(
         {
           ...run,
           errorMessage,
+          durationMs,
         },
       )}\n</task_error>`;
       return {
@@ -91,7 +128,7 @@ export class LocalTaskTool implements ToolImpl<
       };
     }
 
-    const text = `<task_result${taskIdAttribute(run.taskId)}${sessionIdAttribute(run.subSessionId)}>\n${formatLocalTaskParentReport(run)}\n</task_result>`;
+    const text = `<task_result${taskIdAttribute(run.taskId)}${sessionIdAttribute(run.subSessionId)}>\n${formatLocalTaskParentReport({ ...run, durationMs })}\n</task_result>`;
     const result: ToolResult = {
       tool_name: LocalTaskToolDef.name,
       text,

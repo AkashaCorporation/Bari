@@ -337,6 +337,7 @@
     "packages/agent-tools/src/desktop/local-skill.ts",
     "packages/agent-tools/src/desktop/local-task-append.ts",
     "packages/agent-tools/src/desktop/local-task-control.ts",
+    "packages/agent-tools/src/desktop/local-task.test.ts",
     "packages/agent-tools/src/desktop/local-task.ts",
     "packages/agent-tools/src/desktop/local-todowrite.ts",
     "packages/agent-tools/src/desktop/local-web-search.ts",

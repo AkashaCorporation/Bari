@@ -7,6 +7,20 @@ This changelog covers important changes that directly affect Bari TUI users. It 
 
 Internal refactors, test-only changes, and changes limited to other product surfaces are excluded.
 
+## 0.5.1 · 2026-09-19
+
+### Fixed
+
+- The published package declares every bundled runtime dependency (`@vscode/ripgrep`,
+  `@mariozechner/clipboard`, `@larksuiteoapi/node-sdk`), so grep and glob work in a clean npm
+  install instead of falling back to the shell.
+
+### Improved
+
+- Delegated tasks accept `timeout_ms` for foreground work and report `duration_ms`; empty
+  verification fields are omitted, and background receipts point at `task_output` progress instead
+  of waiting blind until the finish event.
+
 ## 0.5.0 · 2026-09-18
 
 ### Added
