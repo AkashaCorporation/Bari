@@ -7,6 +7,22 @@ This changelog covers important changes that directly affect Bari TUI users. It 
 
 Internal refactors, test-only changes, and changes limited to other product surfaces are excluded.
 
+## 0.7.0 · 2026-09-19
+
+### Added
+
+- Self-evolution skills: `/dream` consolidates durable memory from recent sessions through the memory and
+  history tools; `/distill` reviews recent sessions and packages repeated workflows as skills through
+  skill-creator or skill-refiner; `compose-next` turns a finished task into a suggested next prompt.
+- Read-only `history` tool: search this Agent's recent session transcripts from inside a turn, with bounded
+  scans, single-message reads, and an explicit untrusted-history notice.
+
+### Changed
+
+- Agent memory now works on the command line: the TUI, `bari exec`, and ACP surfaces follow the user's
+  `memory.enabled` setting instead of being forced off, so the memory tool and the Memory prompt sections
+  are available where the self-evolution skills run. Cron and Computer Use remain restricted on those surfaces.
+
 ## 0.6.0 · 2026-09-19
 
 ### Added
