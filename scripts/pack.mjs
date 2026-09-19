@@ -38,6 +38,13 @@ function dependencyVersion(packageName) {
 const tuiManifest = JSON.parse(
   readFileSync(path.join(root, 'packages', 'tui', 'package.json'), 'utf8'),
 );
+const RUNTIME_DEPENDENCIES = [
+  'better-sqlite3',
+  'node-pty',
+  '@vscode/ripgrep',
+  '@mariozechner/clipboard',
+  '@larksuiteoapi/node-sdk',
+];
 const manifest = {
   name: process.env.BARI_NPM_NAME?.trim() || '@akashacorporation/bari',
   version: tuiManifest.version,
@@ -46,10 +53,12 @@ const manifest = {
   type: 'module',
   bin: { bari: 'cli.js' },
   engines: { node: '>=22.19 <23 || >=24.2 <27' },
-  dependencies: {
-    'better-sqlite3': `^${dependencyVersion('better-sqlite3')}`,
-    'node-pty': `^${dependencyVersion('node-pty')}`,
-  },
+  dependencies: Object.fromEntries(
+    RUNTIME_DEPENDENCIES.map((packageName) => [
+      packageName,
+      `^${dependencyVersion(packageName)}`,
+    ]),
+  ),
   repository: { type: 'git', url: 'git+https://github.com/AkashaCorporation/Bari.git' },
   homepage: 'https://github.com/AkashaCorporation/Bari#readme',
   bugs: { url: 'https://github.com/AkashaCorporation/Bari/issues' },
