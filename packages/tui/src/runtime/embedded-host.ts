@@ -51,10 +51,6 @@ export function projectEmbeddedRuntimeConfig(
       codexOAuth: buildIdentity.isInternalBuild,
       mcodeTools: mcodeToolsEnabled && config.beta?.mcodeTools === true,
     },
-    memory: {
-      ...config.memory,
-      enabled: false,
-    },
   };
 }
 
@@ -73,8 +69,8 @@ export async function createEmbeddedRuntimeHost(
     ...runtimeOptions,
     reviewPromptDir: runtimeOptions.reviewPromptDir ?? resolveTuiReviewPromptDir(),
     // Product ceilings belong to the embedded host rather than user config:
-    // TUI owns Matrix tooling and does not expose the Desktop relationship
-    // Memory experience.
+    // TUI owns Matrix tooling; Memory keeps following the user's
+    // `memory.enabled` because self-evolution runs on the CLI.
     configGetter: () =>
       projectEmbeddedRuntimeConfig(
         configGetter(),

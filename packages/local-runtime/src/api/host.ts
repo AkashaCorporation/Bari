@@ -635,8 +635,6 @@ export class LocalRuntimeApiHost {
       // Lazy: `lockOwner` is assigned later in this constructor, and the
       // adapter provider only resolves once the v2 Cron bridge is bound.
       cronEnabled: () => this.isCronCapabilityAvailable(),
-      // TUI has no user-scoped Memory surface; keep CLI and other hosts unchanged.
-      userMemoryEnabled: () => this.isUserMemoryCapabilityAvailable(),
       cliSunsetNotice: options.cliSunsetNotice,
       agentFacts: () => this.agentRuntimePort,
       userConfiguredName: () => this.authContextGetter?.()?.subUserName,
@@ -1391,9 +1389,6 @@ export class LocalRuntimeApiHost {
       return false;
     }
     return this.buildOwnerMavisCronAdapter() !== undefined;
-  }
-  private isUserMemoryCapabilityAvailable(): boolean {
-    return this.lockOwner.ownerKind !== "tui";
   }
   private buildOwnerMavisSessionAdapter() {
     const conversation = this.requireRuntimeConversation(

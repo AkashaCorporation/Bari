@@ -355,8 +355,7 @@ async function renderSessionProfile(input: {
     promptProfile: input.options.runtimeOwnerKind === 'tui' ? 'tui' : 'desktop',
     appMode: input.appMode ?? input.session.appMode ?? 'coding',
     capabilities,
-    memoryEnabled:
-      !isCommandLineRuntimeOwner(input.options.runtimeOwnerKind) && input.config.memory?.enabled,
+    memoryEnabled: input.config.memory?.enabled !== false,
     cronEnabled: !isCommandLineRuntimeOwner(input.options.runtimeOwnerKind),
     dataDirToken: input.config.dataDir,
   });

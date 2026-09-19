@@ -2345,7 +2345,7 @@ describe("runtime services agent profile composition", () => {
     expect(mocked.agentService.renderProfile.mock.calls).toEqual(
       cases.map(() => [
         expect.objectContaining({
-          memoryEnabled: false,
+          memoryEnabled: true,
           cronEnabled: false,
           capabilities: expect.objectContaining({
             features: expect.objectContaining({ mavis: false }),

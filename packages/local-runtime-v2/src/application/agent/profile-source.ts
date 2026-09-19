@@ -49,7 +49,7 @@ export function createV2AgentProfileSource(
         promptProfile: runtimeOwnerKind === 'tui' ? 'tui' : 'desktop',
         appMode: session.appMode ?? 'coding',
         capabilities,
-        memoryEnabled: isCommandLineRuntimeOwner(runtimeOwnerKind) ? false : config.memory?.enabled,
+        memoryEnabled: config.memory?.enabled !== false,
         cronEnabled: !isCommandLineRuntimeOwner(runtimeOwnerKind),
         dataDirToken: config.dataDir,
         ...(promptRead ? { promptReadContext: promptRead } : {}),

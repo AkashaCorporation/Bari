@@ -6,8 +6,8 @@ import {
 } from './hosted-agent-capabilities.js';
 
 /**
- * Embedded command-line owners run a v2 Runtime without a Scheduler, so Cron,
- * memory and CU are unavailable there. This is the single source of truth for
+ * Embedded command-line owners run a v2 Runtime without a Scheduler, so Cron
+ * and CU are unavailable there. This is the single source of truth for
  * "this host is a restricted command-line runtime" — reused by the reminder
  * pipeline so prompt guidance cannot drift from the capability matrix.
  */
@@ -29,7 +29,6 @@ export function createHostedCapabilities(
     host,
     cliRuntime
       ? {
-          disableMemory: true,
           disableCron: true,
           disableComputerUse: true,
           ...(capabilityProfile === 'cli'
