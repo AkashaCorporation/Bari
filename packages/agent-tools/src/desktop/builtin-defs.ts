@@ -545,11 +545,16 @@ for the parent to persist.
 - Foreground is the default and waits for the result. Use it when the result
   blocks your next decision. Use run_in_background=true only for independent
   work while you continue non-overlapping work. Completion automatically resumes
-  the owner. For long background work, call task_output periodically (it supports
-  a bounded wait and output cursors) so you can report progress instead of waiting
-  blind until the finish event.
-- Set timeout_ms to bound a foreground task. When it elapses the child is
-  cancelled and the result reports the timeout plus the elapsed duration.
+  the owner.
+- For long background work, check progress with task_output at sensible intervals
+  (for example every few minutes) and give the user a brief progress note. A slow
+  task is not a failure: never cancel or time out a healthy task just because it
+  is taking long. If output stops growing for a long stretch, report the stall and
+  ask before stopping it.
+- Set timeout_ms only when the user asked for a bound or the work is genuinely
+  bounded. It cancels the child when it elapses, so never guess a deadline for
+  open-ended work; prefer progress check-ins plus task_stop when the user changes
+  direction.
 - Continue the child asynchronously with task_append using task_id; read
   task_output with the returned task_id. If the native mavis tool is available,
   "session send" with session_id waits synchronously for a reply. Start a new
@@ -717,7 +722,7 @@ export const LocalTaskOutputToolDef = {
   name: 'task_output',
   executionMode: 'parallel',
   description:
-    "Read output from a local background task. Completion automatically notifies and resumes the owning conversation; do not poll frequently while waiting. For an incremental read, pass the previous next_offset as offset, or consistently omit offset to use this session's automatic cursor. wait_ms waits up to 30000 ms; larger integer values are capped at 30000 ms without an error. Existing output or a terminal task status returns immediately, so wait_ms is not a minimum polling interval. Reading or reaching the wait limit does not stop the background task.",
+    "Read output from a local background task. Completion automatically notifies and resumes the owning conversation, so polling is not required to detect the end. For long-running work, read it at sensible intervals (for example every few minutes) to report progress to the user. For an incremental read, pass the previous next_offset as offset, or consistently omit offset to use this session's automatic cursor. wait_ms waits up to 30000 ms; larger integer values are capped at 30000 ms without an error. Existing output or a terminal task status returns immediately, so wait_ms is not a minimum polling interval. Reading or reaching the wait limit does not stop the background task.",
   schema: LocalTaskOutputSchema,
 } as const satisfies ToolDefinition;
 
