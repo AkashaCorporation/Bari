@@ -2647,6 +2647,7 @@
     "packages/local-runtime/test/unit/local-background-task-task-output-polling-reminder.test.ts",
     "packages/local-runtime/test/unit/local-file-api-save.test.ts",
     "packages/local-runtime/test/unit/local-history-store.test.ts",
+    "packages/local-runtime/test/unit/local-memory-edit-literal.test.ts",
     "packages/local-runtime/test/unit/local-native-tools.test.ts",
     "packages/local-runtime/test/unit/local-output-safety-writer-v2-guide-review.test.ts",
     "packages/local-runtime/test/unit/local-permission-facade.test.ts",
