@@ -42,7 +42,7 @@ export function resolveTuiProxyConfiguration(
     mode: 'proxy',
     httpProxy: httpProxy ? normalizeProxyValue(httpProxy) : '',
     httpsProxy: httpsProxy ? normalizeProxyValue(httpsProxy) : '',
-    noProxy: withLoopbackNoProxy(environment.NO_PROXY ?? environment.no_proxy),
+    noProxy: withLoopbackNoProxy(firstProxyValue(environment, 'NO_PROXY', 'no_proxy')?.value),
   };
 }
 
