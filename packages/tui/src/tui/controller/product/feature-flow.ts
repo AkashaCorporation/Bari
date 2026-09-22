@@ -748,6 +748,35 @@ export class TuiFeatureFlow {
           this.options.controller.refreshStatusMetricsNow();
           await this.showModelPicker('');
         },
+        onRefreshModels: async (providerId) => {
+          if (
+            this.modelPicker !== picker ||
+            !this.isCurrentSessionRequest(sessionId, sessionGeneration, loadSequence)
+          ) {
+            return 0;
+          }
+          const snapshot = await this.providerApplication.snapshot();
+          const view = snapshot.providers.find(
+            (candidate) => candidate.providerId === providerId,
+          );
+          if (!view) return 0;
+          const added = await this.providerApplication.refreshModels(view);
+          if (!this.isCurrentSessionRequest(sessionId, sessionGeneration, loadSequence)) {
+            return added;
+          }
+          await this.modelState.refresh(sessionId);
+          if (!this.isCurrentSessionRequest(sessionId, sessionGeneration, loadSequence)) {
+            return added;
+          }
+          this.options.controller.refreshStatusMetricsNow();
+          if (added > 0) {
+            this.options.append(
+              `Provider models refreshed: ${sanitizeTerminalText(view.name)} +${added} new model${added === 1 ? '' : 's'}.`,
+            );
+            await this.showModelPicker('');
+          }
+          return added;
+        },
         requestRender: this.options.onChanged,
         ...(!managedTokenPresent && models.some((model) => model.providerKind === 'minimax-managed')
           ? { unavailableHint: OFFICIAL_MODEL_LOGIN_HINT }
@@ -814,6 +843,19 @@ export class TuiFeatureFlow {
       providers,
       ...(catalogWarning ? { catalogWarning } : {}),
       onSave: (input) => this.providerApplication.saveCandidate(input),
+      onRefreshModels: async (providerId) => {
+        if (
+          !this.isCurrentSession(sessionId, sessionGeneration) ||
+          loadSequence !== this.providerLoadSequence
+        ) {
+          return 0;
+        }
+        const snapshot = await this.providerApplication.snapshot();
+        const view = snapshot.providers.find(
+          (candidate) => candidate.providerId === providerId,
+        );
+        return view ? this.providerApplication.refreshModels(view) : 0;
+      },
       onComplete: (result) =>
         this.completeProviderOnboarding(onboarding, result, sessionId, sessionGeneration),
       onCancel: () => this.closeProviderOnboarding(),
@@ -862,6 +904,11 @@ export class TuiFeatureFlow {
     this.options.append(
       `Provider ${result.reused ? 'updated' : 'added'}: ${providerName} · ${modelRef}.`,
     );
+    if (result.discoveredModels) {
+      this.options.append(
+        `Provider catalog refreshed: ${result.discoveredModels} new model${result.discoveredModels === 1 ? '' : 's'} discovered.`,
+      );
+    }
     if (selectedModel) this.warnModelCacheImpact(previousModel, selectedModel, sessionId);
     if (!selected) {
       this.options.append(

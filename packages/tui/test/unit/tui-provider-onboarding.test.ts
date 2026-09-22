@@ -154,6 +154,68 @@ describe("TuiProviderOnboarding", () => {
     });
   });
 
+  it("discovers provider models after saving and reports the count", async () => {
+    const onRefreshModels = vi.fn(async () => 5);
+    const onComplete = vi.fn(async () => undefined);
+    const onboarding = new TuiProviderOnboarding({
+      templates: [knownTemplate],
+      onRefreshModels,
+      onSave: vi.fn(async () => ({
+        success: true,
+        provider: { providerId: "custom_provider:deepseek" },
+      })),
+      onComplete,
+      onCancel: vi.fn(),
+      requestRender: vi.fn(),
+    });
+
+    onboarding.handleInput("\r");
+    onboarding.handleInput("\t");
+    onboarding.handleInput("\r");
+    onboarding.handleInput("sk-discovery-key");
+    onboarding.handleInput("\r");
+    onboarding.handleInput("\r");
+    onboarding.handleInput("\r");
+
+    await vi.waitFor(() => expect(onComplete).toHaveBeenCalledOnce());
+    expect(onRefreshModels).toHaveBeenCalledWith("custom_provider:deepseek");
+    expect(onComplete).toHaveBeenCalledWith(
+      expect.objectContaining({ discoveredModels: 5 }),
+    );
+  });
+
+  it("completes the save even when model discovery fails", async () => {
+    const onRefreshModels = vi.fn(async () => {
+      throw new Error("models endpoint missing");
+    });
+    const onComplete = vi.fn(async () => undefined);
+    const onboarding = new TuiProviderOnboarding({
+      templates: [knownTemplate],
+      onRefreshModels,
+      onSave: vi.fn(async () => ({
+        success: true,
+        provider: { providerId: "custom_provider:deepseek" },
+      })),
+      onComplete,
+      onCancel: vi.fn(),
+      requestRender: vi.fn(),
+    });
+
+    onboarding.handleInput("\r");
+    onboarding.handleInput("\t");
+    onboarding.handleInput("\r");
+    onboarding.handleInput("sk-discovery-key");
+    onboarding.handleInput("\r");
+    onboarding.handleInput("\r");
+    onboarding.handleInput("\r");
+
+    await vi.waitFor(() => expect(onComplete).toHaveBeenCalledOnce());
+    expect(onRefreshModels).toHaveBeenCalledOnce();
+    expect(onComplete).toHaveBeenCalledWith(
+      expect.not.objectContaining({ discoveredModels: expect.anything() }),
+    );
+  });
+
   it("opens masked API Key editing on the second Enter when no key is configured", () => {
     const onSave = vi.fn();
     const onboarding = new TuiProviderOnboarding({

@@ -56,6 +56,7 @@ export class TuiModelPicker implements Component, Focusable {
   private readonly modelByKey = new Map<ModelKey, TuiModel>();
   private deletingProviderId: string | undefined;
   private deleteStatus: { readonly tone: 'info' | 'error'; readonly text: string } | undefined;
+  private refreshStatus: { readonly tone: 'info' | 'error'; readonly text: string } | undefined;
   private busy = false;
   private _focused = false;
 
@@ -73,6 +74,7 @@ export class TuiModelPicker implements Component, Focusable {
       };
       onAddProvider?: () => void;
       onDeleteProvider?: (providerId: string) => Promise<void>;
+      onRefreshModels?: (providerId: string) => Promise<number>;
       requestRender?: () => void;
     } = {},
     /** Think effort already stored for the current Session, when known. */
@@ -110,6 +112,15 @@ export class TuiModelPicker implements Component, Focusable {
     }
 
     const model = this.focusedModel();
+    if (
+      model &&
+      isCustomProviderModel(model) &&
+      this.availability.onRefreshModels &&
+      matchesKey(data, Key.ctrl('r'))
+    ) {
+      void this.refreshProviderModels(model.providerId);
+      return;
+    }
     if (
       model &&
       isCustomProviderModel(model) &&
@@ -195,6 +206,13 @@ export class TuiModelPicker implements Component, Focusable {
         ? [chalk.hex(colors.warning)(sanitizeTerminalText(this.availability.unavailableHint))]
         : []),
       ...(layout.bodyHeight >= 2 ? [`${searchPrompt}${search}`] : []),
+      ...(this.refreshStatus
+        ? [
+            this.refreshStatus.tone === 'error'
+              ? chalk.hex(colors.error)(`! ${this.refreshStatus.text}`)
+              : chalk.hex(colors.accent)(this.refreshStatus.text),
+          ]
+        : []),
       ...(layout.bodyHeight >= 4 &&
       this.visibleModels().length === 0 &&
       (this.availability.onAddProvider || this.availability.codexOAuth)
@@ -377,12 +395,16 @@ export class TuiModelPicker implements Component, Focusable {
       model && isCustomProviderModel(model) && this.availability.onDeleteProvider
         ? ' · ctrl+d delete provider'
         : '';
+    const refreshHint =
+      model && isCustomProviderModel(model) && this.availability.onRefreshModels
+        ? ' · ctrl+r refresh'
+        : '';
     if (supportsTuiEffort(model)) {
-      return `↑↓ select · type to search · ←/→ effort · enter apply${contextHint}${deleteHint} · esc cancel`;
+      return `↑↓ select · type to search · ←/→ effort · enter apply${contextHint}${deleteHint}${refreshHint} · esc cancel`;
     }
     return switchable
-      ? `↑↓ select · type to search · ←/→ thinking · enter apply${contextHint}${deleteHint} · esc cancel`
-      : `↑↓ select · type to search · enter apply${contextHint}${deleteHint} · esc cancel`;
+      ? `↑↓ select · type to search · ←/→ thinking · enter apply${contextHint}${deleteHint}${refreshHint} · esc cancel`
+      : `↑↓ select · type to search · enter apply${contextHint}${deleteHint}${refreshHint} · esc cancel`;
   }
 
   private renderDeleteConfirmation(width: number, height?: number): string[] {
@@ -438,6 +460,33 @@ export class TuiModelPicker implements Component, Focusable {
           summary: "Couldn't delete provider.",
           nextStep: 'Retry, or press Esc to cancel.',
           preservation: 'The provider and its models are unchanged.',
+        }),
+      };
+    } finally {
+      this.busy = false;
+      this.availability.requestRender?.();
+    }
+  }
+
+  private async refreshProviderModels(providerId: string): Promise<void> {
+    const onRefreshModels = this.availability.onRefreshModels;
+    if (!onRefreshModels || this.busy) return;
+    this.busy = true;
+    this.refreshStatus = { tone: 'info', text: 'Refreshing provider models…' };
+    this.availability.requestRender?.();
+    try {
+      const added = await onRefreshModels(providerId);
+      this.refreshStatus =
+        added > 0
+          ? { tone: 'info', text: `Added ${added} new model${added === 1 ? '' : 's'}.` }
+          : { tone: 'info', text: 'No new models found.' };
+    } catch (error) {
+      this.refreshStatus = {
+        tone: 'error',
+        text: formatTuiActionFailure(error, {
+          summary: "Couldn't refresh provider models.",
+          nextStep: 'Retry, or edit the provider in /provider.',
+          preservation: 'The saved models are unchanged.',
         }),
       };
     } finally {

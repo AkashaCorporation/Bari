@@ -234,6 +234,74 @@ describe("TuiModelPicker", () => {
     expect(onSelect).not.toHaveBeenCalled();
   });
 
+  it("refreshes provider models for the focused custom provider and keeps plain r for search", async () => {
+    const onRefreshModels = vi.fn(async () => 3);
+    const onSelect = vi.fn();
+    const picker = new TuiModelPicker(
+      [
+        {
+          providerId: "custom_provider:openai",
+          providerName: "OpenAI",
+          providerSource: "custom_provider",
+          providerKind: "custom",
+          modelId: "gpt-4o",
+          displayName: "GPT-4o",
+        },
+      ],
+      onSelect,
+      vi.fn(),
+      { onRefreshModels, requestRender: vi.fn() },
+    );
+
+    expect(stripAnsi(picker.render(90).join("\n"))).toContain("ctrl+r refresh");
+    picker.handleInput("r");
+    expect(stripAnsi(picker.render(90).join("\n"))).toContain("Search: r");
+    expect(onRefreshModels).not.toHaveBeenCalled();
+
+    picker.handleInput("\x7f");
+    picker.handleInput("\x12");
+    expect(stripAnsi(picker.render(90).join("\n"))).toContain(
+      "Refreshing provider models",
+    );
+    await vi.waitFor(() =>
+      expect(onRefreshModels).toHaveBeenCalledWith("custom_provider:openai"),
+    );
+    await vi.waitFor(() =>
+      expect(stripAnsi(picker.render(90).join("\n"))).toContain("Added 3 new models."),
+    );
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  it("reports provider refresh failures without dropping the model list", async () => {
+    const onRefreshModels = vi.fn(async () => {
+      throw new Error("models endpoint missing");
+    });
+    const picker = new TuiModelPicker(
+      [
+        {
+          providerId: "custom_provider:openai",
+          providerName: "OpenAI",
+          providerSource: "custom_provider",
+          providerKind: "custom",
+          modelId: "gpt-4o",
+          displayName: "GPT-4o",
+        },
+      ],
+      vi.fn(),
+      vi.fn(),
+      { onRefreshModels, requestRender: vi.fn() },
+    );
+
+    picker.handleInput("\x12");
+    await vi.waitFor(() =>
+      expect(stripAnsi(picker.render(160).join("\n"))).toContain(
+        "Couldn't refresh provider models: models endpoint missing.",
+      ),
+    );
+    expect(stripAnsi(picker.render(90).join("\n"))).toContain("GPT-4o");
+    expect(onRefreshModels).toHaveBeenCalledOnce();
+  });
+
   it("does not offer provider deletion for built-in models", () => {
     const onDeleteProvider = vi.fn(async () => undefined);
     const picker = new TuiModelPicker(

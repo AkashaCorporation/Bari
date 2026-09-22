@@ -47,6 +47,7 @@ export interface TuiProviderOnboardingResult {
   readonly providerName: string;
   readonly reused?: boolean;
   readonly modelId: string;
+  readonly discoveredModels?: number;
 }
 
 export interface TuiProviderOnboardingOptions {
@@ -56,6 +57,7 @@ export interface TuiProviderOnboardingOptions {
   readonly onSave: (
     input: McodeSaveProviderCandidateInput,
   ) => Promise<McodeSaveProviderCandidateResult>;
+  readonly onRefreshModels?: (providerId: string) => Promise<number>;
   readonly onComplete: (result: TuiProviderOnboardingResult) => void | Promise<void>;
   readonly onCancel: () => void;
   readonly requestRender: () => void;
@@ -525,11 +527,23 @@ export class TuiProviderOnboarding implements Component, Focusable {
         this.status = result.status?.lastErrorMessage ?? 'Connection test failed.';
         return;
       }
+      // Model discovery is a bonus: a missing or failing models endpoint must
+      // never undo a saved connection.
+      let discoveredModels: number | undefined;
+      if (this.options.onRefreshModels && result.provider?.providerId) {
+        try {
+          const added = await this.options.onRefreshModels(result.provider.providerId);
+          if (added > 0) discoveredModels = added;
+        } catch {
+          discoveredModels = undefined;
+        }
+      }
       await this.options.onComplete({
         ...(result.provider?.providerId ? { providerId: result.provider.providerId } : {}),
         providerName: input.name ?? 'Custom provider',
         modelId: input.modelId,
         ...(this.connection ? { reused: true } : {}),
+        ...(discoveredModels ? { discoveredModels } : {}),
       });
       if (this.template) this.resetKnownProviderDraft();
     } catch (error) {
