@@ -106,3 +106,10 @@ Remove `L024` when the selected Pi baseline natively matches legacy-terminal `Ct
 - Change: strip leading zone prefixes before comparing screen lines, so initial frames, differential redraws, and history caches stay clean. Fullscreen behavior is unchanged.
 - Evidence: `test/unit/tui-engine-local-deltas.test.ts` checks initial and differential writes.
 - Removal condition: the selected Pi baseline supplies equivalent normal-mode filtering.
+
+## L037: Commit the IME cursor with the regular-screen frame
+
+- Product contract: a presented frame exposes the focused input's cursor position and visibility, including full redraws, differential updates, and deletion-only frames.
+- Minimal difference: append cursor restoration to the bounded frame writer before ending synchronized output. Cursor-only updates retain the existing path. The product renderer separately defaults to a visible hardware cursor on Windows, where older ConPTY renderers can omit hidden cursor positions; explicit options and `PI_HARDWARE_CURSOR` remain authoritative.
+- Evidence: `test/unit/tui-ime-cursor.test.ts` replays terminal sequences at each synchronized-output boundary and exercises the product renderer, Composer, Editor, focus, mode switches, CJK wrapping, resize and shrink. Native Windows IME and ConPTY transport require separate acceptance.
+- Removal condition: the selected Pi baseline commits cursor restoration within the same synchronized frame.
