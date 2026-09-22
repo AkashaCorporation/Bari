@@ -53,6 +53,8 @@ pnpm bari exec "Explain this project's test entry points" --model <provider-id>/
 
 Replace the example URL, model name, and IDs with your configuration and the IDs returned by the list command. `--context`, `--max-output`, and `--effort` are optional metadata for the listed models. `--use` tests the first model before saving and selecting it; when the test fails nothing is saved, so omit `--use` if you want to store the provider first and test it separately. `exec --model` overrides the model for the current run only. Backslash line continuations are for POSIX shells; use a single line in PowerShell.
 
+`--api-key-env` reads the current environment variable value and stores that value in the active profile's `config.yaml`; it does not save an environment-variable reference. The file still contains plaintext credentials. On POSIX systems, config writes and temporary copies use `0600`. When loading existing files, MCode removes group/other access while preserving the owner's permissions; already-private files such as `0400` or `0600` do not require a permission change. Loading fails if an unsafe main config cannot be restricted. Older migration backups are also checked, but inspection or repair failures produce a warning identifying the directory or backup that needs manual attention rather than preventing the main config from loading. Windows file modes do not provide equivalent ACL protection; restrict access to the profile directory using Windows permissions.
+
 [Live acceptance](verification.md) separately verified MiniMax Token Plan and one configured BYOK provider. This is not a guarantee for every compatible service.
 
 ### OpenCode Go

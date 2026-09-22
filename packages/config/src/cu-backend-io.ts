@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import { writePrivateConfigFileSync } from './private-config-file.js';
 import { getConfig, getConfigPath, resetConfig } from './config.js';
-import { writeConfigFileSecure } from './secure-config-write.js';
 import {
   type CuBackend,
   DEFAULT_CU_BACKEND,
@@ -52,7 +52,7 @@ export function setCuBackend(value: CuBackend): void {
 
   raw.cuBackend = value;
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
-  writeConfigFileSecure(configPath, yaml.dump(raw));
+  writePrivateConfigFileSync(configPath, yaml.dump(raw));
   resetConfig();
 }
 
