@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, expect, it, vi } from "vitest";
 import { readProjectMcpConfig } from "./project-config.js";
+import { directoryLink } from '../../../../../test/helpers/filesystem-links.js';
 
 const roots: string[] = [];
 afterEach(async () => {
@@ -108,6 +109,10 @@ it("rejects symlinks outside the project", async () => {
   const outside = await mkdtemp(join(tmpdir(), "project-mcp-outside-"));
   roots.push(outside);
   await writeFile(join(outside, "config"), JSON.stringify({ mcpServers: {} }));
-  await symlink(join(outside, "config"), join(root, ".mcp.json"));
+  if (process.platform === 'win32') {
+    await directoryLink(outside, join(root, '.mcp.json'));
+  } else {
+    await symlink(join(outside, "config"), join(root, ".mcp.json"));
+  }
   expect((await readProjectMcpConfig(root)).error).toContain("Cannot read");
 });

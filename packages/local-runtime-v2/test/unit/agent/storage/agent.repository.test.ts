@@ -6,11 +6,11 @@ import {
   readFile,
   readdir,
   rm,
-  symlink,
   writeFile,
 } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { directoryLink } from '../../../../../../test/helpers/filesystem-links.js';
 
 import {
   type CreateLocalRuntimeHostOptions,
@@ -1410,7 +1410,7 @@ describe("DrizzleAgentRepository Desktop Agent directory safety", () => {
       join(tmpdir(), "agent-repository-linked-agents-"),
     );
     cleanup.push(() => rm(outsideDir, { recursive: true, force: true }));
-    await symlink(outsideDir, join(dataDir, "agents"));
+    await directoryLink(outsideDir, join(dataDir, "agents"));
 
     await expect(
       repository.insert({
@@ -1437,7 +1437,7 @@ describe("DrizzleAgentRepository Desktop Agent directory safety", () => {
     );
     cleanup.push(() => rm(outsideDir, { recursive: true, force: true }));
     await mkdir(join(dataDir, "agents"), { recursive: true });
-    await symlink(outsideDir, join(dataDir, "agents", "linked-agent"));
+    await directoryLink(outsideDir, join(dataDir, "agents", "linked-agent"));
 
     await expect(
       repository.insert({
@@ -1464,7 +1464,7 @@ describe("DrizzleAgentRepository Desktop Agent directory safety", () => {
     );
     cleanup.push(() => rm(outsideDir, { recursive: true, force: true }));
     await mkdir(join(dataDir, "agents"), { recursive: true });
-    await symlink(outsideDir, join(dataDir, "agents", ".builtin"));
+    await directoryLink(outsideDir, join(dataDir, "agents", ".builtin"));
 
     await expect(
       repository.writeBuiltinCanonicalConfig("explore", {

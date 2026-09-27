@@ -79,10 +79,13 @@ export interface LocalAgentTurnRunnerResult extends LocalRuntimeTurnRunnerResult
 const OUTPUT_SAFETY_MAX_REGENERATIONS = 3;
 /** V2 production runner: direct Pi invocation plus local input/output safety policy. */
 export class LocalAgentTurnRunner implements LocalRuntimeTurnRunnerPort {
+  readonly acceptsEventSummary: boolean;
   private readonly piRunner: LocalPiTurnRunner;
   private readonly outputSafetyMaxRegenerations: number;
 
   constructor(private readonly options: LocalAgentTurnRunnerOptions) {
+    // Injected runners and evaluation reporters retain their full event contract.
+    this.acceptsEventSummary = !options.piRunner && !options.evalReporterFactory;
     this.piRunner = options.piRunner ?? new PiTurnRunner(buildLocalPiTurnRunnerOptions(options));
     this.outputSafetyMaxRegenerations =
       options.outputSafetyMaxRegenerations ?? OUTPUT_SAFETY_MAX_REGENERATIONS;
@@ -181,7 +184,7 @@ export class LocalAgentTurnRunner implements LocalRuntimeTurnRunnerPort {
       const safetyWriter = this.createSafetyWriter(input, state, safetyAbort);
       state.activeWriter = safetyWriter;
       if (state.inputRejected) safetyWriter.block();
-      state.finalAttemptEventStart = input.eventWriter.events.length;
+      state.finalAttemptEventStart = (input.eventWriter.outcome?.eventCount ?? input.eventWriter.events.length);
       try {
         await this.runPiAttempt({
           input,
@@ -475,7 +478,7 @@ function createMutableRunnerState(input: LocalRuntimeTurnRunnerInput): MutableRu
     retracted: false,
     networkStopped: false,
     inputSafetyReviewUnknown: false,
-    finalAttemptEventStart: input.eventWriter.events.length,
+    finalAttemptEventStart: (input.eventWriter.outcome?.eventCount ?? input.eventWriter.events.length),
     eventIdGenerator:
       input.eventIdGenerator ??
       ((kind: string) => `evt_${input.turnId}_${kind}_${++eventIdentitySequence}`),
@@ -578,7 +581,7 @@ async function appendCancelledTurn(
   input: LocalRuntimeTurnRunnerInput,
   state: MutableRunnerState,
 ): Promise<void> {
-  if (deriveLocalTurnRuntimeOutcome(input.eventWriter.events).status === 'aborted') return;
+  if ((input.eventWriter.outcome?.read() ?? deriveLocalTurnRuntimeOutcome(input.eventWriter.events)).status === 'aborted') return;
   await input.eventWriter.appendEvents([
     buildAbortedTerminalStatusEvent({
       sessionId: input.sessionId,
@@ -700,7 +703,7 @@ function buildRunnerResult(
   state: MutableRunnerState,
 ): LocalAgentTurnRunnerResult {
   const events = input.eventWriter.events;
-  const outcome = deriveLocalTurnRuntimeOutcome(events);
+  const outcome = input.eventWriter.outcome?.read() ?? deriveLocalTurnRuntimeOutcome(events);
   const reconcile = deriveReconcile(state, outcome.status);
   const hasRetractionVariant = (state.retracted || state.networkStopped) && state.retractionVariant;
   return {

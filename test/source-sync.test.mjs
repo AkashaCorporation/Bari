@@ -410,7 +410,7 @@ test('suite runner preserves gate arguments and canonicalizes Windows temporary 
   assert.equal(result.status, 17, result.stderr);
   const child = JSON.parse(result.stdout);
   const expectedArgs = ['run', '--config', 'vitest.oss.config.mjs'];
-  if (process.platform === 'win32') expectedArgs.push('--testTimeout=20000');
+  if (process.platform === 'win32') expectedArgs.push('--maxWorkers', '1', '--testTimeout=20000');
   expectedArgs.push('test/example.test.ts');
   assert.deepEqual(child.args, expectedArgs);
   assert.equal(realpathSync(child.cwd), realpathSync(root));

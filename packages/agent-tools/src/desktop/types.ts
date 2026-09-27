@@ -325,6 +325,7 @@ export interface LocalSandboxBashOperationsFactory {
 export interface LocalBackgroundBashExecutorResult {
   text: string;
   details?: Record<string, unknown>;
+  isError?: boolean;
 }
 
 export interface LocalBackgroundBashExecutor {
@@ -437,6 +438,8 @@ export interface LocalTaskOutputReadOptions extends TaskOutputReadOptions {
 export interface LocalTaskOutputReadResult extends TaskOutputReadResult {
   /** Status read from the same post-wait snapshot as the returned output. */
   status?: BackgroundTaskStatus;
+  /** Task facts from the same post-wait snapshot as status. */
+  task?: BackgroundTask;
   timedOut?: boolean;
 }
 

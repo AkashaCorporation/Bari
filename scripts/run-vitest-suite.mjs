@@ -31,6 +31,9 @@ const result = spawnSync(
     "run",
     "--config",
     "vitest.oss.config.mjs",
+    // SQLite and filesystem/watch fixtures contend heavily on Windows. Keep
+    // file execution serial rather than relaxing individual test deadlines.
+    ...(process.platform === "win32" ? ["--maxWorkers", "1"] : []),
     ...testTimeoutArgs,
     ...files,
   ],
