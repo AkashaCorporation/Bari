@@ -87,6 +87,7 @@ import { SessionStreamService } from './stream/session-stream-service.js';
 import { createSessionUsageRepository } from './usage/repo/drizzle.js';
 import { recordCommittedPiUsage } from './usage/pi-usage.js';
 import { SessionUsageService } from './usage/service.js';
+import { RequestUsageLedger } from './usage/request-ledger.js';
 import { createSessionUsageCommitSignal } from './usage/commit-signal.js';
 import { SessionLlmCallReportStore, SessionReportService } from '@bari/session-report';
 import { createSessionStorageRetention } from './storage-retention.js';
@@ -168,6 +169,9 @@ export function initializeSessionSystem(options: InitializeSessionSystemOptions)
   });
   const usage = createSessionUsageRepository({ db: options.db });
   const usageCommits = createSessionUsageCommitSignal();
+  const requestUsage = new RequestUsageLedger(options.db, usageCommits, {
+    failureMarkerPath: join(options.dataDir, 'v2', '.request-accounting-incomplete'),
+  });
   const projects = createProjectRepository({ db: options.db });
   const assets = createSessionAssets(options, sessions);
   const operationIntents = createSessionOperationIntentRepository({ nowMs });
@@ -321,7 +325,8 @@ export function initializeSessionSystem(options: InitializeSessionSystemOptions)
     },
     usage: {
       repository: usage,
-      service: new SessionUsageService(usage),
+      service: new SessionUsageService(usage, requestUsage),
+      requests: requestUsage,
       projector: usageProjector,
       commits: usageCommits,
     },

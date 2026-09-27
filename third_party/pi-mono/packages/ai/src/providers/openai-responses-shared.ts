@@ -1,4 +1,5 @@
 import type OpenAI from "openai";
+import { markUsagePresence } from './usage-presence.js';
 import type {
 	Tool as OpenAITool,
 	ResponseCreateParamsStreaming,
@@ -492,9 +493,11 @@ export async function processResponsesStream<TApi extends Api>(
 					output: response.usage.output_tokens || 0,
 					cacheRead: cachedTokens,
 					cacheWrite: 0,
-					totalTokens: response.usage.total_tokens || 0,
+					totalTokens: response.usage.total_tokens ?? ((response.usage.input_tokens || 0) + (response.usage.output_tokens || 0)),
 					cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
 				};
+				markUsagePresence(output.usage, { input: response.usage.input_tokens, output: response.usage.output_tokens,
+					cacheRead: response.usage.input_tokens_details?.cached_tokens, totalTokens: response.usage.total_tokens });
 			}
 			calculateCost(model, output.usage);
 			if (options?.applyServiceTierPricing) {

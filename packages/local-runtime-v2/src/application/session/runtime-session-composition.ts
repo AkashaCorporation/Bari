@@ -151,7 +151,8 @@ export function createProductionSessionComposition(
   });
   const facts = createApplicationFactPorts({ publish: input.publishGlobalEvent });
   const archiveTitleModel = createProductionRootArchiveTitleModel(
-    { agents: product.agents, preparation, safety: input.safety },
+    { agents: product.agents, preparation, safety: input.safety,
+      observeLLMRequest: info => executionSessionSystem?.usage.requests.observe(info) },
     input.nowMs,
   );
   const importedSessionPin = createImportedSessionPinCallback();
@@ -208,7 +209,8 @@ export function createProductionSessionComposition(
     ...(input.metrics ? { compactionMetrics: input.metrics } : {}),
     title: {
       model: createProductionSessionTitleModel(
-        { agents: product.agents, preparation },
+        { agents: product.agents, preparation,
+          observeLLMRequest: info => executionSessionSystem?.usage.requests.observe(info) },
         input.nowMs,
       ),
       ...(input.metrics

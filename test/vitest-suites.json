@@ -168,7 +168,10 @@
       "packages/local-runtime-v2/src/service/turn-system/compaction/execution/checkpoint-prompt.test.ts",
       "packages/local-runtime-v2/src/service/turn-system/compaction/execution/checkpoint-provider.test.ts",
       "packages/local-runtime-v2/src/service/turn-system/compaction/local-context-compactor.test.ts",
-      "packages/local-runtime/test/unit/background-bash-output-contract.test.ts"
+      "packages/local-runtime/test/unit/background-bash-output-contract.test.ts",
+      "test/request-accounting.test.ts",
+      "packages/agent-core/test/unit/pi-turn-runner/request-observer.test.ts",
+      "packages/tui/test/unit/tui-request-usage.test.ts"
     ],
     "status-contract": [
       "packages/tui/test/unit/tui-build-mode-contract.test.ts"

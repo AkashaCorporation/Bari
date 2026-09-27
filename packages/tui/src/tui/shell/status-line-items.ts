@@ -32,6 +32,7 @@ export const TUI_STATUS_LINE_ITEMS = [
   'context-window',
   'subagent',
   'token-quota',
+  'token-usage',
   'cache-read-ratio',
   'context-remaining',
   'custom-command',
@@ -121,5 +122,6 @@ export const TUI_STATUS_LINE_DEFAULT_ITEMS: readonly TuiStatusLineItem[] = [
   'context-window',
   'subagent',
   'token-quota',
+  'token-usage',
   'context-remaining',
 ];

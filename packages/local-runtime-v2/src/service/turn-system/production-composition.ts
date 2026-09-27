@@ -11,6 +11,7 @@ import {
   type ToolOutputArtifactInput,
 } from '@bari/agent-extension';
 import type { LLMRetryOptions } from '@bari/agent-core/pi-turn-runner';
+import { combinePiLLMRequestObservers, observePiProviderRequests, type PiLLMRequestObserver } from '@bari/agent-core/pi-turn-runner';
 import { describeLocalBrowserToolInput } from '@bari/agent-tools/desktop';
 import type { IAgentConfig } from '@bari/protocol';
 import type { GlobalEventInput } from '@bari/shared/global-events';
@@ -188,6 +189,7 @@ export interface ProductionSessionTitleProductCapabilities<
 > {
   readonly agents: AgentExecutionSource<TAgent>;
   readonly preparation: ProductionAgentPreparation;
+  readonly observeLLMRequest?: PiLLMRequestObserver;
 }
 
 export interface CreateLocalAgentHostOptions<
@@ -259,7 +261,9 @@ export function createProductionSessionTitleModel<
     },
     resolveModel: async (input) => {
       const resolved = await preparation.resolveModel(input);
-      const resolvedStream = resolved.streamFn;
+      const resolvedStream = observePiProviderRequests(resolved.streamFn ?? streamSimple, {
+        sessionId: input.sessionId, turnId: input.turnId, scope: 'title', observer: product.observeLLMRequest, nowMs,
+      });
       return {
         model: resolved.model,
         ...(resolved.apiKey ? { apiKey: resolved.apiKey } : {}),
@@ -300,7 +304,9 @@ export function createProductionRootArchiveTitleModel<
     },
     resolveModel: async (input) => {
       const resolved = await preparation.resolveModel(input);
-      const resolvedStream = resolved.streamFn;
+      const resolvedStream = observePiProviderRequests(resolved.streamFn ?? streamSimple, {
+        sessionId: input.sessionId, turnId: input.turnId, scope: 'title', observer: product.observeLLMRequest, nowMs,
+      });
       return {
         model: resolved.model,
         ...(resolved.apiKey ? { apiKey: resolved.apiKey } : {}),
@@ -408,6 +414,7 @@ export async function createLocalAgentHost<
     permission: createHostPermissionPolicy(options),
     runner: {
       ...options.product.runner,
+      observeLLMRequest: combinePiLLMRequestObservers(options.product.runner.observeLLMRequest, options.sessions.usage.requests?.observe),
       reviewContent: options.safety.review,
     },
     ...optionalToolPolicyGuard(options.toolPolicyGuard),
@@ -470,6 +477,7 @@ export async function createLocalAgentHost<
       control: options.turnControl,
       lifecycle: options.sessions.agentProjection.compactionLifecycle,
       observer: options.sessions.agentProjection.compactionObserver,
+      observeLLMRequest: combinePiLLMRequestObservers(options.product.runner.observeLLMRequest, options.sessions.usage.requests?.observe),
       ...(options.product.runner.metricsClient
         ? { metricsClient: options.product.runner.metricsClient }
         : {}),

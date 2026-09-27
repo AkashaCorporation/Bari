@@ -100,6 +100,7 @@ export interface TranscriptContextVisualization {
 }
 
 export interface TranscriptUsageVisualization {
+  readonly accounting?: import('@bari/shared/request-usage').SessionRequestAccounting;
   readonly kind: 'usage';
   readonly model: string;
   readonly sessionRecorded?: boolean;

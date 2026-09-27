@@ -269,6 +269,7 @@ export class TuiProductAccess {
     return {
       summary: response.summary,
       rows: response.rows,
+      accounting: response.accounting,
     } as TuiSessionUsage;
   }
 

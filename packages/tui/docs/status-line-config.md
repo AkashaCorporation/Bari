@@ -46,6 +46,7 @@ Configuration loading checks that the value is an array. The TUI validates indiv
 
 | Item ID | Display |
 | --- | --- |
+| `token-usage` | Reported tokens for this session, its delegated agents, and automatic learning. Included in ordinary defaults; `*` indicates missing/partial or earlier unverified accounting. |
 | `build-mode` | Exclusive, opt-in machine-readable agent status (`[V]`) |
 | `current-dir` | Current working directory |
 | `session-title` | Session title |

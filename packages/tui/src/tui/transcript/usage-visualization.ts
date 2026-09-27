@@ -1,5 +1,5 @@
 import type { Component } from '../rendering/component.js';
-import { truncateToWidth, visibleWidth } from '../rendering/text.js';
+import { truncateToWidth, visibleWidth, wrapTextWithAnsi } from '../rendering/text.js';
 import { sanitizeTerminalText } from '../rendering/terminal-text.js';
 import { tuiChalk as chalk, tuiColors as colors } from '../theme/runtime.js';
 import {
@@ -46,6 +46,11 @@ export class UsageVisualization implements Component {
 
   private header(width: number): string {
     const title = chalk.bold.hex(colors.text)('Usage');
+    if (this.data.accounting) {
+      const total = this.data.accounting.total;
+      const label = total.totalTokens === undefined ? '? reported' : `${formatCompact(total.totalTokens)} reported`;
+      return composeEdges(title, chalk.bold.hex(colors.signal)(label), width);
+    }
     const summary =
       this.data.sessionRecorded === false
         ? chalk.hex(colors.dim)('Account only')
@@ -54,6 +59,7 @@ export class UsageVisualization implements Component {
   }
 
   private sessionSummary(width: number): string[] {
+    if (this.data.accounting) return renderRequestAccounting(this.data.accounting, width);
     const heading = sectionHeading('This session');
     if (this.data.sessionRecorded === false) {
       return [heading, chalk.hex(colors.dim)('No token activity yet.')];
@@ -68,6 +74,46 @@ export class UsageVisualization implements Component {
     if (width >= 26) return [heading, metrics.slice(0, 2).join('   '), metrics[2] ?? ''];
     return [heading, ...metrics];
   }
+}
+
+function renderRequestAccounting(accounting: NonNullable<TranscriptUsageVisualization['accounting']>, width: number): string[] {
+  const amount = (value: number | undefined) => value === undefined ? '?' : formatCompact(value);
+  const total = accounting.total;
+  const lines = [sectionHeading('This session and its agents')];
+  const note = (text: string, color = colors.dim) => lines.push(...wrapTextWithAnsi(chalk.hex(color)(text), width));
+  for (const [label, bucket] of [['Own', accounting.own], ['Agents', accounting.agents], ['Learning', accounting.maintenance]] as const) {
+    const partial = bucket.unknownRequests > 0 ? '*' : '';
+    const value = `${amount(bucket.totalTokens)}${partial}`;
+    const detail = `${bucket.requests} request${bucket.requests === 1 ? '' : 's'}`;
+    if (width >= 52 && total.totalTokens && bucket.totalTokens !== undefined) {
+      const barWidth = Math.min(28, width - 38);
+      const filled = Math.round(barWidth * Math.min(1, bucket.totalTokens / total.totalTokens));
+      const bar = chalk.hex(colors.signal)('━'.repeat(filled)) + chalk.hex(colors.dim)('─'.repeat(barWidth - filled));
+      lines.push(`${chalk.hex(colors.muted)(label.padEnd(9))}${chalk.bold.hex(colors.text)(value.padStart(8))}  ${bar}  ${chalk.hex(colors.dim)(detail)}`);
+    } else lines.push(composeEdges(chalk.hex(colors.muted)(label), chalk.bold.hex(colors.text)(value), width));
+  }
+  lines.push('', [metric('Input', amount(total.inputTokens)), metric('Output', amount(total.outputTokens)), metric('Total', amount(total.totalTokens))].join(width >= 48 ? '     ' : ' · '));
+  if (width < 48) {
+    lines.pop();
+    lines.push(metric('Input', amount(total.inputTokens)), metric('Output', amount(total.outputTokens)), metric('Total', amount(total.totalTokens)));
+  }
+  const children = accounting.byAgent.filter(row => row.sessionId !== accounting.sessionId);
+  if (children.length) {
+    lines.push('', sectionHeading('Agent sessions'));
+    for (const child of children) {
+      lines.push(composeEdges(safeInline(child.agentName) + (child.category === 'learning' ? ' · learning' : ''), `${amount(child.usage.totalTokens)}${child.usage.unknownRequests ? '*' : ''}`, width));
+    }
+  }
+  if (total.unknownRequests) { lines.push(''); note(`* ${total.unknownRequests} request(s) have incomplete or pending usage.`, colors.warning); }
+  if (accounting.accountingDegraded) note('* Some request accounting could not be recorded or attributed.', colors.warning);
+  if (accounting.auxiliary && (accounting.auxiliary.compaction.requests || accounting.auxiliary.title.requests)) {
+    lines.push(''); note(`Already in totals: compaction ${amount(accounting.auxiliary.compaction.totalTokens)} · titles ${amount(accounting.auxiliary.title.totalTokens)}.`);
+  }
+  if (accounting.legacyUnverified) note('* Earlier anonymous usage is not added to these request totals.');
+  const date = new Date(accounting.sinceMs);
+  lines.push(''); note(`Recorded since ${Number.isFinite(date.getTime()) ? date.toISOString().slice(0, 16).replace('T', ' ') + ' UTC' : 'unknown'}. Includes retries and compaction.`);
+  note('Reasoning is not added again. Provider billing may differ.');
+  return lines;
 }
 
 function renderCacheSummary(

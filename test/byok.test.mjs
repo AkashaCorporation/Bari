@@ -335,6 +335,18 @@ test(
     );
     const verificationDb = new Database(dbPath, { readonly: true });
     try {
+      const recordedRequests = verificationDb.prepare(
+        "SELECT request_id, scope, outcome, usage_status, total_tokens FROM local_runtime_llm_requests WHERE scope = 'agent'",
+      ).all();
+      const actualAgentRequests = requests.filter(request => request.body.stream && request.body.messages?.some(message =>
+        message.role === 'user' && /SOURCE_REPOSITORY_TEST|Repeat the marker|TOOL_READ_TEST/.test(JSON.stringify(message.content)),
+      ));
+      assert.equal(recordedRequests.length, actualAgentRequests.length, 'Each real agent provider call must have one durable request row');
+      assert.equal(new Set(recordedRequests.map(row => row.request_id)).size, recordedRequests.length);
+      assert.ok(recordedRequests.some(row => row.usage_status === 'reported' && row.total_tokens === 2));
+      assert.ok(recordedRequests.some(row => row.usage_status === 'missing' && row.total_tokens === null),
+        'A tool-call response without usage must remain unknown, not a free request');
+      assert.ok(recordedRequests.every(row => row.outcome === 'success'));
       assert.deepEqual(
         verificationDb.prepare(
           "SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'local_runtime_workspace_indexing_%'",

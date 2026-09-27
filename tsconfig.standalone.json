@@ -289,6 +289,9 @@
       "@bari/shared/questionnaire": [
         "./packages/shared/src/questionnaire.ts"
       ],
+      "@bari/shared/request-usage": [
+        "./packages/shared/src/request-usage.ts"
+      ],
       "@bari/shared/runtime-boundary-env": [
         "./packages/shared/src/runtime-boundary-env.ts"
       ],

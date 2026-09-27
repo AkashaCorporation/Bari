@@ -46,7 +46,7 @@ export {
   type LLMRetryStatus,
 } from './llm-retry.js';
 export type { LlmCaptureAgentEventSource, LlmCaptureRecorder } from './turn.js';
-export { createPiTurnHistogramBucketsByName, recordPiLLMCallMetrics } from './metrics.js';
+export { createPiTurnHistogramBucketsByName, recordPiLLMCallMetrics, combinePiLLMRequestObservers, observePiProviderRequests } from './metrics.js';
 export type {
   PiLLMCacheOutcome,
   PiLLMRequestObserver,

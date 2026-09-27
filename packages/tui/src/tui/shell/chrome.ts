@@ -239,6 +239,21 @@ function buildStatusSegment(
         ],
         { shrinkPriority: 45, dropPriority: 70 },
       );
+    case 'token-usage': {
+      const accounting = state.requestAccounting;
+      if (!accounting) return undefined;
+      const format = (value: number | undefined) => value === undefined ? '?'
+        : value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}m`
+        : value >= 1000 ? `${(value / 1000).toFixed(1)}k` : String(value);
+      const partial = accounting.total.unknownRequests > 0 || accounting.accountingDegraded || accounting.legacyUnverified;
+      const total = `${format(accounting.total.totalTokens)}${partial ? '*' : ''}`;
+      const learning = accounting.maintenance.requests ? ` · learning ${format(accounting.maintenance.totalTokens)}` : '';
+      return createStatusSegment([
+        `Tokens ${total} · own ${format(accounting.own.totalTokens)} · agents ${format(accounting.agents.totalTokens)}${learning}`,
+        `${total} tok · ${format(accounting.own.totalTokens)} own · ${format(accounting.agents.totalTokens)} agents`,
+        `${total} tok`,
+      ].map(text => chalk.hex(partial ? colors.muted : colors.signal)(text)), { shrinkPriority: 38, dropPriority: 62 });
+    }
     case 'cache-read-ratio':
       return createStatusSegment(
         [

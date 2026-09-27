@@ -6,7 +6,7 @@ import type {
   PromptSnapshotSource as RuntimePromptSnapshotSource,
   TurnAssemblyCtx,
 } from '@bari/agent-runtime';
-import type { PiTurnRunnerLogger } from '@bari/agent-core/pi-turn-runner';
+import type { PiTurnRunnerLogger, PiLLMRequestObserver } from '@bari/agent-core/pi-turn-runner';
 
 import type { SessionRecord, SessionSystemReadCapability } from '../../session-system/index.js';
 import type {
@@ -203,6 +203,7 @@ export interface AgentHostCompactionDependencies<
   readonly control: AgentHostCompactionControl;
   readonly lifecycle: ContextCompactionLifecycle;
   readonly observer?: ContextCompactionObserver;
+  readonly observeLLMRequest?: PiLLMRequestObserver;
   readonly metricsClient?: {
     counter(name: string, value: number, labels?: Record<string, string>): void;
     histogram(name: string, value: number, labels?: Record<string, string>): void;

@@ -696,6 +696,13 @@ describe('event-bridge/converters: buildDebugTraceEvent', () => {
 });
 
 describe('extractAssistantUsage', () => {
+  it('preserves provider presence instead of forwarding initialized zeros', () => {
+    expect(extractAssistantUsage({ role: 'assistant', usage: { reported: false, input: 0, output: 0, totalTokens: 0 } }, 1000)).toBeUndefined();
+    expect(extractAssistantUsage({ role: 'assistant', usage: { reported: true, reportedFields: ['output'], input: 0, output: 2, totalTokens: 2 } }, 1000))
+      .toEqual({ context_window: 1000, total_tokens: 2, output_tokens: 2 });
+    expect(extractAssistantUsage({ role: 'assistant', usage: { reported: true, reportedFields: ['input', 'output', 'totalTokens'], input: 0, output: 0, totalTokens: 0 } }, 1000))
+      .toEqual({ context_window: 1000, total_tokens: 0, input_tokens: 0, output_tokens: 0 });
+  });
   it('returns undefined for non-object input', () => {
     expect(extractAssistantUsage(undefined, 200_000)).toBeUndefined();
     expect(extractAssistantUsage(null, 200_000)).toBeUndefined();

@@ -44,6 +44,8 @@ import {
 } from './tool-context-size.js';
 import { fingerprintAssembly, type AssemblyFingerprint } from './assembly-fingerprint.js';
 
+import { normalizeReportedRequestUsage } from '@bari/shared/request-usage';
+
 const LARGE_TOOL_IO_TOKEN_THRESHOLD = 8_000;
 const MAX_ASSEMBLY_FINGERPRINT_BASELINES = 2_048;
 const MAX_LLM_REQUEST_GAP_BASELINES = 2_048;
@@ -64,11 +66,15 @@ export interface PiLLMRequestStartedInfo {
   readonly provider: string;
   readonly model: string;
   readonly caller: string;
+  readonly scope?: 'agent' | 'compaction' | 'title';
 }
 
 export interface PiLLMRequestSettledInfo {
   readonly endedAtMs: number;
   readonly cacheOutcome: PiLLMCacheOutcome;
+  readonly outcome?: import('@bari/shared/request-usage').RequestOutcome;
+  readonly usage?: import('@bari/shared/request-usage').ReportedRequestUsage;
+  readonly usageStatus?: import('@bari/shared/request-usage').RequestUsageStatus;
 }
 
 /** Fail-open host observer for one physical provider request lifecycle. */
@@ -81,6 +87,29 @@ export type PiLLMRequestSettlementObserver = (info: PiLLMRequestSettledInfo) => 
 export type PiLLMRequestObserver = (
   info: PiLLMRequestStartedInfo,
 ) => PiLLMRequestSettlementObserver | undefined | void;
+
+/** Observer failures must not suppress sibling local observers or the provider. */
+export function combinePiLLMRequestObservers(...observers: readonly (PiLLMRequestObserver | undefined)[]): PiLLMRequestObserver {
+  return info => {
+    const settlements = observers.flatMap(observer => {
+      try { const settle = observer?.(info); return settle ? [settle] : []; } catch { return []; }
+    });
+    return result => { for (const settle of settlements) { try { settle(result); } catch { /* observation only */ } } };
+  };
+}
+
+/** Share the exact physical-request/iterator lifecycle for auxiliary model calls. */
+export function observePiProviderRequests(inner: StreamFn, options: {
+  sessionId: string; turnId: string; observer?: PiLLMRequestObserver;
+  scope: 'compaction' | 'title'; nowMs?: () => number;
+}): StreamFn {
+  if (!options.observer) return inner;
+  return ((model, context, streamOptions) => {
+    const recorder = newPiTurnMetrics(undefined, options.nowMs ?? Date.now, undefined, options.observer)
+      .beginTurn(options.scope === 'title' ? 'title' : 'compact', model, { sessionId: options.sessionId, turnId: options.turnId, logger: {} });
+    return recorder.wrapStreamFn(inner, { recordTerminalFailure: false, scope: options.scope })(model, context, streamOptions);
+  }) as StreamFn;
+}
 
 interface TurnMetricsDiagnostics {
   sessionId: string;
@@ -449,7 +478,7 @@ export class TurnMetricsRecorder {
    * Wrap the fully composed streamFn so one LLM request maps to exactly one
    * `pi_llm_request_total` observation. Request start = wrapper invocation.
    */
-  wrapStreamFn(inner: StreamFn, settings: { recordTerminalFailure?: boolean } = {}): StreamFn {
+  wrapStreamFn(inner: StreamFn, settings: { recordTerminalFailure?: boolean; scope?: 'agent' | 'compaction' | 'title' } = {}): StreamFn {
     const recordTerminalFailure = settings.recordTerminalFailure ?? true;
     return (async (model, context, streamOptions) => {
       const labels: MetricLabels = {
@@ -470,6 +499,7 @@ export class TurnMetricsRecorder {
           provider: String(model.provider),
           model: String(model.id),
           caller: this.caller,
+          scope: settings.scope ?? 'agent',
         }),
       );
       if (interRequestGapMs !== undefined) {
@@ -976,7 +1006,10 @@ export class TurnMetricsRecorder {
           : 'no_read'
         : 'telemetry_unknown';
     if (settlementObserver) {
-      swallow(() => settlementObserver({ endedAtMs: responseCompletedAt, cacheOutcome }));
+      const outcome = final?.stopReason === 'aborted' || (thrown instanceof Error && thrown.name === 'AbortError') ? 'abort'
+        : thrown || providerError || final?.stopReason === 'error' || !final ? 'error' : 'success';
+      const reported = normalizeReportedRequestUsage(final?.usage, outcome);
+      swallow(() => settlementObserver({ endedAtMs: responseCompletedAt, cacheOutcome, outcome, usage: reported.usage, usageStatus: reported.status }));
     }
     client.histogram('pi_llm_response_ms', requestDurationMs, labels);
     if (final && Number.isFinite(requestDurationMs) && requestDurationMs > 0) {

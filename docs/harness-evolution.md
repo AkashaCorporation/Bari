@@ -37,7 +37,7 @@ benchmarks require separate evidence and are not implied by synthetic tests.
 - [ ] Automatic Compose Next admission.
 - [ ] Automatic Dream/Distill scheduling and bounded execution.
 - [ ] Learning provenance, validation and rollback.
-- [ ] Primary/delegated/maintenance token accounting and TUI presentation.
+- [x] Primary/delegated/maintenance token accounting and TUI presentation.
 - [ ] Repeatable evaluations and live-model protocol.
 - [ ] Full verification and independent source review.
 - [ ] HexCore integration assessment and delivery record.
@@ -62,3 +62,18 @@ independently of persistence recovery, covers success and failure receipts, and
 does not count explanatory prose as raw output. Unknown omitted-source byte
 counts remain explicitly incomplete. Focused output/lifecycle coverage passed;
 these checks are not a repeat of the full verifier on the follow-up revision.
+
+## Request accounting stage
+
+The physical request ledger, telemetry-presence handling and responsive TUI
+presentation are implemented. [Request accounting](request-accounting.md)
+defines scope, persistence, auxiliary subsets, legacy exclusions and failure
+limits. Automatic learning execution is still a separate unchecked task above.
+
+Validation includes actual built-CLI calls to a local synthetic provider with
+one durable request ID per observed agent call and missing-usage preservation.
+Focused integration, migration, observer, Goal-accounting and TUI regressions
+passed. Rendered 80/40-column previews were inspected, with width tests from
+0 to 120 columns and preserved build-mode exclusivity. Typecheck/build and
+source boundaries were checked; the integrated final verifier remains pending
+until the remaining automation and evaluation stages are implemented.

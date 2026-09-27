@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { markUsagePresence } from './usage-presence.js';
 import type {
 	ChatCompletionAssistantMessageParam,
 	ChatCompletionChunk,
@@ -124,6 +125,7 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 			provider: model.provider,
 			model: model.id,
 			usage: {
+				reported: false,
 				input: 0,
 				output: 0,
 				cacheRead: 0,
@@ -1043,6 +1045,9 @@ function parseChunkUsage(
 		totalTokens: input + outputTokens + cacheReadTokens + cacheWriteTokens,
 		cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
 	};
+	markUsagePresence(usage, { input: rawUsage.prompt_tokens, output: rawUsage.completion_tokens,
+		cacheRead: rawUsage.prompt_tokens_details?.cached_tokens ?? rawUsage.prompt_cache_hit_tokens,
+		cacheWrite: rawUsage.prompt_tokens_details?.cache_write_tokens });
 	calculateCost(model, usage);
 	return usage;
 }

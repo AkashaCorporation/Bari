@@ -622,6 +622,7 @@ export interface SteerSessionResult {
 }
 
 export interface SessionTokenUsageSummaryView {
+  accounting?: import('@bari/shared/request-usage').SessionRequestAccounting;
   inputTokens?: number;
   outputTokens?: number;
   reasoningTokens?: number;
@@ -861,6 +862,7 @@ export interface GetSessionUsageInput {
 }
 
 export interface GetSessionUsageResult {
+  accounting?: import('@bari/shared/request-usage').SessionRequestAccounting;
   summary?: SessionTokenUsageSummaryView;
   rows?: SessionTokenUsageRowView[];
 }

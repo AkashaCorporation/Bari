@@ -132,7 +132,7 @@ export function newTurn<TCtx extends ToolExecutionContext>(
   const composedStreamFn = composeStreamFn(resolved);
   const retryStream = (scope: LLMCallScope): StreamFn => {
     const metricsStreamFn = deps.metrics
-      ? deps.metrics.wrapStreamFn(composedStreamFn, { recordTerminalFailure: false })
+      ? deps.metrics.wrapStreamFn(composedStreamFn, { recordTerminalFailure: false, scope })
       : composedStreamFn;
     const callerObserver = input.llmRetry?.observer;
     const callerOnCallSettled = input.llmRetry?.onCallSettled;

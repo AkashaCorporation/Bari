@@ -240,12 +240,12 @@ export class SessionContentApplication {
     request: GetSessionUsageReq,
   ): Promise<GetSessionUsageResp> {
     try {
-      const { summary, rows } = await this.options.usage.readSession({
+      const { summary, rows, accounting } = await this.options.usage.readSession({
         sessionId: request.id,
         ...(request.fromMs !== undefined ? { from: request.fromMs } : {}),
         ...(request.toMs !== undefined ? { to: request.toMs } : {}),
       });
-      return { summary, rows: rows.map(toUsageView) };
+      return { summary, rows: rows.map(toUsageView), ...(accounting ? { accounting } : {}) };
     } catch (error) {
       if (error instanceof SessionUsageServiceError) {
         throw new AppError(400, error.reason, error.message);

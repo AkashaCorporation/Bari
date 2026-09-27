@@ -11,6 +11,14 @@ This directory vendors `pi-mono` as source so MiniMax can patch, validate, and s
 
 ## Local patch ledger
 
+### 2026-09-27 — preserve provider usage presence for Bari request accounting
+
+- Owner: AkashaCorporation / Bari; existing Pi licenses and attribution remain intact.
+- Affected package: `packages/ai`, Usage metadata and OpenAI Completions/Responses and Anthropic transports.
+- Preserve whether telemetry was received and which counters were supplied before adapter defaults fill missing fields with zero. A successful response with no usage is not evidence of zero consumption. Responses totals fall back to reported input plus output only when the total is absent.
+- Metadata is local accounting provenance, not a model-facing prompt or billing estimate. Other transports without presence metadata remain conservative for all-zero responses.
+- Validation: first-party request-accounting/observer regressions and the offline BYOK gate exercise actual streaming with and without usage. Vendored upstream suites remain outside this distribution's verification.
+
 No upstream source files are changed in the baseline import.
 
 ### 2026-09-23 — preserve Bash execution facts and bounded output
