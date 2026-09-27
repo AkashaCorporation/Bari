@@ -203,6 +203,10 @@
     "./request-usage": {
       "types": "./src/request-usage.ts",
       "import": "./dist/request-usage.js"
+    },
+    "./automation-assets": {
+      "types": "./src/automation-assets.ts",
+      "import": "./dist/automation-assets.js"
     }
   },
   "types": "./src/index.ts",
@@ -330,6 +334,9 @@
       ],
       "request-usage": [
         "src/request-usage.ts"
+      ],
+      "automation-assets": [
+        "src/automation-assets.ts"
       ]
     }
   },

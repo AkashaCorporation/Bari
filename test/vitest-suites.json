@@ -171,7 +171,8 @@
       "packages/local-runtime/test/unit/background-bash-output-contract.test.ts",
       "test/request-accounting.test.ts",
       "packages/agent-core/test/unit/pi-turn-runner/request-observer.test.ts",
-      "packages/tui/test/unit/tui-request-usage.test.ts"
+      "packages/tui/test/unit/tui-request-usage.test.ts",
+      "test/automation-learning.test.ts"
     ],
     "status-contract": [
       "packages/tui/test/unit/tui-build-mode-contract.test.ts"

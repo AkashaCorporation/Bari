@@ -3,6 +3,7 @@ import {
   type RunawayGuardSettings,
 } from "./runaway-guard-config.js";
 import fs from "node:fs";
+import { parseBariAutomationConfig } from './automation-config.js';
 import { restrictConfigFileSync, writePrivateConfigFileSync } from "./private-config-file.js";
 import path from "node:path";
 import os from "node:os";
@@ -977,6 +978,7 @@ export interface Config {
   memory: MemoryConfig;
   /** Skill self-evolution configuration. */
   skillEvolve: SkillEvolveConfig;
+  automation?: import('./automation-config.js').BariAutomationConfig;
   /** Session rotation configuration. */
   sessionRotate: SessionRotateConfig;
   /** AgentStop detector tunables (debounce, active-span backstop). */
@@ -2087,6 +2089,7 @@ export function resolveConfigFromRaw(
     agents: parseAgentsConfig(raw.agents),
     memory: parseMemoryConfig(raw),
     skillEvolve: parseSkillEvolveConfig(raw, beta),
+    automation: parseBariAutomationConfig(raw.automation),
     sessionRotate: parseSessionRotateConfig(raw),
     agentStop: parseAgentStopDetectorConfig(raw),
     asr: parseAsrConfig(raw),

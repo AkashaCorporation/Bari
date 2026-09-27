@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { withManagedAssetLock } from '@bari/shared/automation-assets';
 import { existsSync } from 'node:fs';
 import { mkdir, rename, stat, writeFile } from 'node:fs/promises';
 import { basename, dirname, join } from 'node:path';
@@ -99,6 +100,7 @@ export class FsLocalMemoryStore {
   }
 
   async appendMain(target: LocalMemoryTarget, content: string): Promise<LocalMemoryReadResult> {
+    this.assertWritable();
     const location = this.resolve(target);
     const filePath = await this.migrateLegacyUserMemory(location);
     const activeLocation =
@@ -123,6 +125,7 @@ export class FsLocalMemoryStore {
     newString: string,
     replaceAll = false,
   ): Promise<{ replacements: number; result: LocalMemoryReadResult }> {
+    this.assertWritable();
     const location = this.resolve(target);
     const filePath = await this.migrateLegacyUserMemory(location);
     return this.withFileQueue(filePath, async () => {
@@ -179,6 +182,7 @@ export class FsLocalMemoryStore {
   }
 
   async appendTopic(target: LocalMemoryTarget, topicName: string, content: string) {
+    this.assertWritable();
     const filePath = this.topicPath(target, topicName);
     return this.withFileQueue(filePath, async () => {
       const current = parseTopic(await safeRead(filePath));
@@ -196,6 +200,7 @@ export class FsLocalMemoryStore {
     newString: string,
     replaceAll = false,
   ) {
+    this.assertWritable();
     const filePath = this.topicPath(target, topicName);
     return this.withFileQueue(filePath, async () => {
       const current = parseTopic(await safeRead(filePath));
@@ -209,7 +214,10 @@ export class FsLocalMemoryStore {
   async deleteTopic(target: LocalMemoryTarget, topicName: string): Promise<boolean> {
     const filePath = this.topicPath(target, topicName);
     this.assertWritable();
-    return deleteIfExists(filePath);
+    return this.withFileQueue(filePath, async () => {
+      this.assertWritable();
+      return deleteIfExists(filePath);
+    });
   }
 
   async searchTopics(
@@ -244,6 +252,7 @@ export class FsLocalMemoryStore {
   }
 
   async appendDaily(target: LocalMemoryTarget, date: string, content: string): Promise<void> {
+    this.assertWritable();
     const filePath = this.dailyPath(target, date);
     await this.withFileQueue(filePath, async () => {
       const current = await safeRead(filePath);
@@ -431,7 +440,7 @@ export class FsLocalMemoryStore {
 
   private async withFileQueue<T>(filePath: string, work: () => Promise<T>): Promise<T> {
     const previous = this.writeQueues.get(filePath) ?? Promise.resolve();
-    const next = previous.catch(() => undefined).then(work);
+    const next = previous.catch(() => undefined).then(() => withManagedAssetLock(filePath, work));
     this.writeQueues.set(
       filePath,
       next.catch(() => undefined),

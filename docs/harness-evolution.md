@@ -77,3 +77,12 @@ passed. Rendered 80/40-column previews were inspected, with width tests from
 0 to 120 columns and preserved build-mode exclusivity. Typecheck/build and
 source boundaries were checked; the integrated final verifier remains pending
 until the remaining automation and evaluation stages are implemented.
+
+## Automatic learning core
+
+The durable scheduler, source-linked proposal validation, coordinated memory
+writes and conflict-aware rollback now have focused SQLite/filesystem tests.
+[Automatic learning](automatic-learning.md) records the concrete limits and
+current implementation boundary. Runtime binding, maintenance execution,
+management controls and automatic Compose Next admission remain pending; the
+end-to-end learning checkboxes above intentionally remain unchecked.

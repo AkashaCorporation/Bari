@@ -46,6 +46,7 @@ import {
 } from './turn.js';
 import { tokenUsage } from './usage.js';
 import { llmRequests, requestAccountingState } from './llm-requests.js';
+import { automationState, automationRuns, automationChanges } from './automation.js';
 import { canonicalizeSqlExpression } from '../sql-contract.js';
 import { fileApiUploads } from './file-api.js';
 import { queryCollapseViewStates } from './query-collapse.js';
@@ -71,6 +72,7 @@ export const SESSION_STORAGE_SCHEMA = {
     tokenUsage,
     llmRequests,
     requestAccountingState,
+    automationState, automationRuns, automationChanges,
     sessionLocks,
     turnIngress,
     turnIngressSequences,

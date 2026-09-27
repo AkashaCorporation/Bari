@@ -184,6 +184,9 @@
       "@bari/shared/asset-markup": [
         "./packages/shared/src/asset-markup/index.ts"
       ],
+      "@bari/shared/automation-assets": [
+        "./packages/shared/src/automation-assets.ts"
+      ],
       "@bari/shared/bounded-json-stringify": [
         "./packages/shared/src/bounded-json-stringify.ts"
       ],
