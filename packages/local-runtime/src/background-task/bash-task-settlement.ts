@@ -22,6 +22,7 @@ export async function settleFailedBackgroundBash(
   watchdogTimedOut: boolean,
   maxRunMs: number,
 ): Promise<LocalBackgroundBashCompletion> {
+  output.observeExecutorResult(result);
   const observed = readBashExecutionOutcome(result.details);
   const execution: LocalBashExecutionOutcome = {
     ...(observed ?? {

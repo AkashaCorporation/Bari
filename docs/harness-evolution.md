@@ -33,7 +33,7 @@ benchmarks require separate evidence and are not implied by synthetic tests.
 
 ## Progress
 
-- [ ] Public fixes and dependencies, including Windows runtime verification.
+- [x] Public fixes and dependencies, including Windows runtime verification.
 - [ ] Automatic Compose Next admission.
 - [ ] Automatic Dream/Distill scheduling and bounded execution.
 - [ ] Learning provenance, validation and rollback.
@@ -45,3 +45,20 @@ benchmarks require separate evidence and are not implied by synthetic tests.
 The original working tree is preserved separately. Development commits use the
 repository-local author configuration; imported code provenance is recorded in
 [the selective integration record](source-sync-0.5.5.md).
+
+## Foundation verification record
+
+Commit `e3eebb29f186cc8f79ff505cdfcd9ed951348895` passed the full `pnpm verify`
+profile on Windows x64 / Node 24.21.0 on 2026-09-27: all 12 applicable gates,
+including source export, typecheck, build, standalone boundaries and offline
+BYOK. Capability tests: 4,073 passed / 43 conditionally skipped. Status contract:
+9 passed. POSIX policy and macOS sandbox gates are inapplicable on Windows.
+Two POSIX signal-specific BYOK tests are skipped; SQLite contention and the
+real PowerShell/native command lifecycle have separate Windows test coverage.
+
+Source review additionally found that a non-streaming executor preview could
+be labelled a complete output log. The follow-up retains source incompleteness
+independently of persistence recovery, covers success and failure receipts, and
+does not count explanatory prose as raw output. Unknown omitted-source byte
+counts remain explicitly incomplete. Focused output/lifecycle coverage passed;
+these checks are not a repeat of the full verifier on the follow-up revision.
