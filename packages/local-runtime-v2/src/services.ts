@@ -126,6 +126,14 @@ import {
   type InitializedCronService,
 } from "./service/cron/index.js";
 import {
+  initializeAutomationService,
+  createRuntimeLearningPorts,
+  type InitializedAutomationService,
+  type RuntimeLearningPortsInput,
+  type RuntimeLearningTurnPort,
+} from "./service/automation/index.js";
+import type { BariAutomationConfig } from "@bari/config";
+import {
   createRuntimeInspector,
   type ComposedInspector,
 } from "./service/llm-context-inspector/index.js";
@@ -266,6 +274,13 @@ export interface RuntimeServicesTestOverrides {
   readonly cron?: {
     readonly sessionPorts?: CronSessionPorts;
     readonly turnDelivery?: CronTurnDeliveryPort;
+  };
+  /**
+   * Automatic learning binds its own session-side port at composition. Omitted
+   * means the feature stays unbound, so no background model call can happen.
+   */
+  readonly automation?: {
+    readonly enabled?: boolean;
   };
   /** @internal Read-only observation seam for native AgentHost capability integration tests. */
   readonly inspectTurnCapabilities?: (
@@ -643,6 +658,7 @@ async function initializeRuntimeServiceOwners(
   let mcp: InitializedMcpService | undefined;
   let turnSystem: TurnSystemOwner | undefined;
   let cron: InitializedCronService | undefined;
+  let automation: InitializedAutomationService | undefined;
   let miniAppComposition: RuntimeMiniAppComposition | undefined;
   let resumeSessionDeletion: ((sessionId: string) => Promise<void>) | undefined;
   try {
@@ -722,6 +738,13 @@ async function initializeRuntimeServiceOwners(
       config: input.product.preparation.configBuilder.config,
       nowMs: input.nowMs,
     });
+    // Created before the turn system so its budget/tool extension can be
+    // registered there. The port resolves the turn owner lazily, which is what
+    // breaks the construction cycle.
+    automation = initializeRuntimeAutomation(input, () => {
+      if (!turnSystem) throw new Error('Turn system is not available yet');
+      return turnSystem.turns;
+    });
     turnSystem = await initializeRuntimeTurnSystem(input, {
       plan,
       planEntryEnabled: input.planEntryEnabled,
@@ -737,6 +760,7 @@ async function initializeRuntimeServiceOwners(
       disposeMcpSession: (sessionId) => mcpRuntime.disposeSession(sessionId),
       goalVerifierExtension: subagentVerification.extension,
       goalVerifierOutputTokenCap: subagentVerification.outputTokenCap,
+      learningExtension: automation?.extension(),
     });
     const sessionApplications = await initializeSessionApplications(
       input,
@@ -891,6 +915,8 @@ interface RuntimeTurnSystemInitializationDeps {
   readonly goalVerifierExtension: GoalSubagentVerifierRuntime["extension"];
   /** Host-clamped attempt cap the verifier child's provider requests must obey. */
   readonly goalVerifierOutputTokenCap: GoalSubagentVerifierRuntime["outputTokenCap"];
+  /** Bounds automatic learning requests; absent when the feature is unbound. */
+  readonly learningExtension?: AgentExtension;
 }
 
 async function initializeRuntimeTurnSystem(
@@ -904,6 +930,7 @@ async function initializeRuntimeTurnSystem(
     resumeSessionDeletion,
     goalVerifierExtension,
     goalVerifierOutputTokenCap,
+    learningExtension,
   } = dependencies;
   const llmRetryObserver = createSessionLLMRetryEventObserver(
     input.writeGlobalEvent,
@@ -987,6 +1014,7 @@ async function initializeRuntimeTurnSystem(
           plan.extension,
           goalVerifierExtension,
           createGoalBudgetSummaryExtension(),
+          ...(learningExtension ? [learningExtension] : []),
           ...normalExtensions,
         ],
         eventObserver: combineAgentEventObservers(
@@ -1097,13 +1125,39 @@ async function initializeRuntimeTurnSystem(
   });
 }
 
+function initializeRuntimeAutomation(
+  input: RuntimeServiceOwnerInitializationInput,
+  resolveTurns: () => RuntimeLearningTurnPort,
+): InitializedAutomationService | undefined {
+  if (input.options.overrides?.automation?.enabled !== true) return undefined;
+  // The runtime session/message owners are wider than the three projections the
+  // adapter needs. The cast is confined here, at the one composition seam.
+  const ports = createRuntimeLearningPorts({
+    sessions:
+      input.sessionSystem.sessions as unknown as RuntimeLearningPortsInput["sessions"],
+    messages:
+      input.sessionSystem.messages as unknown as RuntimeLearningPortsInput["messages"],
+    resolveTurns,
+    modelProvider: async () => undefined,
+  });
+  return initializeAutomationService({
+    db: input.options.db,
+    dataDir: input.options.dataDir,
+    host: ports,
+    readConfig: () =>
+      input.product.preparation.configBuilder.config() as {
+        automation?: BariAutomationConfig;
+      },
+    ...(input.nowMs ? { now: input.nowMs } : {}),
+  });
+}
+
 function initializeRuntimeCron(
   input: RuntimeServiceOwnerInitializationInput,
   turnSystem: TurnSystemOwner,
   applications: RuntimeApplications,
   lifecycle: Pick<SessionLifecycleService, "mutateSession">,
-): InitializedCronService {
-  if (!input.options.scheduler) {
+): InitializedCronService {  if (!input.options.scheduler) {
     throw new Error("Runtime Cron services require an owned Scheduler client.");
   }
   const sessionPorts =

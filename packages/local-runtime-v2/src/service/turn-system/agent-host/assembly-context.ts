@@ -153,7 +153,21 @@ function projectTurnIntent(
   if (provenance.source === 'code_review') {
     return projectCodeReviewIntent(readRecord(provenance.sourceContext?.review));
   }
+  // The automatic learning child is host-owned maintenance work, not user work.
+  // Without a non-empty run id the coordinator cannot fence this Turn, so an
+  // unscoped claim must not gain the learning budget and tool blocks.
+  if (provenance.source === 'learning') {
+    return projectLearningIntent(readRecord(provenance.sourceContext?.learning));
+  }
   return undefined;
+}
+
+function projectLearningIntent(
+  learning: Readonly<Record<string, unknown>>,
+): TurnAssemblyCtx['turnIntent'] | undefined {
+  const runId = learning.runId;
+  if (typeof runId !== 'string' || runId.trim().length === 0) return undefined;
+  return { kind: 'learning-maintenance', attributes: { runId: runId.trim() } };
 }
 
 function projectGoalVerifierIntent(
