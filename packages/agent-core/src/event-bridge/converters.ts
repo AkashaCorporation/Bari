@@ -438,14 +438,18 @@ export function extractAssistantUsage(
   const usage = m.usage;
   if (!usage || typeof usage !== 'object') return undefined;
   const u = usage as Record<string, unknown>;
+  if (u.reported === false) return undefined;
+  const present = Array.isArray(u.reportedFields) ? new Set(u.reportedFields) : undefined;
   const finite = (v: unknown): number | undefined =>
-    typeof v === 'number' && Number.isFinite(v) ? v : undefined;
-  const input = finite(u.input);
-  const output = finite(u.output);
-  const cacheRead = finite(u.cacheRead) ?? 0;
-  const cacheWrite = finite(u.cacheWrite) ?? 0;
+    typeof v === 'number' && Number.isSafeInteger(v) && v >= 0 ? v : undefined;
+  const field = (name: string) => present && !present.has(name) ? undefined : finite(u[name]);
+  if (['input', 'output', 'cacheRead', 'cacheWrite', 'totalTokens'].every(name => field(name) === undefined)) return undefined;
+  const input = field('input');
+  const output = field('output');
+  const cacheRead = field('cacheRead') ?? 0;
+  const cacheWrite = field('cacheWrite') ?? 0;
   const total =
-    (finite(u.totalTokens) ?? 0) || (input ?? 0) + (output ?? 0) + cacheRead + cacheWrite;
+    (field('totalTokens') ?? 0) || (input ?? 0) + (output ?? 0) + cacheRead + cacheWrite;
   return {
     total_tokens: total,
     context_window: contextWindow,

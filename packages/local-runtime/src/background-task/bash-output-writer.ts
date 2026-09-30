@@ -20,9 +20,13 @@ export class BackgroundBashOutputWriter {
   private drainPromise: Promise<void> | undefined;
   private rawOutputAccounting = false;
   private persistenceIncomplete = false;
+  private sourceIncomplete = false;
+  private sourceOmittedBytes = 0;
+  private sourceOmissionUnknown = false;
   private recoveryOffset = 0;
   private recoveryContent = '';
   private droppedRecoveryBytes = 0;
+  private omittedBytes = 0;
   private retryTimer: NodeJS.Timeout | undefined;
   private retryDelayMs = INITIAL_RECOVERY_RETRY_MS;
   private settling = false;
@@ -49,16 +53,46 @@ export class BackgroundBashOutputWriter {
     this.startDrain();
   };
 
+  /** A saved preview cannot establish that the executor supplied the whole log. */
+  observeExecutorResult(result: LocalBackgroundBashExecutorResult): void {
+    const details = result.details;
+    const facts = details?.output as { rawBytes?: unknown; persistence?: unknown } | undefined;
+    const declared = facts?.rawBytes;
+    const validCount = typeof declared === 'number' && Number.isSafeInteger(declared) && declared >= 0;
+    const captured = this.streamedOutput || this.rawOutputAccounting
+      ? this.outputBytes
+      : Buffer.byteLength(result.text, 'utf8');
+    const processOutput = details?.processOutput as {
+      stdoutTruncated?: boolean; stderrTruncated?: boolean;
+    } | undefined;
+    const preview = (details?.truncation as { truncated?: boolean } | undefined)?.truncated === true
+      || processOutput?.stdoutTruncated === true || processOutput?.stderrTruncated === true
+      || facts?.persistence === 'incomplete';
+    const missing = validCount ? Math.max(0, declared - captured) : 0;
+    // A complete host stream can recover an executor's failed private log.
+    // Without that stream, truncation remains incomplete even if rawBytes is absent.
+    const incomplete = missing > 0 || (declared !== undefined && !validCount)
+      || (preview && (!this.streamedOutput || !validCount));
+    this.sourceIncomplete ||= incomplete;
+    if (incomplete && (!this.rawOutputAccounting || !validCount)) {
+      // Result text can include status/omission prose, not just raw output.
+      this.sourceOmissionUnknown = true;
+    } else if (validCount && this.rawOutputAccounting) {
+      this.sourceOmittedBytes = Math.max(this.sourceOmittedBytes, missing);
+    }
+    this.outputBytes = validCount
+      ? this.rawOutputAccounting ? Math.max(captured, declared) : declared
+      : captured;
+  }
+
   async settleSuccess(
     result: LocalBackgroundBashExecutorResult,
   ): Promise<TaskOutputRef | undefined> {
+    this.observeExecutorResult(result);
     this.beginSettlement();
     await this.flush();
-    if (!this.streamedOutput && !this.rawOutputAccounting) {
-      this.outputBytes = Buffer.byteLength(result.text, 'utf8');
-    }
     if (!this.persistenceIncomplete) {
-      return this.lastOutputRef ?? (await this.tryAppend(result.text, 'final_result'));
+      return this.lastOutputRef ?? (await this.appendTerminalOutput(result.text));
     }
     try {
       return await this.repairPendingOutput();
@@ -81,6 +115,23 @@ export class BackgroundBashOutputWriter {
       }
     }
     return this.appendTerminalOutput(content);
+  }
+
+  describePersistence(outputRef?: TaskOutputRef): {
+    rawBytes: number;
+    persistence: 'complete' | 'incomplete';
+    omittedBytes: number;
+    omittedBytesIncomplete?: true;
+  } {
+    return {
+      rawBytes: this.outputBytes,
+      persistence:
+        !this.persistenceIncomplete && !this.sourceIncomplete && this.omittedBytes === 0 && outputRef
+          ? 'complete'
+          : 'incomplete',
+      omittedBytes: this.omittedBytes + this.sourceOmittedBytes,
+      ...(this.sourceOmissionUnknown ? { omittedBytesIncomplete: true as const } : {}),
+    };
   }
 
   private startDrain(): void {
@@ -155,10 +206,12 @@ export class BackgroundBashOutputWriter {
       retained = retained.slice(0, -1);
     }
     this.recoveryContent += retained;
-    this.droppedRecoveryBytes += Math.max(
+    const droppedBytes = Math.max(
       0,
       Buffer.byteLength(content, 'utf8') - Buffer.byteLength(retained, 'utf8'),
     );
+    this.droppedRecoveryBytes += droppedBytes;
+    this.omittedBytes += droppedBytes;
   }
 
   warn(operation: string, error: unknown): void {

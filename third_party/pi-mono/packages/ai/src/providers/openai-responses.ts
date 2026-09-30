@@ -95,6 +95,7 @@ export const streamOpenAIResponses: StreamFunction<"openai-responses", OpenAIRes
 			provider: model.provider,
 			model: model.id,
 			usage: {
+				reported: false,
 				input: 0,
 				output: 0,
 				cacheRead: 0,

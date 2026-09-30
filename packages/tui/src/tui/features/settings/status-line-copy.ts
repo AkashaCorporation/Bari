@@ -39,6 +39,7 @@ const zh: Record<keyof typeof en, string> = {
 };
 
 const descriptions: Record<Exclude<TuiStatusLineItem, 'build-mode'>, readonly [string, string]> = {
+  'token-usage': ['Reported tokens: own, agents and learning', '已报告的 token：主 Agent、子 Agent 与学习'],
   'current-dir': ['Current working directory', '当前工作目录'],
   'session-title': ['Current session title', '当前会话标题'],
   'git-branch': ['Current Git branch', '当前 Git 分支'],

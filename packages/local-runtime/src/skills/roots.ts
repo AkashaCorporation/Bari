@@ -8,6 +8,7 @@ import {
   type SkillsConfig,
 } from '@bari/config';
 import type { SkillSourceKind, SkillSourceRoot } from '@bari/skills';
+import { learningSkillRoot, learningWorkspaceKey } from '@bari/shared/automation-assets';
 
 import type { LocalRuntimeConfig } from '../config/types.js';
 import { getBuiltinAgentsDirCandidates, getBuiltinSkillsDirCandidates } from './builtin.js';
@@ -32,6 +33,13 @@ export function readConfiguredSkillRoots(
     .filter((name, index, names) => name.length > 0 && names.indexOf(name) === index);
   const workspaceRoot = workspaceDir?.trim();
   return dedupeSkillRoots([
+    ...(workspaceRoot ? agentNames.map(sourceAgent => ({
+      id: `bari-learned:${learningWorkspaceKey(workspaceRoot)}:${sourceAgent}`,
+      kind: 'agent' as const,
+      scope: sourceAgent,
+      rootPath: learningSkillRoot(config.dataDir, sourceAgent, workspaceRoot),
+      priority: 80,
+    })) : []),
     ...readExternalWorkspaceSkillRoots(config, workspaceRoot),
     ...readExternalUserSkillRoots(config),
     ...agentNames.map((sourceAgent, index) => ({

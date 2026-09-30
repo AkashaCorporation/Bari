@@ -7,6 +7,7 @@ import {
   composeStreamFn,
   recordPiLLMCallMetrics,
   withLLMRetry,
+  observePiProviderRequests,
 } from '@bari/agent-core/pi-turn-runner';
 import type { AgentEventContext } from '../events/contracts.js';
 import type {
@@ -494,7 +495,12 @@ export class AgentHostCompactionExecutor<
         assemblyContext,
         desktopCapabilities,
       );
-      const streamFn = withLLMRetry(composeStreamFn(preparation.llm), {
+      const streamFn = withLLMRetry(observePiProviderRequests(composeStreamFn(preparation.llm), {
+        sessionId: input.lease.sessionId,
+        turnId: input.lease.turnId,
+        scope: 'compaction',
+        observer: compactionDependencies.observeLLMRequest,
+      }), {
         sessionId: input.lease.sessionId,
         turnId: input.lease.turnId,
         scope: 'compaction',

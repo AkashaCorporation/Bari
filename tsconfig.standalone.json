@@ -184,6 +184,9 @@
       "@bari/shared/asset-markup": [
         "./packages/shared/src/asset-markup/index.ts"
       ],
+      "@bari/shared/automation-assets": [
+        "./packages/shared/src/automation-assets.ts"
+      ],
       "@bari/shared/bounded-json-stringify": [
         "./packages/shared/src/bounded-json-stringify.ts"
       ],
@@ -265,6 +268,9 @@
       "@bari/shared/media-asset-meta": [
         "./packages/shared/src/media-asset-meta.ts"
       ],
+      "@bari/shared/memory-limits": [
+        "./packages/shared/src/memory-limits.ts"
+      ],
       "@bari/shared/metrics-proxy": [
         "./packages/shared/src/metrics-proxy.ts"
       ],
@@ -285,6 +291,9 @@
       ],
       "@bari/shared/questionnaire": [
         "./packages/shared/src/questionnaire.ts"
+      ],
+      "@bari/shared/request-usage": [
+        "./packages/shared/src/request-usage.ts"
       ],
       "@bari/shared/runtime-boundary-env": [
         "./packages/shared/src/runtime-boundary-env.ts"
@@ -363,6 +372,24 @@
       ],
       "@earendil-works/pi-coding-agent": [
         "./third_party/pi-mono/packages/coding-agent/src/index.ts"
+      ],
+      "@earendil-works/pi-coding-agent/auth-storage": [
+        "./third_party/pi-mono/packages/coding-agent/src/core/auth-storage.ts"
+      ],
+      "@earendil-works/pi-coding-agent/compaction": [
+        "./third_party/pi-mono/packages/coding-agent/src/core/compaction/compaction.ts"
+      ],
+      "@earendil-works/pi-coding-agent/image-resize": [
+        "./third_party/pi-mono/packages/coding-agent/src/utils/image-resize.ts"
+      ],
+      "@earendil-works/pi-coding-agent/messages": [
+        "./third_party/pi-mono/packages/coding-agent/src/core/messages.ts"
+      ],
+      "@earendil-works/pi-coding-agent/shell": [
+        "./third_party/pi-mono/packages/coding-agent/src/utils/shell.ts"
+      ],
+      "@earendil-works/pi-coding-agent/tools": [
+        "./third_party/pi-mono/packages/coding-agent/src/core/tools/index.ts"
       ],
       "@earendil-works/pi-tui": [
         "./third_party/pi-mono/packages/tui/src/index.ts"

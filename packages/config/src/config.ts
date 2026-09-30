@@ -3,6 +3,7 @@ import {
   type RunawayGuardSettings,
 } from "./runaway-guard-config.js";
 import fs from "node:fs";
+import { parseBariAutomationConfig } from './automation-config.js';
 import { restrictConfigFileSync, writePrivateConfigFileSync } from "./private-config-file.js";
 import path from "node:path";
 import os from "node:os";
@@ -977,6 +978,7 @@ export interface Config {
   memory: MemoryConfig;
   /** Skill self-evolution configuration. */
   skillEvolve: SkillEvolveConfig;
+  automation?: import('./automation-config.js').BariAutomationConfig;
   /** Session rotation configuration. */
   sessionRotate: SessionRotateConfig;
   /** AgentStop detector tunables (debounce, active-span backstop). */
@@ -1651,11 +1653,28 @@ function syncManagedPresetBaseUrl(configPath: string): void {
   )
     return;
 
+  const originalContent = fs.readFileSync(configPath);
   (options as Record<string, unknown>).baseURL = presetBaseURL;
-  writePrivateConfigFileSync(
-    configPath,
-    yaml.dump(raw, { indent: 2, lineWidth: -1, noRefs: true }),
-  );
+  try {
+    writePrivateConfigFileSync(
+      configPath,
+      yaml.dump(raw, { indent: 2, lineWidth: -1, noRefs: true }),
+    );
+  } catch (error) {
+    // This on-disk sync is optional, but a failure after truncation is not safe
+    // to hide. Only continue when the original document is still intact.
+    let unchanged = false;
+    try {
+      unchanged = fs.readFileSync(configPath).equals(originalContent);
+    } catch {
+      // Preserve the original write error if integrity cannot be verified.
+    }
+    if (!unchanged) throw error;
+    // Do not include the error message: config errors may contain credentials.
+    console.warn(
+      "[config] managed preset baseURL sync skipped; config file unchanged, using runtime provider settings",
+    );
+  }
 }
 
 function buildPresetEntry(key: PresetKey) {
@@ -2070,6 +2089,7 @@ export function resolveConfigFromRaw(
     agents: parseAgentsConfig(raw.agents),
     memory: parseMemoryConfig(raw),
     skillEvolve: parseSkillEvolveConfig(raw, beta),
+    automation: parseBariAutomationConfig(raw.automation),
     sessionRotate: parseSessionRotateConfig(raw),
     agentStop: parseAgentStopDetectorConfig(raw),
     asr: parseAsrConfig(raw),

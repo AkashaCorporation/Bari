@@ -1,5 +1,6 @@
 import { and, asc, eq, gte, lte, sql, type SQL } from 'drizzle-orm';
 import { tokenUsage } from '../../../../infra/db/schema/usage.js';
+import { llmRequests } from '../../../../infra/db/schema/llm-requests.js';
 import type {
   SessionUsageRepository,
   SessionUsageRepositoryOptions,
@@ -49,6 +50,7 @@ class DrizzleSessionUsageRepository implements SessionUsageRepository {
   }
   async deleteSession(sessionId: string) {
     this.options.db.delete(tokenUsage).where(eq(tokenUsage.sessionId, sessionId)).run();
+    this.options.db.delete(llmRequests).where(eq(llmRequests.sessionId, sessionId)).run();
   }
   private summarize(predicate: SQL | undefined): UsageSummary {
     const row = this.options.db

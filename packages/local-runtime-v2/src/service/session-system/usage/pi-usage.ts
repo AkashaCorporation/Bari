@@ -29,7 +29,9 @@ export function summarizeCommittedPiGoalUsage(
           normalized.inputTokens +
           normalized.outputTokens +
           normalized.reasoningTokens,
-        incomplete: summary.incomplete,
+        incomplete: summary.incomplete || Reflect.get(message, 'stopReason') === 'error'
+          || Reflect.get(message, 'stopReason') === 'aborted' || (Array.isArray(usage.reportedFields)
+          && (!usage.reportedFields.includes('input') || !usage.reportedFields.includes('output'))),
       };
     },
     { tokens: 0, incomplete: false },
@@ -110,6 +112,8 @@ function reportUsageFailure(
 }
 
 interface PiUsageShape {
+  readonly reported?: boolean;
+  readonly reportedFields?: readonly string[];
   readonly input?: unknown;
   readonly output?: unknown;
   readonly reasoning?: unknown;
@@ -146,6 +150,7 @@ function readAssistantUsage(message: unknown): PiUsageShape | undefined {
   if (!isAssistantMessage(message)) return undefined;
   const rawUsage = Reflect.get(message, 'usage');
   if (!rawUsage || typeof rawUsage !== 'object') return undefined;
+  if (Reflect.get(rawUsage, 'reported') === false) return undefined;
   return rawUsage as PiUsageShape;
 }
 

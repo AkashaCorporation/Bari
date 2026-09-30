@@ -4,6 +4,8 @@ import type {
   SessionUsageStore,
   SessionUsageSummary,
 } from './types.js';
+import type { RequestUsageLedger } from './request-ledger.js';
+import type { SessionRequestAccounting } from '@bari/shared/request-usage';
 
 export type SessionUsageFailureReason =
   | 'invalid-from'
@@ -36,6 +38,7 @@ export interface SessionUsageGlobalInput {
 export interface SessionUsageReadResult {
   readonly summary: SessionUsageSummary;
   readonly rows: readonly SessionUsageRow[];
+  readonly accounting?: SessionRequestAccounting;
 }
 
 export interface SessionUsageGlobalResult {
@@ -52,10 +55,12 @@ type SessionUsageQueryStore = Pick<
 >;
 
 export class SessionUsageService {
-  constructor(private readonly store: SessionUsageQueryStore) {}
+  constructor(private readonly store: SessionUsageQueryStore, private readonly requests?: Pick<RequestUsageLedger, 'read'>) {}
 
-  async summarizeSession(input: SessionUsageReadInput): Promise<SessionUsageSummary> {
-    return this.store.summarizeBySession(input.sessionId, normalizeRange(input.from, input.to));
+  async summarizeSession(input: SessionUsageReadInput): Promise<SessionUsageSummary & { accounting?: SessionRequestAccounting }> {
+    const range = normalizeRange(input.from, input.to);
+    return { ...await this.store.summarizeBySession(input.sessionId, range),
+      ...(this.requests ? { accounting: this.requests.read(input.sessionId, range) } : {}) };
   }
 
   async readSession(input: SessionUsageReadInput): Promise<SessionUsageReadResult> {
@@ -64,7 +69,7 @@ export class SessionUsageService {
       this.store.summarizeBySession(input.sessionId, range),
       this.store.listBySession(input.sessionId, range),
     ]);
-    return { summary, rows };
+    return { summary, rows, ...(this.requests ? { accounting: this.requests.read(input.sessionId, range) } : {}) };
   }
 
   async summarizeGlobal(input: SessionUsageGlobalInput): Promise<SessionUsageGlobalResult> {

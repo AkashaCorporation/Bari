@@ -104,6 +104,7 @@ export type RunTurnCaller =
   | 'channel_feishu'
   | 'team'
   | 'compact'
+  | 'title'
   | 'permission_llm';
 
 /** Bounded origin of a cancelled Pi turn. Unknown values collapse to `unknown`. */

@@ -3,6 +3,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { canCreateFileSymlinks } from '../../../../test/helpers/filesystem-links.js';
+
+const fileSymlinksAvailable = await canCreateFileSymlinks();
 
 import {
   resolveTuiExecInvocation,
@@ -126,7 +129,7 @@ describe('headless invocation', () => {
     ).rejects.toThrow('cannot be combined');
   });
 
-  it('supports attachment-only input and resolves a symlinked file', async () => {
+  it.skipIf(!fileSymlinksAvailable)('supports attachment-only input and resolves a symlinked file', async () => {
     const cwd = await workspace();
     await writeFile(join(cwd, 'actual.txt'), 'hello');
     await symlink(join(cwd, 'actual.txt'), join(cwd, 'alias.txt'));

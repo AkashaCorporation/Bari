@@ -1843,6 +1843,7 @@ async function assertRuntimeServicesComposition() {
   expect(mocked.sessionTitleOptions).toEqual({
     agents: composedProduct.agents,
     preparation: mocked.agentPreparation,
+    observeLLMRequest: expect.any(Function),
   });
   expect(mocked.archiveTitleOptions).toMatchObject({
     safety: services.safety,

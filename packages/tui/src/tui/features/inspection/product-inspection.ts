@@ -537,8 +537,9 @@ function resolveTuiUsagePresentation(
   options: TuiUsagePresentationOptions,
 ): TranscriptUsageVisualization | undefined {
   const summary = usage.summary;
+  const accounting = usage.accounting ?? summary?.accounting;
   const accountRows = createUsageAccountRows(options.account);
-  if (!summary && accountRows.length === 0) return undefined;
+  if (!summary && !accounting && accountRows.length === 0) return undefined;
 
   const contextUsage = options.context?.contextUsage;
   const contextWindow = contextUsage
@@ -557,9 +558,13 @@ function resolveTuiUsagePresentation(
   const model = options.model
     ? `${safeInline(options.model.providerId)}/${safeInline(options.model.modelId)}`
     : 'Model unavailable';
-  const cacheMetrics = resolveTuiSessionCacheMetrics(summary);
+  const cacheMetrics = accounting
+    ? [accounting.total.inputTokens, accounting.total.cacheReadTokens, accounting.total.cacheWriteTokens].every(value => value !== undefined)
+      ? resolveTuiSessionCacheMetrics(accounting.total) : undefined
+    : resolveTuiSessionCacheMetrics(summary);
   return {
     kind: 'usage',
+    ...(accounting ? { accounting } : {}),
     model,
     sessionRecorded: summary !== undefined,
     inputTokens: summary?.inputTokens ?? 0,

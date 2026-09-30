@@ -3,6 +3,7 @@ export { isLocalSourceProvenanceEnabled } from './source-provenance.js';
 export { writeTuiStatusLineSetting } from './tui-status-line-write.js';
 export { parseRunawayGuardOverride, resolveRunawayGuardConfig } from './runaway-guard-config.js';
 export type { RunawayGuardSettings, RunawayGuardOverride } from './runaway-guard-config.js';
+export { DEFAULT_BARI_AUTOMATION, parseBariAutomationConfig, type BariAutomationConfig } from './automation-config.js';
 export {
   BRAND,
   DEFAULT_PORT,

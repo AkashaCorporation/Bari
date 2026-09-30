@@ -11,7 +11,23 @@ This directory vendors `pi-mono` as source so MiniMax can patch, validate, and s
 
 ## Local patch ledger
 
+### 2026-09-27 — preserve provider usage presence for Bari request accounting
+
+- Owner: AkashaCorporation / Bari; existing Pi licenses and attribution remain intact.
+- Affected package: `packages/ai`, Usage metadata and OpenAI Completions/Responses and Anthropic transports.
+- Preserve whether telemetry was received and which counters were supplied before adapter defaults fill missing fields with zero. A successful response with no usage is not evidence of zero consumption. Responses totals fall back to reported input plus output only when the total is absent.
+- Metadata is local accounting provenance, not a model-facing prompt or billing estimate. Other transports without presence metadata remain conservative for all-zero responses.
+- Validation: first-party request-accounting/observer regressions and the offline BYOK gate exercise actual streaming with and without usage. Vendored upstream suites remain outside this distribution's verification.
+
 No upstream source files are changed in the baseline import.
+
+### 2026-09-23 — preserve Bash execution facts and bounded output
+
+- Affected package: `packages/coding-agent` (`@earendil-works/pi-coding-agent`), Bash execution, child-process observation, and output accumulation.
+- Change: require exit code zero for success; preserve signals, cancellation reasons, timeout deadlines, and partial output in structured success and failure results. Add an optional original head-and-tail preview and host-owned persistence so managed commands use one complete log. Report persistence failures separately from the process outcome.
+- The existing exit-code-only helper and default tail preview remain compatible. Process cleanup and command timers retain their existing lifecycle.
+- Provenance: shared MiniMax Bash implementation, adapted to the standalone source distribution. Existing upstream notices and licenses apply; no new dependency is introduced. Upstream PR: not opened.
+- Regression coverage: the existing child Bash lifecycle, turn executor, and built-in catalog tests cover command deadlines, native output capability gating, and rendered prompt guidance. Vendored upstream suites remain outside this distribution's verification; real-model and Windows acceptance are separate.
 
 ### 2026-08-31 — Windows PowerShell ConstrainedLanguage compatibility
 
@@ -296,3 +312,12 @@ For future changes, add one entry per MiniMax patch with:
 - Reason: immediately submitted local user batches must be consumed in one provider hop while retaining each message identity.
 - Affected package: `Agent.steerBatch` added to `@earendil-works/pi-agent-core`; individual `steer` / `followUp` and default modes remain compatible.
 - Validation: `pnpm --filter @earendil-works/pi-agent-core build`; `node scripts/test/focused-vitest.mjs --package @earendil-works/pi-agent-core --skip-workspace-build third_party/pi-mono/packages/agent/test/agent.test.ts` (19 tests); agent-core focused `pi-turn-runner.test.ts` covers local batches and machine-only individual consumption.
+
+## 2026-09-21: Propagate native exit codes through Windows PowerShell 5.1 wrappers
+
+- Reason: `wrapWindowsPowerShellStdinCommand` ends with `& ([ScriptBlock]::Create($source))` and `wrapConstrainedWindowsPowerShellCommand` ends with `Invoke-Expression $source`. On Windows PowerShell 5.1, a `-Command` session whose final statement is a scriptblock invocation exits 0 regardless of `$LASTEXITCODE` set by native commands inside it, so every failing native command was reported as success (foreground tool result and background task status) on hosts without pwsh 7. Reproduced before the fix: a `node -e "…;process.exit(7)"` command produced its stderr yet the shell process exited 0.
+- Affected package: `@earendil-works/pi-coding-agent` local bash operations, PowerShell 5.1 transport only (`src/core/tools/bash.ts`). pwsh 7 (native `-Command` path) and POSIX shells are untouched. PowerShell-internal terminating errors still exit non-zero via `throw` before the appended statement.
+- Type: generic, upstreamable Windows fix using the same `exit $LASTEXITCODE` idiom already used by the first-party `packages/tui/src/update/versioned-prefix.ts` launchers.
+- Change: append `exit $LASTEXITCODE` after the scriptblock invocation (stdin transport) and after `Invoke-Expression` (ConstrainedLanguage transport).
+- Upstream PR: not opened.
+- Validation (Windows 11 x64 build 26200, PowerShell 5.1 default, Node 24.18.0): `packages/local-runtime/test/unit/child-bash-lifecycle.test.ts` 'failure' mode fails before the fix (`expected 'succeeded' to be 'failed'`) and passes after; 'timeout' and 'cancel' modes unaffected. Focused re-run of the affected suites and full `pnpm test:capabilities` show no new failures. Not run: pwsh 7 host validation, ConstrainedLanguage host validation (launcher covered by structure assertions only), macOS/Linux regression runs.

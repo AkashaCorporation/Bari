@@ -306,7 +306,7 @@ export class TuiRunCoordinator {
       if (this.activeRun === activeRun) this.activeRun = undefined;
     }
 
-    const { usage } = sumResponseUsage(usageResponses);
+    const { usage, usageIncomplete: responsesIncomplete } = sumResponseUsage(usageResponses);
     let outcome: TuiTurnRunOutcome = {
       sessionId: session?.sessionId ?? '',
       turnId: request.turnId,
@@ -315,7 +315,7 @@ export class TuiRunCoordinator {
       ...(request.model ? { model: { ...request.model } } : {}),
       ...(usage ? { usage } : {}),
       ...(usageResponses.length ? { usageResponses } : {}),
-      ...(usageIncomplete ? { usageIncomplete: true } : {}),
+      ...(usageIncomplete || responsesIncomplete ? { usageIncomplete: true } : {}),
       ...(failure ? { error: failure } : {}),
       durationMs: Math.max(0, this.nowMs() - startedAtMs),
     };

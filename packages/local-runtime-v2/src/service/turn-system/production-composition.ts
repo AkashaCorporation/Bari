@@ -11,6 +11,7 @@ import {
   type ToolOutputArtifactInput,
 } from '@bari/agent-extension';
 import type { LLMRetryOptions } from '@bari/agent-core/pi-turn-runner';
+import { combinePiLLMRequestObservers, observePiProviderRequests, type PiLLMRequestObserver } from '@bari/agent-core/pi-turn-runner';
 import { describeLocalBrowserToolInput } from '@bari/agent-tools/desktop';
 import type { IAgentConfig } from '@bari/protocol';
 import type { GlobalEventInput } from '@bari/shared/global-events';
@@ -59,6 +60,7 @@ import {
 import type { AgentExecutionSnapshot, AgentHost } from './agent-host/contracts.js';
 import type { CanonicalHistoryCompactionChange } from './agent-host/history/contracts.js';
 import type { DurableCanonicalHistoryProvider } from './agent-host/history/durable-canonical-history-store.js';
+import { captureSemanticSnapshot } from './agent-host/history/semantic-identity.js';
 import { validateCanonicalHistoryMessages } from './agent-host/history/canonical-history-validation.js';
 import type { TurnSystemHostCapabilities } from './contracts.js';
 import type {
@@ -187,6 +189,7 @@ export interface ProductionSessionTitleProductCapabilities<
 > {
   readonly agents: AgentExecutionSource<TAgent>;
   readonly preparation: ProductionAgentPreparation;
+  readonly observeLLMRequest?: PiLLMRequestObserver;
 }
 
 export interface CreateLocalAgentHostOptions<
@@ -258,7 +261,9 @@ export function createProductionSessionTitleModel<
     },
     resolveModel: async (input) => {
       const resolved = await preparation.resolveModel(input);
-      const resolvedStream = resolved.streamFn;
+      const resolvedStream = observePiProviderRequests(resolved.streamFn ?? streamSimple, {
+        sessionId: input.sessionId, turnId: input.turnId, scope: 'title', observer: product.observeLLMRequest, nowMs,
+      });
       return {
         model: resolved.model,
         ...(resolved.apiKey ? { apiKey: resolved.apiKey } : {}),
@@ -299,7 +304,9 @@ export function createProductionRootArchiveTitleModel<
     },
     resolveModel: async (input) => {
       const resolved = await preparation.resolveModel(input);
-      const resolvedStream = resolved.streamFn;
+      const resolvedStream = observePiProviderRequests(resolved.streamFn ?? streamSimple, {
+        sessionId: input.sessionId, turnId: input.turnId, scope: 'title', observer: product.observeLLMRequest, nowMs,
+      });
       return {
         model: resolved.model,
         ...(resolved.apiKey ? { apiKey: resolved.apiKey } : {}),
@@ -407,6 +414,7 @@ export async function createLocalAgentHost<
     permission: createHostPermissionPolicy(options),
     runner: {
       ...options.product.runner,
+      observeLLMRequest: combinePiLLMRequestObservers(options.product.runner.observeLLMRequest, options.sessions.usage.requests?.observe),
       reviewContent: options.safety.review,
     },
     ...optionalToolPolicyGuard(options.toolPolicyGuard),
@@ -469,6 +477,7 @@ export async function createLocalAgentHost<
       control: options.turnControl,
       lifecycle: options.sessions.agentProjection.compactionLifecycle,
       observer: options.sessions.agentProjection.compactionObserver,
+      observeLLMRequest: combinePiLLMRequestObservers(options.product.runner.observeLLMRequest, options.sessions.usage.requests?.observe),
       ...(options.product.runner.metricsClient
         ? { metricsClient: options.product.runner.metricsClient }
         : {}),
@@ -836,6 +845,26 @@ function adaptCanonicalHistory(
   provider: SessionSystemOwner['canonicalHistory'],
   mutation: SessionSystemOwner['sessions']['historyMutation'],
 ): DurableCanonicalHistoryProvider {
+  // The default Session provider owns deeply immutable decoded rows. Transfer
+  // each message once; legacy and injected providers keep their original path.
+  if (provider.withSnapshotTransform) {
+    const messages = new WeakMap<object, unknown>();
+    provider = provider.withSnapshotTransform((snapshot) => {
+      const owned = snapshot.messages.map((message) => {
+        if (typeof message !== 'object' || message === null) return message;
+        const previous = messages.get(message);
+        if (previous !== undefined) return previous;
+        const value = captureSemanticSnapshot(message).value;
+        messages.set(message, value);
+        return value;
+      });
+      return captureSemanticSnapshot({
+        revision: snapshot.revision,
+        messages: captureSemanticSnapshot(owned).value,
+        identityVector: captureSemanticSnapshot(snapshot.identityVector).value,
+      }).value;
+    });
+  }
   return {
     read: async (sessionId) => {
       const snapshot = await provider.read(sessionId);
@@ -855,8 +884,16 @@ function adaptCanonicalHistory(
         identityVector: snapshot.identityVector,
       };
     },
-    append: (change) => provider.append(requireHistoryOperation(change)),
-    replace: (change) => provider.replace(requireHistoryOperation(change)),
+    append: async (change) => {
+      const committed = await provider.append(requireHistoryOperation(change));
+      validateCanonicalHistoryMessages(committed.messages);
+      return { ...committed, messages: committed.messages };
+    },
+    replace: async (change) => {
+      const committed = await provider.replace(requireHistoryOperation(change));
+      validateCanonicalHistoryMessages(committed.messages);
+      return { ...committed, messages: committed.messages };
+    },
     compact: async (change: CanonicalHistoryCompactionChange) => {
       const operation = requireHistoryOperation(change);
       if (operation.reason !== 'replaceMessages' || operation.operation.kind !== 'compaction') {
@@ -875,14 +912,20 @@ function adaptCanonicalHistory(
           : { currentUserSourceIndex: metadata.currentUserSourceIndex }),
       } as const;
       if (metadata.method !== 'llm_checkpoint') {
-        await provider.compact({
+        const committed = await provider.compact({
           ...baseChange,
           method: metadata.method,
           replacementSourceIndexes: metadata.replacementSourceIndexes,
         });
-        return;
+        validateCanonicalHistoryMessages(committed.messages);
+        return { ...committed, messages: committed.messages };
       }
-      await provider.compact({ ...baseChange, method: metadata.method });
+      const committed = await provider.compact({
+        ...baseChange,
+        method: metadata.method,
+      });
+      validateCanonicalHistoryMessages(committed.messages);
+      return { ...committed, messages: committed.messages };
     },
     settleTurnTail: async (input) => {
       if (!mutation.settleTurnTail) {

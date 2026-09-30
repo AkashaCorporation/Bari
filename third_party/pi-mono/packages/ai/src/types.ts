@@ -288,6 +288,9 @@ export interface ToolCall {
 }
 
 export interface Usage {
+	/** Whether provider telemetry was actually received (as opposed to initialized zeros). */
+	reported?: boolean;
+	reportedFields?: Array<"input" | "output" | "cacheRead" | "cacheWrite" | "totalTokens">;
 	input: number;
 	output: number;
 	cacheRead: number;

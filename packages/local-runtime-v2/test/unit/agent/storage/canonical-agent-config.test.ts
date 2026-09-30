@@ -12,6 +12,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { canCreateFileSymlinks, directoryLink } from '../../../../../../test/helpers/filesystem-links.js';
+
+const fileSymlinksAvailable = await canCreateFileSymlinks();
 
 import {
   configureLocalRuntimeLogging,
@@ -680,7 +683,7 @@ describe("canonical Custom Agent file safety", () => {
       join(externalAgentDir, "agent.md"),
       "---\nname: researcher\ndescription: desc\nx-mavis:\n  avatar: ./avatar.png\n---\n",
     );
-    await symlink(join(outsideDir, "agents"), join(dataDir, "agents"));
+    await directoryLink(join(outsideDir, "agents"), join(dataDir, "agents"));
 
     await expect(
       readCanonicalAgentConfig({
@@ -696,7 +699,7 @@ describe("canonical Custom Agent file safety", () => {
 });
 
 describe("canonical Custom Agent avatar safety", () => {
-  it("reads a supported regular avatar but rejects path escapes and symlinks", async () => {
+  it.skipIf(!fileSymlinksAvailable)("reads a supported regular avatar but rejects path escapes and symlinks", async () => {
     const agentDir = await createAgentDir();
     await writeFile(
       join(agentDir, "avatar.png"),
@@ -750,7 +753,7 @@ describe("canonical Custom Agent avatar safety", () => {
       "---\nname: researcher\ndescription: desc\nx-mavis:\n  avatar: ./avatar.png\n---\n",
     );
     const linkedAgentDir = join(agentDir, "..", "linked-researcher");
-    await symlink(agentDir, linkedAgentDir);
+    await directoryLink(agentDir, linkedAgentDir);
     await expect(
       readCanonicalAgentConfig({
         agentDir: linkedAgentDir,
@@ -766,7 +769,7 @@ describe("canonical Custom Agent avatar safety", () => {
       join(outsideDir, "avatar.png"),
       Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
     );
-    await symlink(outsideDir, join(agentDir, "nested"));
+    await directoryLink(outsideDir, join(agentDir, "nested"));
     await writeFile(
       join(agentDir, "agent.md"),
       "---\nname: researcher\ndescription: desc\nx-mavis:\n  avatar: ./nested/avatar.png\n---\n",
@@ -919,7 +922,7 @@ describe("canonical Agent directory safety", () => {
       join(minimaxRoot, "agents", "researcher", "agent.md"),
       markdown,
     );
-    await symlink(minimaxRoot, mavisRoot);
+    await directoryLink(minimaxRoot, mavisRoot);
 
     await expect(
       readCanonicalAgentConfig({
@@ -934,7 +937,7 @@ describe("canonical Agent directory safety", () => {
     await mkdir(agentsRoot, { recursive: true });
     await mkdir(join(agentsTarget, "researcher"), { recursive: true });
     await writeFile(join(agentsTarget, "researcher", "agent.md"), markdown);
-    await symlink(agentsTarget, join(agentsRoot, "agents"));
+    await directoryLink(agentsTarget, join(agentsRoot, "agents"));
 
     await expect(
       readCanonicalAgentConfig({
@@ -949,7 +952,7 @@ describe("canonical Agent directory safety", () => {
     await mkdir(join(builtinRoot, "agents"), { recursive: true });
     await mkdir(join(builtinTarget, "explore"), { recursive: true });
     await writeFile(join(builtinTarget, "explore", "agent.md"), markdown);
-    await symlink(builtinTarget, join(builtinRoot, "agents", ".builtin"));
+    await directoryLink(builtinTarget, join(builtinRoot, "agents", ".builtin"));
     await expect(
       readCanonicalAgentConfig({
         agentDir: join(builtinRoot, "agents", ".builtin", "explore"),
@@ -963,7 +966,7 @@ describe("canonical Agent directory safety", () => {
     await mkdir(join(agentRoot, "agents"), { recursive: true });
     await mkdir(agentTarget, { recursive: true });
     await writeFile(join(agentTarget, "agent.md"), markdown);
-    await symlink(agentTarget, join(agentRoot, "agents", "researcher"));
+    await directoryLink(agentTarget, join(agentRoot, "agents", "researcher"));
     await expect(
       readCanonicalAgentConfig({
         agentDir: join(agentRoot, "agents", "researcher"),
@@ -977,7 +980,7 @@ describe("canonical Agent directory safety", () => {
     await mkdir(join(insideRoot, "agents"), { recursive: true });
     await mkdir(insideTarget, { recursive: true });
     await writeFile(join(insideTarget, "agent.md"), markdown);
-    await symlink(insideTarget, join(insideRoot, "agents", "researcher"));
+    await directoryLink(insideTarget, join(insideRoot, "agents", "researcher"));
     await expect(
       readCanonicalAgentConfig({
         agentDir: join(insideRoot, "agents", "researcher"),
@@ -997,7 +1000,7 @@ describe("canonical Agent directory safety", () => {
     await mkdir(join(nestedRoot, "agents", "researcher"), { recursive: true });
     await mkdir(nestedTarget, { recursive: true });
     await writeFile(join(nestedTarget, "agent.md"), markdown);
-    await symlink(nestedTarget, nestedLink);
+    await directoryLink(nestedTarget, nestedLink);
     await expect(
       readCanonicalAgentConfig({
         agentDir: nestedLink,
@@ -1110,7 +1113,7 @@ describe("canonical Agent directory safety", () => {
       join(targetDir, "researcher", "agent.md"),
       "---\nname: researcher\ndescription: desc\n---\nPrompt\n",
     );
-    await symlink(targetDir, join(dataDir, "agents"));
+    await directoryLink(targetDir, join(dataDir, "agents"));
     const warnSpy = vi.spyOn(logger, "warn");
     const input = {
       agentDir: join(dataDir, "agents", "researcher"),
@@ -1159,7 +1162,7 @@ describe("canonical Agent directory safety", () => {
       join(targetDir, "researcher", "agent.md"),
       "---\nname: researcher\ndescription: desc\n---\nPrompt\n",
     );
-    await symlink(targetDir, logicalLink);
+    await directoryLink(targetDir, logicalLink);
 
     try {
       configureLocalRuntimeLogging({
@@ -1205,7 +1208,7 @@ describe("canonical Agent directory safety", () => {
     }
   });
 
-  it("reports dangling and non-directory links without a link-prohibition error", async () => {
+  it.skipIf(!fileSymlinksAvailable)("reports dangling and non-directory links without a link-prohibition error", async () => {
     process.env[DATA_DIR_SOURCE_ENV] = "mavis_env";
     const dataDir = await mkdtemp(
       join(tmpdir(), "canonical-agent-diagnostic-unresolved-"),
@@ -1222,7 +1225,7 @@ describe("canonical Agent directory safety", () => {
     await mkdir(join(dataDir, "agents"), { recursive: true });
     const missingTarget = join(dataDir, "missing-target");
     const danglingLink = join(dataDir, "agents", "researcher");
-    await symlink(missingTarget, danglingLink);
+    await directoryLink(missingTarget, danglingLink);
     const unresolvedFailure = await readAgentDirectoryFailure({
       agentDir: danglingLink,
       routeName: "researcher",

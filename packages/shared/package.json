@@ -195,6 +195,18 @@
     "./safety-check-v2": {
       "types": "./src/safety-check-v2.ts",
       "import": "./dist/safety-check-v2.js"
+    },
+    "./memory-limits": {
+      "types": "./src/memory-limits.ts",
+      "import": "./dist/memory-limits.js"
+    },
+    "./request-usage": {
+      "types": "./src/request-usage.ts",
+      "import": "./dist/request-usage.js"
+    },
+    "./automation-assets": {
+      "types": "./src/automation-assets.ts",
+      "import": "./dist/automation-assets.js"
     }
   },
   "types": "./src/index.ts",
@@ -319,6 +331,12 @@
       ],
       "safety-check-v2": [
         "src/safety-check-v2.ts"
+      ],
+      "request-usage": [
+        "src/request-usage.ts"
+      ],
+      "automation-assets": [
+        "src/automation-assets.ts"
       ]
     }
   },

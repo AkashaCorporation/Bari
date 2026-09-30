@@ -195,6 +195,7 @@ export interface TuiModel {
 }
 
 export interface TuiSessionUsageSummary {
+  accounting?: import('@bari/shared/request-usage').SessionRequestAccounting;
   inputTokens?: number;
   outputTokens?: number;
   reasoningTokens?: number;
@@ -223,6 +224,7 @@ export interface TuiSessionUsageRow {
 }
 
 export interface TuiSessionUsage {
+  accounting?: import('@bari/shared/request-usage').SessionRequestAccounting;
   summary?: TuiSessionUsageSummary;
   rows?: TuiSessionUsageRow[];
 }

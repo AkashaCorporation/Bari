@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { markUsagePresence } from './usage-presence.js';
 import type {
 	CacheControlEphemeral,
 	ContentBlockParam,
@@ -522,6 +523,7 @@ export const streamAnthropic: StreamFunction<"anthropic-messages", AnthropicOpti
 			provider: model.provider,
 			model: model.id,
 			usage: {
+				reported: false,
 				input: 0,
 				output: 0,
 				cacheRead: 0,
@@ -596,6 +598,8 @@ export const streamAnthropic: StreamFunction<"anthropic-messages", AnthropicOpti
 					// Capture initial token usage from message_start event
 					// This ensures we have input token counts even if the stream is aborted early
 					output.usage.input = event.message.usage.input_tokens || 0;
+					markUsagePresence(output.usage, { input: event.message.usage.input_tokens, output: event.message.usage.output_tokens,
+						cacheRead: event.message.usage.cache_read_input_tokens, cacheWrite: event.message.usage.cache_creation_input_tokens });
 					output.usage.output = event.message.usage.output_tokens || 0;
 					output.usage.cacheRead = event.message.usage.cache_read_input_tokens || 0;
 					output.usage.cacheWrite = event.message.usage.cache_creation_input_tokens || 0;
@@ -728,6 +732,8 @@ export const streamAnthropic: StreamFunction<"anthropic-messages", AnthropicOpti
 						output.stopReason = mapStopReason(event.delta.stop_reason);
 					}
 					// Only update usage fields if present (not null).
+					markUsagePresence(output.usage, { input: event.usage.input_tokens, output: event.usage.output_tokens,
+						cacheRead: event.usage.cache_read_input_tokens, cacheWrite: event.usage.cache_creation_input_tokens });
 					// Preserves input_tokens from message_start when proxies omit it in message_delta.
 					if (event.usage.input_tokens != null) {
 						output.usage.input = event.usage.input_tokens;

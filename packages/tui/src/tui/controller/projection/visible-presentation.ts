@@ -313,6 +313,7 @@ function resolveStableShell(input: ResolveTuiVisiblePresentationInput): TuiShell
     ...resolveAccountShellState(input.snapshot.account, input.selectedModel, input.selectedEffort),
     sessionCount: input.snapshot.sessions.length,
     sessionCacheReadRatio: sessionCacheMetrics?.cacheReadRatio,
+    requestAccounting: input.snapshot.sessionUsage?.accounting,
     contextUsage: input.snapshot.contextSnapshot?.contextUsage,
     contextWindowTokens:
       input.snapshot.contextSnapshot?.model?.contextWindow ??

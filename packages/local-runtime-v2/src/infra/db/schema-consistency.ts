@@ -1,4 +1,6 @@
 import type { BetterSqlite3Instance } from './client.js';
+import { REQUEST_ACCOUNTING_MIGRATION_VERSION } from './migrations/session/migration-1000-request-accounting.js';
+import { AUTOMATION_MIGRATION_VERSION } from './migrations/session/migration-1001-automation.js';
 import {
   canonicalizeSqlContract,
   canonicalizeSqlDefault,
@@ -310,11 +312,11 @@ function assertSessionMetadataComplete(): void {
     SESSION_STORAGE_RAW_OBJECTS.externalTables.length +
     SESSION_STORAGE_VIRTUAL_TABLE_METADATA.length;
   const complete =
-    ownerCount === 31 &&
+    ownerCount === 36 &&
     CONDITIONAL_LEGACY_TABLE_CONFIGS.length === 2 &&
     SESSION_STORAGE_RAW_OBJECTS.externalTables.length === 5 &&
     SESSION_STORAGE_VIRTUAL_TABLE_METADATA.length === 1 &&
-    inventoryCount === 39;
+    inventoryCount === 44;
   if (!complete) throw new Error('Session storage schema metadata is incomplete');
 }
 
@@ -544,6 +546,8 @@ function assertRequiredIndexes(db: BetterSqlite3Instance): void {
   ).flatMap((table) => table.indexes);
   const required = [...REQUIRED_INDEXES, ...conditionalIndexes].filter(
     (name) =>
+      (!name.startsWith('idx_llm_requests_') || requestAccountingApplied(db)) &&
+      (!name.startsWith('bari_automation_') || automationApplied(db)) &&
       (!AGENT_INDEX_NAMES.has(name) || agentMigrationApplied(db)) &&
       isIndexExpected(name, migrationGates),
   );
@@ -817,6 +821,10 @@ function baseSessionTableActive(db: BetterSqlite3Instance, tableName: string): b
 }
 
 function lateSessionTableActive(db: BetterSqlite3Instance, tableName: string): boolean {
+  if (tableName.startsWith('bari_automation_')) return automationApplied(db);
+  if (tableName === 'local_runtime_llm_requests' || tableName === 'local_runtime_request_accounting_state') {
+    return requestAccountingApplied(db);
+  }
   if (QUEUE_PAUSE_TABLE_NAMES.has(tableName)) return queuePauseApplied(db);
   if (SOURCE_RESOURCE_TABLE_NAMES.has(tableName)) return sourceResourcesApplied(db);
   if (SESSION_AGENT_DEFINITION_TABLE_NAMES.has(tableName))
@@ -826,6 +834,14 @@ function lateSessionTableActive(db: BetterSqlite3Instance, tableName: string): b
 
 function tableExists(db: BetterSqlite3Instance, name: string): boolean {
   return db.prepare(`PRAGMA table_info(${name})`).all().length > 0;
+}
+
+function requestAccountingApplied(db: BetterSqlite3Instance): boolean {
+  return Boolean(db.prepare('SELECT 1 FROM local_runtime_v2_schema_migrations WHERE version = ?').get(REQUEST_ACCOUNTING_MIGRATION_VERSION));
+}
+
+function automationApplied(db: BetterSqlite3Instance): boolean {
+  return Boolean(db.prepare('SELECT 1 FROM local_runtime_v2_schema_migrations WHERE version = ?').get(AUTOMATION_MIGRATION_VERSION));
 }
 
 function readIndexDefinition(db: BetterSqlite3Instance, name: string) {

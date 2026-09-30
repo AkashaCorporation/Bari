@@ -6,6 +6,7 @@ import type { TuiStatusLineItem } from './status-line-items.js';
 export type TuiRuntimeStatus = 'starting' | 'ready' | 'offline' | 'error';
 
 export interface TuiShellState {
+  requestAccounting?: import('@bari/shared/request-usage').SessionRequestAccounting;
   version: string;
   /**
    * Configured status line items, in display order. When omitted the status
