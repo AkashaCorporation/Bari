@@ -1117,13 +1117,13 @@ describe("createTuiApp", () => {
       await app.ready;
 
       expect(stripAnsi(app.tui.render(80).join("\n"))).toContain(
-        "Ask Mcode to do anything",
+        "Ask Bari to do anything",
       );
 
       app.editor.handleInput("R");
 
       expect(stripAnsi(app.tui.render(80).join("\n"))).not.toContain(
-        "Ask Mcode to do anything",
+        "Ask Bari to do anything",
       );
       expect(app.editor.getText()).toBe("R");
     } finally {
