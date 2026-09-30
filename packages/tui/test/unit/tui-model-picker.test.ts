@@ -1016,4 +1016,51 @@ describe("TuiModelPicker", () => {
       expect.objectContaining({ variant: "" }),
     );
   });
+
+  it("tags zero-cost models with [free] and lets an explicit flag override the id convention", () => {
+    const picker = new TuiModelPicker(
+      [
+        {
+          providerId: "custom_provider:opencode-go",
+          providerName: "OpenCode Go",
+          modelId: "space-bunny-free",
+          displayName: "Space Bunny Free",
+        },
+        {
+          providerId: "custom_provider:opencode-go",
+          providerName: "OpenCode Go",
+          modelId: "glm-5.3-flash",
+          displayName: "GLM-5.3-Flash",
+        },
+        {
+          providerId: "custom_provider:example",
+          providerName: "Example",
+          modelId: "promo-model",
+          displayName: "Promo Model",
+          free: true,
+        },
+        {
+          providerId: "custom_provider:example",
+          providerName: "Example",
+          modelId: "trial-free",
+          displayName: "Trial (billed)",
+          free: false,
+        },
+      ],
+      vi.fn(),
+      vi.fn(),
+    );
+
+    const rendered = stripAnsi(picker.render(120).join("\n"));
+    expect(rendered).toContain("[free] Space Bunny Free");
+    expect(rendered).not.toContain("[free] GLM-5.3-Flash");
+    expect(rendered).toContain("[free] Promo Model");
+    expect(rendered).not.toContain("[free] Trial (billed)");
+
+    picker.handleInput("free");
+    const filtered = stripAnsi(picker.render(120).join("\n"));
+    expect(filtered).toContain("Space Bunny Free");
+    expect(filtered).toContain("Promo Model");
+    expect(filtered).not.toContain("GLM-5.3-Flash");
+  });
 });

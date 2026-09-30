@@ -111,6 +111,7 @@
       "packages/tui/test/unit/tui-app.test.ts",
       "packages/tui/test/unit/tui-goal-banner.test.ts",
       "packages/tui/test/unit/tui-model-picker.test.ts",
+      "packages/tui/test/unit/tui-model-pricing.test.ts",
       "packages/tui/test/unit/tui/controller/interaction/input-flow.test.ts",
       "packages/tui/test/unit/tui/controller/projection/visible-presentation.test.ts",
       "packages/local-runtime/test/unit/local-native-tools.test.ts",

@@ -23,6 +23,7 @@ import {
   resolveTuiEffortChoice,
   supportsTuiEffort,
 } from './effort.js';
+import { isFreeTuiModel } from './pricing.js';
 
 import { contextWindowOptions, formatContextWindow } from './context-window.js';
 
@@ -303,7 +304,7 @@ export class TuiModelPicker implements Component, Focusable {
         const unavailable = Boolean(this.availability.isUnavailable?.(model));
         return {
           value: key,
-          label: `${model.selected ? '● ' : ''}${unavailable ? '[login] ' : ''}${sanitizeTerminalText(model.displayName ?? model.modelId)}`,
+          label: `${model.selected ? '● ' : ''}${unavailable ? '[login] ' : ''}${isFreeTuiModel(model) ? '[free] ' : ''}${sanitizeTerminalText(model.displayName ?? model.modelId)}`,
           description: formatModelDescription(
             { ...model, contextLimit: this.contextChoice(model) },
             unavailable,
@@ -596,6 +597,7 @@ function searchableModelText(model: TuiModel): string {
     model.displayName,
     model.variant,
     `${model.providerId}/${model.modelId}`,
+    isFreeTuiModel(model) ? 'free' : undefined,
   ]
     .filter((value): value is string => Boolean(value))
     .join(' ')

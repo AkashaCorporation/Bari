@@ -163,6 +163,8 @@ export interface TuiModel {
   providerId: string;
   modelId: string;
   displayName?: string;
+  /** Explicit zero-cost marker; when omitted the UI falls back to the `-free` id convention. */
+  free?: boolean;
   selected?: boolean;
   variant?: string;
   supportedVariants?: string[];
