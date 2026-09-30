@@ -129,6 +129,7 @@ import {
   initializeAutomationService,
   createRuntimeLearningPorts,
   type InitializedAutomationService,
+  type LearningLifecycleObserver,
   type RuntimeLearningPortsInput,
   type RuntimeLearningTurnPort,
 } from "./service/automation/index.js";
@@ -390,6 +391,8 @@ interface InitializedRuntimeServiceOwners {
   readonly turnSystem: TurnSystemOwner;
   /** Electron-only scheduled execution capability; absent on embedded CLI. */
   readonly cron: InitializedCronService | undefined;
+  /** Automatic learning maintenance; absent when the feature is unbound. */
+  readonly automation: InitializedAutomationService | undefined;
   readonly plugin: ReturnType<typeof initializePluginService>;
   readonly miniAppComposition: RuntimeMiniAppComposition;
   readonly mcp: InitializedMcpService;
@@ -745,6 +748,7 @@ async function initializeRuntimeServiceOwners(
       if (!turnSystem) throw new Error('Turn system is not available yet');
       return turnSystem.turns;
     });
+    const learningObserver = automation?.lifecycleObserver();
     turnSystem = await initializeRuntimeTurnSystem(input, {
       plan,
       planEntryEnabled: input.planEntryEnabled,
@@ -761,6 +765,7 @@ async function initializeRuntimeServiceOwners(
       goalVerifierExtension: subagentVerification.extension,
       goalVerifierOutputTokenCap: subagentVerification.outputTokenCap,
       learningExtension: automation?.extension(),
+      learningObserver,
     });
     const sessionApplications = await initializeSessionApplications(
       input,
@@ -807,6 +812,7 @@ async function initializeRuntimeServiceOwners(
       plan,
       turnSystem,
       cron,
+      automation,
       plugin,
       miniAppComposition,
       mcp,
@@ -819,6 +825,7 @@ async function initializeRuntimeServiceOwners(
     input.options.compatibility.conversation.fail(error);
     await closeRuntimeServiceOwnersAfterFailure({
       cron,
+      automation,
       turnSystem,
       plugin,
       mcp,
@@ -917,6 +924,8 @@ interface RuntimeTurnSystemInitializationDeps {
   readonly goalVerifierOutputTokenCap: GoalSubagentVerifierRuntime["outputTokenCap"];
   /** Bounds automatic learning requests; absent when the feature is unbound. */
   readonly learningExtension?: AgentExtension;
+  /** Admits learning runs from the Turn lifecycle; absent when unbound. */
+  readonly learningObserver?: LearningLifecycleObserver;
 }
 
 async function initializeRuntimeTurnSystem(
@@ -931,6 +940,7 @@ async function initializeRuntimeTurnSystem(
     goalVerifierExtension,
     goalVerifierOutputTokenCap,
     learningExtension,
+    learningObserver,
   } = dependencies;
   const llmRetryObserver = createSessionLLMRetryEventObserver(
     input.writeGlobalEvent,
@@ -1018,6 +1028,9 @@ async function initializeRuntimeTurnSystem(
           ...normalExtensions,
         ],
         eventObserver: combineAgentEventObservers(
+          ...(learningObserver
+            ? [{ observeRuntimeEvent: learningObserver.observe.bind(learningObserver) }]
+            : []),
           ...(input.channelSystem ? [input.channelSystem.terminalReplies] : []),
           input.turnLifecycleEvents,
         ),

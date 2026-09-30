@@ -50,6 +50,8 @@ export interface LearningRuntimeHostPort {
   ): Promise<void>;
   /** Read back the assistant reply text for that Turn. */
   readAssistantText(sessionId: string, turnId: string): Promise<string | undefined>;
+  /** First user message of a Turn; gates learning admission to genuine turns. */
+  readTurnUserPrompt(sessionId: string, turnId: string): Promise<string | undefined>;
 }
 
 export interface LearningAdapterOptions {

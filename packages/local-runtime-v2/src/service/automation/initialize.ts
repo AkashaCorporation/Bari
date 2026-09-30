@@ -10,6 +10,7 @@ import {
 import { AutomationCoordinator } from './coordinator.js';
 import { LearningAssets } from './assets.js';
 import { AutomationStore } from './store.js';
+import { LearningLifecycleObserver } from './lifecycle-observer.js';
 
 export interface InitializeAutomationServiceInput {
   readonly db: AppDb;
@@ -21,6 +22,8 @@ export interface InitializeAutomationServiceInput {
 
 export interface InitializedAutomationService {
   readonly coordinator: AutomationCoordinator;
+  readonly store: AutomationStore;
+  readonly assets: LearningAssets;
   /** Idempotent lifecycle hook used by the runtime services lifecycle. */
   ready(): Promise<void>;
   close(): Promise<void>;
@@ -31,6 +34,11 @@ export interface InitializedAutomationService {
   userActivity(sessionId: string): void;
   /** Host calls this after a genuine user turn settles, to admit a learning run. */
   turnCompleted(sessionId: string, turnId: string, genuinePrompt: string): void;
+  /**
+   * Turn-lifecycle observer that drives `userActivity` and `turnCompleted`.
+   * Register it with the runtime event observer list.
+   */
+  lifecycleObserver(): LearningLifecycleObserver;
 }
 
 /**
@@ -62,12 +70,22 @@ export function initializeAutomationService(
   coordinator.bind(ports);
   return {
     coordinator,
+    store,
+    assets,
     extension: () => coordinator.extension(),
     isActive: (sessionId, turnId) => coordinator.isActive(sessionId, turnId),
     outputTokenCap: (runId) => coordinator.outputTokenCap(runId),
     userActivity: (sessionId) => coordinator.userActivity(sessionId),
     turnCompleted: (sessionId, turnId, genuinePrompt) =>
       coordinator.completed(sessionId, turnId, genuinePrompt),
+    lifecycleObserver: () =>
+      new LearningLifecycleObserver({
+        onUserActivity: (sessionId) => coordinator.userActivity(sessionId),
+        onTurnCompleted: (sessionId, turnId, prompt) =>
+          coordinator.completed(sessionId, turnId, prompt),
+        readTurnUserPrompt: (sessionId, turnId) =>
+          input.host.readTurnUserPrompt(sessionId, turnId),
+      }),
     ready: async () => {
       coordinator.start();
     },

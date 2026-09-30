@@ -1,4 +1,5 @@
 import type { InitializedCronService } from "../../service/cron/index.js";
+import type { InitializedAutomationService } from "../../service/automation/index.js";
 import type { InitializedMcpService } from "../../service/mcp/index.js";
 import type { RuntimeMiniAppServices } from "../../service/miniapp/index.js";
 import type { PlanService } from "../../service/plan/index.js";
@@ -27,6 +28,7 @@ export interface RuntimeServicesLifecycleState {
 
 export async function closeRuntimeServiceOwnersAfterFailure(input: {
   readonly cron: InitializedCronService | undefined;
+  readonly automation: InitializedAutomationService | undefined;
   readonly turnSystem: TurnSystemOwner | undefined;
   readonly plugin: InitializedPluginService | undefined;
   readonly mcp: InitializedMcpService | undefined;
@@ -35,6 +37,7 @@ export async function closeRuntimeServiceOwnersAfterFailure(input: {
 }): Promise<void> {
   for (const close of [
     () => input.cron?.close(),
+    () => input.automation?.close(),
     () => input.turnSystem?.close(),
     () => input.plugin?.close(),
     () => input.mcp?.close(),
@@ -113,6 +116,7 @@ export interface RuntimeServicesLifecycleInput {
   readonly plan: PlanService;
   readonly turnSystem: TurnSystemOwner;
   readonly cron: InitializedCronService | undefined;
+  readonly automation: InitializedAutomationService | undefined;
   readonly plugin: InitializedPluginService;
   readonly mcp: InitializedMcpService;
   readonly agentApplication: AgentApplication;
@@ -172,6 +176,7 @@ export function createRuntimeServicesLifecycle(
     );
     if (!startup.completed) return;
     await input.cron?.ready();
+    await input.automation?.ready();
     if (startup.retryPlanLifecycleRecovery && !input.state.closed) {
       input.plan.lifecycleReconciler.schedule("startup-recovery");
     }
@@ -204,6 +209,7 @@ export function createRuntimeServicesLifecycle(
       () => Promise.resolve(input.shutdownConversation()),
       unbindV1GlobalEventPublisher,
       () => Promise.resolve(input.cron?.close()),
+      () => Promise.resolve(input.automation?.close()),
       () => Promise.resolve(input.turnSystem.close()),
       () => Promise.resolve(input.closeBrowserUse?.()),
       () => Promise.resolve(input.disposePluginHookSessions?.()),

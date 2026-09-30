@@ -11,6 +11,7 @@ export {
   type InitializedAutomationService,
 } from './initialize.js';
 export { AutomationCoordinator, type AutomationPorts, type LearningContext } from './coordinator.js';
+export { LearningLifecycleObserver } from './lifecycle-observer.js';
 export { AutomationStore, type LearningRun } from './store.js';
 export { LearningAssets } from './assets.js';
 export {

@@ -165,6 +165,16 @@ export function createRuntimeLearningPorts(
       }
       return undefined;
     },
+
+    async readTurnUserPrompt(sessionId, turnId) {
+      const rows = await input.messages.repository.listTurn(sessionId, turnId);
+      for (const row of rows) {
+        if (text(row.role) !== 'user') continue;
+        const body = messageText(row);
+        if (body) return body;
+      }
+      return undefined;
+    },
   };
 }
 
