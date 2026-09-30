@@ -25,7 +25,8 @@ export const TUI_THREAD_GOAL_COMMAND_HELP =
   '/goal clear: remove the current goal.\n' +
   '/goal edit: edit the objective inline.\n' +
   '/goal pause: pause auto-continuation.\n' +
-  '/goal resume: resume a paused or blocked goal.';
+  '/goal resume: resume a paused or blocked goal.\n' +
+  'Tip: you can also just say it, e.g. "vamos subir isso com goal" or "goal: fix the parser".';
 
 /**
  * Boundary characters that may separate a relaxed `budget=<value>`

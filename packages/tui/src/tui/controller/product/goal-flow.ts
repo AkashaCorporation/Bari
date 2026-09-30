@@ -4,6 +4,7 @@ import {
   parseTuiThreadGoalCommand,
   TUI_THREAD_GOAL_COMMAND_HELP,
 } from '../../../application/thread-goal-command.js';
+import { detectTuiThreadGoalIntent } from '../../../application/thread-goal-intent.js';
 import { formatTuiActionFailure } from '../../../user-facing-failure.js';
 import type { TuiComposerDraft, TuiComposerDraftSnapshot } from '../../features/composer/draft.js';
 import {
@@ -136,8 +137,48 @@ export class TuiGoalFlow {
     }
   }
 
-  async resumeBlocked(): Promise<'not-blocked' | 'resumed' | 'failed'> {
-    const goal = this.options.banner.getGoal();
+  /**
+   * Implicit Goal kickoff from a natural-language message ("vamos subir isso
+   * com goal", "fazer no goal", "use goal"). Mirrors `/goal <objective>`, with
+   * one hard difference: an existing active Goal is never rewritten here, so
+   * the message simply stays normal work. Anything not recognised — or any
+   * failure — falls back to a normal message submission.
+   */
+  async implicitCreate(raw: string): Promise<TuiGoalCommandDisposition> {
+    const intent = detectTuiThreadGoalIntent(raw);
+    if (!intent) return 'retained';
+    const captured = this.options.composerDraft.capture();
+    try {
+      let sessionId = this.options.currentSessionId();
+      if (!sessionId) sessionId = await this.options.ensureSessionId?.();
+      if (!sessionId) return 'retained';
+      const operationSequence = ++this.refreshSequence;
+      if (!this.options.runtime.isGoalEnabled()) return 'retained';
+      const existing = await this.options.runtime.getGoal(sessionId);
+      if (!this.canProjectOperation(sessionId, operationSequence)) return 'consumed';
+      if (existing && existing.status !== 'complete') return 'retained';
+      return await this.setObjective(
+        sessionId,
+        intent.objective,
+        undefined,
+        existing,
+        operationSequence,
+        captured,
+      );
+    } catch (error) {
+      this.options.append(
+        formatTuiActionFailure(error, {
+          summary: "Couldn't start the Goal from your message.",
+          nextStep: 'Sent as a normal message; use /goal to start it explicitly.',
+          preservation: 'Your draft is preserved.',
+        }),
+        'warning',
+      );
+      return 'retained';
+    }
+  }
+
+  async resumeBlocked(): Promise<'not-blocked' | 'resumed' | 'failed'> {    const goal = this.options.banner.getGoal();
     const sessionId = this.options.currentSessionId();
     if (!goal || goal.status !== 'blocked' || !sessionId || goal.sessionId !== sessionId) {
       return 'not-blocked';

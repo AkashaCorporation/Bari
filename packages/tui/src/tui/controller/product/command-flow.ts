@@ -73,7 +73,7 @@ export interface TuiCommandFlowOptions {
     | 'settleEditResubmit'
   >;
   readonly updateFlow: TuiUpdateFlow;
-  readonly goalFlow?: Pick<TuiGoalFlow, 'execute' | 'resumeBlocked'>;
+  readonly goalFlow?: Pick<TuiGoalFlow, 'execute' | 'implicitCreate' | 'resumeBlocked'>;
   readonly planModeFlow?: TuiPlanModeFlow;
   readonly permissionModeFlow?: TuiPermissionModeFlow;
   readonly auth?: McodeAuthPort;
@@ -321,6 +321,21 @@ export class TuiCommandFlow {
         return 'consumed';
       } finally {
         this.shellSubmissionPending = false;
+      }
+    }
+    // Natural-language Goal kickoff ("vamos subir isso com goal"): the message
+    // becomes a `/goal <objective>` before any optimistic projection, so a
+    // consumed kickoff never leaves a phantom user message behind.
+    if (
+      !submitOptions.forceMessage &&
+      this.options.goalFlow &&
+      command &&
+      !command.startsWith('/')
+    ) {
+      const goalDisposition = await this.options.goalFlow.implicitCreate(input);
+      if (goalDisposition === 'consumed') {
+        if (seed) await this.options.composerDraft.completeSubmission(seed.resources);
+        return 'consumed';
       }
     }
     const chat = this.options.controller.snapshot();
