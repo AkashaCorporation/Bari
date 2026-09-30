@@ -277,8 +277,8 @@ export interface RuntimeServicesTestOverrides {
     readonly turnDelivery?: CronTurnDeliveryPort;
   };
   /**
-   * Automatic learning binds its own session-side port at composition. Omitted
-   * means the feature stays unbound, so no background model call can happen.
+   * Automatic learning binds at composition whenever the config allows it.
+   * Set `enabled: false` in tests to keep the feature out of a runtime.
    */
   readonly automation?: {
     readonly enabled?: boolean;
@@ -1142,7 +1142,14 @@ function initializeRuntimeAutomation(
   input: RuntimeServiceOwnerInitializationInput,
   resolveTurns: () => RuntimeLearningTurnPort,
 ): InitializedAutomationService | undefined {
-  if (input.options.overrides?.automation?.enabled !== true) return undefined;
+  // Tests may force the feature off; production binds it and lets the
+  // `automation.enabled` config switch decide whether any work is admitted.
+  if (input.options.overrides?.automation?.enabled === false) return undefined;
+  // The learning store is a real database store. Composition graphs that pass
+  // a placeholder db (owner-graph tests) cannot host it, so they skip the bind.
+  if (typeof (input.options.db as { select?: unknown }).select !== "function") {
+    return undefined;
+  }
   // The runtime session/message owners are wider than the three projections the
   // adapter needs. The cast is confined here, at the one composition seam.
   const ports = createRuntimeLearningPorts({
