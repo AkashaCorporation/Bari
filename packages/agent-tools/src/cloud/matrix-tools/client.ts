@@ -65,7 +65,7 @@ const MATRIX_TOOL_REQUEST_FAILED_TEXT = 'MATRIX_TOOL_REQUEST_FAILED: Matrix tool
 const MATRIX_TOOL_BUSINESS_FAILED_TEXT =
   'MATRIX_TOOL_BUSINESS_FAILED: Matrix tool request was rejected.';
 const MATRIX_TOOL_LOGIN_REQUIRED_TEXT =
-  'MATRIX_TOOL_LOGIN_REQUIRED: Cloud tools require a MiniMax managed login. Run /login to enable them, or use web_fetch without an account.';
+  'MATRIX_TOOL_LOGIN_REQUIRED: Cloud tools require a managed login. Run /login to enable them, or use web_fetch without an account.';
 
 /**
  * Thrown when a managed Matrix gateway call has no managed-login token, which
@@ -75,7 +75,7 @@ const MATRIX_TOOL_LOGIN_REQUIRED_TEXT =
  */
 export class MatrixManagedLoginRequiredError extends Error {
   constructor(
-    message = 'Cloud tools require a MiniMax managed login. Run /login to enable them, or use web_fetch without an account.',
+    message = 'Cloud tools require a managed login. Run /login to enable them, or use web_fetch without an account.',
   ) {
     super(message);
     this.name = 'MatrixManagedLoginRequiredError';
