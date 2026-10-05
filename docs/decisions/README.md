@@ -71,4 +71,5 @@ this decision to be revisited.
 | [The team roster is a durable record, and what it does not protect](2026-10-04-team-roster-record.md) | team plan state, `LocalTeamMemberRecord` |
 | [The team mailbox refuses rather than drops, and only members are addressable](2026-10-04-team-mailbox-bounds.md) | team plan state, `LocalTeamMessageRecord` |
 | [The typed projector slots are a pipeline, not a registry](2026-10-04-typed-projector-slots-are-a-pipeline.md) | `required-agent-event-delivery.ts` |
+| [The live history file keeps one name until a second format exists](2026-10-04-no-numbered-live-history-files.md) | session history file layout |
 | [Adopting DeepSeek Harness practices by tier](2026-10-04-adopting-deepseek-harness-practices.md) | verification, documentation, and orchestration scope |

@@ -46,6 +46,7 @@
     "docs/decisions/2026-09-30-natural-language-goal-kickoff.md",
     "docs/decisions/2026-10-04-adopting-deepseek-harness-practices.md",
     "docs/decisions/2026-10-04-durable-attempt-reasons.md",
+    "docs/decisions/2026-10-04-no-numbered-live-history-files.md",
     "docs/decisions/2026-10-04-refuse-declared-future-history-format.md",
     "docs/decisions/2026-10-04-team-mailbox-bounds.md",
     "docs/decisions/2026-10-04-team-roster-record.md",

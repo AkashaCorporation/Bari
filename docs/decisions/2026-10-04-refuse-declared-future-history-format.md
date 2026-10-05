@@ -1,6 +1,7 @@
 # A declared future history format is refused; an absent one is tolerated
 
-- **Status:** accepted
+- **Status:** accepted; the per-generation filename deferral below is superseded
+  by [the numbered-history decision](2026-10-04-no-numbered-live-history-files.md)
 - **Date:** 2026-10-04
 - **Context:** a session's history lives in a dated directory whose file names
   are fixed (`messages.jsonl`, `ledger.jsonl`, `display.jsonl`, `snapshot.json`)
