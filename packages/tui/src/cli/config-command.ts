@@ -45,7 +45,7 @@ export function runMcodeConfigCommand(
     settings: projectSettings(config),
     automation: projectAutomation(config.automation),
     notCovered: [
-      "Composition-time bindings: which optional services are mounted, and the reason one was skipped, are decided in code during assembly (see the composition notes in packages/local-runtime-v2/src/services.ts).",
+      "Composition-time bindings: which optional services are mounted, and the reason one was skipped, are decided in code during assembly (packages/local-runtime-v2/src/services.ts), not by a configuration value.",
       "Effective agent prompts and skills: assembled per turn from agent assets and the workspace, not from this file.",
       "Managed MiniMax catalog: derived by the runtime, never stored in configuration.",
     ],
