@@ -45,6 +45,38 @@ export interface LocalTeamMemberRecord {
   readonly joined_at: number;
 }
 
+const MESSAGE_ID_PATTERN = /^msg_[0-9a-f]{16}$/u;
+
+/**
+ * Mailbox bounds.
+ *
+ * The mailbox lives in the plan record, which is written whole on every change,
+ * so growth has to be bounded by the write path rather than by an operator
+ * noticing. A full mailbox refuses the next message instead of dropping the
+ * oldest: silently discarding a coordination message would make a team act on a
+ * conversation that lost a line.
+ */
+const MAX_TEAM_MESSAGE_BODY_LENGTH = 4096;
+const MAX_TEAM_MESSAGES = 500;
+
+/**
+ * One coordination message between team members.
+ *
+ * Addressed to a member, so the roster is what makes a destination
+ * checkable: a message to someone who never joined is refused rather than
+ * stored for nobody.
+ */
+export interface LocalTeamMessageRecord {
+  readonly message_id: string;
+  readonly from_session_id: string;
+  readonly to_session_id: string;
+  readonly to_member_id: string;
+  readonly body: string;
+  readonly sent_at: number;
+  /** Null until the recipient acknowledges it. */
+  readonly read_at: number | null;
+}
+
 interface LocalTeamPlanRecord {
   plan: Record<string, unknown>;
   state: Record<string, unknown> & {
@@ -58,6 +90,8 @@ interface LocalTeamPlanRecord {
     engine_sessions: Record<string, unknown>;
     /** Durable roster; absent on records written before the roster existed. */
     members?: LocalTeamMemberRecord[];
+    /** Durable mailbox; absent on records written before it existed. */
+    messages?: LocalTeamMessageRecord[];
     created_at: number;
     updated_at: number;
   };
@@ -233,6 +267,119 @@ export async function routeLocalTeamApi(input: {
       await store.write(record);
       return json({ plan_id: planId, member, members: record.state.members }, { status: 201 });
     }
+  }
+
+  // The mailbox. Sending requires being on the roster, and the recipient must be
+  // too: a message addressed to a session that never joined would be stored for
+  // nobody and read by nobody.
+  if (tail.length === 3 && tail[2] === 'messages') {
+    if (input.method === 'GET') {
+      const forSession = await canonicalizeSessionId(
+        input.getSessionById,
+        input.url.searchParams.get('to_session') ?? undefined,
+      );
+      const messages = record.state.messages ?? [];
+      return json({
+        plan_id: planId,
+        messages: forSession
+          ? messages.filter((message) => message.to_session_id === forSession)
+          : messages,
+      });
+    }
+    if (input.method === 'POST') {
+      const body = await readJsonBody(input.request);
+      const senderId = await canonicalizeSessionId(
+        input.getSessionById,
+        readString(body, 'from_session'),
+      );
+      if (!senderId) return json({ error: 'from_session is required' }, { status: 400 });
+      const members = record.state.members ?? [];
+      const sender = members.find((member) => member.session_id === senderId);
+      if (!sender) {
+        return json(
+          { error: `Session ${senderId} is not a team member; join before sending` },
+          { status: 403 },
+        );
+      }
+      const recipientRef = readString(body, 'to');
+      if (!recipientRef) return json({ error: 'to is required' }, { status: 400 });
+      const recipient = members.find(
+        (member) => member.member_id === recipientRef || member.session_id === recipientRef,
+      );
+      if (!recipient) {
+        return json(
+          { error: `No team member matches ${recipientRef}` },
+          { status: 404 },
+        );
+      }
+      const text = readString(body, 'body');
+      if (!text) return json({ error: 'body is required' }, { status: 400 });
+      if (text.length > MAX_TEAM_MESSAGE_BODY_LENGTH) {
+        return json(
+          { error: `body exceeds ${MAX_TEAM_MESSAGE_BODY_LENGTH} characters` },
+          { status: 413 },
+        );
+      }
+      const messages = record.state.messages ?? [];
+      if (messages.length >= MAX_TEAM_MESSAGES) {
+        return json(
+          {
+            error: `Mailbox is full at ${MAX_TEAM_MESSAGES} messages; acknowledge and clear before sending`,
+          },
+          { status: 507 },
+        );
+      }
+      const message: LocalTeamMessageRecord = {
+        message_id: `msg_${randomBytes(8).toString('hex')}`,
+        from_session_id: sender.session_id,
+        to_session_id: recipient.session_id,
+        to_member_id: recipient.member_id,
+        body: text,
+        sent_at: input.nowMs(),
+        read_at: null,
+      };
+      record.state.messages = [...messages, message];
+      record.state.updated_at = input.nowMs();
+      await store.write(record);
+      return json({ plan_id: planId, message }, { status: 201 });
+    }
+  }
+
+  // Acknowledging is the recipient's action, and only the recipient's: the
+  // unread count has to mean "this session has not read it".
+  if (
+    tail.length === 5 &&
+    tail[2] === 'messages' &&
+    tail[4] === 'ack' &&
+    input.method === 'POST'
+  ) {
+    const messageId = tail[3]!;
+    if (!MESSAGE_ID_PATTERN.test(messageId)) return notFound(`/team/messages/${messageId}`);
+    const body = await readJsonBody(input.request);
+    const readerId = await canonicalizeSessionId(
+      input.getSessionById,
+      readString(body, 'from_session'),
+    );
+    if (!readerId) return json({ error: 'from_session is required' }, { status: 400 });
+    const messages = record.state.messages ?? [];
+    const existing = messages.find((message) => message.message_id === messageId);
+    if (!existing) return json({ error: `No message ${messageId}` }, { status: 404 });
+    if (existing.to_session_id !== readerId) {
+      return json(
+        { error: 'Access denied: only the addressed session may acknowledge this message' },
+        { status: 403 },
+      );
+    }
+    if (existing.read_at !== null) {
+      return json({ plan_id: planId, message: existing, alreadyRead: true });
+    }
+    const acknowledged: LocalTeamMessageRecord = { ...existing, read_at: input.nowMs() };
+    record.state.messages = messages.map((message) =>
+      message.message_id === messageId ? acknowledged : message,
+    );
+    record.state.updated_at = input.nowMs();
+    await store.write(record);
+    return json({ plan_id: planId, message: acknowledged });
   }
 
   if (input.method === 'POST' && tail.length === 3) {
@@ -855,6 +1002,7 @@ class LocalTeamPlanStore {
       // absent roster reads as empty so every reader shares one shape instead of
       // each having to decide what absence means.
       record.state.members = Array.isArray(record.state.members) ? record.state.members : [];
+      record.state.messages = Array.isArray(record.state.messages) ? record.state.messages : [];
       return record;
     } catch {
       return undefined;
