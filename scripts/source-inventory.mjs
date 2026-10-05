@@ -11,15 +11,26 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const skipped = new Set([
   ".git",
   "node_modules",
-  "dist",
   ".cache",
   ".pnpm-store",
   ".turbo",
   ".DS_Store",
 ]);
+// Build output is never publishable source, whatever the directory is called.
+// `dist` is the default name; a rebuild that must relocate the directory
+// because a running product holds a lock leaves a `dist-*` sibling behind, and
+// those remnants must not enter the inventory. Matching the name keeps the rule
+// true the next time it happens instead of requiring a new entry per incident.
+function isBuildOutput(name) {
+  return name === "dist" || name.startsWith("dist-");
+}
 function filesIn(directory, prefix = "") {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    if (skipped.has(entry.name) || entry.name.endsWith(".tsbuildinfo"))
+    if (
+      skipped.has(entry.name) ||
+      isBuildOutput(entry.name) ||
+      entry.name.endsWith(".tsbuildinfo")
+    )
       return [];
     const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
     if (entry.isSymbolicLink())
