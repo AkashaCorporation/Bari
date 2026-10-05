@@ -1,5 +1,5 @@
 {
-  "comment": "Vitest suites for the standalone distribution, grouped by the gate that runs them. `vitest.oss.config.mjs` includes every group; `scripts/run-vitest-suite.mjs <group>` runs one. Add a test file here rather than in package.json or the Vitest config.",
+  "comment": "Vitest suites for the standalone distribution, grouped by the gate that runs them. `vitest.oss.config.mjs` includes every group that applies on the current platform; `scripts/run-vitest-suite.mjs <group>` runs one. Add a test file here rather than in package.json or the Vitest config. Platform-specific and load-sensitive files belong in a scoped group declared under `scopes`, never in `capability`.",
   "suites": {
     "capability": [
       "packages/agent-core/test/unit/bash-subprocess-env.test.ts",
@@ -160,7 +160,7 @@
       "packages/agent-modules/context-manager/test/compaction-usage.test.ts",
       "packages/config/test/private-config-file.test.ts",
       "packages/config/test/managed-preset-sync.test.ts",
-      "test/sqlite-message-contention.test.ts",
+      "test/executable-resolution.test.ts",
       "test/history-processing.test.ts",
       "packages/agent-modules/context-manager/test/provider-budget.test.ts",
       "packages/agent-tools/test/desktop/local-bash-output.test.ts",
@@ -185,9 +185,29 @@
       "packages/local-runtime/test/unit/local-permission-facade.test.ts"
     ],
     "sandbox": [
-      "packages/local-runtime-v2/src/service/sandbox/backend/srt-macos.test.ts",
-      "test/executable-resolution.test.ts"
+      "packages/local-runtime-v2/src/service/sandbox/backend/srt-macos.test.ts"
+    ],
+    "contention": [
+      "test/sqlite-message-contention.test.ts"
     ],
     "windows": []
+  },
+  "scopes": {
+    "sandbox": {
+      "platforms": [
+        "darwin"
+      ],
+      "reason": "Seatbelt backend: the native sandbox helper only exists on macOS, so these files must never join a cross-platform sweep."
+    },
+    "windows": {
+      "platforms": [
+        "win32"
+      ],
+      "reason": "Declared so Windows-only behaviour has an explicit home instead of being scattered into capability."
+    },
+    "contention": {
+      "explicitOnly": true,
+      "reason": "SQLite lock timing is load-sensitive; it runs as its own serial gate rather than inside the deterministic capability sweep."
+    }
   }
 }

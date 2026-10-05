@@ -50,6 +50,9 @@ const steps = [
   { name: "check:standalone", script: "check:standalone" },
   { name: "test:artifact", script: "test:artifact" },
   { name: "test:capabilities", script: "test:capabilities" },
+  // SQLite lock timing is load-sensitive; it runs alone so its gate reports a
+  // real verdict instead of the contention created by a neighbouring suite.
+  { name: "test:contention", script: "test:contention" },
   { name: "test:status-contract", script: "test:status-contract" },
   { name: "test:smoke", script: "test:smoke" },
   { name: "test:byok", script: "test:byok" },

@@ -8,6 +8,38 @@ export function readSuites(root) {
   return JSON.parse(readFileSync(path.join(root, suitesPath), "utf8")).suites;
 }
 
+/**
+ * Per-suite scope declarations. A suite with `platforms` only holds files that
+ * exercise that platform's semantics; a suite with `explicitOnly` is
+ * load-sensitive and belongs to its own gate. Both must stay out of an
+ * unscoped local sweep, where they would fail for reasons unrelated to the
+ * change under test.
+ */
+export function readSuiteScopes(root) {
+  const { scopes } = JSON.parse(readFileSync(path.join(root, suitesPath), "utf8"));
+  return scopes ?? {};
+}
+
+function scopeApplies(scope, platform) {
+  if (!scope) return true;
+  if (scope.explicitOnly) return false;
+  if (scope.platforms && !scope.platforms.includes(platform)) return false;
+  return true;
+}
+
+/**
+ * Files of every suite that applies to this platform and to an unscoped run.
+ * This is what `vitest.oss.config.mjs` includes, so a bare run stays portable;
+ * scoped suites are reached through their named gate instead.
+ */
+export function defaultSuiteFiles(root, platform = process.platform) {
+  const suites = readSuites(root);
+  const scopes = readSuiteScopes(root);
+  return Object.entries(suites)
+    .filter(([name]) => scopeApplies(scopes[name], platform))
+    .flatMap(([, files]) => files);
+}
+
 export function suiteFiles(root, name) {
   const suites = readSuites(root);
   const files = suites[name];
@@ -16,10 +48,6 @@ export function suiteFiles(root, name) {
       `Unknown Vitest suite "${name}"; ${suitesPath} declares ${Object.keys(suites).join(", ")}`,
     );
   return files;
-}
-
-export function allSuiteFiles(root) {
-  return Object.values(readSuites(root)).flat();
 }
 
 export const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));

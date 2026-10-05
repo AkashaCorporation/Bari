@@ -15,7 +15,7 @@ const cli = path.resolve(path.dirname(manifestPath), require(manifestPath).bin.v
 // fs.watch can abort inside libuv when events use the corresponding long path:
 // https://github.com/libuv/libuv/issues/5010. Keep real filesystem watching in
 // the tests, but create their temporary fixtures beneath the canonical path.
-const environment = { ...process.env };
+const environment = { ...process.env, VITEST_SUITE: name };
 if (process.platform === "win32") {
   environment.TEMP = environment.TMP = realpathSync.native(tmpdir());
 }
