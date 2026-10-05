@@ -50,6 +50,7 @@ const steps = [
   { name: "typecheck", script: "typecheck", fullOnly: true },
   { name: "build", script: "build" },
   { name: "check:entrypoints", script: "check:entrypoints" },
+  { name: "check:reachability", script: "check:reachability" },
   { name: "check:standalone", script: "check:standalone" },
   { name: "test:artifact", script: "test:artifact" },
   { name: "test:capabilities", script: "test:capabilities" },

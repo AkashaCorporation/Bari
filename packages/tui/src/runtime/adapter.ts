@@ -29,6 +29,8 @@ import type {
   TuiActiveRunSnapshot,
   TuiBackgroundTask,
   TuiCompactionResult,
+  TuiDelegationMessageInput,
+  TuiDelegationMessageReceipt,
   TuiDelegationSnapshot,
   TuiDelegationStopReceipt,
   TuiFeedbackPreview,
@@ -165,6 +167,18 @@ export class TuiRuntimeAdapter implements TuiRuntime {
     this.delegationAccess = new TuiDelegationAccess({
       listSessionPage: (input) => this.sessionAccess.listSessionPage(input),
       abortSession: (req) => this.abortSession(req),
+      // A team message is delivered into the target session's queue, so it lands
+      // in that session's own history instead of a sidecar store.
+      enqueueMessage: async (input) => {
+        const result = await cliService.enqueueMessage({
+          id: input.sessionId,
+          content: input.content,
+          ...(input.clientRequestId ? { clientRequestId: input.clientRequestId } : {}),
+        });
+        // An item id or a status means the queue accepted it. Anything else is a
+        // refusal the caller must see, rather than a silent success.
+        return result.itemId !== undefined || result.status !== undefined;
+      },
     });
   }
 
@@ -681,6 +695,12 @@ export class TuiRuntimeAdapter implements TuiRuntime {
   }
   getDelegationSnapshot(rootSessionId: string): Promise<TuiDelegationSnapshot> {
     return this.delegationAccess.getSnapshot(rootSessionId);
+  }
+
+  sendDelegationMessage(
+    input: TuiDelegationMessageInput,
+  ): Promise<TuiDelegationMessageReceipt> {
+    return this.delegationAccess.sendMessage(input);
   }
 
   async listBackgroundTasks(

@@ -531,6 +531,12 @@ export interface TuiDelegatedAgent {
   sessionId: string;
   parentSessionId: string;
   agentName?: string;
+  /**
+   * What this session does on the team. Derived from the session, never stored:
+   * the product's team *is* its delegated sessions, so a recorded role could
+   * disagree with the sessions that exist.
+   */
+  role: TuiDelegatedAgentRole;
   task?: string;
   status: TuiDelegatedAgentStatus;
   backgroundTaskId?: string;
@@ -538,6 +544,9 @@ export interface TuiDelegatedAgent {
   updatedAtMs?: number;
   errorMessage?: string;
 }
+
+/** A verifier checks work; a worker produces it. */
+export type TuiDelegatedAgentRole = 'worker' | 'verifier';
 
 export interface TuiDelegationSnapshot {
   schemaVersion: 1;
@@ -557,7 +566,34 @@ export interface TuiDelegationStopReceipt {
 export interface TuiDelegationPort {
   getDelegationSnapshot(rootSessionId: string): Promise<TuiDelegationSnapshot>;
   stopDelegation(rootSessionId: string): Promise<TuiDelegationStopReceipt>;
+  /**
+   * Deliver a coordination message to a delegated session.
+   *
+   * There is no mailbox store: the message is queued into the target session, so
+   * it lands in that session's own history where its reader already looks. A
+   * sidecar store would be a second place for the same conversation to live.
+   */
+  sendDelegationMessage(input: TuiDelegationMessageInput): Promise<TuiDelegationMessageReceipt>;
 }
+
+export interface TuiDelegationMessageInput {
+  rootSessionId: string;
+  sessionId: string;
+  body: string;
+  /** Stable across retries so a redelivery cannot arrive twice. */
+  clientRequestId?: string;
+}
+
+export interface TuiDelegationMessageReceipt {
+  schemaVersion: 1;
+  sessionId: string;
+  delivered: boolean;
+  /** Present only when the message was not delivered. */
+  reason?: 'not_a_team_member' | 'empty_body' | 'body_too_long' | 'delivery_failed';
+}
+
+/** Same bound as the plan mailbox, so one rule covers both surfaces. */
+export const MAX_DELEGATION_MESSAGE_LENGTH = 4096;
 
 export type TuiBackgroundTaskStatus =
   | 'queued'

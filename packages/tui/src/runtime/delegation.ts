@@ -1,4 +1,9 @@
-import type { TuiDelegatedAgent, TuiDelegatedAgentStatus, TuiSession } from './port.js';
+import type {
+  TuiDelegatedAgent,
+  TuiDelegatedAgentRole,
+  TuiDelegatedAgentStatus,
+  TuiSession,
+} from './port.js';
 
 const WORKER_PURPOSE_PREFIXES = ['local-task:', 'local-background-task:', 'team-plan:'] as const;
 const BUILTIN_SUBAGENT_NAMES = new Set(['explore', 'worker', 'verifier']);
@@ -62,6 +67,7 @@ export function toTuiDelegatedAgent(
     sessionId: session.sessionId,
     parentSessionId: session.parentSessionId,
     ...(session.agentName ? { agentName: session.agentName } : {}),
+    role: delegatedRole(session),
     ...(session.title ? { task: session.title } : {}),
     status: normalizeDelegatedAgentStatus(session.status),
     ...backgroundTaskId(session.purpose),
@@ -69,6 +75,18 @@ export function toTuiDelegatedAgent(
     ...timestamp('updatedAtMs', session.updatedAt),
     ...(session.errorMessage ? { errorMessage: session.errorMessage } : {}),
   };
+}
+
+/**
+ * The role a delegated session plays.
+ *
+ * A builtin `verifier` subagent checks work; every other delegated session
+ * produces it. The `team-plan:` purpose prefix is already recognised as a worker
+ * identity here, which is how a plan worker appears on the team without a
+ * second roster to keep in step.
+ */
+function delegatedRole(session: TuiSession): TuiDelegatedAgentRole {
+  return session.agentName?.trim().toLocaleLowerCase() === 'verifier' ? 'verifier' : 'worker';
 }
 
 export function isActiveTuiDelegatedAgent(agent: TuiDelegatedAgent): boolean {

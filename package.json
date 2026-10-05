@@ -20,6 +20,7 @@
     "test:byok": "node --test test/byok.test.mjs",
     "check:standalone": "node scripts/check-standalone-boundary.mjs",
     "check:entrypoints": "node scripts/check-entrypoints.mjs",
+    "check:reachability": "node scripts/check-reachability.mjs",
     "check:events": "node scripts/check-events.mjs",
     "check:seams": "node scripts/check-seams.mjs",
     "check:tsconfig": "node scripts/gen-tsconfig-paths.mjs",
