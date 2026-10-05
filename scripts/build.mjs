@@ -17,6 +17,7 @@ import { shouldCopyTuiRuntimeResource } from "./lib/tui-package-privacy.mjs";
 import { TUI_DISABLED_BUILTIN_SKILL_NAMES } from "./lib/builtin-skills.mjs";
 import { copyMcodeToolsArtifact } from './lib/mcode-tools-artifact.mjs';
 import { readExtraction } from "./lib/release-metadata.mjs";
+import { ENTRYPOINTS } from "./lib/entrypoints.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const metadata = readExtraction(root);
@@ -75,12 +76,11 @@ const sourcePlugin = {
 const version = packages.get("@bari/code").manifest.version;
 const result = await build({
   absWorkingDir: root,
-  entryPoints: {
-    cli: "packages/tui/src/index.ts",
-    "image-preview-worker": "packages/tui/src/host/image-preview-worker.ts",
-    'mcode-tools': 'packages/tui/src/cli/mcode-tools-entry.ts',
-    'matrix-mcp-stdio': 'packages/agent-tools/src/desktop/matrix-mcp-stdio.ts',
-  },
+  // The entry list and its classes are declared once in lib/entrypoints.mjs;
+  // check:entrypoints verifies the emitted artifacts against the same source.
+  entryPoints: Object.fromEntries(
+    Object.entries(ENTRYPOINTS).map(([name, entry]) => [name, entry.source]),
+  ),
   external: [
     "better-sqlite3",
     "@mariozechner/clipboard",

@@ -31,6 +31,7 @@ Review what changed before regenerating the inventory: recording a file does not
 | Package export → source file | each package's `exports` via `scripts/lib/package-exports.mjs` | `tsconfig.standalone.json`, `vitest.oss.config.mjs` |
 | Test files per gate | `test/vitest-suites.json` | `vitest.oss.config.mjs`, `scripts/run-vitest-suite.mjs` |
 | Suite platform scope and load-sensitivity | `test/vitest-suites.json` (`scopes`) | `vitest.oss.config.mjs` default include |
+| Application entry points and their classes | `scripts/lib/entrypoints.mjs` | `scripts/build.mjs` entries, `check:entrypoints` |
 | Retired source paths | `scripts/lib/retired-sources.mjs` | `check:source` (must not exist), `check:standalone` (must not be bundled) |
 | Verification pipeline | `scripts/verify.mjs` | GitHub CI, `pnpm verify` |
 | Documentation-only classification | `scripts/ci-changes.mjs` | source verification, release audit |

@@ -47,6 +47,7 @@ const steps = [
   // all platforms still build and validate native artifacts on their own platform.
   { name: "typecheck", script: "typecheck", fullOnly: true },
   { name: "build", script: "build" },
+  { name: "check:entrypoints", script: "check:entrypoints" },
   { name: "check:standalone", script: "check:standalone" },
   { name: "test:artifact", script: "test:artifact" },
   { name: "test:capabilities", script: "test:capabilities" },
