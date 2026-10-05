@@ -11,6 +11,16 @@ export interface SessionHistoryPaths {
   readonly reports: string;
 }
 
+/**
+ * The manifest version and layout this build writes and is willing to read.
+ *
+ * The file names inside a session directory are fixed, so a manifest is the
+ * only thing that distinguishes one layout from another. A build that reads a
+ * newer layout as this one would misinterpret the history rather than fail.
+ */
+const SUPPORTED_MANIFEST_SCHEMA_VERSION = 1;
+const SUPPORTED_MANIFEST_LAYOUT = 'v2-final-dated-session';
+
 export function ensureResolvedSessionHistoryPaths(
   paths: SessionHistoryPaths,
   session: SessionRecord,
@@ -140,12 +150,14 @@ function validateRelativeDir(value: string): readonly [string, string, string, s
 
 function writeManifest(paths: SessionHistoryPaths, session: SessionRecord): void {
   const value = {
-    schemaVersion: 1,
+    // Written from the same constants this build accepts, so the version it
+    // writes and the version it reads cannot drift apart.
+    schemaVersion: SUPPORTED_MANIFEST_SCHEMA_VERSION,
     sessionId: session.sessionId,
     createdAtMs: session.createdAtMs,
     updatedAtMs: session.updatedAtMs,
     source: 'local-runtime',
-    layout: 'v2-final-dated-session',
+    layout: SUPPORTED_MANIFEST_LAYOUT,
     paths: {
       sessionDir: paths.sessionDir,
       ledger: join(paths.sessionDir, 'ledger.jsonl'),
@@ -177,6 +189,24 @@ function assertManifestIdentity(path: string, session: SessionRecord): void {
     Reflect.get(value, 'createdAtMs') !== session.createdAtMs
   ) {
     throw new Error(`Session history manifest identity mismatch: ${path}`);
+  }
+  // Refuse a manifest that declares a version or layout this build does not
+  // know. The declared version is the only thing that says which files mean
+  // what, so reading a future layout with these fixed file names would
+  // misinterpret the history instead of failing. An absent declaration is
+  // tolerated: only a present, different one is evidence of a format this
+  // build cannot read.
+  const schemaVersion = Reflect.get(value, 'schemaVersion');
+  if (schemaVersion !== undefined && schemaVersion !== SUPPORTED_MANIFEST_SCHEMA_VERSION) {
+    throw new Error(
+      `Unsupported Session history manifest schemaVersion ${String(schemaVersion)} (this build reads ${SUPPORTED_MANIFEST_SCHEMA_VERSION}): ${path}`,
+    );
+  }
+  const layout = Reflect.get(value, 'layout');
+  if (layout !== undefined && layout !== SUPPORTED_MANIFEST_LAYOUT) {
+    throw new Error(
+      `Unsupported Session history manifest layout ${String(layout)} (this build reads ${SUPPORTED_MANIFEST_LAYOUT}): ${path}`,
+    );
   }
 }
 

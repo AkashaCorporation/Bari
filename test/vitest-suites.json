@@ -162,6 +162,7 @@
       "packages/config/test/private-config-file.test.ts",
       "packages/config/test/managed-preset-sync.test.ts",
       "test/executable-resolution.test.ts",
+      "test/session-history-manifest-version.test.ts",
       "test/history-processing.test.ts",
       "packages/agent-modules/context-manager/test/provider-budget.test.ts",
       "packages/agent-tools/test/desktop/local-bash-output.test.ts",
