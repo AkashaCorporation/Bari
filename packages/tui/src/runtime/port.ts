@@ -535,6 +535,12 @@ export interface TuiDelegatedAgent {
    * What this session does on the team. Derived from the session, never stored:
    * the product's team *is* its delegated sessions, so a recorded role could
    * disagree with the sessions that exist.
+   *
+   * Its consumer is an ACP client, which receives it with the delegation
+   * snapshot; nothing inside this package reads it, because the one row that
+   * could display it already displays the agent name it is derived from. See
+   * `docs/decisions/2026-10-05-delegated-agent-role-derived-and-published.md`
+   * before concluding it is unused.
    */
   role: TuiDelegatedAgentRole;
   task?: string;

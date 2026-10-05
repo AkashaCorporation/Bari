@@ -73,3 +73,4 @@ this decision to be revisited.
 | [The typed projector slots are a pipeline, not a registry](2026-10-04-typed-projector-slots-are-a-pipeline.md) | `required-agent-event-delivery.ts` |
 | [The live history file keeps one name until a second format exists](2026-10-04-no-numbered-live-history-files.md) | session history file layout |
 | [Adopting DeepSeek Harness practices by tier](2026-10-04-adopting-deepseek-harness-practices.md) | verification, documentation, and orchestration scope |
+| [The delegated-agent role is derived, published to ACP clients, and not re-rendered](2026-10-05-delegated-agent-role-derived-and-published.md) | `TuiDelegatedAgent.role`, `bari/session/delegation/*` |

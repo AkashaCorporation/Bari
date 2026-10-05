@@ -51,6 +51,7 @@
     "docs/decisions/2026-10-04-team-mailbox-bounds.md",
     "docs/decisions/2026-10-04-team-roster-record.md",
     "docs/decisions/2026-10-04-typed-projector-slots-are-a-pipeline.md",
+    "docs/decisions/2026-10-05-delegated-agent-role-derived-and-published.md",
     "docs/decisions/README.md",
     "docs/demo.md",
     "docs/events.md",
