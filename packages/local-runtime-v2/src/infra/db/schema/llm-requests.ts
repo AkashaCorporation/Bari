@@ -18,6 +18,8 @@ export const llmRequests = sqliteTable(
     startedAtMs: integer('started_at_ms').notNull(),
     endedAtMs: integer('ended_at_ms'),
     outcome: text('outcome').notNull().default('pending'),
+    /** Why this attempt settled; a closed vocabulary, never provider error text. */
+    settleReason: text('settle_reason'),
     usageStatus: text('usage_status').notNull().default('pending'),
     inputTokens: integer('input_tokens'),
     outputTokens: integer('output_tokens'),

@@ -4,6 +4,7 @@ import { and, eq, gte, lte, sql } from 'drizzle-orm';
 import type { PiLLMRequestObserver } from '@bari/agent-core/pi-turn-runner';
 import {
   REQUEST_USAGE_FIELDS,
+  isRequestSettleReason,
   sumRequestUsageBuckets,
   type RequestUsageBucket,
   type SessionRequestAccounting,
@@ -89,6 +90,11 @@ export class RequestUsageLedger {
               ...usage,
               endedAtMs: result.endedAtMs,
               outcome: result.outcome ?? 'error',
+              // Validated against the closed vocabulary: a future caller cannot
+              // quietly start writing provider error text into this column.
+              ...(isRequestSettleReason(result.settleReason)
+                ? { settleReason: result.settleReason }
+                : {}),
               usageStatus,
             })
             .where(eq(llmRequests.requestId, id))
@@ -130,6 +136,16 @@ export class RequestUsageLedger {
           sql<number>`sum(case when ${llmRequests.outcome} = 'pending' then 1 else 0 end)`.mapWith(
             Number,
           ),
+        // A settled failure is the interesting number when reading usage; the
+        // reason for each one is on its own row.
+        failedRequests:
+          sql<number>`sum(case when ${llmRequests.outcome} = 'error' then 1 else 0 end)`.mapWith(
+            Number,
+          ),
+        abortedRequests:
+          sql<number>`sum(case when ${llmRequests.outcome} = 'abort' then 1 else 0 end)`.mapWith(
+            Number,
+          ),
         attributionIncomplete: sql<number>`max(${llmRequests.attributionIncomplete})`.mapWith(
           Number,
         ),
@@ -158,6 +174,8 @@ export class RequestUsageLedger {
         requests: row.requests,
         unknownRequests: row.unknownRequests,
         pendingRequests: row.pendingRequests,
+        failedRequests: row.failedRequests,
+        abortedRequests: row.abortedRequests,
         ...Object.fromEntries(
           REQUEST_USAGE_FIELDS.flatMap((field) => {
             const value = Reflect.get(row, field);

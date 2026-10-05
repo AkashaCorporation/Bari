@@ -20,11 +20,15 @@ import { createSessionUsageCommitSignal } from '../packages/local-runtime-v2/src
 import { summarizeCommittedPiGoalUsage } from '../packages/local-runtime-v2/src/service/session-system/usage/pi-usage.js';
 
 const cleanup: Array<() => Promise<void> | void> = [];
+// The fixture represents a current database. A default that stopped at an older
+// version would exercise a schema the product no longer ships, which is how a
+// settle write against a missing column would hide as accounting degradation.
+const LATEST_MIGRATION_VERSION = Math.max(...ALL_MIGRATIONS.map((entry) => entry.version));
 afterEach(async () => {
   for (const close of cleanup.splice(0).reverse()) await close();
 });
 
-async function fixture(version = REQUEST_ACCOUNTING_MIGRATION_VERSION) {
+async function fixture(version = LATEST_MIGRATION_VERSION) {
   const dataDir = await mkdtemp(join(tmpdir(), 'bari-request-accounting-'));
   cleanup.push(() => rm(dataDir, { recursive: true, force: true }));
   const client = new DatabaseClient({ dataDir });
@@ -353,5 +357,66 @@ describe('reported usage normalization', () => {
         { requests: 1, unknownRequests: 1, pendingRequests: 1 },
       ]).totalTokens,
     ).toBeUndefined();
+  });
+});
+
+describe('settled attempt reasons', () => {
+  it('keeps why an attempt failed across a restart and counts failures apart', async () => {
+    const f = await fixture();
+    f.seed('root');
+    f.start('root')({
+      endedAtMs: Date.now(),
+      cacheOutcome: 'telemetry_unknown',
+      outcome: 'error',
+      settleReason: 'provider-error',
+      usageStatus: 'missing',
+    });
+    f.start('root')({
+      endedAtMs: Date.now(),
+      cacheOutcome: 'telemetry_unknown',
+      outcome: 'abort',
+      settleReason: 'aborted',
+      usageStatus: 'missing',
+    });
+    f.client.close();
+
+    const reopened = new DatabaseClient({ dataDir: f.dataDir });
+    cleanup.push(() => reopened.close());
+    const reasons = reopened.db
+      .select()
+      .from(llmRequests)
+      .all()
+      .map((row) => row.settleReason)
+      .sort();
+    expect(reasons).toEqual(['aborted', 'provider-error']);
+
+    const view = new RequestUsageLedger(reopened.db, f.commits).read('root');
+    expect(view.total.failedRequests).toBe(1);
+    expect(view.total.abortedRequests).toBe(1);
+  });
+
+  it('refuses to store anything outside the closed reason vocabulary', async () => {
+    const f = await fixture();
+    f.seed('root');
+    // An untyped producer handing over provider text must not reach the ledger:
+    // the column promises no error bodies, headers or credentials.
+    f.start('root')({
+      endedAtMs: Date.now(),
+      cacheOutcome: 'telemetry_unknown',
+      outcome: 'error',
+      settleReason: 'HTTP 429 rate limit exceeded for key sk-secret-value' as never,
+      usageStatus: 'missing',
+    });
+    const rows = f.client.db.select().from(llmRequests).all();
+    expect(rows.map((row) => row.settleReason)).toEqual([null]);
+    expect(JSON.stringify(rows)).not.toContain('sk-secret-value');
+  });
+
+  it('leaves the failure counters absent when no bucket reports them', () => {
+    const summed = sumRequestUsageBuckets([
+      { requests: 2, unknownRequests: 0, pendingRequests: 0 },
+    ]);
+    expect(summed.failedRequests).toBeUndefined();
+    expect(summed.abortedRequests).toBeUndefined();
   });
 });

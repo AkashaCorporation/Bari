@@ -13,10 +13,47 @@ export interface ReportedRequestUsage {
 export type RequestUsageStatus = 'reported' | 'partial' | 'missing' | 'invalid';
 export type RequestOutcome = 'success' | 'error' | 'abort';
 
+/**
+ * Why a physical request settled the way it did.
+ *
+ * Deliberately a closed vocabulary rather than free text. The durable ledger
+ * promises no prompt, content, error bodies, headers or credentials, and a raw
+ * provider error string would break that promise while adding little: the
+ * classification is what makes a settled attempt diagnosable after the fact.
+ * `isRequestSettleReason` is the guard that keeps the column to this set.
+ */
+export const REQUEST_SETTLE_REASONS = [
+  /** The provider returned a final assistant message. */
+  'completed',
+  /** Cancelled by the user or by the runtime. */
+  'aborted',
+  /** The provider adapter reported a transport or protocol error. */
+  'provider-error',
+  /** The stream ended with an error stop reason. */
+  'stop-error',
+  /** An exception escaped the request. */
+  'thrown',
+  /** No final message and no other signal to classify it. */
+  'no-response',
+] as const;
+
+export type RequestSettleReason = (typeof REQUEST_SETTLE_REASONS)[number];
+
+export function isRequestSettleReason(value: unknown): value is RequestSettleReason {
+  return (
+    typeof value === 'string' && (REQUEST_SETTLE_REASONS as readonly string[]).includes(value)
+  );
+}
+
+
 export interface RequestUsageBucket extends ReportedRequestUsage {
   requests: number;
   unknownRequests: number;
   pendingRequests: number;
+  /** Settled attempts whose outcome was `error`; the reason is in the ledger row. */
+  failedRequests?: number;
+  /** Settled attempts whose outcome was `abort`. */
+  abortedRequests?: number;
 }
 
 export interface SessionRequestAccounting {
@@ -129,6 +166,14 @@ export function sumRequestUsageBuckets(buckets: readonly RequestUsageBucket[]): 
         result[field] = sum;
       else result.unknownRequests = Math.max(1, result.unknownRequests);
     }
+  }
+  // Counters that only some producers report stay absent when nobody reports
+  // them, instead of aggregating into a fabricated zero.
+  for (const field of ['failedRequests', 'abortedRequests'] as const) {
+    const known = active
+      .map((item) => item[field])
+      .filter((value): value is number => value !== undefined);
+    if (known.length) result[field] = known.reduce((total, value) => total + value, 0);
   }
   return result;
 }

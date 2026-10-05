@@ -66,4 +66,5 @@ this decision to be revisited.
 | --- | --- |
 | [Automatic learning binds to the runtime, not to the test seam](2026-09-30-automatic-learning-runtime-binding.md) | `packages/local-runtime-v2/src/service/automation/` |
 | [Goal activation from a natural-language message](2026-09-30-natural-language-goal-kickoff.md) | `packages/tui/src/application/thread-goal-intent.ts` |
+| [Settled model attempts record why, in a closed vocabulary](2026-10-04-durable-attempt-reasons.md) | `local_runtime_llm_requests`, `RequestSettleReason` |
 | [Adopting DeepSeek Harness practices by tier](2026-10-04-adopting-deepseek-harness-practices.md) | verification, documentation, and orchestration scope |

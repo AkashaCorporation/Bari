@@ -1,6 +1,7 @@
 import type { MigrationEntry } from './migrate.js';
 import { migration as m1000 } from './migrations/session/migration-1000-request-accounting.js';
 import { migration as m1001 } from './migrations/session/migration-1001-automation.js';
+import { migration as m1002 } from './migrations/session/migration-1002-request-settle-reason.js';
 import { migration as m0014 } from './migrations/agent/migration-0014-create-agents.js';
 import { migration as m0024 } from './migrations/canvas/migration-0024-create-canvas.js';
 import { migration as m0031 } from './migrations/canvas/migration-0031-repair-canvas-version-collision.js';
@@ -75,4 +76,5 @@ export const ALL_MIGRATIONS: readonly MigrationEntry[] = [
   m0036,
   m1000,
   m1001,
+  m1002,
 ];

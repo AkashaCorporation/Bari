@@ -73,6 +73,12 @@ export interface PiLLMRequestSettledInfo {
   readonly endedAtMs: number;
   readonly cacheOutcome: PiLLMCacheOutcome;
   readonly outcome?: import('@bari/shared/request-usage').RequestOutcome;
+  /**
+   * Classification of why this physical attempt settled. A closed vocabulary:
+   * the durable ledger records no error text, because an unclassified provider
+   * message would leak content the ledger promises not to keep.
+   */
+  readonly settleReason?: import('@bari/shared/request-usage').RequestSettleReason;
   readonly usage?: import('@bari/shared/request-usage').ReportedRequestUsage;
   readonly usageStatus?: import('@bari/shared/request-usage').RequestUsageStatus;
 }
@@ -1006,10 +1012,25 @@ export class TurnMetricsRecorder {
           : 'no_read'
         : 'telemetry_unknown';
     if (settlementObserver) {
-      const outcome = final?.stopReason === 'aborted' || (thrown instanceof Error && thrown.name === 'AbortError') ? 'abort'
+      const aborted = final?.stopReason === 'aborted' || (thrown instanceof Error && thrown.name === 'AbortError');
+      const outcome = aborted ? 'abort'
         : thrown || providerError || final?.stopReason === 'error' || !final ? 'error' : 'success';
+      // The same signals that decide the outcome also say why. Classifying here
+      // is what makes a settled attempt diagnosable later; the reason is a
+      // closed vocabulary, never the provider's message.
+      const settleReason: import('@bari/shared/request-usage').RequestSettleReason = aborted
+        ? 'aborted'
+        : thrown
+          ? 'thrown'
+          : providerError
+            ? 'provider-error'
+            : !final
+              ? 'no-response'
+              : final.stopReason === 'error'
+                ? 'stop-error'
+                : 'completed';
       const reported = normalizeReportedRequestUsage(final?.usage, outcome);
-      swallow(() => settlementObserver({ endedAtMs: responseCompletedAt, cacheOutcome, outcome, usage: reported.usage, usageStatus: reported.status }));
+      swallow(() => settlementObserver({ endedAtMs: responseCompletedAt, cacheOutcome, outcome, settleReason, usage: reported.usage, usageStatus: reported.status }));
     }
     client.histogram('pi_llm_response_ms', requestDurationMs, labels);
     if (final && Number.isFinite(requestDurationMs) && requestDurationMs > 0) {
