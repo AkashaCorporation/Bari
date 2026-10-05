@@ -68,4 +68,5 @@ this decision to be revisited.
 | [Goal activation from a natural-language message](2026-09-30-natural-language-goal-kickoff.md) | `packages/tui/src/application/thread-goal-intent.ts` |
 | [Settled model attempts record why, in a closed vocabulary](2026-10-04-durable-attempt-reasons.md) | `local_runtime_llm_requests`, `RequestSettleReason` |
 | [A declared future history format is refused; an absent one is tolerated](2026-10-04-refuse-declared-future-history-format.md) | session history `manifest.json` |
+| [The team roster is a durable record, and what it does not protect](2026-10-04-team-roster-record.md) | team plan state, `LocalTeamMemberRecord` |
 | [Adopting DeepSeek Harness practices by tier](2026-10-04-adopting-deepseek-harness-practices.md) | verification, documentation, and orchestration scope |

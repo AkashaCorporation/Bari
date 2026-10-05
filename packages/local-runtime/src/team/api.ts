@@ -19,6 +19,31 @@ type PlanStatus = 'pending' | 'running' | 'paused' | 'completed' | 'failed' | 'c
 
 const PLAN_ID_PATTERN = /^plan_[0-9a-f]{8}$/u;
 const TASK_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/u;
+const MEMBER_ID_PATTERN = /^tm_[0-9a-f]{16}$/u;
+
+/**
+ * Roster roles a session may claim by joining.
+ *
+ * `owner` is deliberately not joinable: the plan records its owner at creation,
+ * and a second owner would leave "who owns this plan" ambiguous for every
+ * operation that is owner-only.
+ */
+export type LocalTeamMemberRole = 'worker' | 'verifier';
+
+/**
+ * One team participant.
+ *
+ * A member is a first-class record rather than an implicit agreement between
+ * `engine_sessions` keys and `assignedTo` strings, which is what the roster
+ * replaced: those two could disagree and nothing could tell.
+ */
+export interface LocalTeamMemberRecord {
+  readonly member_id: string;
+  readonly agent_name: string;
+  readonly session_id: string;
+  readonly role: LocalTeamMemberRole;
+  readonly joined_at: number;
+}
 
 interface LocalTeamPlanRecord {
   plan: Record<string, unknown>;
@@ -31,6 +56,8 @@ interface LocalTeamPlanRecord {
     phase: string;
     results: Array<Record<string, unknown> & { task_id: string; status: string }>;
     engine_sessions: Record<string, unknown>;
+    /** Durable roster; absent on records written before the roster existed. */
+    members?: LocalTeamMemberRecord[];
     created_at: number;
     updated_at: number;
   };
@@ -162,6 +189,50 @@ export async function routeLocalTeamApi(input: {
     if (access) return access;
     await store.delete(planId);
     return json({ deleted: true, plan_id: planId });
+  }
+
+  // The roster. A session joins by presenting its own id, which is the same
+  // trust model the surrounding plan API already uses for `from_session`: the
+  // guard here is against unknown sessions, duplicates and unjoinable roles, not
+  // against a caller claiming to be another session.
+  if (tail.length === 3 && tail[2] === 'members') {
+    if (input.method === 'GET') {
+      return json({ plan_id: planId, members: record.state.members ?? [] });
+    }
+    if (input.method === 'POST') {
+      const body = await readJsonBody(input.request);
+      const joiningId = await canonicalizeSessionId(
+        input.getSessionById,
+        readString(body, 'from_session'),
+      );
+      if (!joiningId) return json({ error: 'from_session is required' }, { status: 400 });
+      const joining = await input.getSessionById(joiningId);
+      if (!joining) return json({ error: `Session ${joiningId} not found` }, { status: 404 });
+      const delegationGate = await requireTeamDelegation(input, joining);
+      if (delegationGate) return delegationGate;
+      const role = readString(body, 'role') ?? 'worker';
+      if (role !== 'worker' && role !== 'verifier') {
+        return json(
+          { error: `Unsupported member role: ${role}; a session joins as worker or verifier` },
+          { status: 400 },
+        );
+      }
+      const members = record.state.members ?? [];
+      if (members.some((member) => member.session_id === joiningId)) {
+        return json({ error: `Session ${joiningId} is already a team member` }, { status: 409 });
+      }
+      const member: LocalTeamMemberRecord = {
+        member_id: `tm_${randomBytes(8).toString('hex')}`,
+        agent_name: joining.agentName,
+        session_id: joiningId,
+        role,
+        joined_at: input.nowMs(),
+      };
+      record.state.members = [...members, member];
+      record.state.updated_at = input.nowMs();
+      await store.write(record);
+      return json({ plan_id: planId, member, members: record.state.members }, { status: 201 });
+    }
   }
 
   if (input.method === 'POST' && tail.length === 3) {
@@ -780,6 +851,10 @@ class LocalTeamPlanStore {
       if (record.state.phase === 'completed' && record.state.status === 'completed') {
         record.state.phase = 'evaluating';
       }
+      // Records written before the roster existed have no members array. An
+      // absent roster reads as empty so every reader shares one shape instead of
+      // each having to decide what absence means.
+      record.state.members = Array.isArray(record.state.members) ? record.state.members : [];
       return record;
     } catch {
       return undefined;
