@@ -112,6 +112,7 @@
       "packages/tui/test/unit/tui-goal-banner.test.ts",
       "packages/tui/test/unit/tui-model-picker.test.ts",
       "packages/tui/test/unit/tui-model-pricing.test.ts",
+      "packages/tui/test/unit/tui-config-dump.test.ts",
       "packages/tui/test/unit/tui-thread-goal-intent.test.ts",
       "packages/tui/test/unit/tui-goal-implicit-create.test.ts",
       "test/automation-learning-adapter.test.ts",

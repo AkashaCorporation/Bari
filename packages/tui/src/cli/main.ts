@@ -12,6 +12,7 @@ import { tuiErrorDiagnostic } from '../user-facing-failure.js';
 import { configureTuiNetworkProxy } from './network-proxy.js';
 import { consumeLoginRestartHandoff } from '../tui/login-restart-handoff.js';
 import type { McodeTelemetryCliAction } from './telemetry-command.js';
+import type { McodeConfigCliAction } from './config-command.js';
 
 const OUTPUT_DRAIN_TIMEOUT_MS = 250;
 const MINIMAX_CODE_PROCESS_TITLE = 'bari';
@@ -73,6 +74,7 @@ export interface RunTuiCliDependencies {
     version: string,
     environment: NodeJS.ProcessEnv,
   ) => Promise<string> | string;
+  readonly runConfig?: (action: McodeConfigCliAction, version: string) => Promise<string> | string;
   readonly configureNetworkProxy?: typeof configureTuiNetworkProxy;
   readonly allowStartupEnvironmentSelection?: boolean;
   readonly outputDrainTimeoutMs?: number;
@@ -172,6 +174,11 @@ export async function runTuiCli(dependencies: RunTuiCliDependencies = {}): Promi
       runTelemetry: async (action) => {
         const runTelemetry = dependencies.runTelemetry ?? defaultRunTelemetry;
         processRef.stdout.write(await runTelemetry(action, MINIMAX_CODE_VERSION, processRef.env));
+        completedCommandExitMode = 'natural';
+      },
+      runConfig: async (action) => {
+        const runConfig = dependencies.runConfig ?? defaultRunConfig;
+        processRef.stdout.write(await runConfig(action, MINIMAX_CODE_VERSION));
         completedCommandExitMode = 'natural';
       },
     }).parseAsync(processRef.argv, { from: 'node' });
@@ -308,4 +315,12 @@ async function defaultRunTelemetry(
 ): Promise<string> {
   const { runMcodeTelemetryCommand } = await import('./telemetry-command.js');
   return runMcodeTelemetryCommand(action, version, { environment });
+}
+
+async function defaultRunConfig(
+  action: McodeConfigCliAction,
+  _version: string,
+): Promise<string> {
+  const { runMcodeConfigCommand } = await import('./config-command.js');
+  return runMcodeConfigCommand(action);
 }

@@ -19,6 +19,7 @@ import {
 import type { McodePluginCliRequest, McodePluginMarketplace } from '../plugin/contract.js';
 import { resolveTuiManagedBackendLane } from './environment.js';
 import type { McodeTelemetryCliAction } from './telemetry-command.js';
+import type { McodeConfigCliAction } from './config-command.js';
 
 export type { TuiInteractiveLaunchRequest } from './contract.js';
 
@@ -44,6 +45,7 @@ export interface CreateTuiProgramOptions {
   runProvider?: (request: McodeProviderCliRequest, lane?: string) => Promise<void>;
   runPlugin?: (request: McodePluginCliRequest, lane?: string) => Promise<void>;
   runTelemetry?: (action: McodeTelemetryCliAction) => Promise<void>;
+  runConfig?: (action: McodeConfigCliAction) => Promise<void>;
   resolveLane?: typeof resolveTuiManagedBackendLane;
   allowStartupEnvironmentSelection?: boolean;
   commandContributions?: readonly TuiCliCommandContribution[];
@@ -152,7 +154,6 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
   const telemetry = program
     .command('telemetry')
     .description('Inspect anonymous TUI usage reporting');
-
   telemetry
     .command('status')
     .description('Show whether usage reporting is enabled and why')
@@ -164,6 +165,17 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
     .description('Show a representative decoded request without sending it')
     .allowExcessArguments(false)
     .action(() => requireTelemetryRunner(options)('preview'));
+
+  const config = program
+    .command('config')
+    .description('Inspect the configuration the runtime will use')
+    .allowExcessArguments(false);
+
+  config
+    .command('dump')
+    .description('Print the effective configuration as JSON')
+    .allowExcessArguments(false)
+    .action(() => requireConfigRunner(options)('dump'));
 
   const provider = program
     .command('provider')
@@ -448,4 +460,9 @@ function requireAcpRunner(options: CreateTuiProgramOptions) {
 function requireTelemetryRunner(options: CreateTuiProgramOptions) {
   if (!options.runTelemetry) throw new Error('Telemetry inspection is unavailable.');
   return options.runTelemetry;
+}
+
+function requireConfigRunner(options: CreateTuiProgramOptions) {
+  if (!options.runConfig) throw new Error('Config inspection is unavailable.');
+  return options.runConfig;
 }
