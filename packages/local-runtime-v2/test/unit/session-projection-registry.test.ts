@@ -120,3 +120,50 @@ describe("session projection registry", () => {
     expect(failures[0]).toMatchObject({ key: "half-broken", path: "history-committed" });
   });
 });
+describe("session projection registry parallel delivery", () => {
+  it("runs every unit even when one rejects, and reports failures in registration order", async () => {
+    const registry = createSessionProjectionRegistry({ delivery: "parallel" });
+    const ran: string[] = [];
+    registry.register({
+      key: "first",
+      projectRuntimeEvent: () => {
+        ran.push("first");
+        throw new Error("first failed");
+      },
+    });
+    registry.register({
+      key: "second",
+      projectRuntimeEvent: () => void ran.push("second"),
+    });
+    registry.register({
+      key: "third",
+      projectRuntimeEvent: () => {
+        ran.push("third");
+        throw new Error("third failed");
+      },
+    });
+
+    const failures = await registry.deliverRuntimeEvent(runtimeEvent);
+
+    expect(ran.sort()).toEqual(["first", "second", "third"]);
+    // Registration order, not completion order: the list is stable.
+    expect(failures.map((failure) => failure.key)).toEqual(["first", "third"]);
+    expect(failures.every((failure) => failure.path === "runtime-event")).toBe(true);
+  });
+
+  it("delivers sequentially by default, so a unit can rely on an earlier one", async () => {
+    const registry = createSessionProjectionRegistry();
+    const order: string[] = [];
+    registry.register({
+      key: "slow",
+      projectRuntimeEvent: async () => {
+        await new Promise((resolve) => setTimeout(resolve, 5));
+        order.push("slow");
+      },
+    });
+    registry.register({ key: "fast", projectRuntimeEvent: () => void order.push("fast") });
+
+    await registry.deliverRuntimeEvent(runtimeEvent);
+    expect(order).toEqual(["slow", "fast"]);
+  });
+});

@@ -35,6 +35,10 @@ import {
 } from '../session-system/index.js';
 import { isPeekSession } from '../session-system/sessions/repo/normalization.js';
 import {
+  createSessionProjectionRegistry,
+  type ProjectionDeliveryFailure,
+} from '../session-system/projection-registry.js';
+import {
   createNativeAgentHostProductionDependencies,
   createNativeLocalAgentPreparation,
   LocalAgentHost,
@@ -777,6 +781,15 @@ function optionalNormalExtensions(normalExtensions: readonly AgentExtension[] | 
   return normalExtensions ? { normalExtensions } : {};
 }
 
+/**
+ * Adapts best-effort observers onto the projection registry.
+ *
+ * Two contracts meet here and neither is bent: the registry owns registration,
+ * delivery order and failure isolation and reports failures as a value, while
+ * this surface has always run its observers concurrently and thrown. The
+ * adapter asks the registry for parallel delivery and converts the reported
+ * failures back into the throw this surface's callers expect.
+ */
 export function combineAgentEventObservers(
   ...observers: readonly (AgentEventBestEffortObserver | undefined)[]
 ): AgentEventBestEffortObserver | undefined {
@@ -785,13 +798,47 @@ export function combineAgentEventObservers(
   );
   if (active.length === 0) return undefined;
   if (active.length === 1) return active[0];
+  // An observer that handles no path contributes nothing to deliver; leaving it
+  // out keeps the registry's "a unit must handle something" rule honest instead
+  // of registering a unit that would never be called.
+  const registerable = active.filter(
+    (observer) =>
+      typeof observer.observeRuntimeEvent === 'function' ||
+      typeof observer.observeHistoryCommitted === 'function' ||
+      typeof observer.observeHistoryFailure === 'function',
+  );
+  if (registerable.length === 0) return undefined;
+  if (registerable.length === 1) return registerable[0];
+
+  type RuntimeInput = Parameters<NonNullable<AgentEventBestEffortObserver['observeRuntimeEvent']>>[0];
+  type HistoryInput = Parameters<
+    NonNullable<AgentEventBestEffortObserver['observeHistoryCommitted']>
+  >[0];
+  type FailureInput = Parameters<
+    NonNullable<AgentEventBestEffortObserver['observeHistoryFailure']>
+  >[0];
+
+  const registry = createSessionProjectionRegistry({ delivery: 'parallel' });
+  registerable.forEach((observer, index) => {
+    registry.register({
+      key: `observer-${String(index)}`,
+      projectRuntimeEvent: (input) => observer.observeRuntimeEvent?.(input as RuntimeInput),
+      projectHistoryCommitted: (input) => observer.observeHistoryCommitted?.(input as HistoryInput),
+      projectHistoryFailure: (input) => observer.observeHistoryFailure?.(input as FailureInput),
+    });
+  });
+  const throwReported = (failures: readonly ProjectionDeliveryFailure[]): void => {
+    const reasons = failures.map((failure) => failure.error);
+    if (reasons.length === 1) throw reasons[0];
+    if (reasons.length > 1) throw new AggregateError(reasons, 'Agent event observers failed');
+  };
   return {
-    observeRuntimeEvent: (input) =>
-      observeAll(active, (observer) => observer.observeRuntimeEvent?.(input)),
-    observeHistoryCommitted: (input) =>
-      observeAll(active, (observer) => observer.observeHistoryCommitted?.(input)),
-    observeHistoryFailure: (input) =>
-      observeAll(active, (observer) => observer.observeHistoryFailure?.(input)),
+    observeRuntimeEvent: async (input) =>
+      throwReported(await registry.deliverRuntimeEvent(input as never)),
+    observeHistoryCommitted: async (input) =>
+      throwReported(await registry.deliverHistoryCommitted(input as never)),
+    observeHistoryFailure: async (input) =>
+      throwReported(await registry.deliverHistoryFailure(input as never)),
   };
 }
 
@@ -808,18 +855,6 @@ export function createSessionLLMRetryEventObserver(
       payload: { schemaVersion: 1, ...event },
     });
   };
-}
-
-async function observeAll(
-  observers: readonly AgentEventBestEffortObserver[],
-  observe: (observer: AgentEventBestEffortObserver) => void | Promise<void> | undefined,
-): Promise<void> {
-  const results = await Promise.allSettled(observers.map((observer) => observe(observer)));
-  const failures = results.flatMap((result) =>
-    result.status === 'rejected' ? [result.reason] : [],
-  );
-  if (failures.length === 1) throw failures[0];
-  if (failures.length > 1) throw new AggregateError(failures, 'Agent event observers failed');
 }
 
 async function requireExecutionSession(

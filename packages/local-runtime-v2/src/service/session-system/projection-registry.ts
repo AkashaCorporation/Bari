@@ -103,9 +103,16 @@ export interface SessionProjectionRegistry {
   ): Promise<readonly ProjectionDeliveryFailure[]>;
 }
 
-export function createSessionProjectionRegistry(): SessionProjectionRegistry {
+export function createSessionProjectionRegistry(
+  options: { readonly delivery?: 'sequential' | 'parallel' } = {},
+): SessionProjectionRegistry {
   const units = new Map<string, SessionProjectionUnit>();
   const states = new Map<string, unknown>();
+  // Sequential delivery is the default because a unit may rely on another unit
+  // having folded the same fact first. A caller adopting a surface that already
+  // runs its units concurrently asks for parallel instead, so taking this seam
+  // never changes that surface's concurrency as a side effect.
+  const delivery = options.delivery ?? 'sequential';
 
   const handlesSomething = (unit: SessionProjectionUnit): boolean =>
     typeof unit.projectRuntimeEvent === 'function' ||
@@ -116,17 +123,38 @@ export function createSessionProjectionRegistry(): SessionProjectionRegistry {
     path: ProjectionDeliveryFailure['path'],
     invoke: (unit: SessionProjectionUnit) => Promise<void> | void,
   ): Promise<readonly ProjectionDeliveryFailure[]> => {
-    const failures: ProjectionDeliveryFailure[] = [];
-    // Registration order decides delivery order, so a unit can rely on another
-    // unit having folded the same fact first.
-    for (const unit of units.values()) {
+    // A unit may throw before it returns a promise. Resolving the call into a
+    // promise first is what makes both modes isolate a synchronous throw the
+    // same way: mapping the call directly would let it escape Promise.allSettled
+    // and stop the units after it from running at all.
+    const run = (unit: SessionProjectionUnit): Promise<void> => {
       try {
-        await invoke(unit);
+        return Promise.resolve(invoke(unit));
       } catch (error) {
-        failures.push({ key: unit.key, path, error });
+        return Promise.reject(error);
       }
+    };
+    // Registration order decides both execution order in sequential mode and
+    // the order of the reported failures in parallel mode, so a failure list is
+    // stable regardless of which unit finished first.
+    const entries = [...units.values()];
+    if (delivery === 'sequential') {
+      const failures: ProjectionDeliveryFailure[] = [];
+      for (const unit of entries) {
+        try {
+          await run(unit);
+        } catch (error) {
+          failures.push({ key: unit.key, path, error });
+        }
+      }
+      return failures;
     }
-    return failures;
+    const settled = await Promise.allSettled(entries.map(run));
+    return settled.flatMap((result, index) =>
+      result.status === 'rejected'
+        ? [{ key: entries[index]!.key, path, error: result.reason }]
+        : [],
+    );
   };
 
   return {
