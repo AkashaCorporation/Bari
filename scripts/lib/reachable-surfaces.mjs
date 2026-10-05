@@ -37,6 +37,14 @@ export const MUST_BE_REACHABLE = [
     owns: 'the team membership and role derivation',
   },
   {
+    path: 'packages/tui/src/acp/extensions.ts',
+    owns: 'the ACP extension surface, including bari/session/delegation/get and /stop',
+  },
+  {
+    path: 'packages/tui/src/acp/agent.ts',
+    owns: 'the ACP update notifications, including bari/session/delegation_update',
+  },
+  {
     path: 'packages/tui/src/runtime/adapters/product-access.ts',
     owns: 'the TUI runtime port implementation',
   },
