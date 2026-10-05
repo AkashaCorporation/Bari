@@ -77,6 +77,34 @@ provenance itself. `LearningLifecycleObserver` ignores turns whose source is
 `learning`, `cron` or `background-task`, because treating host-owned work as
 user work would let maintenance feed itself.
 
+## Committed-event delivery pipeline
+
+The typed projector slots (`session`, `messages`, `stream`, `turnFacts`) are **not
+a fan-out**. They are a pipeline with distinct roles, and the order is the
+behaviour:
+
+1. `session.projectRuntimeEvent` returns the **acknowledgement** for the event.
+   Its result is validated and is what the caller receives; a missing result
+   raises `AgentEventAcknowledgementError` and the remaining steps do not run.
+2. `messages`, then `stream`, then `turnFacts` project the same event. `messages`
+   receives the abort signal, mirroring the arrival signal for the event.
+3. Only then is the runtime sequence committed and the best-effort observer
+   notified.
+
+The history path is shorter but ordered the same way: `messages`, then
+`turnFacts`, then commit the turn fence, then notify.
+
+Two consequences worth knowing before changing this file:
+
+- A new slot is a **decision about where in the sequence it belongs**, not a
+  registration. It cannot be added by appending.
+- This pipeline deliberately does **not** run through the projection registry.
+  The registry is for units that are independent of each other, and these are
+  not: one produces the result the others follow, and the whole sequence must
+  complete before the sequence is committed. Converting it would trade explicit
+  order for a registration point that cannot express it. See
+  [the decision note](decisions/2026-10-04-typed-projector-slots-are-a-pipeline.md).
+
 ## Adding a hook
 
 1. Add the name to `HOOK_NAMES` and give it a typed overload on `ExtensionAPI`.
