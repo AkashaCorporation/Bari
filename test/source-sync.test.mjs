@@ -189,7 +189,18 @@ test('documentation and archive profiles preserve their required validation gate
   const full = f.run(['--list']).stdout.trim().split('\n');
   const docs = f.run(['--profile', 'docs', '--list']);
   assert.equal(docs.status, 0, docs.stderr);
-  assert.deepEqual(docs.stdout.trim().split('\n'), ['check:source', 'check:tsconfig', 'export source preview', 'test:release-tools']);
+  // The documentation profile keeps the gates that can fail because of a
+  // documentation-only change: the source/export contracts, and the gates that
+  // check documentation against the code it describes (the event map and the
+  // capability seams are declared in docs/ and verified against sources).
+  assert.deepEqual(docs.stdout.trim().split('\n'), [
+    'check:source',
+    'check:tsconfig',
+    'check:events',
+    'check:seams',
+    'export source preview',
+    'test:release-tools',
+  ]);
   const archive = f.run(['--profile', 'archive', '--list']);
   assert.equal(archive.status, 0, archive.stderr);
   assert.deepEqual(archive.stdout.trim().split('\n'), full.filter(g => g !== 'export source preview'));
