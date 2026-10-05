@@ -38,6 +38,7 @@ import {
   type TuiExternalTargetOpener,
 } from '../../../host/open-external.js';
 import { TuiLoginRequiredError } from '../../../application/login-gate.js';
+import { detectTuiThreadGoalIntent } from '../../../application/thread-goal-intent.js';
 import { TuiFailure } from '../../../failure.js';
 import { formatTuiActionFailure } from '../../../user-facing-failure.js';
 import {
@@ -326,11 +327,17 @@ export class TuiCommandFlow {
     // Natural-language Goal kickoff ("vamos subir isso com goal"): the message
     // becomes a `/goal <objective>` before any optimistic projection, so a
     // consumed kickoff never leaves a phantom user message behind.
+    //
+    // Detection is synchronous and runs first on purpose. Asking the runtime
+    // whether a Goal is enabled costs an await, and paying it on every ordinary
+    // submission delayed the optimistic projection for messages that could not
+    // have been a kickoff.
     if (
       !submitOptions.forceMessage &&
       this.options.goalFlow &&
       command &&
-      !command.startsWith('/')
+      !command.startsWith('/') &&
+      detectTuiThreadGoalIntent(input)
     ) {
       const goalDisposition = await this.options.goalFlow.implicitCreate(input);
       if (goalDisposition === 'consumed') {
