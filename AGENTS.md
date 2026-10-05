@@ -33,6 +33,7 @@ Review what changed before regenerating the inventory: recording a file does not
 | Suite platform scope and load-sensitivity | `test/vitest-suites.json` (`scopes`) | `vitest.oss.config.mjs` default include |
 | Application entry points and their classes | `scripts/lib/entrypoints.mjs` | `scripts/build.mjs` entries, `check:entrypoints` |
 | Extension hook names | `HOOK_NAMES` in `packages/agent-runtime/src/types.ts` | `docs/events.md`, `check:events` |
+| Capability seams and their three roles | `scripts/lib/capability-seams.mjs` | `docs/seams.md`, `check:seams` |
 | Retired source paths | `scripts/lib/retired-sources.mjs` | `check:source` (must not exist), `check:standalone` (must not be bundled) |
 | Verification pipeline | `scripts/verify.mjs` | GitHub CI, `pnpm verify` |
 | Documentation-only classification | `scripts/ci-changes.mjs` | source verification, release audit |

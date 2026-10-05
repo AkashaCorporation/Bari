@@ -37,6 +37,7 @@ const steps = [
   { name: "check:source", script: "check:source", docs: true },
   { name: "check:tsconfig", script: "check:tsconfig", docs: true },
   { name: "check:events", script: "check:events", docs: true },
+  { name: "check:seams", script: "check:seams", docs: true },
   {
     name: "export source preview",
     docs: true,
