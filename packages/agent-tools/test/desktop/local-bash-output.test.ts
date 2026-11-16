@@ -3,12 +3,13 @@
  * persisted output across the Pi executor and Desktop tool boundary.
  */
 
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getShellConfig } from '@earendil-works/pi-coding-agent';
+import { BashExecutionError } from '@earendil-works/pi-coding-agent/tools';
 
 import { LocalBashTool } from '../../src/desktop/local-pi-tools.js';
 import { DESKTOP_BASH_MAX_BYTES } from '../../src/desktop/output-limit.js';
@@ -162,6 +163,57 @@ describe('LocalBashTool — foreground output truncation', () => {
         preserve_args: ['path'],
       },
     });
+  });
+
+  it('rebuilds a failed head-tail preview from the complete persisted output', async () => {
+    const tool = new LocalBashTool(workspace, undefined, { mode: 'off' });
+    const lines = Array.from(
+      { length: 400 },
+      (_, index) => `error-row-${index}-${'e'.repeat(90)}`,
+    );
+    const fullOutput = `${lines.join('\n')}\n`;
+    const fullOutputPath = join(workspace, 'complete-bash-output.log');
+    await writeFile(fullOutputPath, fullOutput);
+    vi.spyOn((tool as unknown as { tool: { execute: unknown } }).tool, 'execute').mockRejectedValue(
+      new BashExecutionError(
+        `${lines.slice(0, 307).join('\n')}\n\nCommand exited with code 7`,
+        {
+          truncation: {
+            content: lines.slice(0, 307).join('\n'),
+            truncated: true,
+            truncatedBy: 'bytes',
+            totalLines: 400,
+            totalBytes: Buffer.byteLength(fullOutput),
+            outputLines: 307,
+            outputBytes: Buffer.byteLength(lines.slice(0, 307).join('\n')),
+            lastLinePartial: false,
+            firstLineExceedsLimit: false,
+            maxLines: Number.MAX_SAFE_INTEGER,
+            maxBytes: DESKTOP_BASH_MAX_BYTES - 2048,
+          },
+          fullOutputPath,
+          execution: {
+            status: 'failed',
+            reason: 'exited',
+            exitCode: 7,
+            message: 'Command exited with code 7',
+          },
+          output: {
+            rawBytes: Buffer.byteLength(fullOutput),
+            persistence: 'complete',
+          },
+        },
+      ),
+    );
+
+    const result = await tool.execute(SESSION_CTX, { command: 'synthetic failure' });
+
+    expect(result.isError).toBe(true);
+    expect(result.text).toContain('error-row-0-');
+    expect(result.text).toContain('error-row-399-');
+    expect(result.text).not.toContain('error-row-200-');
+    expect(result.text).toContain('Command exited with code 7');
+    expect(result.details?.fullOutputPath).toBe(fullOutputPath);
   });
 
   it('output beyond 2000 lines preserves head and tail with a complete output file', async () => {

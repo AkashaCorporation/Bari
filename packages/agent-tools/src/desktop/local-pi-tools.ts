@@ -16,7 +16,7 @@ import {
 } from '@earendil-works/pi-coding-agent/tools';
 import { getShellConfig } from '@earendil-works/pi-coding-agent/shell';
 import type { AgentTool, AgentToolResult } from '@earendil-works/pi-agent-core';
-import { access } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import { isAbsolute, resolve as resolvePath } from 'node:path';
 import { homedir, release } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -32,6 +32,7 @@ import {
 import {
   localBashResultFromError,
   localBashResultFromPi,
+  formatBashExecutionOutcome,
   readBashExecutionOutcome,
 } from './local-bash-result.js';
 
@@ -586,7 +587,9 @@ export class LocalBashTool implements ToolImpl<
       if (signal?.aborted || (error instanceof Error && error.name === 'AbortError')) {
         throw error;
       }
-      const failed = localBashResultFromError(error, signal);
+      const failed = await restorePersistedBashFailureOutput(
+        localBashResultFromError(error, signal),
+      );
       result = withCompatibleBashToolResponseFromPiDetails({
         tool_name: LocalBashToolDef.name,
         ...failed,
@@ -691,6 +694,25 @@ function limitDesktopBashOutput(
               'Do not blindly rerun a potentially side-effecting command; narrow it or redirect output to a file, then use read.',
           },
   });
+}
+
+async function restorePersistedBashFailureOutput(
+  result: ReturnType<typeof localBashResultFromError>,
+): Promise<ReturnType<typeof localBashResultFromError>> {
+  const truncation = result.details?.truncation as { truncated?: boolean } | undefined;
+  const fullOutputPath = result.details?.fullOutputPath;
+  if (!truncation?.truncated || typeof fullOutputPath !== 'string') return result;
+  try {
+    const persisted = (await readFile(fullOutputPath, 'utf8')).replace(/\n+$/u, '');
+    const execution = readBashExecutionOutcome(result.details);
+    const receipt = execution ? formatBashExecutionOutcome(execution) : '';
+    const text = receipt && !persisted.endsWith(receipt)
+      ? `${persisted}\n\n${receipt}`
+      : persisted;
+    return { ...result, text };
+  } catch {
+    return result;
+  }
 }
 
 export function resolveForegroundTimeout(input: { timeout?: number }): number {
