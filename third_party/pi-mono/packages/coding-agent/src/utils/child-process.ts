@@ -13,7 +13,11 @@ import {
 import type { Readable } from "node:stream";
 import crossSpawn from "cross-spawn";
 
-const EXIT_STDIO_GRACE_MS = 100;
+// Windows descendants can retain inherited pipe handles after their parent exits,
+// so keep the short escape hatch there. POSIX runners need a wider bound: under
+// CPU contention, the exit notification can arrive before the final stdout/stderr
+// data callbacks, and destroying the streams after 100 ms loses persisted output.
+const EXIT_STDIO_GRACE_MS = process.platform === "win32" ? 100 : 1_000;
 
 export interface ChildProcessExit {
 	exitCode: number | null;
