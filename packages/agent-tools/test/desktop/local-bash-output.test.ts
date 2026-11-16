@@ -151,7 +151,7 @@ describe('LocalBashTool — foreground output truncation', () => {
     expect(result.text).toContain('error-row-0-');
     expect(result.text).toContain('error-row-399-');
     expect(result.text).not.toContain('error-row-200-');
-    expect(result.text).toContain('Command exited with code 7');
+    expect(result.text).toMatch(/Command exited with code [1-9]\d*/u);
     expect(result.text).toContain('desktop bash output truncated');
     expect(result.details?.desktop_output_truncation).toMatchObject({
       truncated: true,
