@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -83,7 +83,7 @@ describe('validated HexCore job publication', () => {
       request: paths.request,
     });
     expect(await readFile(paths.output)).toEqual(await readFile(paths.draft));
-    expect(result.receipt.output).toBe(paths.output);
+    expect(result.receipt.output).toBe(await realpath(paths.output));
     expect(result.receipt.jobSha256).toMatch(/^[a-f0-9]{64}$/u);
     expect(result.receipt.validationSha256).toMatch(/^[a-f0-9]{64}$/u);
   });
@@ -99,7 +99,7 @@ describe('validated HexCore job publication', () => {
       request: 'audit.validation-request.json',
     });
     expect(await readFile(paths.output)).toEqual(await readFile(paths.draft));
-    expect(result.receipt.output).toBe(paths.output);
+    expect(result.receipt.output).toBe(await realpath(paths.output));
   });
 
   it('refuses a draft name that would trigger the watcher before validation', async () => {

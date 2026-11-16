@@ -47,7 +47,7 @@ export async function prepareValidationRequest(input) {
   }
   const raw = await readBoundedFile(draft, 'draft');
   const job = parseJob(raw, draft);
-  assertLocalJobShape(job, draft, workspace);
+  await assertLocalJobShape(job, draft, workspace);
   const createdAt = new Date().toISOString();
   const request = {
     schemaVersion: REQUEST_SCHEMA_VERSION,
@@ -101,11 +101,11 @@ export async function publishValidatedJob(input) {
     throw new Error('Draft changed after the validation request was prepared');
   }
   const job = parseJob(draftRaw, draft);
-  assertLocalJobShape(job, draft, workspace);
+  await assertLocalJobShape(job, draft, workspace);
 
   const validationRaw = await readBoundedFile(validation, 'validation report');
   const report = parseValidationReport(validationRaw);
-  if (resolve(report.jobFile) !== draft) {
+  if ((await realpath(report.jobFile)) !== draft) {
     throw new Error('Validation report does not bind the prepared draft path');
   }
   if (!report.ok || report.issues.some((issue) => issue.level === 'error')) {
@@ -194,13 +194,15 @@ function parseJob(raw, path) {
   return value;
 }
 
-function assertLocalJobShape(job, draft, workspace) {
+async function assertLocalJobShape(job, draft, workspace) {
   const base = dirname(draft);
   if (!isAbsolute(job.file)) {
     throw new Error('Draft target file must be absolute to avoid process-cwd ambiguity');
   }
-  const target = resolve(job.file);
-  const outDir = isAbsolute(job.outDir) ? resolve(job.outDir) : resolve(base, job.outDir);
+  const target = await realpath(job.file);
+  const outDir = await canonicalizePotentialPath(
+    isAbsolute(job.outDir) ? job.outDir : resolve(base, job.outDir),
+  );
   if (!isInsideOrEqual(target, workspace)) {
     throw new Error('Draft target escapes the workspace');
   }
@@ -289,16 +291,12 @@ async function canonicalFileInside(workspace, path, label) {
   return canonical;
 }
 
-function resolveInside(workspace, path, label) {
-  const resolved = isAbsolute(path) ? resolve(path) : resolve(workspace, path);
+async function resolveWritableInside(workspace, path, label) {
+  const declared = isAbsolute(path) ? resolve(path) : resolve(workspace, path);
+  const resolved = await canonicalizePotentialPath(declared);
   if (!isInsideOrEqual(resolved, workspace)) {
     throw new Error(`${label} escapes the workspace`);
   }
-  return resolved;
-}
-
-async function resolveWritableInside(workspace, path, label) {
-  const resolved = resolveInside(workspace, path, label);
   const parent = dirname(resolved);
   let parentInfo;
   try {
@@ -317,6 +315,22 @@ async function resolveWritableInside(workspace, path, label) {
     throw new Error(`${label} parent escapes the workspace`);
   }
   return join(canonicalParent, basename(resolved));
+}
+
+async function canonicalizePotentialPath(path) {
+  let cursor = resolve(path);
+  const missingSegments = [];
+  while (true) {
+    try {
+      return resolve(await realpath(cursor), ...missingSegments);
+    } catch (error) {
+      if (!isNodeError(error, 'ENOENT')) throw error;
+      const parent = dirname(cursor);
+      if (parent === cursor) throw error;
+      missingSegments.unshift(basename(cursor));
+      cursor = parent;
+    }
+  }
 }
 
 function assertInactiveDraft(path) {
