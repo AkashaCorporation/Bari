@@ -130,9 +130,10 @@ function renderWorkHeader(
   tasks: readonly TuiBackgroundTask[],
   width: number,
 ): string {
-  const agentActive = (team?.summary.running ?? 0) + (team?.summary.queued ?? 0);
-  const agentWaiting = team?.summary.waiting ?? 0;
-  const backgroundActive = tasks.filter((task) => isActiveTask(task.status)).length;
+  const queued = (team?.summary.queued ?? 0) + tasks.filter((task) => task.status === 'queued').length;
+  const running = (team?.summary.running ?? 0) + tasks.filter((task) => task.status === 'running').length;
+  const waiting = team?.summary.waiting ?? 0;
+  const stopping = tasks.filter((task) => task.status === 'stopping').length;
   const failed =
     (team?.summary.failed ?? 0) +
     tasks.filter((task) => task.status === 'failed' || task.status === 'lost').length;
@@ -140,29 +141,26 @@ function renderWorkHeader(
   const cancelled =
     (team?.summary.stopped ?? 0) + tasks.filter((task) => task.status === 'canceled').length;
   const counts = [
-    failed > 0 ? `${String(failed)} failed` : undefined,
-    agentWaiting > 0
-      ? `${String(agentWaiting)} agent${agentWaiting === 1 ? '' : 's'} waiting`
-      : undefined,
-    agentActive > 0
-      ? `${String(agentActive)} agent${agentActive === 1 ? '' : 's'} active`
-      : undefined,
-    backgroundActive > 0 ? `${String(backgroundActive)} background active` : undefined,
+    failed > 0 ? `${String(failed)} error${failed === 1 ? '' : 's'}` : undefined,
+    waiting > 0 ? `${String(waiting)} waiting` : undefined,
+    stopping > 0 ? `${String(stopping)} stopping` : undefined,
+    running > 0 ? `${String(running)} running` : undefined,
+    queued > 0 ? `${String(queued)} queued` : undefined,
     ready > 0 ? `${String(ready)} result${ready === 1 ? '' : 's'} ready` : undefined,
     cancelled > 0 ? `${String(cancelled)} cancelled` : undefined,
   ].filter((value): value is string => Boolean(value));
   const marker =
     failed > 0
-      ? chalk.hex(colors.error)('×')
-      : agentWaiting > 0 || tasks.some((task) => task.status === 'stopping')
-        ? chalk.hex(colors.warning)('◉')
-        : agentActive > 0 || backgroundActive > 0
-          ? chalk.hex(colors.accent)('◐')
+      ? chalk.hex(colors.error)('[x]')
+      : waiting > 0 || stopping > 0
+        ? chalk.hex(colors.warning)('[!]')
+        : running > 0 || queued > 0
+          ? chalk.hex(colors.accent)('[~]')
           : cancelled > 0 && ready === 0
-            ? chalk.hex(colors.muted)('■')
-            : chalk.hex(colors.success)('✓');
+            ? chalk.hex(colors.muted)('[-]')
+            : chalk.hex(colors.success)('[+]');
   return truncateToWidth(
-    `${marker} ${chalk.bold.hex(colors.text)('Tasks')}${chalk.hex(colors.muted)(` · ${counts.join(' · ')} · /tasks details`)}`,
+    `${marker} ${chalk.bold.hex(colors.text)('Work')}${chalk.hex(colors.muted)(` · ${counts.join(' · ')} · /tasks details`)}`,
     width,
     '',
   );

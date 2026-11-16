@@ -5,6 +5,8 @@ import type {
   McodeCreateProviderInput,
   McodeMiniMaxModelSource,
   McodeProviderRuntimePort,
+  McodeProviderModel,
+  McodeProviderModelInput,
   McodeSaveProviderCandidateInput,
   McodeSaveProviderCandidateResult,
   McodeProviderSnapshot,
@@ -73,6 +75,10 @@ export class McodeProviderApplication {
     return this.port.getCodexOAuthStatus();
   }
 
+  refreshCodexOAuthModels(): Promise<McodeCodexOAuthStatus> {
+    return this.port.refreshCodexOAuthModels();
+  }
+
   cancelCodexOAuthLogin(loginId: string): Promise<McodeCodexOAuthStatus> {
     return this.port.cancelCodexOAuthLogin(loginId);
   }
@@ -90,6 +96,62 @@ export class McodeProviderApplication {
   }
 
   async refreshModels(provider: McodeProviderView): Promise<number> {
+    const { candidate, discovered } = await this.discoverModels(provider);
+    const ids = new Set(provider.models.map(({ modelId }) => modelId));
+    const added = newModels(discovered, ids);
+    const firstAdded = added[0];
+    if (!firstAdded) return 0;
+    await this.saveRefreshedModels(candidate, [
+      ...provider.models.map(({ modelId }) => ({ modelId })),
+      ...added,
+    ], firstAdded.modelId);
+    return added.length;
+  }
+
+  /** Exact live sync for explicit CLI use; manual and selected models are never pruned. */
+  async syncModels(provider: McodeProviderView): Promise<{
+    readonly added: number;
+    readonly removed: number;
+    readonly modelCount: number;
+  }> {
+    const { candidate, discovered } = await this.discoverModels(provider);
+    // An empty discovery result is not authoritative enough to delete saved state.
+    if (discovered.length === 0) {
+      return { added: 0, removed: 0, modelCount: provider.models.length };
+    }
+    const liveIds = new Set(discovered.map(({ modelId }) => modelId.trim()).filter(Boolean));
+    const kept = provider.models.filter(
+      (model) =>
+        model.selected === true ||
+        model.configurationSource !== 'discovered' ||
+        liveIds.has(model.modelId),
+    );
+    const ids = new Set(kept.map(({ modelId }) => modelId));
+    const added = newModels(discovered, ids);
+    const removed = provider.models.length - kept.length;
+    if (added.length === 0 && removed === 0) {
+      return { added: 0, removed: 0, modelCount: provider.models.length };
+    }
+    const models = [
+      ...kept.map(({ modelId }) => ({ modelId })),
+      ...added,
+    ];
+    const modelId = added[0]?.modelId ?? kept[0]?.modelId;
+    if (!modelId) {
+      throw new Error('Model discovery returned no safe model to retain.');
+    }
+    await this.saveRefreshedModels(candidate, models, modelId);
+    return { added: added.length, removed, modelCount: models.length };
+  }
+
+  private async discoverModels(provider: McodeProviderView): Promise<{
+    readonly candidate: {
+      readonly providerId: string;
+      readonly expectedRevision: string;
+      readonly baseUrl: string;
+    };
+    readonly discovered: readonly McodeProviderModel[];
+  }> {
     if (
       provider.kind !== 'custom' ||
       provider.readOnly ||
@@ -104,33 +166,28 @@ export class McodeProviderApplication {
       baseUrl: provider.baseUrl,
     };
     const discovered = await this.port.discoverUserModelsCandidate(candidate);
-    const ids = new Set(provider.models.map(({ modelId }) => modelId));
-    const added = discovered
-      .map(({ modelId, displayName }) => ({
-        modelId: modelId.trim(),
-        ...(displayName ? { displayName } : {}),
-      }))
-      .filter(({ modelId }) => {
-        if (!modelId || ids.has(modelId)) return false;
-        ids.add(modelId);
-        return true;
-      });
-    const firstAdded = added[0];
-    if (!firstAdded) return 0;
+    return { candidate, discovered };
+  }
+
+  private async saveRefreshedModels(
+    candidate: {
+      readonly providerId: string;
+      readonly expectedRevision: string;
+      readonly baseUrl: string;
+    },
+    models: readonly McodeProviderModelInput[],
+    modelId: string,
+  ): Promise<void> {
     const result = await this.port.saveUserModelProviderCandidate({
       ...candidate,
       // IDs retain every saved model field, including disabled state and limits.
-      models: [
-        ...provider.models.map(({ modelId }) => ({ modelId })),
-        ...added.map((model) => ({ ...model, configurationSource: 'discovered' as const })),
-      ],
-      modelId: firstAdded.modelId,
+      models,
+      modelId,
       skipConnectionTest: true,
       saveAndUse: false,
     });
     if (!result.success)
       throw new Error(result.status?.lastErrorMessage ?? 'Could not save refreshed models.');
-    return added.length;
   }
 
   async update(input: McodeUpdateProviderInput): Promise<void> {
@@ -148,10 +205,27 @@ export class McodeProviderApplication {
   }
 }
 
+function newModels(
+  discovered: readonly McodeProviderModel[],
+  ids: Set<string>,
+): McodeProviderModelInput[] {
+  return discovered
+    .map(({ modelId, displayName }) => ({
+      modelId: modelId.trim(),
+      ...(displayName ? { displayName } : {}),
+      configurationSource: 'discovered' as const,
+    }))
+    .filter(({ modelId }) => {
+      if (!modelId || ids.has(modelId)) return false;
+      ids.add(modelId);
+      return true;
+    });
+}
+
 function normalizeCodexOAuthProvider(status: McodeCodexOAuthStatus): McodeProviderView {
   return {
     providerId: status.providerId,
-    name: 'OpenAI Codex',
+    name: status.displayName ?? 'OpenAI Codex',
     kind: 'codex-oauth',
     active: false,
     enabled: true,
@@ -188,6 +262,9 @@ function normalizeCustomProvider(provider: McodeRuntimeProviderView): McodeProvi
     models: (provider.models ?? []).map((model) => ({
       modelId: model.modelId,
       ...(model.displayName ? { displayName: model.displayName } : {}),
+      ...(model.configurationSource
+        ? { configurationSource: model.configurationSource }
+        : {}),
       ...(model.selected !== undefined ? { selected: model.selected } : {}),
       ...(model.status ? { status: model.status } : {}),
     })),

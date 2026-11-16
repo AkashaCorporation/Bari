@@ -848,6 +848,10 @@ function terminalFrameData(
     ...(error?.message ? { error: error.message } : {}),
     ...(error?.code !== undefined ? { errorCode: error.code } : {}),
     ...(error?.details ? { detail: error.details } : {}),
+    ...(error?.errorSource ? { errorSource: error.errorSource } : {}),
+    ...(error?.errorDetail ? { errorDetail: error.errorDetail } : {}),
+    ...(error?.errorProviderId ? { errorProviderId: error.errorProviderId } : {}),
+    ...(error?.retryable !== undefined ? { retryable: error.retryable } : {}),
   };
 }
 
@@ -856,7 +860,10 @@ function terminalError(event: RuntimeEvent):
       readonly message?: string;
       readonly code?: number;
       readonly details?: string;
-      readonly errorSource?: 'agent-runtime';
+      readonly errorSource?: string;
+      readonly errorDetail?: string;
+      readonly errorProviderId?: string;
+      readonly retryable?: boolean;
     }
   | undefined {
   const protocolError = event.payload.error;
@@ -871,7 +878,18 @@ function terminalError(event: RuntimeEvent):
     ...(message ? { message } : {}),
     ...(protocolError?.code !== undefined ? { code: protocolError.code } : {}),
     ...(protocolError?.details !== undefined ? { details: protocolError.details } : {}),
-    ...(protocolError ? { errorSource: 'agent-runtime' as const } : {}),
+    ...(protocolError?.errorSource
+      ? { errorSource: protocolError.errorSource }
+      : protocolError
+        ? { errorSource: 'agent-runtime' }
+        : {}),
+    ...(protocolError?.errorDetail ? { errorDetail: protocolError.errorDetail } : {}),
+    ...(protocolError?.errorProviderId
+      ? { errorProviderId: protocolError.errorProviderId }
+      : {}),
+    ...(protocolError?.retryable !== undefined
+      ? { retryable: protocolError.retryable }
+      : {}),
   };
 }
 

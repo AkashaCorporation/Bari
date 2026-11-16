@@ -2,7 +2,7 @@ import type { InternalTurnPromptReadRegistry } from '@bari/agent-runtime';
 
 import { createV2AgentExecutionSource } from './execution-source.js';
 import { createV2AgentProfileSource } from './profile-source.js';
-import type { SessionAgentDefinition } from '../../service/session-system/index.js';
+import type { SessionAgentDefinition, SessionRecord } from '../../service/session-system/index.js';
 import type { LocalAgentService } from '../../service/agent/index.js';
 import type { ComposedInspector } from '../../service/llm-context-inspector/index.js';
 import type { ModelSystemConfigPort } from '../../service/model-system/index.js';
@@ -16,7 +16,15 @@ import {
   type ProductionAgentProductCapabilities,
 } from '../../service/turn-system/index.js';
 
+import type { TeamService } from '../../service/team/service.js';
+import { createTeamTool } from '../../service/team/tool.js';
+import { teamRuntimeProvider } from '../../service/team/runtime-model.js';
+import type { ResearchCampaignService } from '../../service/security-campaign/service.js';
+import { createResearchCampaignTool } from '../../service/security-campaign/tool.js';
+
 export interface CreateRuntimeAgentProductOptions {
+  readonly teams?: TeamService;
+  readonly researchCampaigns?: ResearchCampaignService;
   readonly baseProduct: Omit<ProductionAgentProductCapabilities, 'agents'>;
   readonly agentService: LocalAgentService;
   readonly ensureSessionAgentDefinition: (
@@ -83,7 +91,23 @@ export function createRuntimeAgentProduct(
             ? { desktopCapabilities: turnInput.desktopCapabilities }
             : {}),
         });
-        return { ...base, nativeTools: capability.tools };
+        return {
+          ...base,
+          nativeTools: [
+            ...capability.tools,
+            ...(options.teams
+              ? [createTeamTool(options.teams, turnInput.session.sessionId)]
+              : []),
+            ...(options.researchCampaigns
+              ? [
+                  createResearchCampaignTool(
+                    options.researchCampaigns,
+                    turnInput.session.sessionId,
+                  ),
+                ]
+              : []),
+          ],
+        };
       },
     },
     inputPreparation: {
@@ -104,8 +128,20 @@ export function createRuntimeAgentProduct(
               : {}),
           });
           const diagnostic = mergeReminderDiagnostic(base.diagnostic, browser.diagnostic);
+          const team = options.teams
+            ? await options.teams.reminder(input.session.sessionId)
+            : '';
+          const research = options.researchCampaigns
+            ? await options.researchCampaigns.reminder(input.session.sessionId)
+            : '';
           return {
-            content: combineSystemReminderContent(base.content, browser.content),
+            content: combineSystemReminderContent(
+              combineSystemReminderContent(
+                combineSystemReminderContent(base.content, browser.content),
+                team,
+              ),
+              research,
+            ),
             ...diagnostic,
             ...(base.finalizeTelemetry ? { finalizeTelemetry: base.finalizeTelemetry } : {}),
           };
@@ -122,6 +158,10 @@ export function createRuntimeAgentProduct(
       configBuilder: {
         ...baseProduct.preparation.configBuilder,
         config: modelConfig.read,
+        ...(options.teams ? {
+          assertTeamModel: (session: SessionRecord, model: { providerId: string; modelId: string }) => options.teams!.assertModel(session, model),
+          assertTeamResolvedModel: (session: SessionRecord, selected: { providerId: string; modelId: string }, actual: { providerId: string; modelId: string }) => options.teams!.assertResolvedModel(session, selected, actual, () => teamRuntimeProvider(modelConfig.read(), selected)),
+        } : {}),
         isGitRepository:
           baseProduct.preparation.configBuilder.isGitRepository ??
           ((workspaceDir) => isGitRepo(workspaceDir, AbortSignal.timeout(2_000))),

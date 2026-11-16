@@ -212,7 +212,7 @@ describe('models.dev Provider Presets', () => {
     });
 
     const preset = presets.find((entry) => entry.providerId === 'opencode-go');
-    expect(preset?.baseUrl).toBe('https://opencode.ai/zen/go/v1');
+    expect(preset?.baseUrl).toBe('https://opencode.ai/inference/go/openai/v1');
     expect(preset?.models.find((model) => model.modelId === 'deepseek-v4.1-flash')).toMatchObject({
       displayName: 'DeepSeek V4.1 Flash',
       attachment: true,

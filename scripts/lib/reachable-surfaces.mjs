@@ -29,6 +29,62 @@ export const MUST_BE_REACHABLE = [
   },
   // Product surfaces the TUI reaches through ports.
   {
+    path: 'packages/local-runtime-v2/src/service/model-system/chatgpt-plan-auth.ts',
+    owns: 'ChatGPT plan registration, protected credentials and renewal',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/model-system/resolution/chatgpt-plan-stream.ts',
+    owns: 'ChatGPT plan Responses requests and completion validation',
+  },
+  {
+    path: 'packages/tui/src/tui/features/auth/codex-login.ts',
+    owns: 'Continue with ChatGPT from the public TUI',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/team/service.ts',
+    owns: 'persistent team presets, shared tasks, delivery review and model admission',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/team/tool.ts',
+    owns: 'runtime-bound team coordination through admitted task tools',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/security-campaign/service.ts',
+    owns: 'frozen security campaigns, evidence records, leases and verdict gates',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/security-campaign/tool.ts',
+    owns: 'runtime-bound research coordination for the current session lineage',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/security-campaign/analysis-producer/ingest.ts',
+    owns: 'hash-reverified Analysis Jobs v1 receipts',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/security-campaign/analysis-producer/hexcore.ts',
+    owns: 'the stable HexCore Jobs producer adapter',
+  },
+  {
+    path: 'packages/local-runtime-v2/src/service/security-campaign/analysis-producer/hypotenuse.ts',
+    owns: 'the experimental Hypotenuse Jobs producer adapter',
+  },
+  {
+    path: 'packages/tui/src/runtime/adapters/campaign-access.ts',
+    owns: 'security campaign product port to the v2 runtime facade',
+  },
+  {
+    path: 'packages/tui/src/tui/controller/product/campaign-flow.ts',
+    owns: 'keyboard-driven security campaign workflow reached by /campaign',
+  },
+  {
+    path: 'packages/tui/src/runtime/adapters/team-access.ts',
+    owns: 'Agent Teams product port to the v2 runtime facade',
+  },
+  {
+    path: 'packages/tui/src/tui/controller/product/team-flow.ts',
+    owns: 'keyboard-driven team workflow reached by /team and /teams',
+  },
+  {
     path: 'packages/tui/src/runtime/adapters/delegation-access.ts',
     owns: 'the delegated-agent view, roles, message delivery and stop control',
   },

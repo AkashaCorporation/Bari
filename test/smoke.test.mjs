@@ -12,6 +12,10 @@ const cli = path.join(root, "dist/cli.js");
 const version = JSON.parse(
   readFileSync(path.join(root, "packages/tui/package.json"), "utf8"),
 ).version;
+// Full verification runs this gate after thousands of capability tests. Keep
+// child startup bounded while allowing Windows to drain that load; assertions
+// still require a clean exit and the offline network audit remains fail-closed.
+const CLI_CHILD_TIMEOUT_MS = 30000;
 function fixture(t, environment = process.env) {
   const dataDir = mkdtempSync(path.join(tmpdir(), "minimax-code-smoke-"));
   const audit = path.join(dataDir, "network-attempts.log");
@@ -60,7 +64,7 @@ test("CLI version and command help work outside the source directory", (t) => {
     const result = spawnSync(process.execPath, [cli, ...args], {
       ...options,
       encoding: "utf8",
-      timeout: 15000,
+      timeout: CLI_CHILD_TIMEOUT_MS,
     });
     assert.equal(result.status, 0, result.stderr);
     assert.ok(result.stdout.includes(expected), result.stdout);
@@ -70,7 +74,7 @@ test("provider configuration loads from an isolated data directory", (t) => {
   const result = spawnSync(process.execPath, [cli, "provider", "list"], {
     ...fixture(t),
     encoding: "utf8",
-    timeout: 15000,
+    timeout: CLI_CHILD_TIMEOUT_MS,
   });
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /minimax/);
@@ -91,7 +95,7 @@ test("config permission failures preserve private reads and terminate unsafe sta
     const result = spawnSync(process.execPath, [cli, "provider", "list"], {
       ...options,
       encoding: "utf8",
-      timeout: 15000,
+      timeout: CLI_CHILD_TIMEOUT_MS,
       // A leaked startup watcher can handle SIGTERM without releasing the process.
       killSignal: "SIGKILL",
     });
@@ -152,7 +156,7 @@ test("offline smoke children ignore ambient proxy variables", async (t) => {
       const result = spawnSync(process.execPath, [cli, "provider", "list"], {
         ...options,
         encoding: "utf8",
-        timeout: 15000,
+        timeout: CLI_CHILD_TIMEOUT_MS,
       });
       assert.equal(result.status, 0, result.stderr);
       assert.match(result.stdout, /minimax/);
@@ -261,7 +265,7 @@ test("internal environment overrides are rejected", (t) => {
     const result = spawnSync(process.execPath, [cli, ...args], {
       ...options,
       encoding: "utf8",
-      timeout: 15000,
+      timeout: CLI_CHILD_TIMEOUT_MS,
     });
     assert.notEqual(
       result.status,
@@ -281,7 +285,7 @@ test("local plugin browsing remains available with managed services offline", (t
     const result = spawnSync(process.execPath, [cli, ...args], {
       ...options,
       encoding: "utf8",
-      timeout: 15000,
+      timeout: CLI_CHILD_TIMEOUT_MS,
     });
     assert.equal(result.status, 0, result.stderr);
     const output = JSON.parse(result.stdout);
@@ -292,7 +296,7 @@ test("local plugin browsing remains available with managed services offline", (t
 
  test("managed commands remain discoverable without logging in", (t) => {
   for (const args of [["login", "--help"], ["logout", "--help"], ["update", "--help"], ["acp", "login", "--help"], ["provider", "use", "--help"]]) {
-    const result = spawnSync(process.execPath, [cli, ...args], { ...fixture(t), encoding: "utf8", timeout: 15000 });
+    const result = spawnSync(process.execPath, [cli, ...args], { ...fixture(t), encoding: "utf8", timeout: CLI_CHILD_TIMEOUT_MS });
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, /Usage:/);
   }
@@ -302,7 +306,7 @@ test("update command reports the source-distribution policy", (t) => {
   const result = spawnSync(process.execPath, [cli, "update"], {
     ...fixture(t),
     encoding: "utf8",
-    timeout: 15000,
+    timeout: CLI_CHILD_TIMEOUT_MS,
   });
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /not available in this source distribution/);

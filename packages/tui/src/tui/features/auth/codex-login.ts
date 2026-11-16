@@ -26,7 +26,7 @@ interface CodexLoginOptions {
 export class TuiCodexLogin implements Component {
   readonly fullscreenViewport = true;
   readonly handlesViewportKeys = true;
-  private readonly methods: SelectList;
+  private methods: SelectList;
   private phase: 'loading' | 'select' | 'starting' | 'waiting' | 'failed' = 'loading';
   private method: McodeCodexOAuthLoginMethod = 'browser';
   private status: McodeCodexOAuthStatus | undefined;
@@ -125,7 +125,10 @@ export class TuiCodexLogin implements Component {
       this.phase === 'select'
         ? this.methods.renderViewport(layout.contentWidth, layout.bodyHeight)
         : this.body().flatMap((line) => wrapTextWithAnsi(line, layout.contentWidth));
-    return layout.render({ title: 'Connect OpenAI Codex', body }, this.error ? 'error' : 'signal');
+    return layout.render(
+      { title: `Connect ${this.status?.displayName ?? 'OpenAI Codex'}`, body },
+      this.error ? 'error' : 'signal',
+    );
   }
 
   private body(): string[] {
@@ -160,7 +163,9 @@ export class TuiCodexLogin implements Component {
     this.browserHint = undefined;
     this.options.requestRender();
     try {
-      const status = await this.options.application.connectCodexOAuth({ method });
+      const status = await this.options.application.connectCodexOAuth({
+        method,
+      });
       if (this.cancelling && status.loginId) {
         await this.options.application.cancelCodexOAuthLogin(status.loginId);
         return;
@@ -174,6 +179,25 @@ export class TuiCodexLogin implements Component {
   private update(status: McodeCodexOAuthStatus): void {
     if (this.cancelling) return;
     this.status = status;
+    if (status.availableMethods?.length === 1 && status.availableMethods[0] === 'browser') {
+      this.methods = new SelectList(
+        [
+          {
+            value: 'browser',
+            label: 'Continue with ChatGPT',
+            description: 'Use your eligible ChatGPT plan',
+          },
+        ],
+        1,
+        tuiSelectListTheme,
+      );
+      this.methods.onSelect = () => {
+        void this.start('browser');
+      };
+      this.methods.onCancel = () => {
+        void this.cancel();
+      };
+    }
     this.error = undefined;
     if (status.method) this.method = status.method;
     if (status.state === 'connected') {

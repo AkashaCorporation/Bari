@@ -25,6 +25,12 @@ export type McodeProviderCliRequest =
       readonly modelId?: string;
       readonly json?: boolean;
     }
+  | {
+      readonly action: 'refresh';
+      readonly providerId?: string;
+      readonly all?: boolean;
+      readonly json?: boolean;
+    }
   | { readonly action: 'set-minimax-key'; readonly apiKeyEnv?: string }
   | { readonly action: 'use'; readonly source: 'token_plan' | 'minimax_api_key' };
 
@@ -32,6 +38,22 @@ interface McodeProviderCommandContext {
   readonly application: McodeProviderApplication;
   shutdown(): Promise<void>;
 }
+
+type ProviderCatalogRefreshResult =
+  | {
+      readonly providerId: string;
+      readonly success: true;
+      readonly added: number;
+      readonly removed: number;
+      readonly modelCount: number;
+      readonly previousModelCount: number;
+    }
+  | {
+      readonly providerId: string;
+      readonly success: false;
+      readonly previousModelCount: number;
+      readonly error: string;
+    };
 
 export interface RunMcodeProviderCommandOptions {
   readonly version: string;
@@ -118,6 +140,30 @@ export async function runMcodeProviderCommand(
       return `Provider removed: ${request.providerId}`;
     }
     if (request.action === 'test') {
+      if (
+        request.providerId === 'openai-codex' ||
+        request.providerId === 'custom_provider:openai-codex'
+      ) {
+        const status = await context.application.getCodexOAuthStatus();
+        const connected = status.state === 'connected';
+        const message = connected
+          ? 'ChatGPT subscription OAuth is connected. The generic API-key probe is not used for this provider.'
+          : status.error ?? 'ChatGPT subscription OAuth is not connected.';
+        const result = {
+          success: connected,
+          status: {
+            state: connected ? 'connected' : status.state,
+            ...(connected ? {} : { lastErrorMessage: message }),
+          },
+        };
+        if (request.json) return JSON.stringify(result, null, 2);
+        return connected
+          ? message
+          : formatTuiActionFailure(message, {
+              summary: 'ChatGPT subscription connection is unavailable.',
+              nextStep: 'Reconnect from /provider, then test the model through /model or bari exec.',
+            });
+      }
       if (request.providerId === 'minimax_oauth') {
         const message = 'MiniMax OAuth sign-in and connectivity are managed by /login.';
         if (request.json) {
@@ -144,6 +190,70 @@ export async function runMcodeProviderCommand(
             nextStep: 'Check the URL, API key, and model ID, then retry.',
           });
     }
+    if (request.action === 'refresh') {
+      const snapshot = await context.application.snapshot();
+      if (request.all) {
+        const providers = snapshot.providers.filter(
+          (provider) =>
+            provider.enabled &&
+            provider.kind === 'custom' &&
+            (isCodexOAuthProvider(provider.providerId) || !provider.readOnly),
+        );
+        const results: ProviderCatalogRefreshResult[] = [];
+        for (const provider of providers) {
+          try {
+            results.push({
+              providerId: provider.providerId,
+              success: true,
+              ...(await synchronizeProviderCatalog(context.application, provider)),
+            });
+          } catch (error) {
+            results.push({
+              providerId: provider.providerId,
+              success: false,
+              previousModelCount: provider.models.length,
+              error: error instanceof Error ? error.message : 'Provider catalog refresh failed.',
+            });
+          }
+        }
+        const successful = results.filter((result) => result.success);
+        const result = {
+          providers: results,
+          totals: {
+            refreshed: successful.length,
+            failed: results.length - successful.length,
+            added: successful.reduce((sum, provider) => sum + (provider.added ?? 0), 0),
+            removed: successful.reduce((sum, provider) => sum + (provider.removed ?? 0), 0),
+          },
+        };
+        if (request.json) return JSON.stringify(result, null, 2);
+        return [
+          ...results.map((provider) =>
+            provider.success
+              ? `${provider.providerId}: +${provider.added ?? 0} -${provider.removed ?? 0} (${provider.modelCount ?? provider.previousModelCount} total)`
+              : `${provider.providerId}: failed (${provider.error})`,
+          ),
+          `Catalog refresh complete: ${result.totals.refreshed} refreshed, ${result.totals.failed} failed.`,
+        ].join('\n');
+      }
+      if (!request.providerId) {
+        throw new Error('Pass a provider ID or use --all.');
+      }
+      const provider = snapshot.providers.find(
+        (candidate) => candidate.providerId === request.providerId,
+      );
+      if (!provider) throw new Error(`Provider not found: ${request.providerId}`);
+      const synced = await synchronizeProviderCatalog(context.application, provider);
+      const result = {
+        providerId: provider.providerId,
+        ...synced,
+      };
+      return request.json
+        ? JSON.stringify(result, null, 2)
+        : synced.added > 0 || synced.removed > 0
+          ? `Provider models synchronized: ${provider.providerId} +${synced.added} -${synced.removed} (${synced.modelCount} total).`
+          : `Provider models already up to date: ${provider.providerId} (${synced.modelCount} total).`;
+    }
     if (request.action === 'set-minimax-key') {
       const envName = request.apiKeyEnv?.trim() || 'MCODE_PROVIDER_API_KEY';
       const apiKey = (options.environment ?? process.env)[envName]?.trim();
@@ -158,6 +268,45 @@ export async function runMcodeProviderCommand(
   } finally {
     await context.shutdown();
   }
+}
+
+async function synchronizeProviderCatalog(
+  application: McodeProviderApplication,
+  provider: McodeProviderSnapshot['providers'][number],
+): Promise<{
+  readonly added: number;
+  readonly removed: number;
+  readonly modelCount: number;
+  readonly previousModelCount: number;
+}> {
+  const previousModelCount = provider.models.length;
+  const synced = isCodexOAuthProvider(provider.providerId)
+    ? await refreshCodexOAuthCatalog(application, provider)
+    : await application.syncModels(provider);
+  return { ...synced, previousModelCount };
+}
+
+function isCodexOAuthProvider(providerId: string): boolean {
+  return providerId === 'openai-codex' || providerId === 'custom_provider:openai-codex';
+}
+
+async function refreshCodexOAuthCatalog(
+  application: McodeProviderApplication,
+  previous: McodeProviderSnapshot['providers'][number],
+): Promise<{ readonly added: number; readonly removed: number; readonly modelCount: number }> {
+  await application.refreshCodexOAuthModels();
+  const refreshed = await application.snapshot();
+  const current = refreshed.providers.find(
+    (provider) => provider.providerId === 'custom_provider:openai-codex',
+  );
+  if (!current) throw new Error('ChatGPT subscription catalog was not persisted after refresh.');
+  const previousIds = new Set(previous.models.map(({ modelId }) => modelId));
+  const currentIds = new Set(current.models.map(({ modelId }) => modelId));
+  return {
+    added: [...currentIds].filter((modelId) => !previousIds.has(modelId)).length,
+    removed: [...previousIds].filter((modelId) => !currentIds.has(modelId)).length,
+    modelCount: current.models.length,
+  };
 }
 
 async function createProviderCommandContext(

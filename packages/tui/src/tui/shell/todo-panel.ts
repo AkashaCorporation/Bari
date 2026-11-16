@@ -56,7 +56,7 @@ export class TuiTodoPanel implements Component {
     if (completed === this.items.length) {
       return [
         truncateToWidth(
-          `  ${chalk.hex(colors.success)(`✓ Todo list ${completed}/${this.items.length} completed`)}`,
+          `  ${chalk.hex(colors.success)(`[+] Plan ${completed}/${this.items.length} completed`)}`,
           safeWidth,
           chalk.hex(colors.muted)('…'),
         ),
@@ -106,7 +106,7 @@ interface TodoSummary {
 }
 
 function renderExpandedHeader(summary: TodoSummary & { readonly remaining: number }): string {
-  const progress = chalk.bold.hex(colors.text)(`Todo list ${summary.completed}/${summary.total}`);
+  const progress = chalk.bold.hex(colors.text)(`Plan ${summary.completed}/${summary.total}`);
   const action =
     summary.width < CLOSE_ACTION_MIN_COLUMNS
       ? summary.shortcut
@@ -203,13 +203,13 @@ function renderTodoRow(item: TuiTodoItem): string {
 function renderMarker(status: TuiTodoStatus): string {
   switch (status) {
     case 'completed':
-      return chalk.hex(colors.success)('✓');
+      return chalk.hex(colors.success)('[+]');
     case 'in_progress':
-      return chalk.bold.hex(colors.signal)('●');
+      return chalk.bold.hex(colors.signal)('[>]');
     case 'cancelled':
-      return chalk.hex(colors.muted)('–');
+      return chalk.hex(colors.muted)('[-]');
     case 'pending':
-      return chalk.hex(colors.dim)('○');
+      return chalk.hex(colors.dim)('[ ]');
   }
 }
 

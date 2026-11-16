@@ -34,7 +34,7 @@ type EmbeddedRuntimeConfig = ReturnType<NonNullable<CreateLocalRuntimeHostOption
 
 export function projectEmbeddedRuntimeConfig(
   config: EmbeddedRuntimeConfig,
-  buildIdentity: Pick<ProductBuildIdentity, 'isInternalBuild'> = resolveMcodeBuildIdentity(),
+  _buildIdentity: Pick<ProductBuildIdentity, 'isInternalBuild'> = resolveMcodeBuildIdentity(),
   mcodeToolsEnabled = false,
 ): EmbeddedRuntimeConfig {
   return {
@@ -48,7 +48,7 @@ export function projectEmbeddedRuntimeConfig(
     },
     beta: {
       ...config.beta,
-      codexOAuth: buildIdentity.isInternalBuild,
+      codexOAuth: true,
       mcodeTools: mcodeToolsEnabled && config.beta?.mcodeTools === true,
     },
   };

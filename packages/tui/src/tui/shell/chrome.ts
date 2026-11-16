@@ -486,7 +486,7 @@ function renderGitContext(
   density: 'full' | 'compact' | 'minimal' = 'full',
 ): string {
   if (!metadata?.isGitRepo) return '';
-  const ref = metadata.detached ? 'detached' : metadata.branch || 'unborn';
+  const ref = metadata.detached ? 'detached' : flattenStatusText(metadata.branch || 'unborn');
   const label =
     density === 'full' ? ref : stripAnsi(truncateToWidth(ref, density === 'minimal' ? 7 : 12));
   const worktree = metadata.isWorktree ? (density === 'full' ? 'worktree' : 'wt') : undefined;
@@ -618,12 +618,14 @@ function renderStatusMode(state: TuiShellState, compact = false): string {
 }
 
 function formatWorkspace(workspace: string, homeDir: string | undefined): string {
-  if (!homeDir) return workspace;
-  if (workspace === homeDir) return '~';
-  if (workspace.startsWith(`${homeDir}/`) || workspace.startsWith(`${homeDir}\\`)) {
-    return `~${workspace.slice(homeDir.length)}`;
+  const safeWorkspace = flattenStatusText(workspace);
+  const safeHome = homeDir ? flattenStatusText(homeDir) : undefined;
+  if (!safeHome) return safeWorkspace;
+  if (safeWorkspace === safeHome) return '~';
+  if (safeWorkspace.startsWith(`${safeHome}/`) || safeWorkspace.startsWith(`${safeHome}\\`)) {
+    return `~${safeWorkspace.slice(safeHome.length)}`;
   }
-  return workspace;
+  return safeWorkspace;
 }
 
 function formatWorkspaceVariants(workspace: string): {
@@ -653,6 +655,11 @@ function compactWorkspacePath(
 }
 
 function formatStatusContextLabel(value: string): string {
-  const normalized = value.replaceAll('\\', '/').replace(/\/+$/u, '');
-  return normalized.split('/').at(-1) || value;
+  const safeValue = flattenStatusText(value);
+  const normalized = safeValue.replaceAll('\\', '/').replace(/\/+$/u, '');
+  return normalized.split('/').at(-1) || safeValue;
+}
+
+function flattenStatusText(value: string): string {
+  return sanitizeTerminalText(value).replace(/\s+/gu, ' ').trim();
 }

@@ -212,6 +212,10 @@ import {
 } from "./service/turn-system/index.js";
 import { composeV1Conversation } from "./service/v1-conversation-compat/index.js";
 import type { WorkspaceSystem } from "./service/workspace/index.js";
+import { TeamService } from './service/team/service.js';
+import { ResearchCampaignService } from './service/security-campaign/service.js';
+import { verifyLocalResearchArtifact } from './service/security-campaign/local-artifact.js';
+import { ingestAnalysisRun } from './service/security-campaign/analysis-producer/index.js';
 
 export {
   createRuntimeAgentComposition,
@@ -225,6 +229,9 @@ export {
   type DeferredLocalSandboxBashOperationsFactory,
 } from "./service/sandbox/index.js";
 export interface RuntimeServices extends RuntimeMiniAppServices {
+  readonly teams: TeamService;
+  /** V2 owner for frozen security research campaigns and evidence verdict gates. */
+  readonly researchCampaigns: ResearchCampaignService;
   /** V2 Agent owner and cross-capability Agent workflows. */
   readonly agent: AgentApplication;
   readonly safety: ContentSafetyService;
@@ -451,7 +458,46 @@ export async function createRuntimeServices(
   const serviceLogger = resolvePluginServiceLogger(options.logger);
   const readAgentHostConfig =
     options.compatibility.agentHost.preparation.configBuilder.config;
+  const teams = new TeamService(options.dataDir, {
+    getSession: (id) => productionSessionComposition.sessionSystem.sessions.repository.get(id),
+    listAgents: async () => (await options.agentService.list()).filter(agent => !(agent.creationSource === 'builtin' && agent.agentRole === 'mavis')).map(agent => ({ name: agent.requestRef, displayName: agent.displayName ?? agent.name })),
+    listModels: async () =>
+      (await productionSessionComposition.modelProviderApplication.list()).filter(
+        (model) => model.enabled,
+      ),
+    enqueue: async (id, content) => {
+      await conversation.enqueueMessage({}, { id, content });
+    },
+    cancel: async (id) => {
+      await conversation.abortSession({}, { id });
+    },
+  });
+  const researchCampaigns = new ResearchCampaignService(
+    options.dataDir,
+    {
+      getSession: (id) =>
+        productionSessionComposition.sessionSystem.sessions.repository.get(id),
+      getTeamTask: async (sessionId, taskId) => {
+        const result = await teams.execute({ sessionId, action: 'status' });
+        const task = result.snapshot?.tasks.find((entry) => entry.id === taskId);
+        if (!result.snapshot || !task) return undefined;
+        return {
+          rootSessionId: result.snapshot.rootSessionId,
+          task: {
+            id: task.id,
+            status: task.status,
+            ...(task.sessionId ? { sessionId: task.sessionId } : {}),
+          },
+        };
+      },
+      verifyArtifact: verifyLocalResearchArtifact,
+      ingestAnalysisRun,
+    },
+    { nowMs },
+  );
   const productionSessionComposition = createProductionSessionComposition({
+    teams,
+    researchCampaigns,
     ...options,
     baseProduct: options.compatibility.agentHost,
     compatibility: options.compatibility.sessionV2,
@@ -610,6 +656,8 @@ export async function createRuntimeServices(
     conversation,
     applications: owners.applications,
     application,
+    teams,
+    researchCampaigns,
     plugin: owners.plugin.plugin,
     mcp: owners.mcp.service,
     mcpRuntime: owners.mcp.runtime,

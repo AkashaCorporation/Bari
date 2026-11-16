@@ -331,4 +331,41 @@ describe('saved provider model refresh', () => {
     await expect(new McodeProviderApplication(port).refreshModels({ ...provider, configRevision: undefined })).rejects.toThrow('Reopen /provider');
     expect(port.discoverUserModelsCandidate).not.toHaveBeenCalled();
   });
+
+  it('CLI sync prunes only disappeared discovered models and preserves manual or selected rows', async () => {
+    const port = createPort();
+    const syncProvider: McodeProviderView = {
+      ...provider,
+      models: [
+        { modelId: 'manual-stale', configurationSource: 'manual' },
+        { modelId: 'live', configurationSource: 'discovered' },
+        { modelId: 'discovered-stale', configurationSource: 'discovered' },
+        { modelId: 'selected-stale', configurationSource: 'discovered', selected: true },
+      ],
+    };
+    port.discoverUserModelsCandidate.mockResolvedValue([
+      { modelId: 'live', displayName: 'Live' },
+      { modelId: 'new', displayName: 'New' },
+    ]);
+
+    await expect(new McodeProviderApplication(port).syncModels(syncProvider)).resolves.toEqual({
+      added: 1,
+      removed: 1,
+      modelCount: 4,
+    });
+    expect(port.saveUserModelProviderCandidate).toHaveBeenCalledWith({
+      providerId: syncProvider.providerId,
+      expectedRevision: syncProvider.configRevision,
+      baseUrl: syncProvider.baseUrl,
+      models: [
+        { modelId: 'manual-stale' },
+        { modelId: 'live' },
+        { modelId: 'selected-stale' },
+        { modelId: 'new', displayName: 'New', configurationSource: 'discovered' },
+      ],
+      modelId: 'new',
+      skipConnectionTest: true,
+      saveAndUse: false,
+    });
+  });
 });

@@ -1,6 +1,6 @@
 # Releasing a source preview
 
-The current source target is Bari 0.4.12. Workspace and local-build manifests remain `private: true` to prevent accidental npm publication. A source release, npm package, and installer are separate artifacts with separate verification.
+The current source target is Bari 0.8.0-preview.1. Workspace and local-build manifests remain `private: true` to prevent accidental npm publication. A source release, npm package, and installer are separate artifacts with separate verification.
 
 ## Prepare a release
 

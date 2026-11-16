@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 
 import { AuthStorage } from '@earendil-works/pi-coding-agent/auth-storage';
+import { CHATGPT_PLAN_BASE_URL, ChatGPTPlanAuthError } from './chatgpt-plan-auth.js';
 
 import type {
   LocalByokConfigDraft,
@@ -35,6 +36,8 @@ export interface CodexOAuthDeviceCode {
 export interface CodexOAuthStatus {
   state: CodexOAuthState;
   providerId: typeof OPENAI_CODEX_PROVIDER_ID;
+  displayName?: string;
+  availableMethods?: CodexOAuthLoginMethod[];
   error?: string;
   loginId?: string;
   method?: CodexOAuthLoginMethod;
@@ -58,7 +61,7 @@ type LoginAttempt = {
 interface CodexAuthStorage {
   getCredentials(): Promise<CodexModelCredentials | undefined>;
   hasOAuth(provider: typeof OPENAI_CODEX_PROVIDER_ID): boolean;
-  removeOAuth(provider: typeof OPENAI_CODEX_PROVIDER_ID): void;
+  removeOAuth(provider: typeof OPENAI_CODEX_PROVIDER_ID): void | Promise<void>;
   login(
     provider: typeof OPENAI_CODEX_PROVIDER_ID,
     callbacks: Parameters<AuthStorage['login']>[1],
@@ -67,6 +70,10 @@ interface CodexAuthStorage {
 
 export interface CodexOAuthManagerDeps {
   configGetter: () => LocalRuntimeConfig;
+  displayName?: string;
+  loginMethods?: CodexOAuthLoginMethod[];
+  providerApi?: LocalCustomProviderConfig['api'];
+  providerBaseUrl?: string;
   fetchImpl?: typeof fetch;
   updateByokConfig?: (
     mutate: (
@@ -198,6 +205,13 @@ export class CodexOAuthManager {
     const method = options.method ?? 'browser';
     if (method !== 'browser' && method !== 'device_code') {
       throw new CodexOAuthError(400, 'Unknown Codex login method.', 'OAUTH_INVALID_METHOD');
+    }
+    if (this.deps.loginMethods && !this.deps.loginMethods.includes(method)) {
+      throw new CodexOAuthError(
+        400,
+        'Use browser sign-in for this ChatGPT connection.',
+        'OAUTH_INVALID_METHOD',
+      );
     }
     if (this.login) {
       if (this.login.method !== method) {
@@ -341,7 +355,7 @@ export class CodexOAuthManager {
     };
   }
 
-  removeCredentials(providerId: string): void {
+  removeCredentials(providerId: string): void | Promise<void> {
     if (providerId !== OPENAI_CODEX_PROVIDER_ID) {
       throw new CodexOAuthError(
         404,
@@ -350,10 +364,11 @@ export class CodexOAuthManager {
       );
     }
     if (this.login) this.cancelLogin(this.login.id);
-    this.authStorage().removeOAuth(OPENAI_CODEX_PROVIDER_ID);
+    const removal = this.authStorage().removeOAuth(OPENAI_CODEX_PROVIDER_ID);
     this.credentialGeneration += 1;
     this.pendingCatalog = undefined;
     this.lastError = undefined;
+    return removal;
   }
 
   private async finishLogin(
@@ -396,12 +411,12 @@ export class CodexOAuthManager {
   }
 
   private hasConfiguredProvider(): boolean {
+    const config = this.deps.configGetter();
+    const provider = config.custom_provider?.[OPENAI_CODEX_PROVIDER_ID] ?? config.provider?.[OPENAI_CODEX_PROVIDER_ID];
+    if (this.deps.providerApi && provider?.api !== this.deps.providerApi) return false;
+    if (this.deps.providerBaseUrl && provider?.options?.baseURL !== this.deps.providerBaseUrl) return false;
     return (
-      Object.keys(
-        this.deps.configGetter().custom_provider?.[OPENAI_CODEX_PROVIDER_ID]?.models ??
-          this.deps.configGetter().provider?.[OPENAI_CODEX_PROVIDER_ID]?.models ??
-          {},
-      ).length > 0
+      Object.keys(provider?.models ?? {}).length > 0
     );
   }
 
@@ -469,6 +484,8 @@ export class CodexOAuthManager {
     return {
       state,
       providerId: OPENAI_CODEX_PROVIDER_ID,
+      ...(this.deps.displayName ? { displayName: this.deps.displayName } : {}),
+      ...(this.deps.loginMethods ? { availableMethods: [...this.deps.loginMethods] } : {}),
       ...(error ? { error } : {}),
     };
   }
@@ -497,18 +514,22 @@ function mergeCodexOAuthProvider(
   const currentOptions = { ...(current?.options ?? {}) };
   delete currentOptions.apiKey;
   const currentModels = current?.models ?? {};
+  const chatgptPlan = catalog.api === 'openai-responses' && catalog.options?.baseURL === CHATGPT_PLAN_BASE_URL;
+  if (chatgptPlan) delete currentOptions.headers;
   return {
     ...current,
-    api: current?.api ?? catalog.api,
+    api: chatgptPlan ? catalog.api : current?.api ?? catalog.api,
     name: current?.name ?? catalog.name,
     kind: 'oauth',
     enabled: current?.enabled ?? true,
     options: {
       ...currentOptions,
-      baseURL: current?.options?.baseURL ?? catalog.options?.baseURL,
+      baseURL: chatgptPlan ? catalog.options?.baseURL : current?.options?.baseURL ?? catalog.options?.baseURL,
       authMode: 'oauth',
     },
-    models: mergeCodexModels(currentModels, catalog.models ?? {}),
+    models: chatgptPlan ? Object.fromEntries(Object.entries(catalog.models ?? {}).map(([id, model]) => [id, {
+      ...model, ...(currentModels[id]?.enabled === undefined ? {} : { enabled: currentModels[id]!.enabled }),
+    }])) : mergeCodexModels(currentModels, catalog.models ?? {}),
   };
 }
 
@@ -536,6 +557,7 @@ function mergeCodexModels(
 }
 
 function codexOAuthErrorMessage(error: unknown): string {
+  if (error instanceof ChatGPTPlanAuthError) return error.message;
   if (error instanceof CodexOAuthError) return error.message;
   const message = error instanceof Error ? error.message : '';
   if (message.includes('callback expired')) return message;

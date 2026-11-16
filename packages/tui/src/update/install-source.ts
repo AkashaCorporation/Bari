@@ -12,11 +12,16 @@ const MCODE_PACKAGE_BASENAME = 'code';
 const MCODE_INTERNAL_SCOPE = '@bari';
 const MCODE_LEGACY_INTERNAL_SCOPE = '@minimax';
 const MCODE_PUBLIC_SCOPE = '@minimax-ai';
+const BARI_PUBLIC_PACKAGE_NAME = '@akashacorporation/bari' as const;
 // Public packaging rewrites this marker together with the bundled package identity.
-const MCODE_EMBEDDED_PACKAGE_NAME = '@minimax-ai/code' as McodeNpmPackageName;
+const MCODE_EMBEDDED_PACKAGE_NAME = BARI_PUBLIC_PACKAGE_NAME as McodeNpmPackageName;
 
 export type McodeNpmDistTag = 'latest' | 'test' | 'preview';
-export type McodeNpmPackageName = '@bari/code' | '@minimax/code' | '@minimax-ai/code';
+export type McodeNpmPackageName =
+  | '@akashacorporation/bari'
+  | '@bari/code'
+  | '@minimax/code'
+  | '@minimax-ai/code';
 type TuiBuildEnvironment = 'test' | 'staging' | 'prod';
 
 declare const __TUI_BUILD_ENV__: TuiBuildEnvironment | undefined;
@@ -117,21 +122,26 @@ export function classifyMcodeInstallPath(
 ): McodePackageManagerInstallSource | undefined {
   const normalized = packageRoot.replaceAll('\\', '/').toLocaleLowerCase();
   if (
-    /\/pnpm\/global\/(?:v11\/[^/]+|[^/]+)\/node_modules\/@minimax(?:-ai)?\/code$/u.test(normalized)
+    /\/pnpm\/global\/(?:v11\/[^/]+|[^/]+)\/node_modules\/(?:@minimax(?:-ai)?\/code|@akashacorporation\/bari)$/u.test(normalized)
   ) {
     return 'pnpm-global';
   }
   if (
-    /\/(?:\.config\/yarn|\.yarn)\/global\/node_modules\/@minimax(?:-ai)?\/code$/u.test(normalized)
+    /\/(?:\.config\/yarn|\.yarn)\/global\/node_modules\/(?:@minimax(?:-ai)?\/code|@akashacorporation\/bari)$/u.test(normalized)
   ) {
     return 'yarn-global';
   }
-  if (/\/\.bun\/install\/global\/node_modules\/@minimax(?:-ai)?\/code$/u.test(normalized)) {
+  if (
+    /\/\.bun\/install\/global\/node_modules\/(?:@minimax(?:-ai)?\/code|@akashacorporation\/bari)$/u.test(
+      normalized,
+    )
+  ) {
     return 'bun-global';
   }
   if (
-    /\/lib\/node_modules\/@(?:bari|minimax(?:-ai)?)\/code$/u.test(normalized) ||
-    /\/npm\/node_modules\/@(?:bari|minimax(?:-ai)?)\/code$/u.test(normalized)
+    /\/(?:lib|npm)\/node_modules\/(?:@(?:bari|minimax(?:-ai)?)\/code|@akashacorporation\/bari)$/u.test(
+      normalized,
+    )
   ) {
     return 'npm-global';
   }
@@ -153,6 +163,16 @@ export function resolveMcodeNpmDistribution(
     throw new Error(`Unsupported Bari npm registry: ${resolvedRegistry}`);
   }
   if (packageName === mcodePackageName(MCODE_PUBLIC_SCOPE)) {
+    const resolvedRegistry = registry ? new URL(registry).href : MCODE_PUBLIC_NPM_REGISTRY;
+    if (
+      resolvedRegistry === MCODE_PUBLIC_NPM_REGISTRY ||
+      resolvedRegistry === MCODE_PUBLIC_NPM_MIRROR_REGISTRY
+    ) {
+      return { packageName, registry: resolvedRegistry };
+    }
+    throw new Error(`Unsupported Bari npm registry: ${resolvedRegistry}`);
+  }
+  if (packageName === BARI_PUBLIC_PACKAGE_NAME) {
     const resolvedRegistry = registry ? new URL(registry).href : MCODE_PUBLIC_NPM_REGISTRY;
     if (
       resolvedRegistry === MCODE_PUBLIC_NPM_REGISTRY ||
@@ -642,6 +662,7 @@ function isResolvedPathInside(
 }
 
 function parseMcodePackageName(value: unknown): McodeNpmPackageName | undefined {
+  if (value === BARI_PUBLIC_PACKAGE_NAME) return value;
   if (value === mcodePackageName(MCODE_INTERNAL_SCOPE)) return value as McodeNpmPackageName;
   if (value === mcodePackageName(MCODE_LEGACY_INTERNAL_SCOPE)) return value as McodeNpmPackageName;
   if (value === mcodePackageName(MCODE_PUBLIC_SCOPE)) return value as McodeNpmPackageName;
@@ -655,6 +676,9 @@ function mcodePackageName(scope: string): McodeNpmPackageName {
 function mcodePackageNameFromPath(packageRoot: string): McodeNpmPackageName | undefined {
   const normalized = packageRoot.replaceAll('\\', '/');
   const segments = normalized.split('/');
+  if (segments.at(-1) === 'bari') {
+    return parseMcodePackageName(`${segments.at(-2)}/bari`);
+  }
   if (segments.at(-1) !== MCODE_PACKAGE_BASENAME) return undefined;
   return parseMcodePackageName(`${segments.at(-2)}/${MCODE_PACKAGE_BASENAME}`);
 }

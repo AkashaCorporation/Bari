@@ -109,6 +109,8 @@ export interface LocalPromptSkill {
 
 export interface LocalAgentConfigBuilderOptions {
   readonly config: () => LocalConversationRuntimeConfig;
+  readonly assertTeamModel?: (session: SessionRecord, model: { providerId: string; modelId: string }) => Promise<void>;
+  readonly assertTeamResolvedModel?: (session: SessionRecord, selected: { providerId: string; modelId: string }, actual: { providerId: string; modelId: string }) => Promise<void>;
   readonly environment?: () => LocalPromptEnvironment;
   readonly isGitRepository?: (workspaceDir: string) => Promise<boolean>;
   readonly memory?: LocalPromptMemoryReader;
@@ -149,6 +151,12 @@ export class LocalAgentConfigBuilder {
     this.nowMs = options.nowMs ?? (() => Date.now());
     this.sessionModelRepair = options.sessionModelRepair;
     this.taskSessionBindings = options.taskSessionBindings;
+  }
+
+  async assertResolvedTeamModel(session: SessionRecord, selected: IAgentConfig['model'], actual: { provider: string; id: string }): Promise<void> {
+    if (!this.options.assertTeamResolvedModel) return;
+    if (!selected?.provider || !selected.model_id) throw new Error('Resolved Agent Teams model has no canonical selection');
+    await this.options.assertTeamResolvedModel(session, { providerId: selected.provider, modelId: selected.model_id }, { providerId: actual.provider, modelId: actual.id });
   }
 
   /**
@@ -282,6 +290,7 @@ export class LocalAgentConfigBuilder {
       ...(!canRepair || !this.sessionModelRepair ? {} : { repair: this.sessionModelRepair }),
       ...(this.options.modelRepairLogger ? { logger: this.options.modelRepairLogger } : {}),
     });
+    await this.options.assertTeamModel?.(turnInput.session, selection);
     const acceptedModel =
       frozenModel?.providerId === selection.providerId && frozenModel.modelId === selection.modelId
         ? frozenModel

@@ -59,6 +59,7 @@ import {
 import { hasOpenPlatformThinkingVariants } from './openplatform-thinking.js';
 import { withByokErrorAttribution } from './byok-error-attribution.js';
 import { withLocalDynamicMaxTokens } from './dynamic-max-tokens.js';
+import { withChatGPTPlanStream } from './chatgpt-plan-stream.js';
 import { resolveLocalFileApiGatewayAuth } from './file-api-gateway-auth.js';
 
 const FALLBACK_MODEL_LIMITS = {
@@ -670,7 +671,11 @@ function resolveModelStream(
   input: FinishResolveInput,
   streamFn: StreamFn | undefined,
 ): StreamFn | undefined {
-  const dynamicStream = withLocalDynamicMaxTokens(streamFn);
+  const planStream =
+    input.runtimeProvider === OPENAI_CODEX_PROVIDER_ID && input.api === 'openai-responses'
+      ? withChatGPTPlanStream(streamFn)
+      : streamFn;
+  const dynamicStream = withLocalDynamicMaxTokens(planStream);
   if (!input.byokProvider) return dynamicStream;
   return withByokErrorAttribution({
     providerId: input.provider,

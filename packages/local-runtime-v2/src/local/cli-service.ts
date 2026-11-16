@@ -94,7 +94,54 @@ import type {
 import type { RuntimeApplications } from "../application/initialize.js";
 import type { LocalRuntimeApplication } from "../application/session/process-local-application-contract.js";
 
+import type { TeamService } from '../service/team/service.js';
+import type { TeamCommandRequest, TeamCommandResult } from '../service/team/contracts.js';
+export type { TeamCommandRequest, TeamCommandResult, TeamPreset, TeamSnapshot, TeamTask, TeamModelPolicy, TeamModelRef, TeamMemberPreset, TeamTaskStatus } from '../service/team/contracts.js';
+import type { ResearchCampaignService } from '../service/security-campaign/service.js';
+import type {
+  ResearchCampaignCommandRequest,
+  ResearchCampaignCommandResult,
+} from '../service/security-campaign/contracts.js';
+export type {
+  AnalysisProducerKind,
+  AnalysisProducerReceipt,
+  AnalysisProducerReceiptDraft,
+  ResearchAuditEvent,
+  ResearchCampaign,
+  ResearchCampaignCommandRequest,
+  ResearchCampaignCommandResult,
+  ResearchCampaignStatus,
+  ResearchCampaignSummary,
+  ResearchDuplicateAssessment,
+  ResearchDuplicateCheck,
+  ResearchDuplicateCheckInput,
+  ResearchEvidence,
+  ResearchEvidenceInput,
+  ResearchEvidenceKind,
+  ResearchEvidenceSupport,
+  ResearchExperiment,
+  ResearchExperimentInput,
+  ResearchExperimentOutcome,
+  ResearchFrozenArtifact,
+  ResearchHypothesis,
+  ResearchHypothesisFingerprint,
+  ResearchHypothesisFingerprintInput,
+  ResearchHypothesisLease,
+  ResearchHypothesisReview,
+  ResearchHypothesisReviewInput,
+  ResearchHypothesisStatus,
+  ResearchNegativeControlInput,
+  ResearchNegativeControlOutcome,
+  ResearchRuleSource,
+  ResearchScope,
+  ResearchTarget,
+  ResearchTargetIdentifier,
+  ResearchTargetKind,
+} from '../service/security-campaign/contracts.js';
+
 export interface CliServiceOptions {
+  readonly teams?: TeamService;
+  readonly researchCampaigns?: ResearchCampaignService;
   readonly applications: RuntimeApplications;
   readonly application: LocalRuntimeApplication;
   readonly conversation: ConversationApplication;
@@ -106,6 +153,22 @@ export type CliSendMessageOptions = ConversationSendOptions;
 /** In-process CLI entry point: call local Application directly, without HTTP or RPC envelopes. */
 export class CliService {
   constructor(private readonly options: CliServiceOptions) {}
+
+  executeTeamCommand(request: TeamCommandRequest): Promise<TeamCommandResult> {
+    if (!this.options.teams) return Promise.reject(new Error('Agent Teams is not available in this runtime'));
+    return this.options.teams.execute(request);
+  }
+
+  executeResearchCampaignCommand(
+    request: ResearchCampaignCommandRequest,
+  ): Promise<ResearchCampaignCommandResult> {
+    if (!this.options.researchCampaigns) {
+      return Promise.reject(
+        new Error('Security campaigns are not available in this runtime'),
+      );
+    }
+    return this.options.researchCampaigns.execute(request);
+  }
 
   listSessions(
     req: ListSessionsReq,
@@ -676,6 +739,13 @@ export class CliService {
       "modelProviders",
       "Model Provider",
     ).getCodexOAuthStatus();
+  }
+
+  refreshCodexOAuthModels() {
+    return this.requireCapability(
+      "modelProviders",
+      "Model Provider",
+    ).refreshCodexOAuthModels();
   }
 
   startCodexOAuthLogin(

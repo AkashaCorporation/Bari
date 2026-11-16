@@ -16,6 +16,17 @@ function project(memoryEnabled: boolean | undefined): EmbeddedRuntimeConfig {
 }
 
 describe('embedded runtime config projection', () => {
+  it('enables ChatGPT subscription login in standard builds even with an old disabled beta setting', () => {
+    expect(
+      projectEmbeddedRuntimeConfig(
+        {
+          dataDir: '/tmp/bari',
+          beta: { codexOAuth: false },
+        } as EmbeddedRuntimeConfig,
+        { isInternalBuild: false },
+      ).beta?.codexOAuth,
+    ).toBe(true);
+  });
   it('keeps user Memory enabled for embedded TUI, exec and ACP owners', () => {
     expect(project(true).memory?.enabled).toBe(true);
   });

@@ -88,6 +88,8 @@ export interface TuiCommandFlowOptions {
   readonly editor: Editor;
   readonly surface: TuiInteractionSurface;
   readonly surfaceHost: TuiSurfaceHost;
+  readonly showCampaign?: () => void | Promise<void>;
+  readonly showTeam?: () => void | Promise<void>;
   readonly showTasks?: () => void | Promise<void>;
   readonly showStatusLine?: () => void;
   readonly persistTuiMode?: (mode: TuiMode) => void;
@@ -1155,6 +1157,20 @@ export class TuiCommandFlow {
           this.options.featureFlow.compactSession(args, this.hasLiveRun()),
         ),
       status: () => this.options.featureFlow.showAccountStatus(),
+      campaign: async () => {
+        if (!this.options.showCampaign) {
+          this.options.append('Security campaigns are unavailable in this host.', 'error');
+          return;
+        }
+        await this.options.showCampaign();
+      },
+      team: async () => {
+        if (!this.options.showTeam) {
+          this.options.append('Agent Teams is unavailable in this host.', 'error');
+          return;
+        }
+        await this.options.showTeam();
+      },
       tasks: async () => {
         if (!this.options.showTasks) {
           this.options.setHint('Background task view is unavailable in this host.');

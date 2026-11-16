@@ -104,6 +104,7 @@ export class LocalAgentPreparationService
       turnId: input.turnId,
       agentConfig: builtAgentConfig,
     });
+    await this.options.configBuilder.assertResolvedTeamModel(input.session, builtAgentConfig.model, llm.model);
     return {
       agentConfig: Object.freeze({ ...builtAgentConfig }),
       llm,

@@ -13,6 +13,20 @@
 
 The unused `@bari/team` cycle engine is excluded from this projection. TUI delegation uses the current runtime task services. Legacy queue, lock-owner and run-location files retain only the types consumed by shared adapters; V2 owns their execution and persistence.
 
+Agent Teams and security campaigns are separate V2 owners reached through
+`CliService` and TUI ports. Teams own scheduling, admitted worker sessions and
+delivery review. Security campaigns own frozen target/scope identity, hypothesis
+leases, evidence provenance and research verdict gates. They share only validated
+session ancestry and explicit team-task references; neither mirrors conversations
+or treats the other subsystem's terminal state as its own.
+
+External analysis tools cross this boundary through `analysis-jobs-v1` files,
+not extension internals. The security campaign's HexCore adapter and experimental
+Hypotenuse adapter re-hash the terminal status, provenance, job, root target,
+effective inputs and outputs before persisting a receipt. A receipt records tool
+coverage and derivation but never promotes a research verdict. See
+[the analysis receipt decision](decisions/2026-10-22-analysis-jobs-receipts.md).
+
 `release/public-source.json` explicitly lists delivered files. `check:source` checks that inventory, canonical root license text, internal addresses, retired modules, obvious credentials, and workspace exports. `check:standalone` separately checks the actual build dependency graph. New files require explicit inventory updates; absence from the bundle alone does not make source suitable for publication.
 
 ## Managed capabilities and tool integration

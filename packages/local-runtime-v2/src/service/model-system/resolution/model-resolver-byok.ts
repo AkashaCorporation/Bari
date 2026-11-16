@@ -1,4 +1,5 @@
 import type { Api } from '@earendil-works/pi-ai';
+import { CHATGPT_PLAN_BASE_URL } from '../chatgpt-plan-auth.js';
 import { MINIMAX_API_MODEL_CATALOG, getRuntimeRegion } from '@bari/config';
 
 import type {
@@ -13,6 +14,7 @@ import {
   isModelProviderApi,
   MANAGED_MINIMAX_PROVIDER_ID,
   MINIMAX_API_PROVIDER_ID,
+  OPENAI_CODEX_PROVIDER_ID,
 } from '../identity.js';
 
 const BYOK_FALLBACK_MODEL_LIMITS = {
@@ -109,6 +111,13 @@ function resolveCustomProviderCredentials(
     throw new Error(`LocalModelResolver: api_key not configured for provider "${input.provider}".`);
   }
   const baseUrl = config.options?.baseURL?.trim();
+  if (
+    authProvider === OPENAI_CODEX_PROVIDER_ID &&
+    config.api === 'openai-responses' &&
+    baseUrl?.replace(/\/$/, '') !== CHATGPT_PLAN_BASE_URL
+  ) {
+    throw new Error('ChatGPT plan credentials require the public OpenAI Responses endpoint.');
+  }
   if (!baseUrl) {
     throw new Error(
       `LocalModelResolver: base_url not configured for provider "${input.provider}".`,

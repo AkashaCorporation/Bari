@@ -31,7 +31,10 @@ export interface ProcessLocalApplicationOptions {
     readonly application: Pick<ModelProviderApplication, 'list' | 'select'>;
     readonly providers: LocalModelProviderService;
     readonly listProviderPresets: ModelSystemOwner['listProviderPresets'];
-    readonly oauth: Pick<CodexOAuthManager, 'getStatus' | 'startLogin' | 'cancelLogin'>;
+    readonly oauth: Pick<
+      CodexOAuthManager,
+      'getStatus' | 'refreshModels' | 'startLogin' | 'cancelLogin'
+    >;
   };
   readonly peripherals: Required<
     Pick<
@@ -128,6 +131,7 @@ export function createProcessLocalApplication(
     modelProviders: {
       listProviderPresets: () => options.modelProvider.listProviderPresets(),
       getCodexOAuthStatus: async () => options.modelProvider.oauth.getStatus(),
+      refreshCodexOAuthModels: () => options.modelProvider.oauth.refreshModels(),
       startCodexOAuthLogin: (input) => options.modelProvider.oauth.startLogin(input),
       cancelCodexOAuthLogin: async (loginId) => options.modelProvider.oauth.cancelLogin(loginId),
       listUser: async () =>

@@ -1117,13 +1117,13 @@ describe("createTuiApp", () => {
       await app.ready;
 
       expect(stripAnsi(app.tui.render(80).join("\n"))).toContain(
-        "Ask Bari to do anything",
+        "Build, investigate, or ship with Bari",
       );
 
       app.editor.handleInput("R");
 
       expect(stripAnsi(app.tui.render(80).join("\n"))).not.toContain(
-        "Ask Bari to do anything",
+        "Build, investigate, or ship with Bari",
       );
       expect(app.editor.getText()).toBe("R");
     } finally {
@@ -1510,7 +1510,7 @@ describe("createTuiApp", () => {
     );
 
     const welcome = app.tui.render(100).join("\n");
-    expect(welcome).toContain("Start");
+    expect(welcome).toContain("Akasha workspace");
     expect(welcome).not.toContain("Coming from Codex?");
 
     terminal.input?.("\x15");
@@ -1873,7 +1873,7 @@ describe("createTuiApp", () => {
 
       const starting = app.tui.render(80).join("\n");
       expect(starting).toContain("⠋ Starting server...");
-      expect(starting).not.toContain("Start · @ file · / autocomplete");
+      expect(starting).not.toContain("Akasha workspace · @ file · / commands");
       expect(starting).not.toContain("Loading session");
 
       releaseSessions?.();
@@ -1881,7 +1881,7 @@ describe("createTuiApp", () => {
       app.setStartupStatus(undefined);
 
       expect(app.tui.render(80).join("\n")).toContain(
-        "Start · @ file · / autocomplete",
+        "Akasha workspace · @ file · / commands",
       );
     } finally {
       releaseSessions?.();
@@ -2098,7 +2098,7 @@ describe("createTuiApp", () => {
 
       await vi.waitFor(() => expect(app.tui.render(120).join("\n")).toContain("✦ m3.05"));
       const welcome = stripAnsi(app.tui.render(120).join("\n"));
-      expect(welcome).toContain("● Ready");
+      expect(welcome).toContain("[+] Ready");
       expect(welcome).not.toContain("Login required");
       expect(welcome).not.toContain("Sign in with /login");
       await app.stop();
@@ -2597,7 +2597,7 @@ describe("createTuiApp", () => {
     app.start();
     await app.ready;
     const welcome = stripAnsi(app.tui.render(120).join("\n"));
-    expect(welcome).toContain("● Ready");
+    expect(welcome).toContain("[+] Ready");
     expect(welcome).toContain("state=ready");
     expect(welcome).not.toContain("Sign in with /login");
     expect(welcome).not.toContain("Login required");
@@ -2637,7 +2637,9 @@ describe("createTuiApp", () => {
 
     expect(app.getSurface()).toBe("conversation");
     const conversation = app.tui.render(80).join("\n");
-    expect(conversation).toContain("Tips for getting started");
+    expect(conversation).toContain("AKASHA CORPORATION");
+    expect(conversation).toContain("AGENTIC ENGINEERING");
+    expect(conversation).toContain("Operator console");
     expect(conversation).toContain("Say hello");
     expect(conversation).toContain("Hello from the Agent");
     expect(terminal.started).toBe(true);
@@ -3396,8 +3398,8 @@ describe("createTuiApp", () => {
     });
 
     const compact = app.tui.render(80).join("\n");
-    expect(compact).toContain("✓ Inspect Desktop behavior");
-    expect(compact).toContain("● Polish the task rail");
+    expect(compact).toContain("[+] Inspect Desktop behavior");
+    expect(compact).toContain("[>] Polish the task rail");
     expect(compact).toContain("Ctrl+T expand");
     expect(compact).not.toContain("Publish the test package");
     expect(compact).not.toContain("todo_updated");
@@ -3410,7 +3412,7 @@ describe("createTuiApp", () => {
     terminal.input?.("\x14");
     const tasksExpanded = app.tui.render(80).join("\n");
     expect(tasksExpanded).toContain(
-      "Todo list 1/6 · 5 remaining · Ctrl+T compact",
+      "Plan 1/6 · 5 remaining · Ctrl+T compact",
     );
     expect(tasksExpanded).toContain("Publish the test package");
 
@@ -3433,7 +3435,7 @@ describe("createTuiApp", () => {
       },
     });
     expect(app.tui.render(80).join("\n")).toContain(
-      "✓ Todo list 6/6 completed",
+      "[+] Plan 6/6 completed",
     );
 
     await app.stop();
@@ -5303,7 +5305,7 @@ describe("createTuiApp", () => {
 
     expect(terminal.started).toBe(true);
     expect(firstFrameCommitted).toBe(true);
-    expect(terminal.writes.join("")).toContain("Tips for getting started");
+    expect(terminal.writes.join("")).toContain("Operator console");
     await app.stop();
   });
 
@@ -8720,7 +8722,7 @@ describe("createTuiApp", () => {
     app.start();
 
     const summary = app.tui.render(100).join("\n");
-    expect(summary).toContain("Tasks · 1 agent active · /tasks details");
+    expect(summary).toContain("[~] Work · 1 running · /tasks details");
     expect(summary).not.toContain("verifier");
     expect(summary).not.toContain("/agents");
     expect(
@@ -8740,7 +8742,7 @@ describe("createTuiApp", () => {
       vi
         .mocked(runtime.sendMessage)
         .mock.calls.map(([request]) => request.content),
-    ).toEqual(["/agents", "/team"]);
+    ).toEqual(["/agents"]);
     await app.stop();
   });
 
@@ -13006,7 +13008,7 @@ describe("createTuiApp", () => {
       expect(restored.editor.getText()).toBe("");
       expect(restored.getSurface()).toBe("welcome");
       expect(restored.tui.render(80).join("\n")).toContain(
-        "Tips for getting started",
+        "Operator console",
       );
       await restored.stop();
     } finally {

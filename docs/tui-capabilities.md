@@ -1,13 +1,15 @@
 # TUI capability coverage
 
-The current capability target is **TUI 0.4.12**; see [version and evidence baseline](open-source-status.md#version-and-evidence-baseline) for the separate workspace and embedded-tool versions. “Restored” below describes implementation and assembly, not acceptance of every account or online service.
+The current capability target is **Bari 0.8.0-preview.1**; see [version and evidence baseline](open-source-status.md#version-and-evidence-baseline) for the separate shared-source baseline and embedded-tool versions. “Restored” below describes implementation and assembly, not acceptance of every account or online service.
 
 The evidence column summarizes the historical TUI 0.3.11 restoration record from 2026-09-11. It does not claim fresh TUI 0.4.12 live-service acceptance. Use [current verification status](verification.md#current-source-verification-status) for checks run against the updated source and explicit NOT RUN boundaries.
 
 | Capability | Implementation | Evidence |
 | --- | --- | --- |
+| AkashaCorporation terminal identity | Bari-owned wordmark, blue/gold product palette, Akasha signature, operator console, responsive composer and product-specific Campaign/Team/provider guidance | Full-width and compact render tests, composer tests, local PTY inspection at 80 columns |
 | MiniMax login, logout, Token Plan, quota, check-in | OAuth Core, account clients, and TUI / CLI entry points restored | Login-state, auth-command, check-in, provider, and ACP tests; production Token Plan session and resume passed |
 | BYOK / custom models | Retained; headless model overrides no longer inherit the default Token Plan login requirement | Local protocol server drives runtime, resume, and file tools; live BYOK session passed; managed models still reject unauthenticated requests |
+| Security campaign ledger | V2-owned frozen target/scope, leased hypotheses, immutable evidence records, hash-reverified HexCore Jobs receipts, experimental Hypotenuse Jobs receipts, experiment and duplicate gates, session-separated review, native agent tool and `/campaign` panel | Strict schema/store/service/tool and producer-ingestion tests, TUI port/flow/panel tests, build reachability; live device findings still require target-specific evidence |
 | mcode-tools | Public package's unchanged 0.0.4 artifact, launcher, and short-lived token leases restored | Archive SHA-512, CLI SHA-256, real CLI startup, lease and host integration tests; production shared-broker authentication passed |
 | Search and Matrix image / audio / video tools | Matrix MCP and tool assembly restored; search is independent of mcode-tools | MCP configuration and auth-isolation tests; actual search passed; generation requests not run |
 | Official, local, and GitHub plugins | Official sources, marketplace reads, and installation control restored; local sources retained | Plugin application, source-page, and offline local CLI tests; actual official catalog read passed |
@@ -17,7 +19,7 @@ The evidence column summarizes the historical TUI 0.3.11 restoration record from
 | Automatic LLM error reports | Disabled by default; requires `telemetry.diagnostics` opt-in; bounded diagnostic facts minimized before encryption | Synthetic provider errors and native Headers; final HTTP batches captured and decrypted locally |
 | Telemetry | Usage, metrics, and diagnostics each disabled by default with separate opt-ins; `MCODE_DISABLE_TELEMETRY` / `DO_NOT_TRACK` override all channels; usage-event identifiers removed | Privacy regression tests intercept and decode requests locally; no live upload |
 | Auto permissions | Cloud classifier restored; local rules and confirmation on failure retained | Classifier client, permission facade, and sandbox tests |
-| Model catalog | Online catalog and bundled snapshot fallback restored | Actual build boundary checks and offline startup; online catalog contents not accepted |
+| Model catalog | Online catalog and bundled snapshot fallback restored; `provider refresh --all` performs discovery-only synchronization across editable and ChatGPT OAuth catalogs while isolating credential failures | Provider application/CLI tests and live catalog-only refresh receipts; no inference implied |
 | Files, shell, subagents, sessions, headless, ACP | Actual runtime retained | BYOK, file reads, session resume, ACP, sandbox, and status protocol tests |
 | Background task progress | A heartbeat steers a `<background-task-progress>` notice to the owner every few minutes with elapsed time, last activity, and a stall hint; `BARI_TASK_PROGRESS_INTERVAL_MS` overrides the interval and `0` disables it. The heartbeat never stops the task | Heartbeat prompt, interval, and fake-timer lifecycle tests |
 | Built-in skills, MCP, plugin tools | Original TUI assets and activation conditions retained | Asset build, plugin, and MCP tests; no claim that every skill has passed a real task |

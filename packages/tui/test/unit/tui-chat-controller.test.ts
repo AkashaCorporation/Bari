@@ -107,7 +107,7 @@ describe('TuiChatController', () => {
       workspace: '/workspace',
     });
     const line = new TuiActivityLine(presentation.activity, { animate: false });
-    expect(line.render(120).join('\n')).toContain('⚡ ~2.0 tok/s');
+    expect(line.render(120).join('\n')).toContain('◇ Running · ~2.0 tok/s');
 
     releaseResponse?.();
     await submission;

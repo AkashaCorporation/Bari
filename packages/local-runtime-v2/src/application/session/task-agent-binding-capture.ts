@@ -59,6 +59,7 @@ interface TaskAgentBindingCaptureInput {
 }
 
 export interface TaskAgentBindingCaptureOptions {
+  readonly assertTeamModel?: (session: SessionRecord, model: { providerId: string; modelId: string }) => Promise<void>;
   readonly agentService: LocalAgentService;
   readonly config: () => LocalConversationRuntimeConfig;
   /** Ready Desktop inventories captured at creation, never re-derived from a later Turn. */
@@ -149,6 +150,10 @@ async function captureDefinition(
     historical,
     ...(options.diagnostics ? { diagnostics: options.diagnostics } : {}),
   });
+  await options.assertTeamModel?.(
+    input.session ?? { ...session, sessionId: '__pending_team_task__', parentSessionId: session.sessionId, sessionKind: 'task' },
+    selection,
+  );
   logTaskModelDiagnostics(options.diagnostics, selection.diagnostics);
   const effectiveModel = `${selection.providerId}/${selection.modelId}`;
   const variant = resolvedModelVariant({ selection, session, parent: input.parent });

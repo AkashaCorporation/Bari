@@ -286,7 +286,7 @@ describe('feedback diagnostic upload privacy', () => {
     },
   );
 
-  it('does not inspect unrelated session manifests or credentials', async () => {
+  it('does not inspect unrelated session manifests, campaign evidence, or credentials', async () => {
     const dataDir = await directory();
     const unrelated = join(
       dataDir,
@@ -299,6 +299,10 @@ describe('feedback diagnostic upload privacy', () => {
     );
     await mkdir(unrelated, { recursive: true });
     await writeFile(join(unrelated, 'manifest.json'), '{"status":"failed"}');
+    await writeFile(
+      join(dataDir, 'v2', 'security-campaigns.json'),
+      JSON.stringify({ authorization: PRIVATE, evidence: 'private-path' }),
+    );
     const capture = transport();
     await uploadTuiFeedbackDiagnostics(
       { description: 'No session', signal: new AbortController().signal },

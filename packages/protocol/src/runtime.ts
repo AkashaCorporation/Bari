@@ -172,6 +172,11 @@ export interface IProtocolError {
   code: ProtocolErrorCode;
   message: string;
   details?: string;
+  /** Safe provider attribution for user-facing BYOK diagnostics. */
+  errorSource?: string;
+  errorDetail?: string;
+  errorProviderId?: string;
+  retryable?: boolean;
 }
 
 export interface IPermissionPolicy {

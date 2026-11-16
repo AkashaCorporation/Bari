@@ -48,6 +48,7 @@ export function bindTaskAgentBindingCapture(
   input.sessionSystem.sessions.records.bindTaskAgentBindingCapture(
     createTaskAgentBindingCaptureCoordinator({
       agentService: input.agentService,
+      ...(input.product.preparation.configBuilder.assertTeamModel ? { assertTeamModel: input.product.preparation.configBuilder.assertTeamModel } : {}),
       config: input.product.preparation.configBuilder.config,
       inventory: createTaskAgentReadyInventory({
         product: input.product,

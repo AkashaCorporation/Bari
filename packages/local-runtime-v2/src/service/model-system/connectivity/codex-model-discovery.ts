@@ -1,4 +1,5 @@
 import type { LocalCustomProviderConfig, LocalModelConfig } from '../contracts.js';
+import { CHATGPT_PLAN_BASE_URL } from '../chatgpt-plan-auth.js';
 
 const CODEX_BASE_URL = 'https://chatgpt.com/backend-api';
 // Codex model discovery negotiates against the Codex client version, independent of our app version.
@@ -13,6 +14,7 @@ export class CodexModelDiscoveryClient {
   constructor(
     private readonly fetchImpl: typeof fetch = fetch,
     private readonly timeoutMs = 10_000,
+    private readonly chatgptPlan = false,
   ) {}
 
   async discover(credentials: CodexModelCredentials): Promise<LocalCustomProviderConfig> {
@@ -20,13 +22,19 @@ export class CodexModelDiscoveryClient {
     const timer = setTimeout(() => controller.abort(), this.timeoutMs);
     try {
       const response = await this.fetchImpl(
-        `${CODEX_BASE_URL}/codex/models?client_version=${CODEX_CATALOG_CLIENT_VERSION}`,
+        this.chatgptPlan
+          ? `${CHATGPT_PLAN_BASE_URL}/models`
+          : `${CODEX_BASE_URL}/codex/models?client_version=${CODEX_CATALOG_CLIENT_VERSION}`,
         {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${credentials.access}`,
-            'ChatGPT-Account-ID': credentials.accountId,
-            originator: 'pi',
+            ...(this.chatgptPlan
+              ? {}
+              : {
+                  'ChatGPT-Account-ID': credentials.accountId,
+                  originator: 'pi',
+                }),
             Accept: 'application/json',
           },
           redirect: 'error',
@@ -36,7 +44,7 @@ export class CodexModelDiscoveryClient {
       if (!response.ok) {
         throw new Error(`Codex model discovery failed (HTTP ${response.status}).`);
       }
-      return parseCatalog(await response.json());
+      return parseCatalog(await response.json(), this.chatgptPlan);
     } catch (error) {
       // Never forward response bodies or transport errors that may include credentials.
       if (
@@ -52,7 +60,7 @@ export class CodexModelDiscoveryClient {
   }
 }
 
-function parseCatalog(payload: unknown): LocalCustomProviderConfig {
+function parseCatalog(payload: unknown, chatgptPlan: boolean): LocalCustomProviderConfig {
   const records = readRecord(payload)?.models;
   if (!Array.isArray(records)) throw new Error('Invalid Codex model catalog.');
   const entries = records.flatMap((item): [string, LocalModelConfig][] => {
@@ -64,11 +72,14 @@ function parseCatalog(payload: unknown): LocalCustomProviderConfig {
   });
   if (entries.length === 0) throw new Error('Empty Codex model catalog.');
   return {
-    api: 'openai-codex-responses',
-    name: 'OpenAI Codex',
+    api: chatgptPlan ? 'openai-responses' : 'openai-codex-responses',
+    name: chatgptPlan ? 'ChatGPT subscription' : 'OpenAI Codex',
     kind: 'oauth',
     enabled: true,
-    options: { authMode: 'oauth', baseURL: CODEX_BASE_URL },
+    options: {
+      authMode: 'oauth',
+      baseURL: chatgptPlan ? CHATGPT_PLAN_BASE_URL : CODEX_BASE_URL,
+    },
     models: Object.fromEntries(entries),
   };
 }

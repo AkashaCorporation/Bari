@@ -7,7 +7,7 @@ import type { SelectListTheme } from '../widgets/select-list.js';
 import type { TuiColorLevel, TuiThemeColors, TuiThemePalette } from './contracts.js';
 import { resolveTuiAnsi16Foreground, shouldSuppressTuiAnsi16Background } from './ansi16.js';
 import { resolveEnvironmentAppearance } from './detection.js';
-import { MINIMAX_CODE_DARK_THEME, MINIMAX_CODE_LIGHT_THEME } from './palettes.js';
+import { BARI_DARK_THEME, BARI_LIGHT_THEME } from './palettes.js';
 import { createCatppuccinHighlightTheme } from './syntax.js';
 
 export interface TuiRenderThemeSnapshot {
@@ -19,12 +19,12 @@ export interface TuiRenderThemeSnapshot {
 const initialCapabilities = detectProcessTerminalCapabilities();
 const initialAppearance = resolveEnvironmentAppearance(process.env).appearance;
 let renderThemeSnapshot: TuiRenderThemeSnapshot = {
-  name: 'minimax',
+  name: 'bari',
   appearance: initialAppearance,
   colorLevel: initialCapabilities.colorLevel,
 };
 let activeColors: TuiThemeColors =
-  initialAppearance === 'light' ? MINIMAX_CODE_LIGHT_THEME.colors : MINIMAX_CODE_DARK_THEME.colors;
+  initialAppearance === 'light' ? BARI_LIGHT_THEME.colors : BARI_DARK_THEME.colors;
 
 export const tuiColors: TuiThemeColors = Object.freeze({
   get brand() {
@@ -106,7 +106,7 @@ let activeChalk = createTuiChalk({
 });
 type TuiChalkModifier = 'bold' | 'italic' | 'strikethrough' | 'underline';
 
-const MINIMAX_CODE_CHALK_MODIFIERS = new Set<TuiChalkModifier>([
+const BARI_CHALK_MODIFIERS = new Set<TuiChalkModifier>([
   'bold',
   'italic',
   'strikethrough',
@@ -157,7 +157,7 @@ function createDynamicTuiChalk(modifiers: readonly TuiChalkModifier[] = []): Cha
       }
       if (
         typeof property === 'string' &&
-        MINIMAX_CODE_CHALK_MODIFIERS.has(property as TuiChalkModifier)
+        BARI_CHALK_MODIFIERS.has(property as TuiChalkModifier)
       ) {
         return createDynamicTuiChalk([...modifiers, property as TuiChalkModifier]);
       }

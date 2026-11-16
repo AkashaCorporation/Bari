@@ -357,12 +357,19 @@ function terminalSessionStatus(
   if (type !== "error") return { type };
   const message = recordString(data, "error");
   const errorCode = recordNumber(data, "errorCode");
-  const errorDetail = recordString(data, "detail");
+  const errorSource = recordString(data, "errorSource");
+  const errorDetail =
+    recordString(data, "errorDetail") ?? recordString(data, "detail");
+  const errorProviderId = recordString(data, "errorProviderId");
+  const retryable = recordBoolean(data, "retryable");
   return {
     type,
     ...(message !== undefined ? { message } : {}),
     ...(errorCode !== undefined ? { errorCode } : {}),
+    ...(errorSource !== undefined ? { errorSource } : {}),
     ...(errorDetail !== undefined ? { errorDetail } : {}),
+    ...(errorProviderId !== undefined ? { errorProviderId } : {}),
+    ...(retryable !== undefined ? { retryable } : {}),
   };
 }
 

@@ -1,4 +1,6 @@
 import type { RuntimeTool, RuntimeToolSource } from '@bari/agent-core/tools';
+import { bindTeamToolCatalog } from '../../../team/tool.js';
+import { bindResearchCampaignToolPolicy } from '../../../security-campaign/tool.js';
 import {
   createLocalBashToolDefinition,
   resolveLocalBashShell,
@@ -267,7 +269,21 @@ export function buildLocalTurnToolCatalog(
     ...(merged.plan.deferred ? merged.plan.stats : {}),
   });
   return {
-    tools: merged.tools,
+    tools: merged.tools.map((tool) => {
+      const canonicalRole = input.agentProfile?.trustedBuiltin === true
+        ? input.agentProfile.canonicalRole
+        : undefined;
+      const readOnly = ['explore', 'verifier'].includes(canonicalRole ?? '');
+      const researchAccess = canonicalRole === 'verifier'
+        ? 'verify'
+        : canonicalRole === 'explore'
+          ? 'observe'
+          : 'full';
+      return bindResearchCampaignToolPolicy(
+        bindTeamToolCatalog(tool, merged.tools, readOnly),
+        researchAccess,
+      );
+    }),
     userPromptPrefix: renderUserPromptPrefix(
       merged.reminder,
       merged.plan.deferred,
@@ -495,6 +511,9 @@ function isProfileCapabilityEnabled(
 
 function isFeatureEnabled(ceiling: LocalAgentCapabilityCeiling, toolName: string): boolean {
   if (toolName === 'mavis') return ceiling.features.mavis;
+  // Team membership and campaign coordination do not create descendants.
+  // Their implementations still require an admitted `task` tool before a
+  // worker can be started, so coordination does not grant delegation.
   if (DELEGATION_TOOL_NAMES.has(toolName)) return ceiling.features.delegation;
   if (toolName === 'web_search') return ceiling.features.webSearch;
   return true;

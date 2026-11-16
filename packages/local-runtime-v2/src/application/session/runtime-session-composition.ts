@@ -67,7 +67,12 @@ export interface ProductionSessionComposition {
   readonly facts: SessionSystemFactPorts;
 }
 
+import type { TeamService } from '../../service/team/service.js';
+import type { ResearchCampaignService } from '../../service/security-campaign/service.js';
+
 export interface RuntimeSessionCompositionInput {
+  readonly teams?: TeamService;
+  readonly researchCampaigns?: ResearchCampaignService;
   readonly db: Parameters<typeof initializeSessionSystem>[0]['db'];
   readonly dataDir: string;
   readonly baseProduct: Omit<ProductionAgentProductCapabilities, 'agents'>;
@@ -103,6 +108,10 @@ export function createProductionSessionComposition(
   const tuiProductPolicy = input.runtimeOwnerKind === 'tui';
   let executionSessionSystem: SessionSystemOwner | undefined;
   const product = createRuntimeAgentProduct({
+    ...(input.teams ? { teams: input.teams } : {}),
+    ...(input.researchCampaigns
+      ? { researchCampaigns: input.researchCampaigns }
+      : {}),
     baseProduct: input.baseProduct,
     agentService: input.agentService,
     ensureSessionAgentDefinition: async (sessionId) => {

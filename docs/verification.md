@@ -24,6 +24,216 @@ The current source target is TUI **0.4.12**, with the separate versions describe
 
 Fresh login/logout, cross-platform interactive acceptance, and a validated three-platform source candidate remain **NOT RUN / unavailable** for the imported revision. Add later results with their revision, environment, and scope instead of replacing the historical record.
 
+### Bari 0.8.0 Preview 1 release-candidate acceptance, 2026-11-16
+
+An isolated Windows candidate on Node.js 24.22.1 and pnpm 9.12.0 passed all
+16 applicable `archive` verification gates. The reviewed inventory contained
+4,349 public paths, the build contained 6,300 source files, and reachability
+proved 26 product surfaces present with one declared legacy exception. Release
+tooling passed 20 tests with one platform skip; the capability sweep passed
+4,247 tests with 43 declared skips; the serial contention gate passed 125 tests;
+the status contract passed 9 tests; smoke passed 15 tests with one platform
+skip; and offline BYOK passed with two declared cancellation skips.
+
+The MCP name registry and history snapshot suites were moved from the parallel
+capability sweep to the declared serial contention scope after repeat 20-second
+load timeouts. Both complete files passed in isolation before the move (16/16
+and 97/97), and the final serial gate passed all 125 tests without increasing a
+timeout or removing an assertion.
+
+Focused provider/runtime/TUI acceptance passed 331 tests, and Akasha package
+identity/update coverage passed another 63 tests. A real 80-column PTY
+render showed the Bari wordmark, `AKASHA CORPORATION // AGENTIC ENGINEERING`,
+the blue/gold palette, operator console and 0.8.0-preview.1 version. Catalog-only
+`provider refresh --all` performed no model inference: Experimental Labs settled
+at 309 IDs and the current OpenCode Go connection at 41; an older duplicate
+OpenCode connection and Xiaomi returned `401`, while ChatGPT OAuth discovery was
+unavailable in that attempt. These failures were isolated and did not roll back
+successful catalogs. Paid inference and provider quality were intentionally not
+tested.
+
+The candidate was built outside the live `dist` directory because another Bari
+agent was using that directory on Windows. No running agent was stopped. At the
+time of this acceptance record, no commit, push, tag, GitHub release, npm
+publication or diagnostic upload had been performed.
+
+The npm preview tarball contained 793 entries and was 12.4 MB. An isolated
+install completed with zero audit findings. Its first native install selected a
+Node 22 executable from `PATH` despite npm itself being launched by Node 24,
+which correctly produced an ABI mismatch at runtime; rebuilding only
+`better-sqlite3` and `node-pty` with Node 24 first on `PATH` restored a successful
+SQLite-backed startup. The installed CLI then reported `0.8.0-preview.1` and
+loaded an isolated provider profile. Recovery/update commands now identify the
+public package as `@akashacorporation/bari` while retaining explicit support for
+legacy MiniMax package identities.
+
+### OpenCode Go endpoint migration acceptance, 2026-11-01
+
+OpenCode Go moved its harness endpoint from the retired
+`https://opencode.ai/zen/go/v1` route to
+`https://opencode.ai/inference/go/openai/v1`. Bari now publishes the current
+base in its provider preset and canonicalizes saved legacy Go bases before
+connection tests, discovery or inference. Both legacy and current official Go
+paths receive a stable per-conversation `x-opencode-session` header and the
+`User-Agent: Bari` identity; connectivity probes use independent generated
+session IDs. Ordinary non-Go OpenCode routes and third-party proxies remain
+unchanged.
+
+Focused provider-preset, connectivity and model-resolution regressions passed
+141 tests. They cover every supported protocol path, replacement of stale
+case-variant identity headers, current request URLs, stable conversation IDs,
+isolated probe IDs and redirect-free migration of the retired base. Full
+typecheck and the 6,300-source build passed. A bounded live connection probe
+through the rebuilt terminal no longer returned the missing-session-header
+response; it reached credential validation and returned `401`, so the saved
+OpenCode credential still needs to be replaced with a current Console key.
+Live inference success is therefore **NOT ESTABLISHED**. No credential was
+printed or changed, and no commit, push or release was performed.
+
+The integral `archive` profile passed source, generated-contract, release-tool,
+typecheck, build, entrypoint, reachability, standalone and artifact gates before
+the capability suite reported 4,351 passes, 43 declared skips and two 20-second
+timeouts in the unrelated multiprocess MCP name registry. That complete
+16-test file then passed in isolation in 1.01 seconds. This is recorded as
+**PASS-WITH-HOLDS**, not a clean integral pass: the evidence supports load
+contention, but the integral run itself remained failed and later gates were not
+run.
+
+### Experimental Labs catalog refresh wrapper acceptance, 2026-11-01
+
+The explicit Experimental Labs sync reconciled the local provider from 320 to
+316 configured entries: four disappeared discovered rows were removed, all 314
+IDs returned by the account-visible `/v1/models` endpoint were retained, and two
+manual entries were preserved. A second sync was idempotent with zero additions
+and zero removals. Current promotional chat IDs including `gpt-6-luna`,
+`claude-haiku-5.5`, `deepseek-v4-flash`, `deepseek-v4.1-flash-1017`,
+`deepseek-v4.1-flash-uncensored`, `qwen3.8-27b` and `jev-latest` were confirmed
+present. Promotion and plan pricing remain upstream, time-dependent metadata;
+catalog synchronization does not claim that every listed model is free for
+every account.
+
+The Windows PowerShell wrapper selected an installed Node.js 24.22.1 runtime
+whose ABI could initialize Bari and its native SQLite module, while ignoring an
+incompatible Node.js 26 runtime. It then completed the real provider refresh and
+printed the CLI's structured result. PowerShell parser validation passed. The
+wrapper delegates discovery, conservative pruning and credential handling to
+the Bari CLI; it does not read or print the provider key. Native decision models
+such as `clef-flash` and `gpt-6-luna-decisions` remain catalog-visible but are
+not conversational agent models. No model selection, commit, push or release
+was performed.
+
+### Provider authentication and Experimental Labs refresh acceptance, 2026-10-24
+
+On Windows with Node.js 22.21.1 and pnpm 9.12.0, live bounded probes
+confirmed that the already-authorized ChatGPT subscription route works for both
+a direct `gpt-daybreak-blue-latest` turn and an explicitly selected child
+`explore` Session. The generic `provider test` command now recognizes that
+provider's OAuth connection instead of incorrectly requiring a BYOK API key.
+
+The observed `50112` failure came from a resumed Session whose frozen model
+binding still selected `custom_provider:provider-42fa78/mimo-v2.6-flash`, not
+from Daybreak Blue. Its upstream response was `401 Invalid API Key`. Structured
+BYOK attribution now survives the agent protocol, V2 Session projection and TUI
+formatting, so the terminal names the actual provider and upstream reason. An
+existing Session still keeps its selected model until the user changes it with
+`/model` or starts a new Session.
+
+The explicit `provider refresh` command synchronized Experiential Labs from its
+live `/v1/models` catalog. The configuration grew from 278 to 324 entries during
+discovery, then exact synchronization removed four stale discovered entries and
+settled at 320: all 318 live identifiers plus two preserved manual selections.
+The conservative pruning rule never removes a manual, unclassified or currently
+selected model, and an empty discovery response never prunes anything.
+
+Live connectivity established `deepseek-v4.1-flash` as usable for this account.
+`qwen3.5-27b` authenticated but returned `429 model_requires_purchase`.
+`clef-flash` was present in discovery but correctly rejected the chat endpoint
+and directed callers to the native decisions API at `/v1/systemone`; a native
+decisions adapter was not added in this change. OpenCode Go and the Xiaomi Token
+Plan provider each still returned `401` and require replacement credentials.
+These are point-in-time account and upstream-service observations, not a promise
+of future availability or free-tier policy.
+
+Focused provider, protocol, runtime and TUI regressions passed 71 tests. The
+complete `archive` verification profile then passed all 16 applicable Windows
+gates: source inventory (4,347 reviewed paths), generated contracts, release
+tools, typecheck, a 6,300-source build, 26 reachable product surfaces with one
+declared legacy exception, standalone and artifact checks, 4,352 capability
+tests with 43 declared skips, 12 contention tests, 9 status-contract tests,
+15 smoke tests with one platform skip, and the offline BYOK test with two
+declared cancellation skips. No credential value was recorded, and no commit,
+push, release or diagnostic upload was performed.
+
+### Analysis Jobs receipt acceptance, 2026-10-22
+
+On Windows with the pnpm runtime on Node.js 24.22.1 and pnpm 9.12.0, the
+HexCore Jobs adapter, experimental Hypotenuse Jobs adapter, campaign receipt
+ingestion, TUI projection and inactive-draft publisher passed the complete
+`archive` verification profile. All 16 applicable gates passed. The capability
+suite passed 4,346 tests with 43 declared skips; contention passed 12 tests,
+the status contract passed 9, smoke passed 15 with one platform skip, and
+offline BYOK passed with two declared cancellation skips. The build contained
+6,300 source files, the reviewed public inventory contained 4,347 paths, and
+reachability proved 26 product surfaces present with one deliberately
+unreachable legacy surface.
+
+Focused producer/campaign/TUI tests passed 42 cases. They cover root APK versus
+derived DEX identity, canonical Analysis Contract v1 target/session/job binding,
+runtime re-hashing of job/status/provenance/input/output bytes, terminal-state
+checks, tamper rejection, partial coverage, experimental Hypotenuse identity,
+JADX source-reference classification, state migration, duplicate receipt
+rejection, verdict non-promotion and the `analysis-run` non-verdict support
+label. Both modified built-in skills passed the skill-creator structural
+validator. The HexCore job helper additionally rejects watcher-visible drafts,
+changed bytes, stale or mismatched validation reports, unsafe paths and existing
+destinations before atomic publication.
+
+The first integral run reached smoke after all earlier gates passed but one
+15-second CLI child timed out under load. An isolated official smoke rerun
+passed. A second integral run reproduced load-only startup times of 17-20
+seconds across several proxy-isolation children while their functional checks
+remained unchanged. The shared CLI child timeout was therefore bounded at 30
+seconds; no assertion or network-audit rule was relaxed. The final integral run
+then passed every gate, including smoke in 33.1 seconds and BYOK in 16.9 seconds.
+
+The canonical HexCore 3.8.5 development baseline was read from
+`C:\Users\Mazum\Desktop\vscode-main` and recorded locally with source hashes.
+HexCore and Hypotenuse trees remained read-only. No real job was published or
+run, no device experiment was performed, and no commit, push, release or upload
+was made.
+
+### ChatGPT subscription child-session acceptance, 2026-10-22
+
+On Windows with Node.js 24.21.0, two bounded live runs used the already-authorized ChatGPT subscription provider `custom_provider:openai-codex/gpt-6.1-sol` through `openai-responses`. A foreground `explore` task and a background `worker` task each opened a child Session, read `package.json`, returned the requested marker, and completed successfully. The background path is the same `task` substrate used by Agent Teams.
+
+These results establish that ordinary and background subagents in this checkout resolve the same V2 OAuth route as the parent. They do not establish every model, account plan, role, concurrency level, or workspace policy. The runs consumed the connected account's ordinary usage allowance; bounded diagnostics remain local under `.validation/` and contain no committed credentials.
+
+### Security campaign runtime acceptance, 2026-10-22
+
+On Windows with Node.js 22.21.1 and pnpm 9.12.0, the V2 security-campaign owner,
+native `research_coordination` tool, Agent Teams linkage, `CliService`/TUI port and
+`/campaign` panel passed the complete `archive` verification profile. All 16
+applicable gates passed. The capability suite passed 4,330 tests with 43 declared
+skips; contention passed 12 tests, the status contract passed 9, smoke passed 15
+with one platform skip, and offline BYOK passed with two declared cancellation
+skips. The build contained 6,294 source files, the reviewed public inventory
+contained 4,337 paths, and reachability proved 23 product surfaces present with
+one deliberately unreachable legacy surface.
+
+Campaign regressions cover frozen target/scope digests, strict schemas, atomic
+cross-instance persistence, canonical root-cause fingerprints, expiring leases,
+optimistic revisions, local-root containment and streamed SHA-256 verification,
+evidence/experiment/duplicate gates, stale and self-review rejection, sensitive
+tool-output redaction, validated Team task linkage, role-specific tool authority,
+terminal rendering sanitization and diagnostic-upload exclusion. The updated
+`security-research` skill passed the skill-creator structural validator.
+
+This is local product and synthetic acceptance, not evidence that a finding is
+valid on a live target. No device experiment, external disclosure, commit,
+release or diagnostic upload was performed. The ordinary source-export preview
+still requires a committed clean tree; the `archive` profile intentionally
+validates the already exported source without that mutation.
+
 ### Source synchronization verification, 2026-09-18
 
 The reviewed shared-source baseline is `9b9885e42a3cf1a3df1cfa52a46e4fdb034cfcee` (TUI 0.4.12). The standalone projection preserves its process-local protocol and public service configuration. Desktop HTTP/generated transports, cloud handoff, private packaging, and unrelated desktop additions remain excluded.

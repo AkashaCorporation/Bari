@@ -102,13 +102,27 @@ export interface TuiMessageAttachment {
 export type TuiStreamEvent = (
   | { type: 'heartbeat'; turnId?: string }
   | { type: 'done'; turnId?: string }
-  | { type: 'error'; message: string; turnId?: string }
+  | {
+      type: 'error';
+      message: string;
+      turnId?: string;
+      errorCode?: number;
+      errorSource?: string;
+      errorDetail?: string;
+      errorProviderId?: string;
+      retryable?: boolean;
+    }
   | { type: 'message'; message: TuiMessage }
   | {
       type: 'session-status';
       status: 'idle' | 'started' | 'finished' | 'error' | 'aborted' | 'interrupted';
       message?: string;
       turnId?: string;
+      errorCode?: number;
+      errorSource?: string;
+      errorDetail?: string;
+      errorProviderId?: string;
+      retryable?: boolean;
     }
   | { type: 'generic'; eventType: string; data: Record<string, unknown>; turnId?: string }
   | { type: 'messages-replaced'; messages: TuiMessage[]; turnId?: string }
@@ -163,10 +177,15 @@ export function projectTuiSessionStreamFrame(
     const chunk = readRecord(event.agent_message_chunk) ?? readRecord(event.agentMessageChunk);
     projected = chunk ? projectWireChunk(chunk, turnId) : undefined;
   } else if (type === 'error') {
+    const error = readRecord(event.error) ?? event;
     projected = {
       type: 'error',
-      message: readString(event, ['error', 'message']) ?? 'Runtime stream failed',
+      message:
+        readString(error, ['message', 'error', 'detail']) ??
+        readString(event, ['message']) ??
+        'Runtime stream failed',
       turnId,
+      ...projectFailureMetadata(error),
     };
   } else if (type === 'session_status') {
     projected = projectLegacySessionStatus(event, turnId);
@@ -266,6 +285,7 @@ function projectLegacySessionStatus(
         status,
         message: readString(payload, ['message']),
         turnId,
+        ...projectFailureMetadata(payload),
       })
     : undefined;
 }
@@ -283,6 +303,23 @@ function projectRuntimeSessionStatus(
     status,
     message: readString(error ?? payload, ['message', 'detail']),
     turnId,
+    ...projectFailureMetadata(error ?? payload),
+  });
+}
+
+function projectFailureMetadata(record: Record<string, unknown>): {
+  readonly errorCode?: number;
+  readonly errorSource?: string;
+  readonly errorDetail?: string;
+  readonly errorProviderId?: string;
+  readonly retryable?: boolean;
+} {
+  return compact({
+    errorCode: readNumber(record, ['errorCode', 'error_code', 'code']),
+    errorSource: readString(record, ['errorSource', 'error_source']),
+    errorDetail: readString(record, ['errorDetail', 'error_detail', 'detail']),
+    errorProviderId: readString(record, ['errorProviderId', 'error_provider_id']),
+    retryable: readBoolean(record, ['retryable']),
   });
 }
 

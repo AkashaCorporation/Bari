@@ -5,6 +5,7 @@ import type { ModelProviderApi } from '../identity.js';
 export type { ModelProviderApi } from '../identity.js';
 
 const MESSAGES_VERSION_HEADER = 'anthropic-messages'.replace('-messages', '-version');
+const OPENCODE_GO_OPENAI_BASE_URL = 'https://opencode.ai/inference/go/openai/v1';
 
 export function buildProviderHeaders(input: {
   api: ModelProviderApi;
@@ -88,7 +89,26 @@ export function normalizeProviderBaseUrl(api: ModelProviderApi, baseUrl: string)
   }
   if (base.endsWith('/chat/completions')) base = base.slice(0, -'/chat/completions'.length);
   else if (base.endsWith('/responses')) base = base.slice(0, -'/responses'.length);
+  if (api === 'openai-completions' && isOpenCodeGoBaseUrl(base)) {
+    return OPENCODE_GO_OPENAI_BASE_URL;
+  }
   return base;
+}
+
+function isOpenCodeGoBaseUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return (
+      url.protocol === 'https:' &&
+      url.hostname === 'opencode.ai' &&
+      (url.pathname === '/zen/go' ||
+        url.pathname === '/zen/go/v1' ||
+        url.pathname === '/inference/go' ||
+        url.pathname === '/inference/go/openai/v1')
+    );
+  } catch {
+    return false;
+  }
 }
 
 export function mergeProviderHeaders(

@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import type { LocalRuntimeApplication } from "./process-local-application-contract.js";
 import { createProcessLocalApplication } from "./process-local-application.js";
+import { openV2SessionStream } from "../conversation/session-stream-delivery.js";
 
 describe("createProcessLocalApplication account and usage", () => {
   it("uses the recovered model route for account login checks while preserving live token presence", async () => {
@@ -116,6 +117,42 @@ describe("createProcessLocalApplication account and usage", () => {
       modelSource: "byok",
     });
     expect(getStatus).toHaveBeenCalledWith({ sessionId: "session-1" });
+  });
+});
+
+describe("process-local terminal stream failure provenance", () => {
+  it("preserves BYOK provider identity and detail in the legacy session-status frame", async () => {
+    async function* frames() {
+      yield {
+        kind: "turn-terminal",
+        data: {
+          status: "failed",
+          error: "request failed",
+          errorCode: 50112,
+          errorSource: "byok_upstream",
+          errorDetail: "401 Invalid API Key",
+          errorProviderId: "custom_provider:provider-42fa78",
+          retryable: false,
+        },
+      } as never;
+    }
+
+    const stream = openV2SessionStream(frames());
+    if (!stream.ok) throw new Error("Expected a stream");
+    await stream.source.next(); // heartbeat
+    const terminal = await stream.source.next();
+    expect(JSON.parse(terminal.value!.dataJson!)).toEqual({
+      type: "session_status",
+      session_status: {
+        type: "error",
+        message: "request failed",
+        errorCode: 50112,
+        errorSource: "byok_upstream",
+        errorDetail: "401 Invalid API Key",
+        errorProviderId: "custom_provider:provider-42fa78",
+        retryable: false,
+      },
+    });
   });
 });
 

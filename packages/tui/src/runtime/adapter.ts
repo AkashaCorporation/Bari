@@ -17,6 +17,13 @@ import { TuiDelegationAccess } from "./adapters/delegation-access.js";
 import { TuiConversationAccess } from "./adapters/conversation-access.js";
 import { TuiPluginAccess } from "./adapters/plugin-access.js";
 import { TuiGoalAccess } from "./adapters/goal-access.js";
+import { TuiTeamAccess } from "./adapters/team-access.js";
+import type { TeamCommandRequest, TeamCommandResult } from "@bari/local-runtime-v2/cli-service";
+import { TuiCampaignAccess } from './adapters/campaign-access.js';
+import type {
+  ResearchCampaignCommandRequest,
+  ResearchCampaignCommandResult,
+} from '@bari/local-runtime-v2/cli-service';
 import type { TuiMessage, TuiStreamEvent } from "./stream-events.js";
 import type {
   CreateTuiSessionInput,
@@ -180,6 +187,16 @@ export class TuiRuntimeAdapter implements TuiRuntime {
         return result.itemId !== undefined || result.status !== undefined;
       },
     });
+  }
+
+  executeTeamCommand(request: TeamCommandRequest): Promise<TeamCommandResult> {
+    return new TuiTeamAccess(this.cliService).executeTeamCommand(request);
+  }
+
+  executeResearchCampaignCommand(
+    request: ResearchCampaignCommandRequest,
+  ): Promise<ResearchCampaignCommandResult> {
+    return new TuiCampaignAccess(this.cliService).executeResearchCampaignCommand(request);
   }
 
   sendMessage(
@@ -468,6 +485,9 @@ export class TuiRuntimeAdapter implements TuiRuntime {
   }
   getCodexOAuthStatus() {
     return this.productAccess.getCodexOAuthStatus();
+  }
+  refreshCodexOAuthModels() {
+    return this.productAccess.refreshCodexOAuthModels();
   }
   startCodexOAuthLogin(
     options?: Parameters<TuiProductAccess["startCodexOAuthLogin"]>[0],

@@ -16,12 +16,14 @@ headers：`HTTP-Referer`、`X-OpenRouter-Title` 和
 `X-OpenRouter-Categories`。这些产品身份字段由 Runtime 按 header
 name 大小写不敏感地覆盖，用户自定义 Provider headers 不能改变归因身份；其他 endpoint 不受影响。
 
-OpenCode Go 的官方 HTTPS 地址 `https://opencode.ai/zen/go` 及其子路径会自动携带
+OpenCode Go 的官方 HTTPS 地址 `https://opencode.ai/inference/go` 及其子路径会自动携带
 `x-opencode-session` 和 `User-Agent: Bari`，无需依赖自定义 Provider 名称。
+旧版 `https://opencode.ai/zen/go` 配置会在请求前规范化到当前 OpenAI-compatible Go 地址，
+避免重定向丢失会话身份请求头。
 推理请求使用 Runtime 提供的 Session ID，同一会话跨 Turn、恢复与重试保持稳定，不同会话各自隔离；
 标题与压缩沿用已解析的请求头。连接测试和模型发现没有产品会话，使用独立生成的探测 ID。
 这两个身份字段按 header name 大小写不敏感地覆盖静态配置，其他请求头保持原值。
-普通 Zen `/zen/v1`、代理地址和其他 Provider 不自动应用这项策略。
+普通非 Go 地址、代理地址和其他 Provider 不自动应用这项策略。
 
 ## 目录
 
@@ -57,7 +59,7 @@ ms；这些临时数据不写入配置。相同方式的重复请求复用当前
 
 Anthropic Messages providers first request `<base>/v1/models`. Only a 404 or 405 triggers fallback to `<base>/models`, then the origin-level `/models` endpoint. Authentication failures, rate limits, and server errors retain their original status. If every candidate is absent, return `models_endpoint_missing` so the UI can offer manual model entry. Each attempt has its own request timeout.
 
-Official OpenCode Go HTTPS endpoints under `https://opencode.ai/zen/go` receive `x-opencode-session` and `User-Agent: Bari` headers. Inference keeps a stable runtime session ID across turns and retries; connection and discovery probes receive separate generated IDs. These identity headers override custom values case-insensitively. Other custom headers remain intact, and ordinary Zen `/zen/v1`, proxies, and other providers are unaffected.
+Official OpenCode Go HTTPS endpoints under `https://opencode.ai/inference/go` receive `x-opencode-session` and `User-Agent: Bari` headers. Retired `https://opencode.ai/zen/go` configurations are canonicalized to the current OpenAI-compatible Go base before a request, avoiding a redirect that could discard identity headers. Inference keeps a stable runtime session ID across turns and retries; connection and discovery probes receive separate generated IDs. These identity headers override custom values case-insensitively. Other custom headers remain intact, and ordinary non-Go endpoints, proxies, and other providers are unaffected.
 
 ## Codex OAuth 模型发现
 

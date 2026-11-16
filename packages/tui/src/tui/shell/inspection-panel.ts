@@ -236,7 +236,7 @@ function paintTone(value: string, tone: TuiInspectionTone, bold = false): string
       : tone === 'success'
         ? colors.success
         : tone === 'warning'
-          ? colors.error
+          ? colors.warning
           : tone === 'error'
             ? colors.error
             : colors.text;

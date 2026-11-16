@@ -4,6 +4,8 @@ tools:
   - read
   - grep
   - glob
+  - team_coordination
+  - research_coordination
   - web_fetch
 builtinTools: []
 skills: []

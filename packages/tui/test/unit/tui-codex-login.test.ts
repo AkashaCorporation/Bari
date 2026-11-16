@@ -54,6 +54,24 @@ function harness(initial = disconnected) {
 afterEach(() => vi.useRealTimers());
 
 describe("Codex sign-in panel", () => {
+  it("shows the public ChatGPT plan action and offers only supported browser sign-in", async () => {
+    const h = harness({
+      ...disconnected,
+      displayName: "ChatGPT subscription",
+      availableMethods: ["browser"],
+    });
+    await h.panel.resume();
+    expect(h.text()).toContain("Continue with ChatGPT");
+    expect(h.text()).not.toContain("Device code login");
+    h.panel.handleInput("\u001b[B");
+    h.panel.handleInput("\r");
+    await vi.waitFor(() =>
+      expect(h.application.connectCodexOAuth).toHaveBeenCalledWith({
+        method: "browser",
+      }),
+    );
+    h.panel.dispose();
+  });
   it("defaults to browser login and displays its URL when browser launch fails", async () => {
     const h = harness();
     h.application.connectCodexOAuth.mockResolvedValue({

@@ -1,7 +1,41 @@
 import { describe, expect, it, vi } from "vitest";
 import { TuiRuntimeAdapter } from "../../src/runtime/adapter.js";
+import { projectTuiSessionStreamFrame } from "../../src/runtime/stream-events.js";
+import { resolveTuiRuntimeFailure } from "../../src/tui/controller/runtime/runtime-error-presentation.js";
 
 describe("TuiRuntimeAdapter process-local facades", () => {
+  it("attributes a streamed auth failure to the actual BYOK provider", () => {
+    const event = projectTuiSessionStreamFrame({
+      dataJson: JSON.stringify({
+        type: "session_status",
+        session_status: {
+          type: "error",
+          message: "request failed",
+          errorCode: 50112,
+          errorSource: "byok_upstream",
+          errorDetail: "401 Invalid API Key",
+          errorProviderId: "custom_provider:provider-42fa78",
+          retryable: false,
+        },
+      }),
+    });
+    expect(event).toMatchObject({
+      type: "session-status",
+      status: "error",
+      errorCode: 50112,
+      errorSource: "byok_upstream",
+      errorDetail: "401 Invalid API Key",
+      errorProviderId: "custom_provider:provider-42fa78",
+      retryable: false,
+    });
+    if (!event || event.type !== "session-status") throw new Error("Expected session status");
+    const failure = resolveTuiRuntimeFailure(event.message, event.errorCode, event);
+    expect(failure.content).toContain("model provider rejected its credentials");
+    expect(failure.content).toContain("Provider: custom_provider:provider-42fa78");
+    expect(failure.content).toContain("Reason: 401 Invalid API Key");
+    expect(failure.content).not.toContain("service rejected request authentication");
+  });
+
   it("projects active and recent terminal Runtime background work for the current Session", async () => {
     const listBackgroundTasks = vi.fn(
       async (input: { statuses?: readonly string[] }) =>

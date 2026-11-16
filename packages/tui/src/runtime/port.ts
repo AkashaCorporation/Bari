@@ -645,6 +645,20 @@ export interface TuiActiveRunControlPort {
   getActiveRun(sessionId: string): Promise<TuiActiveRunSnapshot>;
 }
 
+export interface TuiTeamPort {
+  executeTeamCommand(
+    request: import('@bari/local-runtime-v2/cli-service').TeamCommandRequest,
+  ): Promise<import('@bari/local-runtime-v2/cli-service').TeamCommandResult>;
+}
+
+export interface TuiCampaignPort {
+  executeResearchCampaignCommand(
+    request: import('@bari/local-runtime-v2/cli-service').ResearchCampaignCommandRequest,
+  ): Promise<
+    import('@bari/local-runtime-v2/cli-service').ResearchCampaignCommandResult
+  >;
+}
+
 /**
  * Product-facing Runtime surface required by the interactive Bari TUI.
  *
@@ -653,6 +667,8 @@ export interface TuiActiveRunControlPort {
  * composed product boundary.
  */
 export type TuiRuntime = TuiSessionPort &
+  Partial<TuiTeamPort> &
+  Partial<TuiCampaignPort> &
   TuiConversationPort &
   TuiConfigurationPort &
   TuiInspectionPort &

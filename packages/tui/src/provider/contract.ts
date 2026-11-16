@@ -23,6 +23,7 @@ export interface McodeProviderStatus {
 export interface McodeProviderModel {
   readonly modelId: string;
   readonly displayName?: string;
+  readonly configurationSource?: 'manual' | 'discovered';
   readonly selected?: boolean;
   readonly status?: McodeProviderStatus;
 }
@@ -94,6 +95,8 @@ export interface McodeCodexOAuthLoginOptions {
 export interface McodeCodexOAuthStatus {
   readonly state: McodeCodexOAuthState;
   readonly providerId: 'openai-codex';
+  readonly displayName?: string;
+  readonly availableMethods?: McodeCodexOAuthLoginMethod[];
   readonly error?: string;
   readonly loginId?: string;
   readonly method?: McodeCodexOAuthLoginMethod;
@@ -165,6 +168,7 @@ export interface McodeProviderRuntimePort {
   ): Promise<readonly McodeProviderModel[]>;
   listProviderPresets(): Promise<readonly McodeProviderTemplate[]>;
   getCodexOAuthStatus(): Promise<McodeCodexOAuthStatus>;
+  refreshCodexOAuthModels(): Promise<McodeCodexOAuthStatus>;
   startCodexOAuthLogin(options?: McodeCodexOAuthLoginOptions): Promise<McodeCodexOAuthStartResult>;
   cancelCodexOAuthLogin(loginId: string): Promise<McodeCodexOAuthStatus>;
   listUserModelProviders(): Promise<readonly McodeRuntimeProviderView[]>;

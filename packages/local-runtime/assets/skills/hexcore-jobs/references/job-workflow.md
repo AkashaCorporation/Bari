@@ -4,7 +4,7 @@ Read the canonical contract in the resolved checkout before using this summary: 
 
 ## Authoring rules (from the contract)
 
-- Job file: `.hexcore_job.json` or a descriptive `*.hexcore_job.json` in the workspace.
+- Draft file: use a descriptive inactive `*.hexcore_job.draft.json`. The recursive watcher observes `*.hexcore_job.json`, so that suffix is reserved for a validated, publishable job.
 - Keep `outDir` inside the workspace or the job-file directory unless the user deliberately enables external output.
 - Chain artifacts with `$step[N].output`. `$step[prev]` is invalid in step `0`; forward references are invalid. Validation reports conditional jumps that may skip a referenced producer.
 - Top-level `continueOnError` is inherited by steps unless a step overrides it.
@@ -13,17 +13,40 @@ Read the canonical contract in the resolved checkout before using this summary: 
 - Preflight validation is mandatory. Never bypass it to obtain a partial artifact.
 - Semantic child failures fail by default. Use `allowPartial: true` only when incomplete coverage is intentional, and keep the terminal `partial` status visible.
 
-## Running and inspecting
+## Validate, publish, run, and inspect
 
-1. `hexcore.pipeline.validateJob` or `hexcore.pipeline.validateWorkspace` before expensive work.
-2. `hexcore.pipeline.queueJob` (or the workspace watcher) to run; `hexcore.pipeline.jobStatus` and `hexcore.pipeline.cancelJob` manage it.
-3. Inspect `.hexcore-pipeline.log` and `.hexcore-pipeline.status.json`: attempts, output bytes, totals, slowest step, and the queue snapshot.
-4. Long native steps: check `.hexcore-meta/*.heartbeat.json` and `nativeExecution.lastPhase` before changing a timeout.
-5. Verify artifacts in `.hexcore-meta/provenance.json` before any cross-run comparison. New jobs do not emit visible per-artifact sidecars.
+1. Prepare an immutable validation request:
+
+   ```text
+   node {{DATA_DIR}}/.builtin-skills/hexcore-jobs/scripts/validated-job.mjs prepare --workspace <workspace> --draft <name>.hexcore_job.draft.json --output <name>.hexcore_job.json --validation <name>.validation.json --request <name>.validation-request.json
+   ```
+
+2. Invoke the resolved checkout's canonical `hexcore.pipeline.validateJob` with this exact argument shape so an inactive draft can be validated and the machine-readable report is written:
+
+   ```json
+   {
+     "jobFile": "<absolute path to name.hexcore_job.draft.json>",
+     "output": "<absolute path to name.validation.json>",
+     "quiet": true
+   }
+   ```
+
+3. Publish only the exact validated bytes:
+
+   ```text
+   node {{DATA_DIR}}/.builtin-skills/hexcore-jobs/scripts/validated-job.mjs publish --workspace <workspace> --draft <name>.hexcore_job.draft.json --output <name>.hexcore_job.json --validation <name>.validation.json --request <name>.validation-request.json
+   ```
+
+   The helper refuses a watcher-visible draft, a target outside the workspace, a changed draft, a validation generated before the request, a report for another file, a failed report, a step-count mismatch, or an existing destination. It writes the watched filename with an atomic rename and emits `<job>.publish-receipt.json` by default.
+
+4. Let the workspace watcher run the newly published job. Use `hexcore.pipeline.queueJob` only when the watcher is disabled; `hexcore.pipeline.jobStatus` and `hexcore.pipeline.cancelJob` manage it.
+5. Inspect `.hexcore-pipeline.log` and `.hexcore-pipeline.status.json`: attempts, output bytes, totals, slowest step, and the queue snapshot.
+6. Long native steps: check `.hexcore-meta/*.heartbeat.json` and `nativeExecution.lastPhase` before changing a timeout.
+7. Verify artifacts in `.hexcore-meta/provenance.json` before any cross-run comparison. New jobs do not emit visible per-artifact sidecars.
 
 ## Queue and watcher behavior
 
-- Root-level canonical and named jobs are auto-discovered on startup; the recursive watcher reacts to later changes under the workspace.
+- Root-level canonical and named jobs are auto-discovered on startup; the recursive watcher reacts to later changes under the workspace. This is why authoring directly to a watched filename is unsafe.
 - A stale unchanged `running` status is archived and terminalized after the configured stale window, then the revision may run again.
 - Queue parallel slots are configurable; stateful jobs serialize across the extension host. Use `sessionId` for sticky routing when jobs share a keep-alive emulation session.
 

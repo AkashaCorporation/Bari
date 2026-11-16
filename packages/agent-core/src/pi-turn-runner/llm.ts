@@ -1,5 +1,13 @@
 import type { Agent, AgentMessage, StreamFn } from '@earendil-works/pi-agent-core';
-import { streamSimple, type CacheRetention, type SimpleStreamOptions } from '@earendil-works/pi-ai';
+import {
+  createAssistantMessageEventStream,
+  streamSimple,
+  type AssistantMessage,
+  type AssistantMessageEventStream,
+  type CacheRetention,
+  type SimpleStreamOptions,
+} from '@earendil-works/pi-ai';
+import { repairAssistantMessageDsml } from './dsml.js';
 import { LLM_REQUEST_TIMEOUT_MS } from './defaults.js';
 import type {
   PiAfterLlmReplacementCommit,
@@ -14,10 +22,13 @@ export function composeStreamFn(resolved: LLMModelConfig): StreamFn {
   // Order matters: each wrapper only fills the option it owns, while
   // explicit per-call options from upstream wrappers still win. The host
   // ceiling is the exception and therefore the innermost link: it has to see
-  // the fully accumulated options in order to shrink them.
+  // the fully accumulated options in order to shrink them. DSML repair sits
+  // directly on the provider stream so every downstream wrapper (clamp,
+  // cache, retry, metrics) observes the repaired message.
   const callerHeaders =
     resolved.headers && Object.keys(resolved.headers).length > 0 ? resolved.headers : undefined;
-  const hostClamped = withHostMaxOutputTokens(resolved.streamFn, resolved.hostMaxOutputTokens);
+  const dsmlRepaired = withDsmlRepair(resolved.streamFn ?? streamSimple);
+  const hostClamped = withHostMaxOutputTokens(dsmlRepaired, resolved.hostMaxOutputTokens);
   const cacheWrapped = withCacheRetention(hostClamped, resolved.cacheRetention);
   const maxTokensWrapped =
     typeof resolved.maxTokens === 'number' && resolved.maxTokens > 0
@@ -28,6 +39,84 @@ export function composeStreamFn(resolved: LLMModelConfig): StreamFn {
     : maxTokensWrapped;
   const fetchWrapped = resolved.fetch ? withFetch(headerWrapped, resolved.fetch) : headerWrapped;
   return wrapStreamFnWithTimeout(fetchWrapped, LLM_REQUEST_TIMEOUT_MS);
+}
+
+/**
+ * Repair DeepSeek DSML function-call markup that an OpenAI-compatible relay
+ * leaked into the assistant text stream (see dsml.ts). Passes every event
+ * through unchanged except the terminal `done`, whose message is rewritten in
+ * place; a recovered tool call upgrades `stopReason` to `toolUse` so the agent
+ * loop keeps running instead of dying after the leaked closing tags. Messages
+ * without the `｜DSML｜` marker are forwarded untouched, so this is a no-op for
+ * every other model and provider. Stream failures keep flowing through the
+ * protocol `error` event; a thrown transport error is encoded the same way so
+ * downstream `result()` never hangs.
+ */
+export function withDsmlRepair(inner: StreamFn): StreamFn {
+  return ((model, context, options) => {
+    const out = createAssistantMessageEventStream();
+    // The async IIFE defers a synchronously throwing transport into the
+    // rejection path so pumpDsmlRepairedStream can encode it as a protocol
+    // error event instead of throwing through the stream factory.
+    void pumpDsmlRepairedStream(
+      (async () => inner(model, context, options))(),
+      out,
+      model,
+    );
+    return out;
+  }) as StreamFn;
+}
+
+async function pumpDsmlRepairedStream(
+  sourcePromise: Promise<AssistantMessageEventStream>,
+  out: AssistantMessageEventStream,
+  model: Parameters<StreamFn>[0],
+): Promise<void> {
+  let lastPartial: AssistantMessage | undefined;
+  try {
+    const source = await sourcePromise;
+    for await (const event of source) {
+      if (event.type === 'done') {
+        out.push({ ...event, message: repairAssistantMessageDsml(event.message) });
+        return;
+      }
+      if ('partial' in event) {
+        lastPartial = event.partial;
+      }
+      out.push(event);
+    }
+    out.end();
+  } catch (error) {
+    out.push({
+      type: 'error',
+      reason: 'error',
+      error: lastPartial
+        ? { ...lastPartial, stopReason: 'error', errorMessage: String(error) }
+        : syntheticErrorAssistantMessage(model, error),
+    });
+    out.end();
+  }
+}
+
+function syntheticErrorAssistantMessage(model: Parameters<StreamFn>[0], error: unknown): AssistantMessage {
+  return {
+    role: 'assistant',
+    content: [],
+    api: model.api,
+    provider: model.provider,
+    model: model.id,
+    stopReason: 'error',
+    errorMessage: String(error),
+    usage: {
+      input: 0,
+      output: 0,
+      cacheRead: 0,
+      cacheWrite: 0,
+      totalTokens: 0,
+      cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
+    },
+    timestamp: Date.now(),
+  };
 }
 
 export function setLLMHook(agent: Agent, turn: turnState, history: turnHistory): void {

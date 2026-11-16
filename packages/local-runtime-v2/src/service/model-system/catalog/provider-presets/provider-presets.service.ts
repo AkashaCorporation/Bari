@@ -28,6 +28,7 @@ const REGION_PINNED_PROVIDER_IDS = {
   en: ['zai', 'deepseek', 'moonshotai', 'openai', 'anthropic'],
 } as const;
 const OPENCODE_GO_PROVIDER_ID = 'opencode-go';
+const OPENCODE_GO_BASE_URL = 'https://opencode.ai/inference/go/openai/v1';
 const refreshInFlight = new Map<string, Promise<void>>();
 
 function opencodeGoPinnedModels(): UserModelInputView[] {
@@ -56,12 +57,23 @@ function applyFirstPartyPresetOverrides(
   const additions = opencodeGoPinnedModels().filter(
     (model) => !knownModelIds.has(model.modelId),
   );
-  if (additions.length === 0) return presets;
   const models = [...existing.models, ...additions].sort((left, right) =>
     (left.displayName ?? left.modelId).localeCompare(right.displayName ?? right.modelId),
   );
+  if (
+    additions.length === 0 &&
+    existing.baseUrl === OPENCODE_GO_BASE_URL &&
+    existing.apiFormat === 'openai-completions'
+  ) {
+    return presets;
+  }
   const merged = [...presets];
-  merged[index] = { ...existing, models };
+  merged[index] = {
+    ...existing,
+    baseUrl: OPENCODE_GO_BASE_URL,
+    apiFormat: 'openai-completions',
+    models,
+  };
   return merged;
 }
 

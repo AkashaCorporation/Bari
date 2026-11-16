@@ -141,6 +141,12 @@ export class TuiProductAccess {
       .getCodexOAuthStatus()) as McodeCodexOAuthStatus;
   }
 
+  async refreshCodexOAuthModels(): Promise<McodeCodexOAuthStatus> {
+    return (await this.context
+      .service("provider.codex-oauth.refresh")
+      .refreshCodexOAuthModels()) as McodeCodexOAuthStatus;
+  }
+
   async startCodexOAuthLogin(
     options?: McodeCodexOAuthLoginOptions,
   ): Promise<McodeCodexOAuthStartResult> {

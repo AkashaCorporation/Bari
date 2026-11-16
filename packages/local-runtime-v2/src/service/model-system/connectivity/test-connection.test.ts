@@ -762,16 +762,33 @@ describe('ModelConnectionTester invalid responses and concurrency', () => {
 
 describe('OpenCode Go connection identity', () => {
   it.each([
-    ['openai-completions', openAiOkResponse],
-    ['openai-responses', openAiResponsesOkResponse],
-    ['anthropic-messages', messagesOkResponse],
-  ] as const)('adds independent probe identities for %s', async (api, response) => {
+    [
+      'openai-completions',
+      openAiOkResponse,
+      'https://opencode.ai/inference/go/openai/v1',
+      'https://opencode.ai/inference/go/openai/v1/chat/completions',
+    ],
+    [
+      'openai-responses',
+      openAiResponsesOkResponse,
+      'https://opencode.ai/inference/go/openai/v1',
+      'https://opencode.ai/inference/go/openai/v1/responses',
+    ],
+    [
+      'anthropic-messages',
+      messagesOkResponse,
+      'https://opencode.ai/inference/go/anthropic',
+      'https://opencode.ai/inference/go/anthropic/v1/messages',
+    ],
+  ] as const)(
+    'adds independent probe identities for %s',
+    async (api, response, baseUrl, expectedUrl) => {
     const fetchImpl = vi.fn<typeof fetch>(async () => response());
     const tester = new ModelConnectionTester({ fetchImpl });
     const target = {
       api,
       apiKey: API_KEY,
-      baseUrl: 'https://opencode.ai/zen/go/v1',
+      baseUrl,
       modelId: 'test-model',
       headers: { 'X-OpenCode-Session': 'stale-static-id', 'USER-AGENT': 'generic-sdk' },
     };
@@ -783,5 +800,26 @@ describe('OpenCode Go connection identity', () => {
       expect(header.get('user-agent')).toBe('Bari');
     }
     expect(headers[0]?.get('x-opencode-session')).not.toBe(headers[1]?.get('x-opencode-session'));
+    expect(fetchImpl.mock.calls.map((call) => String(call[0]))).toEqual([expectedUrl, expectedUrl]);
+    },
+  );
+
+  it('canonicalizes the retired zen Go URL before sending a request', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => openAiOkResponse());
+    const tester = new ModelConnectionTester({ fetchImpl });
+    expect(
+      await tester.test('legacy-go', {
+        api: 'openai-completions',
+        apiKey: API_KEY,
+        baseUrl: 'https://opencode.ai/zen/go/v1',
+        modelId: 'test-model',
+      }),
+    ).toEqual({ ok: true });
+    expect(String(fetchImpl.mock.calls[0]?.[0])).toBe(
+      'https://opencode.ai/inference/go/openai/v1/chat/completions',
+    );
+    const headers = new Headers(fetchImpl.mock.calls[0]?.[1]?.headers);
+    expect(headers.get('x-opencode-session')).toMatch(/^[0-9a-f-]{36}$/u);
+    expect(headers.get('user-agent')).toBe('Bari');
   });
 });

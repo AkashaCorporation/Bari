@@ -17,7 +17,7 @@
   <a href="https://www.npmjs.com/package/@akashacorporation/bari"><img src="https://img.shields.io/npm/v/@akashacorporation/bari" alt="npm version"></a>
 </p>
 
-Bari is AkashaCorporation's terminal agent harness. It started as a fork of MiniMax Code and diverges toward one goal: a coding agent that is a first-class tool for **legitimate cybersecurity and reverse-engineering work**. Bring your own model or use an OpenCode Go subscription, and work with an agent team that already knows the trade.
+Bari is AkashaCorporation's terminal agent harness. It started as a fork of MiniMax Code and diverges toward one goal: a coding agent that is a first-class tool for **legitimate cybersecurity and reverse-engineering work**. Bring your own model, connect an eligible ChatGPT plan, or use an OpenCode Go subscription, and work with an agent team that already knows the trade.
 
 [![Bari TUI preview: a coding task with failing tests fixed and passing](docs/assets/tui-demo.png)](docs/demo.md)
 
@@ -34,6 +34,17 @@ Four built-in specialists ship with Bari. Every session can delegate to them thr
 | explore / worker / verifier | The general-purpose read-only mapping, production, and review roles |
 
 Add your own agents under `~/.bari/agents/<name>/agent.md` and they join the same roster.
+
+## Security campaigns
+
+Authorized research can use a runtime-owned campaign ledger instead of relying on chat history.
+Ask Bari to create a campaign with the exact target and authorization scope, then use `/campaign`
+(aliases `/campaigns` and `/research`) to inspect its frozen SHA-256 identity, hypotheses, evidence,
+experiments, duplicate checks and independent reviews. Workers share the campaign through their real
+session ancestry; Agent Teams schedules the work, while the campaign ledger alone owns research
+verdicts. HexCore Jobs and experimental Hypotenuse Jobs can be ingested as hash-reverified analysis
+receipts with explicit root/effective-input identity and partial coverage. A completed task or tool
+run is never automatically a reportable finding.
 
 ## Self evolution
 
@@ -69,7 +80,7 @@ bari provider add --name my-provider --base-url https://example.com/v1 \
 bari
 ```
 
-Supported API formats: `openai-completions`, `openai-responses`, and `anthropic-messages`. Optional metadata flags (`--context`, `--max-output`, `--effort low,high,max`) declare the model's real limits and reasoning levels; without them the runtime applies conservative defaults. With `--use`, the first model is tested before the provider is saved and selected, so a failed connection saves nothing. `/model` lists every configured model and can refresh a provider's catalog from its `/models` endpoint. See the [model examples](docs/examples.md#2-choose-your-own-model) for environment variable setup, connection checks, and model overrides for a single run. OpenCode Go subscribers can use the pinned preset described in the [OpenCode Go example](docs/examples.md#opencode-go).
+Supported API formats: `openai-completions`, `openai-responses`, and `anthropic-messages`. Optional metadata flags (`--context`, `--max-output`, `--effort low,high,max`) declare the model's real limits and reasoning levels; without them the runtime applies conservative defaults. With `--use`, the first model is tested before the provider is saved and selected, so a failed connection saves nothing. `/model` lists every configured model; the interactive refresh adds new IDs, while `bari provider refresh <provider-id> --json` explicitly synchronizes one saved catalog. `bari provider refresh --all --json` updates every configured catalog, including ChatGPT subscription discovery, without running model inference; providers with expired credentials are reported independently. See the [model examples](docs/examples.md#2-choose-your-own-model) for environment variable setup, connection checks, and model overrides for a single run. OpenCode Go subscribers can use the pinned preset described in the [OpenCode Go example](docs/examples.md#opencode-go).
 
 <details>
 <summary>Managed accounts and Token Plan</summary>
@@ -142,7 +153,7 @@ Inside the TUI, use `/sessions` to find previous sessions and `/help` to see all
 | Task | Capabilities |
 | --- | --- |
 | **Edit and verify code** | Read files, inspect diffs, run shell commands and tests, and control tool execution with permissions and sandboxing. |
-| **Work a target safely** | Ground claims in tool results, validate findings as true or false positives, and keep proofs of concept reversible and scoped. |
+| **Work a target safely** | Freeze target and authorization under one digest, lease root-cause hypotheses, re-hash local evidence inside frozen roots, validate full data flow and negative controls, check duplicates, and require a fresh independent review before `reportable`. |
 | **Choose your model** | Custom OpenAI- or Anthropic-compatible providers, an OpenCode Go subscription, or managed accounts. |
 | **Search and work with media** | Use built-in search, embedded media tools, MCP, and managed connectors, subject to account access and service credits. |
 | **Keep work moving** | Resume sessions, plan tasks, delegate to the agent team, and extend the harness with plugins and skills. |

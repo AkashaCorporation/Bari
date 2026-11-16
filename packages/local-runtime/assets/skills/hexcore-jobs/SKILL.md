@@ -1,6 +1,5 @@
 ---
 name: hexcore-jobs
-title: HexCore Jobs
 description: Run reproducible binary-analysis jobs with HikariSystem HexCore (PE/ELF triage, disassembly, lifting, decompilation, emulation, and evidence reports). Use when the user asks to run a HexCore job, analyze a binary with HexCore, create or validate a `.hexcore_job.json` pipeline, or inspect HexCore artifacts and provenance. Do not use for generic binary or PE parsing when HexCore is not requested or not available; use web_fetch or native tools instead.
 ---
 
@@ -38,22 +37,25 @@ Do not copy large sections of those documents into the workspace; cite the paths
 
 1. Confirm authorization and keep `outDir` inside the workspace.
 2. Inspect available commands and engines (`hexcore.pipeline.listCapabilities` or `hexcore.pipeline.doctor`).
-3. Author the job as `.hexcore_job.json` or `<name>.hexcore_job.json`, following the contract's rules and templates. Chain producers and consumers with `$step[N].output`; keep one job when a step consumes another step's artifact.
-4. Validate before running (`hexcore.pipeline.validateJob` or `validateWorkspace`). Never bypass a preflight failure.
-5. Run the job, then inspect `.hexcore-pipeline.log` and `.hexcore-pipeline.status.json`. For long native steps, read `.hexcore-meta/*.heartbeat.json` and `nativeExecution.lastPhase` instead of blindly raising deadlines.
-6. Verify every artifact against `.hexcore-meta/provenance.json` before comparing runs. Keep `partial` as partial: never report it as complete, and use `allowPartial` only when incomplete coverage is intentional.
-7. Report the terminal status (`ok|partial|failed|skipped`), artifact paths, evidence level, and what remains unverified.
+3. Author an inactive `<name>.hexcore_job.draft.json`; never save unvalidated content to a watched `*.hexcore_job.json` path. Chain producers and consumers with `$step[N].output`; keep one job when a step consumes another step's artifact.
+4. Run `scripts/validated-job.mjs prepare` to bind the draft hash, intended watched path, validation-report path, and step count. Then invoke the checkout's canonical `hexcore.pipeline.validateJob` with `{ jobFile: <draft>, output: <validation-report>, quiet: true }`.
+5. If validation passes, run `scripts/validated-job.mjs publish`. It rejects changed drafts, stale or mismatched reports, path escapes, unsafe outputs, and existing watched files, then publishes the exact validated bytes atomically. Never bypass a preflight failure or hand-copy the draft into place.
+6. Let the workspace watcher enqueue the newly published job. If the watcher is disabled, queue it once explicitly; do not combine both paths speculatively.
+7. Inspect `.hexcore-pipeline.log` and `.hexcore-pipeline.status.json`. For long native steps, read `.hexcore-meta/*.heartbeat.json` and `nativeExecution.lastPhase` instead of blindly raising deadlines.
+8. Verify every artifact against `.hexcore-meta/provenance.json` before comparing runs. Keep `partial` as partial: never report it as complete, and use `allowPartial` only when incomplete coverage is intentional.
+9. Report the terminal status (`ok|partial|failed|skipped`), artifact paths, evidence level, and what remains unverified.
 
 ## Output contract
 
 - Job files created, the validation result, and the terminal pipeline status.
+- The validation-request and publication-receipt paths when a watched job was published.
 - Exact artifact paths with their provenance entries.
 - Semantic claims labeled `signal`, `candidate`, or `proven` as the contract defines.
 - No invented findings: every conclusion points at an artifact the pipeline produced.
 
 ## Failure handling
 
-- Validation error: fix the job and re-validate; do not run.
+- Validation error: fix the inactive draft, prepare a new request, and re-validate; do not publish or run.
 - Timeout: inspect the heartbeat and last phase, raise the deadline once, then stop and report.
 - A command disabled by configuration is `skipped`, not a tool failure.
 - Missing packaged app or native engine: report the requirement and point to `docs/BUILD_WIN_LOCAL.md` for the source path.

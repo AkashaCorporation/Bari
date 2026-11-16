@@ -1,3 +1,4 @@
+import { join } from 'node:path';
 import {
   compareAndSetLocalModelContext,
   getConfig,
@@ -19,6 +20,9 @@ import type {
 } from './contracts.js';
 import { LocalModelProviderService } from './management/service.js';
 import { LocalModelResolver } from './resolution/local-model-resolver.js';
+import { CHATGPT_PLAN_BASE_URL, ChatGPTPlanAuthStorage } from './chatgpt-plan-auth.js';
+import { CodexModelDiscoveryClient } from './connectivity/codex-model-discovery.js';
+import { OPENAI_CODEX_PROVIDER_ID } from './identity.js';
 
 export interface InitializeModelSystemOptions {
   readonly config: ModelSystemConfigPort;
@@ -57,6 +61,11 @@ export function createLocalModelSystemConfigPort(read: () => LocalRuntimeConfig 
 
 /** Composes the single Runtime V2 owner for model resolution and Provider management. */
 export function initializeModelSystem(options: InitializeModelSystemOptions): ModelSystemOwner {
+  const planAuth = () =>
+    new ChatGPTPlanAuthStorage(
+      join(options.config.read().dataDir, 'chatgpt-plan-credentials.json'),
+      options.fetchImpl,
+    );
   const providerPresets = new ProviderPresetCatalog({
     dataDir: options.config.read().dataDir,
     previewSecret: process.env.PREVIEW_SECRET,
@@ -64,6 +73,20 @@ export function initializeModelSystem(options: InitializeModelSystemOptions): Mo
   });
   const resolver = new LocalModelResolver({
     ...options.resolverOptions,
+    ...(options.fetchImpl ? { fetchImpl: options.fetchImpl } : {}),
+    providerAuthGetter: (provider) => {
+      if (provider !== OPENAI_CODEX_PROVIDER_ID)
+        return options.resolverOptions?.providerAuthGetter?.(provider);
+      const configured = options.config.read().custom_provider?.[OPENAI_CODEX_PROVIDER_ID];
+      if (
+        configured?.api !== 'openai-responses' ||
+        configured.options?.baseURL !== CHATGPT_PLAN_BASE_URL
+      )
+        return undefined;
+      return planAuth()
+        .getCredentials()
+        .then((credentials) => credentials?.access);
+    },
     providerConfigGetter: () => options.config.read().provider,
     byokConfigGetter: () => {
       const config = options.config.read();
@@ -79,6 +102,17 @@ export function initializeModelSystem(options: InitializeModelSystemOptions): Mo
     fetchImpl: options.fetchImpl,
     updateByokConfig: options.config.updateByok,
     removeLegacyProvider: options.config.removeProvider,
+    displayName: 'ChatGPT subscription',
+    loginMethods: ['browser'],
+    providerApi: 'openai-responses',
+    providerBaseUrl: CHATGPT_PLAN_BASE_URL,
+    authStorageFactory: planAuth,
+    catalogGetter: async () => {
+      const credentials = await planAuth().getCredentials();
+      if (!credentials)
+        throw new Error('Connect ChatGPT and approve plan usage before fetching models.');
+      return new CodexModelDiscoveryClient(options.fetchImpl, 10_000, true).discover(credentials);
+    },
   });
   const providers = new LocalModelProviderService({
     configGetter: options.config.read,

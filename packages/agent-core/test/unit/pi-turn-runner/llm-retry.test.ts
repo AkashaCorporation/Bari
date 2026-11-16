@@ -16,6 +16,7 @@ import {
   type LLMRequestSettledEvent,
   type LLMRetryEvent,
 } from "../../../src/pi-turn-runner/llm-retry.js";
+import { _computeFailureTerminationReasonForTest } from "../../../src/pi-turn-runner/terminal.js";
 
 function fakeModel(provider = "fake-provider"): Model<any> {
   return {
@@ -991,5 +992,26 @@ describe("withLLMRetry", () => {
       "waiting",
       "cancelled",
     ]);
+  });
+
+  it("carries structured BYOK provider attribution into the terminal Runtime error", () => {
+    const message = `BYOK upstream error: ${JSON.stringify({
+      errorCode: 50112,
+      message:
+        "BYOK provider custom_provider:provider-42fa78 upstream error: 401 Invalid API Key",
+      errorSource: "byok_upstream",
+      errorDetail: "401 Invalid API Key",
+      errorProviderId: "custom_provider:provider-42fa78",
+    })}`;
+
+    expect(_computeFailureTerminationReasonForTest(message)).toMatchObject({
+      kind: "failed",
+      error: {
+        code: 50112,
+        errorSource: "byok_upstream",
+        errorDetail: "401 Invalid API Key",
+        errorProviderId: "custom_provider:provider-42fa78",
+      },
+    });
   });
 });

@@ -12,6 +12,9 @@ const skipped = new Set([
   ".git",
   "node_modules",
   ".cache",
+  // Local validation may contain account-bound diagnostics, transient logs,
+  // and adversarial fixtures. Preserve it on disk, but never publish it as source.
+  ".validation",
   ".pnpm-store",
   ".turbo",
   ".DS_Store",

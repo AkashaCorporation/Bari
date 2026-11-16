@@ -12,8 +12,8 @@ import {
 import { resolveTuiLayoutPolicy } from '../layout-policy.js';
 import { formatTuiKeybinding, type TuiKeybindingRegistry } from '../keybindings.js';
 import {
-  MINIMAX_CODE_WELCOME_DESIGN,
-  MINIMAX_CODE_WELCOME_PASTE_IMAGE_SHORTCUT,
+  BARI_WELCOME_DESIGN,
+  BARI_WELCOME_PASTE_IMAGE_SHORTCUT,
 } from './design.js';
 import { renderTuiWelcomeHero } from './hero.js';
 
@@ -42,7 +42,7 @@ export class TuiWelcome implements Component {
   renderViewport(width: number, height: number): string[] {
     const safeWidth = normalizeWidth(width);
     if (safeWidth === 0) return [];
-    if (safeWidth < 4) return [fitLine('M', safeWidth)];
+    if (safeWidth < 4) return [fitLine('B', safeWidth)];
 
     const policy = resolveTuiLayoutPolicy(safeWidth);
     let frame =
@@ -76,10 +76,10 @@ function renderWideWelcome(
   keybindings: TuiKeybindingRegistry | undefined,
   content?: TuiWelcomeContent,
 ): string[] {
-  const tips = resolveWelcomeItems(content?.tips, MINIMAX_CODE_WELCOME_DESIGN.wide.tips, 3);
+  const tips = resolveWelcomeItems(content?.tips, BARI_WELCOME_DESIGN.wide.tips, 3);
   const news = resolveWelcomeItems(
     content?.changelogEntries,
-    MINIMAX_CODE_WELCOME_DESIGN.wide.news,
+    BARI_WELCOME_DESIGN.wide.news,
     3,
   );
   return [
@@ -87,12 +87,12 @@ function renderWideWelcome(
     '',
     renderWelcomeHeader(state, width),
     ...renderWelcomeAccountNoticeRows(state, width),
-    renderFrameRow(renderSectionTitle(MINIMAX_CODE_WELCOME_DESIGN.sectionTitles.tips), width),
+    renderFrameRow(renderSectionTitle(BARI_WELCOME_DESIGN.sectionTitles.tips), width),
     ...tips.map((text) =>
       renderFrameRow(renderWelcomeBullet(resolveWelcomeCopy(text, keybindings)), width),
     ),
     renderFrameDivider(width),
-    renderFrameRow(renderSectionTitle(MINIMAX_CODE_WELCOME_DESIGN.sectionTitles.news), width),
+    renderFrameRow(renderSectionTitle(BARI_WELCOME_DESIGN.sectionTitles.news), width),
     ...news.map((text) =>
       renderFrameRow(renderWelcomeBullet(resolveWelcomeCopy(text, keybindings)), width),
     ),
@@ -106,10 +106,10 @@ function renderStackedWelcome(
   keybindings: TuiKeybindingRegistry | undefined,
   content?: TuiWelcomeContent,
 ): string[] {
-  const tips = resolveWelcomeItems(content?.tips, MINIMAX_CODE_WELCOME_DESIGN.stacked.tips, 2);
+  const tips = resolveWelcomeItems(content?.tips, BARI_WELCOME_DESIGN.stacked.tips, 2);
   const news = resolveWelcomeItems(
     content?.changelogEntries,
-    MINIMAX_CODE_WELCOME_DESIGN.stacked.news,
+    BARI_WELCOME_DESIGN.stacked.news,
     3,
   );
   return [
@@ -118,12 +118,12 @@ function renderStackedWelcome(
     renderWelcomeHeader(state, width),
     ...renderWelcomeAccountNoticeRows(state, width),
     renderFrameDivider(width),
-    renderFrameRow(renderSectionTitle(MINIMAX_CODE_WELCOME_DESIGN.sectionTitles.tips), width),
+    renderFrameRow(renderSectionTitle(BARI_WELCOME_DESIGN.sectionTitles.tips), width),
     ...tips.map((text) =>
       renderFrameRow(renderWelcomeBullet(resolveWelcomeCopy(text, keybindings)), width),
     ),
     renderFrameRow('', width),
-    renderFrameRow(renderSectionTitle(MINIMAX_CODE_WELCOME_DESIGN.sectionTitles.news), width),
+    renderFrameRow(renderSectionTitle(BARI_WELCOME_DESIGN.sectionTitles.news), width),
     ...news.map((text) =>
       renderFrameRow(renderWelcomeBullet(resolveWelcomeCopy(text, keybindings)), width),
     ),
@@ -138,17 +138,17 @@ function renderCompactWelcome(
   keybindings: TuiKeybindingRegistry | undefined,
   content?: TuiWelcomeContent,
 ): string[] {
-  const tips = resolveWelcomeItems(content?.tips, MINIMAX_CODE_WELCOME_DESIGN.compact.tips, 2);
+  const tips = resolveWelcomeItems(content?.tips, BARI_WELCOME_DESIGN.compact.tips, 2);
   const news = resolveWelcomeItems(
     content?.changelogEntries,
-    MINIMAX_CODE_WELCOME_DESIGN.compact.news,
+    BARI_WELCOME_DESIGN.compact.news,
     3,
   );
   return [
     ...renderTuiWelcomeHero(width),
     '',
     renderFrameHeader(
-      `${chalk.bold.hex(colors.brand)('Bari')} ${chalk.hex(colors.muted)(`v${state.version}`)}`,
+      `${chalk.bold.hex(colors.brand)('BARI')} ${chalk.hex(colors.accent)('by AKASHA')} ${chalk.hex(colors.muted)(`v${state.version}`)}`,
       renderActivity(state),
       width,
     ),
@@ -157,7 +157,7 @@ function renderCompactWelcome(
     ...tips.map((text) =>
       renderFrameRow(chalk.hex(colors.muted)(resolveWelcomeCopy(text, keybindings)), width),
     ),
-    renderFrameRow(renderSectionTitle(MINIMAX_CODE_WELCOME_DESIGN.sectionTitles.news), width),
+    renderFrameRow(renderSectionTitle(BARI_WELCOME_DESIGN.sectionTitles.news), width),
     ...news.map((text) => renderFrameRow(chalk.hex(colors.muted)(text), width)),
     renderFrameBottom(width),
   ];
@@ -165,7 +165,7 @@ function renderCompactWelcome(
 
 function renderWelcomeHeader(state: TuiShellState, width: number): string {
   return renderFrameHeader(
-    chalk.hex(colors.muted)(`v${state.version}`),
+    `${chalk.bold.hex(colors.brand)('BARI')} ${chalk.hex(colors.accent)('by AKASHA')} ${chalk.hex(colors.muted)(`v${state.version}`)}`,
     renderActivity(state),
     width,
   );
@@ -189,7 +189,7 @@ function renderWelcomeBullet(text: string): string {
 
 function resolveWelcomeCopy(value: string, keybindings: TuiKeybindingRegistry | undefined): string {
   return value.replaceAll(
-    MINIMAX_CODE_WELCOME_PASTE_IMAGE_SHORTCUT,
+    BARI_WELCOME_PASTE_IMAGE_SHORTCUT,
     formatTuiKeybinding('composer.paste-image', keybindings),
   );
 }
@@ -204,34 +204,34 @@ function renderWelcomeAccountNoticeRows(state: TuiShellState, width: number): st
           ? 'Check /status for details.'
           : undefined;
   if (!message) return [];
-  const notice = `${chalk.bold.hex(colors.warning)('○')} ${chalk.bold.hex(colors.warning)(message)}`;
+  const notice = `${chalk.bold.hex(colors.warning)('[!]')} ${chalk.bold.hex(colors.warning)(message)}`;
   return [renderFrameRow(notice, width)];
 }
 
 function renderActivity(state: TuiShellState): string {
   if (state.accountStatus === 'Sign in with /login') {
-    return chalk.bold.hex(colors.warning)('○ Login required');
+    return chalk.bold.hex(colors.warning)('[!] Login required');
   }
   if (state.runtimeStatus === 'error') {
-    return chalk.bold.hex(colors.error)('× Error');
+    return chalk.bold.hex(colors.error)('[x] Error');
   }
   if (state.accountStatus === 'Checking account') {
-    return chalk.bold.hex(colors.signal)('◌ Checking account');
+    return chalk.bold.hex(colors.signal)('[~] Checking account');
   }
   if (state.accountStatus === 'Connected with warnings') {
-    return chalk.bold.hex(colors.warning)('○ Setup warning');
+    return chalk.bold.hex(colors.warning)('[!] Setup warning');
   }
   if (state.accountStatus === 'Account unavailable') {
-    return chalk.bold.hex(colors.warning)('○ Account unavailable');
+    return chalk.bold.hex(colors.warning)('[!] Account unavailable');
   }
   if (state.runtimeStatus === 'ready') {
-    return chalk.bold.hex(colors.orbit)('● Ready');
+    return chalk.bold.hex(colors.orbit)('[+] Ready');
   }
   if (state.runtimeStatus === 'starting') {
-    return chalk.bold.hex(colors.signal)('◌ Starting');
+    return chalk.bold.hex(colors.signal)('[~] Starting');
   }
   if (state.runtimeStatus === 'offline') {
-    return chalk.bold.hex(colors.warning)('○ Offline');
+    return chalk.bold.hex(colors.warning)('[!] Offline');
   }
   return chalk.bold.hex(colors.error)('× Error');
 }

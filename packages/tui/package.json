@@ -1,6 +1,6 @@
 {
   "name": "@bari/code",
-  "version": "0.7.1",
+  "version": "0.8.0-preview.1",
   "private": true,
   "description": "Bari CLI and TUI product entry.",
   "type": "module",

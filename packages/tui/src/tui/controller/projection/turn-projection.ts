@@ -135,7 +135,12 @@ export class TuiTurnProjection {
       return undefined;
     }
     if (event.type === 'error') {
-      const message = formatTuiRuntimeFailure(event.message);
+      const message = formatTuiRuntimeFailure(event.message, event.errorCode, {
+        retryable: event.retryable,
+        errorSource: event.errorSource,
+        errorDetail: event.errorDetail,
+        errorProviderId: event.errorProviderId,
+      });
       this.failTurn(turnId, message);
       return message;
     }
@@ -156,7 +161,12 @@ export class TuiTurnProjection {
     }
     if (event.type === 'session-status') {
       if (event.status === 'error') {
-        const message = formatTuiRuntimeFailure(event.message);
+        const message = formatTuiRuntimeFailure(event.message, event.errorCode, {
+          retryable: event.retryable,
+          errorSource: event.errorSource,
+          errorDetail: event.errorDetail,
+          errorProviderId: event.errorProviderId,
+        });
         this.failTurn(turnId, message);
         return message;
       }

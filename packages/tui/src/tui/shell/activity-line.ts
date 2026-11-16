@@ -284,7 +284,7 @@ function formatOutputRate(
 ): string {
   if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) return '';
   return `${chalk.hex(colors.dim)(' · ')}${chalk.bold.hex(colors.signal)(
-    `⚡ ${estimated ? '~' : ''}${value.toFixed(1)} tok/s`,
+    `${estimated ? '~' : ''}${value.toFixed(1)} tok/s`,
   )}`;
 }
 

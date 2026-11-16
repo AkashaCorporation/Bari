@@ -1251,9 +1251,13 @@ describe('Codex OAuth discovered models', () => {
 });
 
 describe('OpenCode Go conversation identity', () => {
-  it.each(['openai-completions', 'openai-responses', 'anthropic-messages'] as const)(
+  it.each([
+    ['openai-completions', 'https://opencode.ai/inference/go/openai/v1'],
+    ['openai-responses', 'https://opencode.ai/inference/go/openai/v1'],
+    ['anthropic-messages', 'https://opencode.ai/inference/go/anthropic'],
+  ] as const)(
     'keeps session identity across turns for renamed %s providers',
-    async (api) => {
+    async (api, baseURL) => {
       const resolver = new LocalModelResolver({
         byokConfigGetter: () => ({
           custom_provider: {
@@ -1261,7 +1265,7 @@ describe('OpenCode Go conversation identity', () => {
               api,
               options: {
                 apiKey: 'offline-test-key',
-                baseURL: 'https://opencode.ai/zen/go/v1',
+                baseURL,
                 headers: { 'USER-AGENT': 'generic-sdk' },
               },
               models: { 'test-model': { headers: { 'X-OpenCode-Session': 'static-id' } } },

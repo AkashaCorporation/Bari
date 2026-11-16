@@ -243,6 +243,7 @@ export interface LocalRuntimeApplication {
   readonly modelProviders?: {
     listProviderPresets(): Promise<readonly ByokProviderPresetView[]>;
     getCodexOAuthStatus(): Promise<CodexOAuthStatus>;
+    refreshCodexOAuthModels(): Promise<CodexOAuthStatus>;
     startCodexOAuthLogin(
       options?: CodexOAuthLoginOptions,
     ): Promise<CodexOAuthStartResult>;

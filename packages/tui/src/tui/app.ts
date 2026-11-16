@@ -34,6 +34,8 @@ import { TuiQueueFlow } from './controller/run/queue-flow.js';
 import { resolveTuiEffortChoice } from './features/model/effort.js';
 import { TuiSessionFlow } from './controller/session-flow.js';
 import { TuiCommandFlow } from './controller/product/command-flow.js';
+import { TuiTeamFlow } from './controller/product/team-flow.js';
+import { TuiCampaignFlow } from './controller/product/campaign-flow.js';
 import { TuiInputFlow } from './controller/interaction/input-flow.js';
 import { TuiPermissionModeFlow } from './controller/interaction/permission-mode-flow.js';
 import { TuiPlanModeFlow } from './controller/interaction/plan-mode-flow.js';
@@ -478,6 +480,21 @@ export function createTuiApp(options: CreateTuiAppOptions): TuiApp {
     },
     isStopped: () => stopped,
   });
+  const teamFlow = new TuiTeamFlow({
+    runtime: options.runtime,
+    currentSession: () => controller.snapshot().session,
+    surfaceHost,
+    showTasks: () => delegationFlow.showTasks(),
+    append: appendLocalCell,
+    requestRender: () => tui.requestRender(),
+  });
+  const campaignFlow = new TuiCampaignFlow({
+    runtime: options.runtime,
+    currentSession: () => controller.snapshot().session,
+    surfaceHost,
+    append: appendLocalCell,
+    requestRender: () => tui.requestRender(),
+  });
   commandFlow = new TuiCommandFlow({
     bashFlow,
     workspaceDir: options.workspaceDir,
@@ -502,6 +519,8 @@ export function createTuiApp(options: CreateTuiAppOptions): TuiApp {
     editor,
     surface: interactionSurface,
     surfaceHost,
+    showCampaign: () => campaignFlow.show(),
+    showTeam: () => teamFlow.show(),
     showTasks: () => delegationFlow.showTasks(),
     persistTuiMode: options.persistTuiMode,
     showStatusLine: () =>

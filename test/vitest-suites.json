@@ -40,6 +40,8 @@
       "packages/tui/test/unit/tui-provider-onboarding.test.ts",
       "packages/tui/test/unit/tui-capability-inspection.test.ts",
       "packages/local-runtime-v2/src/service/model-system/codex-oauth.test.ts",
+      "packages/local-runtime-v2/src/service/model-system/chatgpt-plan-auth.test.ts",
+      "packages/local-runtime-v2/src/service/model-system/resolution/chatgpt-plan-stream.test.ts",
       "packages/local-runtime-v2/src/service/mcp/project-config.test.ts",
       "packages/local-runtime-v2/test/integration/mcp/local-mcp-public-facade.integration.test.ts",
       "packages/agent-core/test/unit/event-bridge/converters.test.ts",
@@ -54,7 +56,6 @@
       "packages/agent-modules/mcp/test/connection-pool-abort.test.ts",
       "packages/agent-modules/mcp/test/connection-pool-metrics.test.ts",
       "packages/agent-modules/mcp/test/connection-pool-server-override.test.ts",
-      "packages/agent-modules/mcp/test/name-registry.test.ts",
       "packages/agent-modules/mcp/test/tool-name.test.ts",
       "packages/agent-modules/runaway-guard/test/guard.test.ts",
       "packages/local-runtime-v2/src/service/model-system/catalog/agent-model-selection.test.ts",
@@ -91,6 +92,12 @@
       "packages/tui/test/unit/tui-session-manager.test.ts",
       "packages/tui/test/unit/tui-shell-block.test.ts",
       "packages/tui/test/unit/tui-status-line-items.test.ts",
+      "packages/tui/test/unit/tui-campaign-access.test.ts",
+      "packages/tui/test/unit/tui-campaign-flow.test.ts",
+      "packages/tui/test/unit/tui-campaign-panel.test.ts",
+      "packages/tui/test/unit/tui-team-access.test.ts",
+      "packages/tui/test/unit/tui-team-flow.test.ts",
+      "packages/tui/test/unit/tui-team-preset-panel.test.ts",
       "packages/tui/test/unit/tui-terminal-image-paste.test.ts",
       "packages/tui/test/unit/tui-thinking-preview.test.ts",
       "packages/tui/test/unit/tui-transcript-presentation.test.ts",
@@ -101,6 +108,13 @@
       "packages/tui/test/unit/tui/features/settings/status-line-picker.test.ts",
       "packages/tui/test/unit/tui/widgets/editor/editor-behavior.test.ts",
       "packages/agent-core/test/unit/pi-turn-runner/llm-retry.test.ts",
+      "packages/agent-core/test/unit/pi-turn-runner/dsml-repair.test.ts",
+      "packages/local-runtime-v2/src/service/team/service.test.ts",
+      "packages/local-runtime-v2/src/service/team/tool.test.ts",
+      "packages/local-runtime-v2/src/service/security-campaign/service.test.ts",
+      "packages/local-runtime-v2/src/service/security-campaign/tool.test.ts",
+      "packages/local-runtime-v2/src/service/security-campaign/local-artifact.test.ts",
+      "packages/local-runtime-v2/src/service/security-campaign/analysis-producer/ingest.test.ts",
       "packages/local-runtime-v2/src/service/turn-system/agent-host/execution/executor.test.ts",
       "packages/local-runtime-v2/src/services.test.ts",
       "packages/local-runtime-v2/test/unit/agent/builtin/catalog.test.ts",
@@ -166,7 +180,6 @@
       "test/session-history-manifest-version.test.ts",
       "packages/local-runtime-v2/test/unit/session-projection-registry.test.ts",
       "packages/local-runtime/test/unit/team-coordination.test.ts",
-      "test/history-processing.test.ts",
       "packages/agent-modules/context-manager/test/provider-budget.test.ts",
       "packages/agent-tools/test/desktop/local-bash-output.test.ts",
       "packages/agent-tools/test/desktop/local-bash-timeout.test.ts",
@@ -181,7 +194,8 @@
       "test/request-accounting.test.ts",
       "packages/agent-core/test/unit/pi-turn-runner/request-observer.test.ts",
       "packages/tui/test/unit/tui-request-usage.test.ts",
-      "test/automation-learning.test.ts"
+      "test/automation-learning.test.ts",
+      "test/hexcore-validated-job.test.mjs"
     ],
     "status-contract": [
       "packages/tui/test/unit/tui-build-mode-contract.test.ts"
@@ -193,7 +207,9 @@
       "packages/local-runtime-v2/src/service/sandbox/backend/srt-macos.test.ts"
     ],
     "contention": [
-      "test/sqlite-message-contention.test.ts"
+      "test/sqlite-message-contention.test.ts",
+      "packages/agent-modules/mcp/test/name-registry.test.ts",
+      "test/history-processing.test.ts"
     ],
     "windows": []
   },
@@ -212,7 +228,7 @@
     },
     "contention": {
       "explicitOnly": true,
-      "reason": "SQLite lock timing is load-sensitive; it runs as its own serial gate rather than inside the deterministic capability sweep."
+      "reason": "SQLite lock timing, MCP multiprocess writer coordination and history snapshot persistence are load-sensitive; they run as one serial gate rather than inside the deterministic capability sweep."
     }
   }
 }

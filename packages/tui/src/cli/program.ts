@@ -273,6 +273,21 @@ export function createTuiProgram(options: CreateTuiProgramOptions): Command {
     );
 
   provider
+    .command('refresh')
+    .description('Synchronize provider catalogs without running model inference')
+    .argument('[provider-id]', 'custom_provider:<id>')
+    .option('--all', 'refresh every configured catalog and report failures independently')
+    .option('--json', 'print a JSON document')
+    .action((providerId: string | undefined, commandOptions: { all?: boolean; json?: boolean }) =>
+      runProvider({
+        action: 'refresh',
+        providerId,
+        all: commandOptions.all,
+        json: commandOptions.json,
+      }),
+    );
+
+  provider
     .command('use')
     .description('Choose the MiniMax credential source')
     .argument('<source>', 'token-plan or api-key', parseProviderSource)

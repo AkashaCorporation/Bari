@@ -94,12 +94,12 @@ describe('McodeUpdateApplication', () => {
         args: [
           'add',
           '--global',
-          '@minimax-ai/code@1.2.4',
+          '@akashacorporation/bari@1.2.4',
           '--registry',
           'https://registry.npmjs.org/',
         ],
         display:
-          'pnpm add --global @minimax-ai/code@1.2.4 --registry https://registry.npmjs.org/',
+          'pnpm add --global @akashacorporation/bari@1.2.4 --registry https://registry.npmjs.org/',
       },
     });
     const onOutput = vi.fn();
@@ -178,16 +178,16 @@ describe('McodeUpdateApplication', () => {
         args: [
           'install',
           '--global',
-          '@minimax-ai/code@0.0.1-beta.1786162945.e3fdada2',
+          '@akashacorporation/bari@0.0.1-beta.1786162945.e3fdada2',
           '--ignore-scripts=false',
           '--include=optional',
-          '--allow-scripts=@minimax-ai/code,better-sqlite3',
+          '--allow-scripts=@akashacorporation/bari,better-sqlite3',
           '--registry',
           'https://registry.npmjs.org/',
         ],
         display:
-          'npm install --global @minimax-ai/code@0.0.1-beta.1786162945.e3fdada2 ' +
-          '--ignore-scripts=false --include=optional --allow-scripts=@minimax-ai/code,better-sqlite3 ' +
+          'npm install --global @akashacorporation/bari@0.0.1-beta.1786162945.e3fdada2 ' +
+          '--ignore-scripts=false --include=optional --allow-scripts=@akashacorporation/bari,better-sqlite3 ' +
           '--registry https://registry.npmjs.org/',
       },
     });
@@ -231,8 +231,8 @@ describe('McodeUpdateApplication', () => {
       kind: 'manual',
       source: 'unsupported',
       command:
-        'npm install --global @minimax-ai/code@latest ' +
-        '--ignore-scripts=false --include=optional --allow-scripts=@minimax-ai/code,better-sqlite3 ' +
+        'npm install --global @akashacorporation/bari@latest ' +
+        '--ignore-scripts=false --include=optional --allow-scripts=@akashacorporation/bari,better-sqlite3 ' +
         '--registry https://registry.npmjs.org/',
     });
     await expect(application.apply(plan)).rejects.toThrow(/cannot be applied automatically/i);
@@ -352,6 +352,31 @@ describe('McodeUpdateApplication', () => {
     }
   });
 
+  it('reads the AkashaCorporation Bari package identity and version', () => {
+    const temporaryRoot = mkdtempSync(path.join(os.tmpdir(), 'bari-update-public-'));
+    const packageRoot = path.join(
+      temporaryRoot,
+      'lib',
+      'node_modules',
+      '@akashacorporation',
+      'bari',
+    );
+    try {
+      mkdirSync(packageRoot, { recursive: true });
+      writeFileSync(
+        path.join(packageRoot, 'package.json'),
+        JSON.stringify({ name: '@akashacorporation/bari', version: '0.8.0-preview.1' }),
+      );
+      const entryFile = path.join(packageRoot, 'cli.js');
+      writeFileSync(entryFile, '');
+
+      expect(resolveMcodePackageName(entryFile)).toBe('@akashacorporation/bari');
+      expect(resolveInstalledMcodePackageVersion(entryFile)).toBe('0.8.0-preview.1');
+    } finally {
+      rmSync(temporaryRoot, { recursive: true, force: true });
+    }
+  });
+
   it('recognizes only the internal package identity as environment-selectable', () => {
     expect(isInternalMcodePackageName('@minimax/code')).toBe(true);
     expect(isInternalMcodePackageName('@minimax-ai/code')).toBe(false);
@@ -376,10 +401,12 @@ describe('McodeUpdateApplication', () => {
 
 describe('Bari update install-source commands', () => {
   it.each([
+    ['/opt/homebrew/lib/node_modules/@akashacorporation/bari', 'npm-global'],
     ['/opt/homebrew/lib/node_modules/@minimax-ai/code', 'npm-global'],
     ['C:\\Users\\demo\\AppData\\Roaming\\npm\\node_modules\\@minimax\\code', 'npm-global'],
     ['/usr/local/lib/node_modules/@minimax-ai/code', 'npm-global'],
     ['/Users/demo/.local/share/pnpm/global/5/node_modules/@minimax-ai/code', 'pnpm-global'],
+    ['/Users/demo/.local/share/pnpm/global/5/node_modules/@akashacorporation/bari', 'pnpm-global'],
     [
       '/Users/demo/Library/pnpm/global/v11/10c0afe5/node_modules/@minimax-ai/code',
       'pnpm-global',
@@ -393,11 +420,13 @@ describe('Bari update install-source commands', () => {
       'pnpm-global',
     ],
     ['/Users/demo/.config/yarn/global/node_modules/@minimax-ai/code', 'yarn-global'],
+    ['/Users/demo/.config/yarn/global/node_modules/@akashacorporation/bari', 'yarn-global'],
     [
       'C:\\Users\\demo\\.config\\yarn\\global\\node_modules\\@minimax\\code',
       'yarn-global',
     ],
     ['/Users/demo/.bun/install/global/node_modules/@minimax-ai/code', 'bun-global'],
+    ['/Users/demo/.bun/install/global/node_modules/@akashacorporation/bari', 'bun-global'],
     [
       'C:\\Users\\demo\\.bun\\install\\global\\node_modules\\@minimax\\code',
       'bun-global',
@@ -412,28 +441,28 @@ describe('Bari update install-source commands', () => {
       args: [
         'install',
         '--global',
-        '@minimax-ai/code@1.2.4',
+        '@akashacorporation/bari@1.2.4',
         '--ignore-scripts=false',
         '--include=optional',
-        '--allow-scripts=@minimax-ai/code,better-sqlite3',
+        '--allow-scripts=@akashacorporation/bari,better-sqlite3',
         '--registry',
         'https://registry.npmjs.org/',
       ],
       display:
-        'npm install --global @minimax-ai/code@1.2.4 --ignore-scripts=false --include=optional ' +
-        '--allow-scripts=@minimax-ai/code,better-sqlite3 --registry https://registry.npmjs.org/',
+        'npm install --global @akashacorporation/bari@1.2.4 --ignore-scripts=false --include=optional ' +
+        '--allow-scripts=@akashacorporation/bari,better-sqlite3 --registry https://registry.npmjs.org/',
     });
     expect(buildMcodePackageManagerCommand('bun-global', '1.2.4', 'win32')).toEqual({
       executable: 'bun.exe',
       args: [
         'add',
         '--global',
-        '@minimax-ai/code@1.2.4',
+        '@akashacorporation/bari@1.2.4',
         '--registry',
         'https://registry.npmjs.org/',
       ],
       display:
-        'bun add --global @minimax-ai/code@1.2.4 --registry https://registry.npmjs.org/',
+        'bun add --global @akashacorporation/bari@1.2.4 --registry https://registry.npmjs.org/',
     });
   });
 
@@ -580,6 +609,7 @@ describe('Bari update install-source commands', () => {
       const application = new McodeUpdateApplication(
         {
           currentVersion: '1.2.3',
+          packageName: '@minimax-ai/code',
           entryFile,
           environment: {},
           installRoot: prefix,
@@ -640,6 +670,7 @@ describe('Bari update install-source commands', () => {
       const application = new McodeUpdateApplication(
         {
           currentVersion: '1.2.3',
+          packageName: '@minimax-ai/code',
           entryFile,
           environment: {},
           installRoot: prefix,
@@ -714,6 +745,7 @@ describe('Bari update install-source commands', () => {
       const application = new McodeUpdateApplication(
         {
           currentVersion: '1.2.3',
+          packageName: '@minimax-ai/code',
           entryFile,
           environment: {},
           installRoot: prefix,
@@ -842,6 +874,7 @@ describe('Bari update install-source commands', () => {
       const application = new McodeUpdateApplication(
         {
           currentVersion: '1.2.4',
+          packageName: '@minimax-ai/code',
           entryFile,
           environment: {},
           installRoot: prefix,
@@ -1025,7 +1058,7 @@ describe('Bari update install-source commands', () => {
     const command = buildMcodePackageManagerCommand(source, '1.2.4', 'linux');
     const scriptOptions =
       source === 'npm-global'
-        ? ' --ignore-scripts=false --include=optional --allow-scripts=@minimax-ai/code,better-sqlite3'
+        ? ' --ignore-scripts=false --include=optional --allow-scripts=@akashacorporation/bari,better-sqlite3'
         : '';
 
     expect(command.args.slice(-2)).toEqual([
@@ -1033,7 +1066,7 @@ describe('Bari update install-source commands', () => {
       'https://registry.npmjs.org/',
     ]);
     expect(command.display).toBe(
-      `${prefix} @minimax-ai/code@1.2.4${scriptOptions} --registry https://registry.npmjs.org/`,
+      `${prefix} @akashacorporation/bari@1.2.4${scriptOptions} --registry https://registry.npmjs.org/`,
     );
   });
 
@@ -1045,7 +1078,7 @@ describe('Bari update install-source commands', () => {
     ).resolves.toBe('1.2.4');
     expect(run).toHaveBeenCalledWith('npm', [
       'view',
-      '@minimax-ai/code@test',
+      '@akashacorporation/bari@test',
       'version',
       '--json',
       '--registry',

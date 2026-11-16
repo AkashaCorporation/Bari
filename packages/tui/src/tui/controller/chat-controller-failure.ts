@@ -27,9 +27,13 @@ export function resolveTuiSessionFailureState(
 }
 
 export function isTuiStreamFailureRetryable(event: TuiStreamEvent): boolean {
-  const rawFailure =
-    event.type === 'error' || (event.type === 'session-status' && event.status === 'error')
-      ? event.message
-      : undefined;
-  return resolveTuiRuntimeFailure(rawFailure).retryable;
+  if (event.type === 'error' || (event.type === 'session-status' && event.status === 'error')) {
+    return resolveTuiRuntimeFailure(event.message, event.errorCode, {
+      retryable: event.retryable,
+      errorSource: event.errorSource,
+      errorDetail: event.errorDetail,
+      errorProviderId: event.errorProviderId,
+    }).retryable;
+  }
+  return resolveTuiRuntimeFailure(undefined).retryable;
 }
