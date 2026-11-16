@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { realpath } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import {
@@ -87,7 +88,7 @@ export async function ingestAnalysisProducerRun(
     rootReference,
   );
   assertDigest(verifiedRoot, declaredRootSha, "analysis root target");
-  assertExecutionTargetBinding(
+  await assertExecutionTargetBinding(
     manifestExecution,
     verifiedRoot.reference,
     declaredRootSha,
@@ -157,7 +158,7 @@ export async function ingestAnalysisProducerRun(
     if (contract.contractVersion !== 1) {
       throw new Error(`Analysis provenance artifact ${entryIndex} uses an unsupported contract`);
     }
-    assertContractTargetBinding(
+    await assertContractTargetBinding(
       contract,
       verifiedRoot.reference,
       declaredRootSha,
@@ -487,12 +488,12 @@ function collectContractIdentities(
   }
 }
 
-function assertExecutionTargetBinding(
+async function assertExecutionTargetBinding(
   execution: Record<string, unknown>,
   rootReference: string,
   rootSha256: string,
   label: string,
-): void {
+): Promise<void> {
   const target = requireRecord(execution.analysisTarget, `${label}.analysisTarget`);
   const targetPath = requireString(target.filePath, `${label}.analysisTarget.filePath`);
   const targetSha = requireString(
@@ -500,17 +501,17 @@ function assertExecutionTargetBinding(
     `${label}.analysisTarget.binarySha256`,
   ).toLowerCase();
   requireSha256(targetSha, `${label} target sha256`);
-  if (resolve(targetPath) !== resolve(rootReference) || targetSha !== rootSha256) {
+  if ((await realpath(targetPath)) !== rootReference || targetSha !== rootSha256) {
     throw new Error(`${label} does not bind the verified root target`);
   }
 }
 
-function assertContractTargetBinding(
+async function assertContractTargetBinding(
   contract: Record<string, unknown>,
   rootReference: string,
   rootSha256: string,
   entryIndex: number,
-): void {
+): Promise<void> {
   const target = requireRecord(
     contract.target,
     `analysis provenance artifact ${entryIndex}.analysisContract.target`,
@@ -529,7 +530,7 @@ function assertContractTargetBinding(
     "analysis contract target.binarySha256",
   ).toLowerCase();
   requireSha256(targetSha, "analysis contract target sha256");
-  if (resolve(targetPath) !== resolve(rootReference) || targetSha !== rootSha256) {
+  if ((await realpath(targetPath)) !== rootReference || targetSha !== rootSha256) {
     throw new Error(`Analysis provenance artifact ${entryIndex} targets another binary`);
   }
 }

@@ -20,6 +20,23 @@ import Database from "better-sqlite3";
 import { stringify as stringifyYaml } from "yaml";
 
 const cli = fileURLToPath(new URL("../dist/cli.js", import.meta.url));
+const PROXY_ENVIRONMENT_KEYS = [
+  "HTTP_PROXY",
+  "HTTPS_PROXY",
+  "ALL_PROXY",
+  "NO_PROXY",
+  "http_proxy",
+  "https_proxy",
+  "all_proxy",
+  "no_proxy",
+];
+
+function withoutProxyEnvironment(environment) {
+  const isolated = { ...environment };
+  for (const key of PROXY_ENVIRONMENT_KEYS) delete isolated[key];
+  return isolated;
+}
+
 // This fixture validates BYOK transport and real Runtime persistence, not model quality.
 test(
   "BYOK runs without managed login and resumes its saved conversation",

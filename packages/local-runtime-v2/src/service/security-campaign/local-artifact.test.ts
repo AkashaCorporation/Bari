@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, realpath, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -36,7 +36,7 @@ describe("local research artifact verification", () => {
       "evidence/proof.txt",
     );
     expect(verified).toEqual({
-      reference: resolve(directory, "evidence", "proof.txt"),
+      reference: await realpath(resolve(directory, "evidence", "proof.txt")),
       sha256: createHash("sha256").update(bytes).digest("hex"),
       bytes: bytes.length,
     });
@@ -79,7 +79,7 @@ describe("local research artifact verification", () => {
     const bytes = Buffer.from('{"status":"ok","count":2}\n', "utf8");
     await writeFile(path, bytes);
     await expect(readVerifiedResearchJson([directory], path)).resolves.toEqual({
-      reference: resolve(path),
+      reference: await realpath(resolve(path)),
       sha256: createHash("sha256").update(bytes).digest("hex"),
       bytes: bytes.length,
       value: { status: "ok", count: 2 },
