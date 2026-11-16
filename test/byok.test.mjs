@@ -17,6 +17,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Database from "better-sqlite3";
+import { stringify as stringifyYaml } from "yaml";
 
 const cli = fileURLToPath(new URL("../dist/cli.js", import.meta.url));
 // This fixture validates BYOK transport and real Runtime persistence, not model quality.
